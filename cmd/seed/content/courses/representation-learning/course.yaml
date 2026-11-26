@@ -1,0 +1,31 @@
+slug: representation-learning
+title: "Representation learning"
+summary: "Embeddings, autoencoders, self-supervised objectives, and transfer learning."
+topic: Machine learning
+level: advanced
+path: advanced
+position: 4
+translations:
+  id:
+    title: "Representation learning"
+    summary: "Embedding, autoencoder, objective self-supervised, dan transfer learning."
+modules:
+- slug: core-ideas
+  title: Core ideas
+  summary: "The concepts, in the order the lab uses them."
+  lessons:
+  - embeddings-and-autoencoders
+  - transfer-learning-and-self-supervision
+  translations:
+    id:
+      title: "Ide inti"
+      summary: "Konsep-konsepnya, sesuai urutan yang dipakai lab."
+- slug: lab
+  title: Lab
+  summary: "Run the idea yourself, then check what you learned."
+  lessons:
+  - representation-lab
+  translations:
+    id:
+      title: "Lab"
+      summary: "Jalankan idenya sendiri, lalu periksa apa yang sudah kamu pelajari."

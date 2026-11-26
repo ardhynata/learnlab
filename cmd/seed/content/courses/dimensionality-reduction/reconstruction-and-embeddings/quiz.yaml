@@ -1,0 +1,80 @@
+- prompt: In the five-point example, keeping only PC1 rebuilds the point (1, 2) at (1.5, 1.5). How far is the rebuilt point from the original?
+  options:
+  - 0.5
+  - 0.71
+  - 1.41
+  - 2.12
+  answer: 1
+  explanation: The difference is (0.5, -0.5), whose length is the square root of 0.25 + 0.25 = 0.71. The number 0.5 is the squared error, not the distance.
+- prompt: Data has d columns and you keep all d components, then rebuild. What is the reconstruction error?
+  options:
+  - The variance of the first component
+  - It depends on how correlated the columns are
+  - It is always at least the smallest eigenvalue
+  - Zero, because you only turned the axes
+  answer: 3
+  explanation: Keeping every component only describes the same points from a rotated angle. Nothing was dropped, so rebuilding returns the original points. Error appears only when components are dropped.
+- prompt: The six penguins have a total squared length of 12, and rebuilding from PC1 leaves a squared error of 0.698 in total. What share of the squared length is lost?
+  options:
+  - 5.8%
+  - 94.2%
+  - 0.7%
+  - 58%
+  answer: 0
+  explanation: 0.698 / 12 = 0.058, so 5.8% is lost and 94.2% is kept. The 94.2% is the explained variance of PC1, and the two always add up to 100%.
+- prompt: For five points, PC2 has eigenvalue 0.4 and PC1 has 3.6. You keep only PC1. What is the average squared reconstruction error per point?
+  options:
+  - 3.6
+  - 0.9
+  - 0.4
+  - 0.1
+  answer: 2
+  explanation: The average squared error is the variance of the dropped components, here the eigenvalue of PC2, which is 0.4. The five squared errors 0.5, 0.5, 0.5, 0.5 and 0 average to 0.4 as well.
+- prompt: For the four penguin columns the reconstruction error is 31.2% at k = 1, 11.8% at k = 2 and 2.7% at k = 3. You can accept losing at most 5%. Which is the smallest k that fits?
+  options:
+  - k = 1
+  - k = 2
+  - k = 3
+  - k = 4
+  answer: 2
+  explanation: k = 2 still loses 11.8%, which is over the budget, and k = 3 loses 2.7%, which is under it. Choose the smallest k that fits, since extra components add columns without adding much.
+- prompt: A model that uses only PC1 does poorly, although PC1 explains 85% of the variance of the inputs. What is the most likely reason?
+  options:
+  - The explained variance was computed wrongly
+  - PCA never saw the labels, so the direction that separates the classes may have little variance
+  - A model cannot use fewer columns than the table has
+  - PC1 must always be dropped before modelling
+  answer: 1
+  explanation: PCA is unsupervised. It keeps spread, and the direction that separates two classes can be a low-variance one that is dropped first. Explained variance measures faithfulness to the inputs, not usefulness for the label.
+- prompt: Which order keeps the test set honest when you add PCA to a pipeline?
+  options:
+  - Fit PCA on all rows, then split into train and test
+  - Fit PCA separately on the test rows so they get their own axes
+  - Fit PCA on the training and test rows together to get stable components
+  - Split first, fit the scaler and PCA on the training rows, then apply them to the test rows
+  answer: 3
+  explanation: Fitting on rows that later become the test set lets them shape the axes, which is leakage. The test rows are only transformed with the means, scales and components learned from the training rows.
+- prompt: PCA was fitted on training points with mean (3, 3) and PC1 = (0.707, 0.707). A new point (4, 5) arrives. Where does a PC1-only reconstruction put it?
+  options:
+  - (3.5, 3.5)
+  - (4.5, 4.5)
+  - (4, 5)
+  - (5, 5)
+  answer: 1
+  explanation: Centered with the training mean the point is (1, 2), so its PC1 score is 3 × 0.707 = 2.12. Adding 2.12 × (0.707, 0.707) to the mean (3, 3) gives (4.5, 4.5).
+- prompt: On a t-SNE map, group A is drawn twice as wide as group B, and the gap from A to C looks twice the gap from A to B. What can you safely conclude?
+  options:
+  - Points inside each group are mostly neighbours of each other
+  - Group A is twice as spread out as group B
+  - A is twice as different from C as from B
+  - The map would look the same with another seed
+  answer: 0
+  explanation: t-SNE keeps neighbourhoods. Group sizes and the distances between groups change with the settings and the seed, as the penguin maps showed with a gap ratio of 1.85 in the data against 2.37 and 1.24 on the maps.
+- prompt: Why should t-SNE coordinates not be used as input features for a classifier?
+  options:
+  - They always have too few dimensions
+  - They are always less accurate than the original columns
+  - They depend on every row and on the settings and seed, and the usual t-SNE has no rule for placing a new row
+  - They cannot be drawn in two dimensions
+  answer: 2
+  explanation: Fitting t-SNE on all rows lets test rows shape the map, its layout changes with perplexity and seed, and a new row has no agreed place on it. Use the map to look, and feed the model the original columns or PCA fitted on the training rows.

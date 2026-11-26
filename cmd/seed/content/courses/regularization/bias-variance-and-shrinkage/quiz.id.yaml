@@ -1,0 +1,72 @@
+- prompt: Garis derajat 1 di-fit ulang pada banyak sampel baru. Fit-nya hampir identik setiap kali, tetapi rata-ratanya jauh dari kurva sebenarnya. Apa yang digambarkan ini?
+  options:
+  - Bias rendah dan varians tinggi
+  - Bias tinggi dan varians rendah
+  - Bias tinggi dan varians tinggi
+  - Bias rendah dan varians rendah
+  answer: 1
+  explanation: Fit yang hampir tidak berubah berarti varians rendah. Rata-rata yang jauh dari kenyataan berarti bias tinggi, yaitu meleset secara konsisten. Inilah ciri khas underfitting.
+- prompt: Dalam simulasi pelajaran ini, derajat 3 memiliki bias kuadrat 0,01 dan varians 0,08, sedangkan varians noise 0,25. Berapa galat kuadrat yang diharapkan pada titik baru?
+  options:
+  - 0,09
+  - 0,08
+  - 0,34
+  - 0,25
+  answer: 2
+  explanation: Untuk galat kuadrat, bias kuadrat + varians + noise = 0,01 + 0,08 + 0,25 = 0,34. Suku noise 0,25 tetap ada, karena tidak ada model yang dapat menghilangkannya.
+- prompt: Apa yang ditambahkan penalti ridge (L2) pada fit loss?
+  options:
+  - λ kali jumlah kuadrat koefisien
+  - λ kali jumlah residual
+  - λ kali jumlah titik training
+  - Galat validation yang dikalikan λ
+  answer: 0
+  explanation: Ridge membebankan biaya pada ukuran kuadrat koefisien, sehingga koefisien besar berbiaya mahal. Residual termasuk fit loss, bukan penalti.
+- prompt: Pada contoh hitungan, total loss-nya 65 - 60w + (14 + λ)w², dan paling kecil pada w = 30 / (14 + λ). Berapa w untuk λ = 14?
+  options:
+  - 2,14
+  - 1,50
+  - 0,54
+  - 1,07
+  answer: 3
+  explanation: 30 / (14 + 14) = 30 / 28, yaitu sekitar 1,07. Itu setengah dari 2,14 tanpa penalti, karena λ sama dengan jumlah kuadrat nilai x.
+- prompt: Dengan λ = 4, koefisien bergeser dari 2,14 ke 1,67, dan fit loss naik dari 0,71 ke 3,89. Apa yang ditunjukkan hal ini?
+  options:
+  - Penalti menemukan fit yang lebih baik untuk data training
+  - Penalti menerima fit training yang lebih buruk sebagai imbalan koefisien yang lebih kecil
+  - Data berubah ketika penalti ditambahkan
+  - Koefisien sebelumnya salah dan penalti memperbaikinya
+  answer: 1
+  explanation: Data saja menginginkan w = 2,14. Penalti menambahkan biaya yang tumbuh sesuai w², sehingga jumlahnya paling kecil pada w yang lebih kecil, dan fit pada training menanggung harganya.
+- prompt: Kamu menaikkan λ selangkah demi selangkah pada fit derajat 9. Galat training naik di setiap langkah (0,00, 0,14, 0,21, 0,37, ...). Mengapa galat training tidak dapat dipakai untuk memilih λ?
+  options:
+  - Galat training tidak dapat dihitung lagi setelah ada penalti
+  - Galat training selalu sama dengan galat validation
+  - Galat training selalu memilih λ = 0, ujung yang overfit
+  - Galat training baru berarti ketika λ sangat besar
+  answer: 2
+  explanation: Galat training hanya naik seiring λ, sehingga selalu menunjuk ke tanpa penalti sama sekali. Galat validation mengukur data baru, sehingga turun lalu naik lagi, dan minimumnya menandai λ yang baik.
+- prompt: Sebuah learning curve berakhir di 1,16 untuk galat training dan 1,21 untuk galat validation pada 120 titik, dengan batas noise 0,25. Apa yang ditunjukkannya, dan apa yang membantu?
+  options:
+  - Varians tinggi; penalti yang lebih kuat akan menutup kesenjangannya
+  - Varians tinggi; data tambahan akan menutup kesenjangannya
+  - Overfitting; dibutuhkan model yang lebih sederhana
+  - Bias tinggi; model perlu lebih fleksibel
+  answer: 3
+  explanation: Kedua galat tinggi dan berdekatan, jauh di atas batas noise. Itu masalah bias, dan data tambahan atau penalti yang lebih kuat tidak akan memperbaikinya.
+- prompt: Model derajat 6 memiliki galat training 0,06 dan galat validation 3,76 pada 10 titik. Pada 120 titik, nilainya 0,24 dan 0,27. Apa yang ditunjukkan learning curve ini?
+  options:
+  - Varians tinggi, yang dapat dikurangi dengan data tambahan dan penalti
+  - Bias tinggi, yang tidak dapat dikurangi dengan data tambahan
+  - Validation set-nya rusak
+  - Model sempurna pada 10 titik
+  answer: 0
+  explanation: Kesenjangan besar antara kedua galat yang menutup seiring bertambahnya data adalah varians. Penalti mempersempit kesenjangan saat titiknya sedikit, dan data tambahan juga mempersempitnya.
+- prompt: Sebuah model sudah underfit, dengan kedua galat tinggi dan berdekatan. Apa yang terjadi jika penalti ridge yang kuat ditambahkan?
+  options:
+  - Kedua galat turun karena noise mengecil
+  - Galatnya tidak berubah
+  - Underfitting makin parah karena bias naik
+  - Model berubah menjadi overfit
+  answer: 2
+  explanation: Penalti menurunkan varians dan menaikkan bias. Model yang bermasalah pada bias menjadi kurang fleksibel, sehingga galatnya naik.

@@ -1,0 +1,80 @@
+- prompt: Dua orang berbeda $2.000 dalam pendapatan dan 25 tahun dalam usia. Tanpa scaling, selisih mana yang lebih berpengaruh pada jarak garis lurus biasa di antara mereka?
+  options:
+  - Usia, karena 25 tahun adalah selisih yang besar di antara manusia
+  - Pendapatan, karena 2.000 dikuadratkan jauh lebih besar daripada 25 dikuadratkan
+  - Keduanya sama, karena keduanya adalah selisih
+  - Tidak ada, karena kedua feature memiliki satuan yang berbeda
+  answer: 1
+  explanation: Jarak garis lurus mengkuadratkan setiap selisih mentah, sehingga 4.000.000 menenggelamkan 625. Rumusnya tidak tahu bahwa satuannya berbeda, itulah sebabnya kamu melakukan scaling lebih dulu.
+- prompt: Usia memiliki rata-rata 50 dan simpangan baku 10. Berapa z-score orang yang berusia 35?
+  options:
+  - '-15'
+  - '-0,67'
+  - '-1,5'
+  - '1,5'
+  answer: 2
+  explanation: z = (35 - 50) / 10 = -1,5, sehingga orang ini berada satu setengah simpangan baku di bawah rata-rata. Angka -15 hanyalah selisihnya, sebelum dibagi dengan simpangan baku, dan 1,5 tandanya salah.
+- prompt: Setelah model dilatih, seseorang yang baru datang dan kamu ingin prediksi k-NN. Apa yang harus kamu lakukan lebih dulu pada pendapatan dan usianya?
+  options:
+  - Terapkan scaler yang sama yang di-fit pada baris training, tanpa diubah
+  - Fit ulang scaler dengan menyertakan orang ini, agar angkanya tetap mutakhir
+  - Tidak perlu apa-apa, karena satu baris baru tidak dapat di-scale
+  - Standardisasi orang itu memakai pendapatan dan usianya sendiri sebagai rata-rata
+  answer: 0
+  explanation: Model belajar dari data yang di-scale dengan angka training, sehingga baris baru harus dibawa ke skala yang sama. Fit ulang atau men-scale sebuah baris dengan dirinya sendiri akan menaruhnya pada skala yang berbeda dari semua yang diketahui model.
+- prompt: Mengapa scaler sebaiknya di-fit hanya pada baris training?
+  options:
+  - Baris test terlalu sedikit untuk di-scale, jadi dibiarkan mentah
+  - Itu membuat training berjalan lebih cepat, karena barisnya lebih sedikit
+  - Min-max scaling hanya bekerja pada data training, bukan data test
+  - Baris test akan ikut membentuk scaling, sehingga informasi test bocor masuk
+  answer: 3
+  explanation: Ini adalah data leakage, dan dapat membuat skor test tampak lebih baik daripada seharusnya. Fit pada baris training, lalu pakai angka yang sama tanpa diubah pada baris test dan pada data baru.
+- prompt: Sebuah jarak mencampur pendapatan dalam dolar mentah dengan kolom one-hot warna. Dua orang berbeda warna (merah lawan biru) dan berbeda pendapatan $1.000. Apa yang dilakukan warna pada jarak kuadrat, dibandingkan dengan pendapatan?
+  options:
+  - Warna menambah 2, yang lebih besar daripada pendapatan, karena 2 lebih besar dari 1
+  - Warna menambah 2, tetapi pendapatan menambah 1.000.000, sehingga warna praktis diabaikan
+  - Warna menambah 0, karena kolom one-hot tidak pernah mengubah jarak
+  - Warna menambah sebesar pendapatan, karena keduanya adalah selisih
+  answer: 1
+  explanation: Dua kolom one-hot berbeda masing-masing 1, sehingga warna menambah 1 + 1 = 2 pada jarak kuadrat, sedangkan selisih pendapatan menambah 1.000 dikuadratkan, yaitu 1.000.000. Men-scale angka menaruhnya pada pijakan yang membuat warna dapat terdengar.
+- prompt: Semua pendapatan dalam sebuah kolom berada di antara $40.000 dan $60.000, kecuali satu orang yang berpenghasilan $240.000. Apa yang dilakukan min-max scaling pada pendapatan yang biasa?
+  options:
+  - Menyebarkannya secara merata ke seluruh rentang 0 sampai 1
+  - Mengubah semuanya menjadi angka negatif di bawah nol
+  - Memampatkannya ke pita sempit, sekitar 0 sampai 0,1
+  - Membiarkannya tidak berubah, karena hanya outlier yang bergeser
+  answer: 2
+  explanation: Nilai terbesar menentukan arti 1, sehingga $60.000 menjadi (60.000 - 40.000) / 200.000 = 0,1. Satu outlier hanya menyisakan sedikit ruang bagi semua yang lain.
+- prompt: Model mana yang paling membutuhkan scaling pada feature-nya?
+  options:
+  - Decision tree, karena membandingkan banyak feature sekaligus
+  - Keduanya sama, karena setiap model membandingkan feature
+  - Tidak ada, karena model mempelajari satuannya sendiri
+  - k-nearest neighbors, karena menjumlahkan selisih antar feature
+  answer: 3
+  explanation: k-NN bekerja dari jarak, sehingga kolom dengan satuan besar mendominasi. Decision tree melakukan split pada satu feature sekali waktu terhadap sebuah threshold, sehingga mengubah skala kolom tidak mengubah split-nya.
+- prompt: Scaler di-fit pada pendapatan training dari $20.000 sampai $120.000 dengan min-max. Seorang di baris test berpenghasilan $130.000. Berapa hasil min-max, dan apakah itu bug?
+  options:
+  - 1,1, yang wajar, karena baris test berada di luar training
+  - 1,0, karena min-max tidak pernah melebihi 1, jadi dibatasi
+  - 1,1, yang merupakan bug, jadi fit ulang scaler pada baris test
+  - 0,13, karena 130.000 dibagi sejuta
+  answer: 0
+  explanation: (130.000 - 20.000) / 100.000 = 1,1. Training menetapkan arti 0 dan 1, sehingga nilai di atas maksimum training jatuh di atas 1. Itu memang diharapkan. Fit ulang pada baris test adalah leakage.
+- prompt: Di Scale it lab, Scaling adalah Tanpa dan k adalah 5. Kamu menggeser Usia titik query dari 27 ke 60. Apa yang terjadi pada kolom Tetangga?
+  options:
+  - Berubah menjadi lima tetangga Grup B, karena query kini sudah tua
+  - Terisi tetangga Grup A, karena orang yang lebih tua lebih jarang
+  - Tetap lima orang yang sama, karena pendapatan yang memilih tetangga
+  - Menjadi kosong, karena tidak ada ruang untuk usia di plot
+  answer: 2
+  explanation: Tanpa scaling, selisih usia puluhan tahun lenyap di samping selisih pendapatan ribuan dolar, sehingga lima orang yang sama, yang paling dekat dalam pendapatan, memberi vote. Pada Standardisasi, langkah yang sama membalik prediksi dari Grup A ke Grup B.
+- prompt: Panjang paruh penguin memiliki simpangan baku sekitar 5,45 mm dan massa tubuh sekitar 801 g. Dua penguin berbeda 10 mm dalam panjang paruh dan 100 g dalam massa tubuh. Setelah standardisasi, selisih mana yang lebih besar?
+  options:
+  - Massa tubuh, karena 100 adalah angka yang lebih besar daripada 10
+  - Panjang paruh, sekitar 15 kali lebih besar (1,83 lawan 0,12)
+  - Tidak ada, karena standardisasi membuat setiap selisih sama
+  - Panjang paruh, tetapi hanya sekitar 1,2 kali lebih besar
+  answer: 1
+  explanation: 10 / 5,45 sekitar 1,83 dan 100 / 801 sekitar 0,12, sehingga selisih paruh sekitar 15 kali lebih besar. Dalam angka mentah selisih massa 10 kali lebih besar, itulah sebabnya jarak yang tidak di-scale berpihak pada massa tubuh.

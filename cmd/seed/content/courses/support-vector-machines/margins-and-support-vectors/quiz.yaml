@@ -1,0 +1,80 @@
+- prompt: Many straight lines separate the two classes in the training data. How does a support vector machine choose one of them?
+  options:
+  - It takes the line that passes through the most training points
+  - It takes the line with the widest empty street between the classes
+  - It takes the line that is closest to the middle of the whole dataset
+  - It takes the line with the smallest slope
+  answer: 1
+  explanation: The maximum-margin rule picks the line that stays as far as possible from both classes, which is the center line of the widest street. The other rules are not what an SVM does.
+- prompt: In the toy example, class A is (1, 1), (2, 1), (1, 2), (2, 2) and class B is (4, 4), (5, 4), (5, 5), (4, 6). Which points are the support vectors?
+  options:
+  - All eight points
+  - (1, 1) and (5, 5), the two most extreme points
+  - (4, 6), because it is the highest point
+  - (2, 2) and (4, 4), the points on the street's edges
+  answer: 3
+  explanation: The street is stopped by the closest pair, (2, 2) and (4, 4), which score exactly -1 and +1. Every other point scores beyond them and does not touch an edge.
+- prompt: With w = (0.5, 0.5) and b = -3, what score does the point (5, 4) get?
+  options:
+  - 1.5
+  - 1
+  - 4.5
+  - -1.5
+  answer: 0
+  explanation: The score is 0.5 × 5 + 0.5 × 4 - 3 = 4.5 - 3 = 1.5. It is beyond +1, so (5, 4) is on B's side and not on the edge. Forgetting b would give 4.5.
+- prompt: A separating line has w = (3, 4) once its edges are scaled to score -1 and +1. What is the width of its street?
+  options:
+  - 0.29
+  - 2.5
+  - 0.4
+  - 7
+  answer: 2
+  explanation: "The length of w is √(3² + 4²) = 5, so the width is 2 / 5 = 0.4. Adding the two weights to get 7 is a common slip, and it would give 0.29."
+- prompt: In the toy example you delete (1, 1) and (5, 5). Neither is a support vector. What happens to the maximum-margin street?
+  options:
+  - It narrows, because there is less data
+  - It widens, because two points are gone
+  - It tilts toward the missing points
+  - It stays the same, with width 2.83
+  answer: 3
+  explanation: Only the support vectors (2, 2) and (4, 4) press on the edges. Removing points that do not touch them leaves the street exactly as it was.
+- prompt: In the toy example you delete the support vector (4, 4). The nearest B point to (2, 2) is now (5, 4). What happens to the margin?
+  options:
+  - It stays 2.83, because only one point is gone
+  - It widens to 3.61, the distance from (2, 2) to (5, 4)
+  - It narrows to 2.24
+  - It drops to 0 because B has lost its support vector
+  answer: 1
+  explanation: The new closest pair is (2, 2) and (5, 4), √(3² + 2²) = √13 = 3.61 apart, so the street widens. The point (5, 4) becomes the new support vector for B.
+- prompt: You add a B point at (3, 4), inside the old street. It is √5 away from (2, 2). What does the margin become?
+  options:
+  - It stays 2.83, because the street was already settled
+  - It narrows to 1.41, half of 2.83
+  - It narrows to 2.24, the distance from (2, 2) to (3, 4)
+  - It widens to 3.61
+  answer: 2
+  explanation: The closest pair of points from different classes is now (2, 2) and (3, 4), √(1² + 2²) = √5 = 2.24 apart, and that sets the width. A new point inside the street can only narrow it.
+- prompt: A student deletes every training point that is not a support vector, then trains the same straight-line SVM again. What happens to the boundary?
+  options:
+  - It stays exactly where it was
+  - It becomes a curve around the remaining points
+  - It moves toward the deleted points
+  - It becomes the same as a logistic regression boundary
+  answer: 0
+  explanation: The boundary depends on the support vectors alone, so the other points were not changing it. This is the main difference from logistic regression, where every point adds to the loss.
+- prompt: Which statement about the boundaries of the three models is correct?
+  options:
+  - k-NN always draws a straight line, as the SVM does
+  - Logistic regression is decided only by the points nearest to the boundary
+  - The SVM keeps every training point in play, as k-NN does
+  - The SVM is decided by its support vectors, while logistic regression's loss counts every point
+  answer: 3
+  explanation: A far-off point still adds a small amount to logistic regression's loss, so all points play a part. The SVM boundary is set by the support vectors only, and k-NN bends around any stored point.
+- prompt: Why can the plain widest-street rule not handle two classes whose points overlap?
+  options:
+  - The street would be infinitely wide
+  - It would pick the shortest w, which is always 0
+  - No straight line leaves every point outside the street and on its own side
+  - The support vectors would all sit in the same class
+  answer: 2
+  explanation: If the classes overlap, no street with an empty middle exists, so there is no margin to maximize. The next lesson lets a few points sit inside the street or on the wrong side, at a price.

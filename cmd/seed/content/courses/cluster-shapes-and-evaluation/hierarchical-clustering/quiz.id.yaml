@@ -1,0 +1,72 @@
+- prompt: Apa yang dilakukan agglomerative hierarchical clustering pada setiap langkah?
+  options:
+  - Membagi cluster terbesar menjadi dua
+  - Memindahkan setiap centroid ke rata-rata titik-titiknya
+  - Menggabungkan dua cluster terdekat menjadi satu
+  - Menghapus titik yang paling jauh dari yang lain
+  answer: 2
+  explanation: Metode ini dimulai dengan setiap titik sendirian dan terus menggabungkan dua cluster terdekat. Memindahkan centroid adalah k-means, bukan metode ini.
+- prompt: Lima titik di-cluster dengan agglomerative clustering sampai tersisa satu cluster. Berapa kali penggabungan terjadi?
+  options:
+  - 4
+  - 5
+  - 10
+  - 2
+  answer: 0
+  explanation: Setiap penggabungan mengurangi satu cluster, dari 5 cluster menjadi 1, sehingga ada 5 - 1 = 4 penggabungan.
+- prompt: Pada lima titik A = 0, B = 1, C = 3, D = 7, E = 12, berapa jarak complete linkage antara {A, B} dan C?
+  options:
+  - 2
+  - 3
+  - 2,5
+  - 4
+  answer: 1
+  explanation: Complete linkage mengambil pasangan terjauh. A-C adalah 3 dan B-C adalah 2, sehingga nilai yang lebih besar, 3, yang dipakai. Single linkage akan menghasilkan 2 dan average linkage 2,5.
+- prompt: Dengan average linkage pada titik-titik yang sama, berapa jarak antara {A, B, C} dan D?
+  options:
+  - 4
+  - 5,67
+  - 7
+  - 17
+  answer: 1
+  explanation: Ketiga jarak pasangannya adalah A-D = 7, B-D = 6, dan C-D = 4. Rata-ratanya 17 / 3, sekitar 5,67. Nilai 17 adalah jumlahnya, yang belum dibagi dengan banyaknya pasangan.
+- prompt: Sebuah dendrogram complete linkage memiliki penggabungan pada ketinggian 1, 3, 5, dan 12. Kamu memotongnya pada ketinggian 4. Berapa cluster yang kamu dapatkan?
+  options:
+  - 2
+  - 4
+  - 5
+  - 3
+  answer: 3
+  explanation: Dua penggabungan (pada 1 dan 3) berada di bawah potongan, sehingga tersisa 5 - 2 = 3 cluster, yaitu {A, B, C}, {D}, dan {E}.
+- prompt: Pada dendrogram yang sama, tidak ada penggabungan antara ketinggian 5 dan ketinggian 12. Apa yang disarankan oleh celah panjang itu?
+  options:
+  - Data memiliki dua cluster alami, sehingga memotong di dalam celah adalah pilihan yang baik
+  - Data memiliki 12 cluster
+  - Pohonnya digambar dengan salah
+  - Setiap titik sebaiknya tetap menjadi cluster sendiri
+  answer: 0
+  explanation: Celah yang panjang berarti kelompok-kelompok di bawahnya berjauhan satu sama lain. Memotong di dalam celah menyisakan 2 cluster. Ini petunjuk, bukan bukti.
+- prompt: Linkage mana yang paling mungkin mengalami chaining, yaitu menyambung dua kelompok terpisah melalui jembatan tipis berupa titik-titik pencilan?
+  options:
+  - Complete
+  - Ward
+  - Single
+  - Semuanya mengalami chaining sama besar
+  answer: 2
+  explanation: Single linkage hanya membutuhkan satu pasangan yang dekat, sehingga barisan titik yang berdekatan dapat menyambung kelompok-kelompok itu langkah demi langkah. Complete dan Ward melihat cluster secara utuh sehingga lebih tahan terhadap hal ini.
+- prompt: Linkage mana yang cenderung menghasilkan cluster bulat dengan ukuran yang mirip, seperti k-means?
+  options:
+  - Single
+  - Ward
+  - Tidak ada; hierarchical clustering tidak dapat membuat cluster bulat
+  - Hanya single linkage pada sebuah garis
+  answer: 1
+  explanation: Ward menggabungkan pasangan yang paling sedikit menambah jarak kuadrat dari pusat cluster, yaitu besaran yang diminimalkan k-means. Itu menyukai cluster yang padat, bulat, dan berukuran mirip.
+- prompt: Seorang teman berkata, "Hierarchical clustering lebih baik karena kamu tidak perlu menentukan jumlah cluster." Apa tanggapan yang paling tepat?
+  options:
+  - Benar; pohon yang menentukan jumlahnya untukmu
+  - Salah; kamu harus memberi k sebelum penggabungan pertama
+  - Salah; metode ini hanya bekerja jika k adalah 2
+  - Sebagian benar; kamu tidak perlu memberi k di awal, tetapi tetap memilihnya saat memotong pohon
+  answer: 3
+  explanation: Proses penggabungan berjalan tanpa k, tetapi mengubah pohon menjadi cluster membutuhkan sebuah potongan, dan potongan itu adalah pilihan. Celah yang panjang membantu, tetapi tidak memutuskan untukmu.

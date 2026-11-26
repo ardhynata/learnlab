@@ -1,0 +1,80 @@
+- prompt: Each patient in a data set has five clinic visits, one row per visit. Why can a random split give a score that is too good?
+  options:
+  - Random splits always use too little training data
+  - Rows from the same patient are always identical, so they count twice
+  - The test set ends up with too many patients
+  - A patient's visits land on both sides, so the model can recognize the patient instead of learning the pattern
+  answer: 3
+  explanation: A test visit then has a close relative in the training set, and the model can score well by recognizing the person. The rows are similar, not identical, and the problem is the link between rows, not the amount of data.
+- prompt: In the lesson's six-patient example, 1-nearest-neighbor gets 5 of 12 rows right when one patient is held out at a time. Always answering yes, or always no, gets 6 of 12. What does the comparison say?
+  options:
+  - The model is a little better than guessing, at 41.7%
+  - The model is no better than guessing, so the heart rate told it nothing about the condition
+  - The grouped split is broken, because a model cannot score below 50%
+  - The model should be given more visits per patient
+  answer: 1
+  explanation: 5 / 12 is 41.7%, below the 50% baseline. The heart rate was built to say nothing about the condition, and only the grouped split shows it. The random split's 100% came from recognizing patients.
+- prompt: A model will be used in hospitals that were not in the training data. Which split gives the most honest test?
+  options:
+  - A random split of all rows
+  - A random split of the patients, with each hospital in both sets
+  - Hold out whole hospitals
+  - A random split, then drop the hospital column
+  answer: 2
+  explanation: The test must be new in the way real use is new, and here that is the hospital. Holding out whole hospitals leaves each hospital's quirks out of training. A split by patient would still leave them in.
+- prompt: Dropping the patient id column from the features, then splitting rows at random. Does that remove the leak through identity?
+  options:
+  - No, because other features such as the heart rate still act as the patient's signature
+  - Yes, because the model can no longer see who the patient is
+  - Yes, but only for models that use distances
+  - No, because the id column is needed to compute the labels
+  answer: 0
+  explanation: The leak comes from rows of one person sitting on both sides, and their features resemble each other. Group the rows by the id when you split, even if the id is not a feature.
+- prompt: In the sales example, the model averages the two closest training months. Train on months 1 to 9 (sales 162 in month 9 and 153 in month 8) and test on month 10 (actual 170). What is the error?
+  options:
+  - 0.5
+  - 8
+  - 12.5
+  - 21.5
+  answer: 2
+  explanation: The prediction is (162 + 153) / 2 = 157.5, and the actual value is 170, so the error is 12.5. The figure 21.5 is the mean error over months 10 to 12.
+- prompt: Why does a random split flatter a forecasting model on monthly data?
+  options:
+  - Test months sit between training months, so the model can use the months after them, which are the future
+  - It puts too few months in the training set
+  - It always picks the months with the smallest values for testing
+  - It removes the trend from the data
+  answer: 0
+  explanation: Neighboring months look alike, so filling a gap between two known months is easy. On the day you use the model, the months after are not known yet. Only a split that trains on the past and tests on the later rows measures forecasting.
+- prompt: What does a rolling origin do?
+  options:
+  - It shuffles the rows again before each test
+  - It moves the end of the training data forward, then tests on the rows that follow, several times
+  - It trains on the most recent row only
+  - It tests on the same final months every round
+  answer: 1
+  explanation: The origin is where the training data ends. Each round trains on everything before it and tests on what comes next, then the origin moves forward. That gives several scores from different stretches of time, with no round seeing later rows.
+- prompt: Each row's label is "the customer cancels within 30 days". Training rows end on 1 June and testing starts on 2 June. What is the risk?
+  options:
+  - None, because the rows come from different days
+  - The test set will be too small
+  - The model cannot use dates as a feature
+  - The labels of the last training rows depend on what happens in June, which overlaps the test period, so you should leave a gap of about 30 days
+  answer: 3
+  explanation: A label known only 30 days later is decided by events in the next 30 days. The late training rows then carry information from the test period. A gap of that length between training and testing removes the overlap.
+- prompt: Two hospitals are held out in turn. One has 300 rows and 80% accuracy, the other 100 rows and 60%. What is the pooled accuracy over all 400 rows, and what else should you report?
+  options:
+  - 75%, and the two scores too, since a new hospital may look like either
+  - 70%, and nothing else, because it equals the average
+  - 75%, and nothing else, because pooling is always the best summary
+  - 70%, and the two scores too
+  answer: 0
+  explanation: The correct rows are 240 and 60, so the pooled accuracy is 300 / 400 = 75%. The plain average of the scores is 70%. A new hospital is one more group, not a pool of rows, so the individual scores show the spread you can expect.
+- prompt: For which data is a plain random split still a sensible choice?
+  options:
+  - Daily readings from the same sensor
+  - Several scans for each patient
+  - Penguins, where each row is a different, independent bird
+  - Customer rows that will be used to predict next quarter
+  answer: 2
+  explanation: A random split is honest when each row is an independent case and the future rows will be like the test rows. Sensor readings and customer forecasts are linked in time, and scans are linked by patient.

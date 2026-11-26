@@ -1,0 +1,72 @@
+- prompt: An invoice's true outcome is known 30 days after it is sent. A drift starts with invoices sent on day 10. On which day is the first changed invoice labelled?
+  options:
+  - Day 10, when it is sent
+  - Day 30, when the first label arrives
+  - Day 40, which is 30 days after day 10
+  - Day 70, after two full delays
+  answer: 2
+  explanation: An invoice sent on day 10 is labelled on day 10 + 30 = 40. No accuracy reading can show the damage before then, which is why accuracy alerts arrive late.
+- prompt: Customers with the same profile as before now pay late because the payment terms changed. Input PSI is small and the share of invoices called late is normal. Which layer can show this drift?
+  options:
+  - Operations, through the error rate
+  - Inputs, through PSI
+  - Predictions, through the share called late
+  - Outcomes, by comparing predictions with what happened
+  answer: 3
+  explanation: This is concept drift. The inputs and the predictions look as before, and only the true outcomes show that the same input now leads to a different result.
+- prompt: The accuracy was 85% and drops to 70% on changed invoices. The alert looks at the 7 newest labelled days. On day 41 two of those days hold changed invoices. What accuracy does the window show?
+  options:
+  - 85%
+  - 81%
+  - 79%
+  - 70%
+  answer: 1
+  explanation: 0.85 - 0.15 x 2/7 = 0.807, about 81%. That is still above the 80% threshold, so there is no alert yet. The alert fires on day 42 at 78.6%.
+- prompt: PSI is computed on two bins. Training shares are 0.60 and 0.40, and the last 7 days show 0.40 and 0.60. With a warning at 0.10 and a page at 0.25, what happens?
+  options:
+  - PSI is 0.16, so only a warning is sent
+  - PSI is 0.16, so someone is paged
+  - PSI is 0.04, below the warning level
+  - PSI is 0.20, so only a warning is sent
+  answer: 0
+  explanation: The terms are (0.40 - 0.60) x ln(0.40 / 0.60) = 0.081 and (0.60 - 0.40) x ln(0.60 / 0.40) = 0.081. Their sum is 0.162, above 0.10 and below 0.25, so it is a warning and no page.
+- prompt: A weekly hand-labelled sample of 50 invoices alerts at 37 or fewer right. This week 38 are right (76%). What is the sensible reading?
+  options:
+  - Alert, because 76% is below the 85% accuracy
+  - Alert, because any drop below 85% means drift
+  - No alert. A sample of 50 varies by about 5 points, so 76% is within the noise
+  - The sample proves the model is still at 85%
+  answer: 2
+  explanation: With 50 invoices a true accuracy of 85% already varies by about 5 points from week to week, so 76% does not cross the threshold. It is also no proof that the model is unchanged, because one small sample can only hint.
+- prompt: You watch 20 features. Each has a 2% chance of a false breach on a given day. About how likely is at least one false alarm on a day?
+  options:
+  - 2%, the chance for one feature
+  - 33%, which is 1 - 0.98^20
+  - 40%, which is 20 x 2%
+  - 98%, because there are many features
+  answer: 1
+  explanation: The chance that no feature breaches is 0.98^20 = 0.67, so at least one breaches with probability 0.33. Adding 20 x 2% overcounts days with two or more breaches.
+- prompt: PSI is computed each day over the last 7 days, not over one day. What is the main reason for a window that long?
+  options:
+  - The training data is 7 days long
+  - PSI cannot be computed on fewer than 7 rows
+  - A longer window always detects drift faster
+  - It covers a whole weekly cycle, so a normal Monday does not look like drift
+  answer: 3
+  explanation: A single day can differ from the average day for harmless reasons. A window that spans the whole cycle averages that out and cuts false alarms, at the price of reacting a little slower.
+- prompt: An alert fires an hour after version 14 shipped. The share of empty values in one feature went from 1% to 25%, and no other feature moved. What is the best first repair?
+  options:
+  - Retrain on the new data
+  - Recalibrate the probabilities
+  - Wait for the labels to confirm the damage
+  - Roll back to the previous version, then fix the feature code
+  answer: 3
+  explanation: A recent release plus one broken feature points at a bug, not at drift. Rolling back takes minutes and stops the damage. Retraining on that data would teach the bug to the next model.
+- prompt: In a labelled sample, the model's AUC is unchanged, but it calls 42% of cases positive while 30% really are. Inputs are steady. Which repair fits?
+  options:
+  - Retrain from scratch, because the model is broken
+  - Recalibrate, because the ranking holds but the probabilities are too high
+  - Roll back, because the model is old
+  - Do nothing, because the AUC did not change
+  answer: 1
+  explanation: An unchanged AUC means the ranking is still good. The probabilities and the flag rate are off, and recalibration fixes exactly that with a small recent labelled sample. It is cheaper than a full retrain.

@@ -1,0 +1,80 @@
+- prompt: In the garden trial, the linear model without a product column is 5 + 10 × f + 10 × w. What does it predict for a plot with fertilizer and high water?
+  options:
+  - 15 kg
+  - 20 kg
+  - 25 kg
+  - 30 kg
+  answer: 2
+  explanation: With f = 1 and w = 1 the prediction is 5 + 10 + 10 = 25 kg. The real average for those plots is 30 kg, and the same model predicts 15 kg for each factor alone, where the real average is 10 kg. That is the pattern a straight additive model cannot see.
+- prompt: A model is y = 1 + 2 × x1 + 3 × x2 + 0.5 × (x1 × x2). By how much does y change when x1 rises by 1 and x2 is held at 4?
+  options:
+  - 2
+  - 4
+  - 2.5
+  - 8
+  answer: 1
+  explanation: With a product term, the effect of x1 is b1 + b3 × x2 = 2 + 0.5 × 4 = 4. Without the product it would be 2 for every value of x2.
+- prompt: The fit with the product column in the garden trial is 10 + 0 × f + 0 × w + 20 × (f × w). What does it predict for a plot with fertilizer and low water?
+  options:
+  - 10 kg
+  - 20 kg
+  - 30 kg
+  - 40 kg
+  answer: 0
+  explanation: With f = 1 and w = 0 the product is 0, so the prediction is 10 + 0 + 0 + 0 = 10 kg. Only when both are 1 does the 20 kg bonus appear. The model says each factor alone does nothing, which matches the group averages.
+- prompt: Which column is the best candidate for a log transform?
+  options:
+  - A 0/1 column saying whether a customer is a member
+  - The age in years of school pupils, all between 6 and 12
+  - A temperature column that is negative for half of the rows
+  - Household income, where a few values are enormous
+  answer: 3
+  explanation: A log compresses a long tail, which is what skewed columns like income, prices and counts have. A 0/1 flag and a narrow range of ages have no tail, and a log cannot be taken of negative values.
+- prompt: After a log10 transform, how far apart are the values 40 and 160?
+  options:
+  - 0.30
+  - 0.60
+  - 1.20
+  - 120
+  answer: 1
+  explanation: 160 is 40 doubled twice, and each doubling adds log10(2) = 0.30 to the log, so the gap is 0.60. Equal ratios become equal steps. The gap of 120 is the distance before the log.
+- prompt: The points x = -2, -1, 0, 1, 2 have y = 4, 1, 0, 1, 4. Why does adding a column x² let a linear model fit them exactly?
+  options:
+  - It makes x larger so that the fitted line becomes steeper
+  - It removes the noise from y before the model is fitted
+  - It gives the model a bend that a straight line lacks
+  - It standardizes x so that the slope is easier to find
+  answer: 2
+  explanation: The pattern is symmetric, so the best straight line is flat at the mean, 2. With x² as a second column, the model y = 0 + 0 × x + 1 × x² passes through every point. The model is still linear in its columns; the new column carries the bend.
+- prompt: Chinstrap and Gentoo penguins have a similar bill length (about 48.8 and 47.5 mm on average) but their average bill length divided by bill depth is 2.65 and 3.18. What does this suggest?
+  options:
+  - The ratio column shows a difference that bill length alone hides
+  - Bill depth is irrelevant and can be dropped
+  - The ratio must be wrong, because lengths are nearly equal
+  - Ratios work only when the two species have different lengths
+  answer: 0
+  explanation: Gentoo bills are shallower than Chinstrap bills, so dividing length by depth separates the species even though length alone does not. The ratio carries information from the depth column that length alone leaves out.
+- prompt: What do you give up when you cut age into the bands under 30, 30 to 59, and 60 or older?
+  options:
+  - The ability to use age as a column in the model at all
+  - The model's intercept, which is absorbed by the bands
+  - The need to fit any coefficients for the age column
+  - Detail inside each band, where ages are treated alike
+  answer: 3
+  explanation: Bins let the effect jump between bands, but everyone inside a band gets the same value. If the bin edges come from the data, as with quantiles, they must be computed from the training rows only.
+- prompt: A student builds the column flipper × body mass on all rows, fits the scaler on all rows, then splits into training and test sets. What is the mistake?
+  options:
+  - The product should be built after the split because it needs the test rows
+  - The scaler's mean and standard deviation include the test rows, which leaks information about them
+  - The product of two columns can never be standardized
+  - Nothing, because a scaler has no parameters to leak
+  answer: 1
+  explanation: A product uses one row at a time, so building it before the split is safe. The scaler's mean and standard deviation are learned from data, so they must be fitted on the training rows only and reused unchanged on the test rows.
+- prompt: Adding f × w lowered the training MSE in the garden trial from 26.75 to 1.75. Why is that drop alone not enough to keep a new column in general?
+  options:
+  - Training error can fall only for interaction columns, not for others
+  - MSE has no meaning for a model with a product column
+  - Training error never rises when a column is added, so it cannot show that the column is real
+  - A drop of that size always means the data were mislabeled
+  answer: 2
+  explanation: Adding a column can only keep the training error the same or lower it, even if the column is noise. To see whether a column earns its place, check a held-out score or use cross-validation, and consider a penalty when the number of columns grows.

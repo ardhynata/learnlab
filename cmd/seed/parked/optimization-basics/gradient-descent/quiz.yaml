@@ -1,0 +1,80 @@
+- prompt: At the current value of a parameter, the gradient of the loss is +3. Which way does a gradient descent step move the parameter?
+  options:
+  - Up, to a larger value, because the gradient is positive
+  - Down, to a smaller value, because the loss rises as the parameter grows
+  - Up, to a larger value, because the loss falls as the parameter grows
+  - Nowhere, because a positive gradient means the loss is already as low as it gets
+  answer: 1
+  explanation: A positive gradient means the loss rises as the parameter grows, so downhill is toward smaller values. Gradient descent subtracts the gradient (times the learning rate), so the parameter goes down. A step in the direction of the gradient would climb.
+- prompt: Two points on the same curve have gradients -6 and -1. With a learning rate of 0.5 at both, how do the steps compare?
+  options:
+  - The first point moves 3 to the right and the second moves 0.5 to the right
+  - The first point moves 3 to the left and the second moves 0.5 to the left
+  - Both points move 0.5 to the right, because the learning rate is the same
+  - The first point moves 0.5 and the second moves 3, because a flatter spot needs a bigger push
+  answer: 0
+  explanation: Each move is -0.5 × gradient, so the first is -0.5 × (-6) = +3 and the second is -0.5 × (-1) = +0.5. A negative gradient means the curve falls to the right, so both steps go right. Steeper ground gives the longer step.
+- prompt: The loss is f(x) = (x - 5)² / 2, with gradient x - 5. Starting at x = 2 with learning rate 0.5, what is x after one update?
+  options:
+  - '0.5'
+  - '5'
+  - '3.5'
+  - '2.5'
+  answer: 2
+  explanation: The gradient at x = 2 is -3. The new x is 2 - 0.5 × (-3) = 3.5. Adding the step instead of subtracting it would give 0.5, forgetting the learning rate would give 5, and adding only the learning rate would give 2.5.
+- prompt: The loss is f(x, y) = (x - 5)² + (y - 5)², with gradient (2(x - 5), 2(y - 5)). Starting at (2, 9) with learning rate 0.25, where is the point after one update?
+  options:
+  - (1.5, -2)
+  - (0.5, 11)
+  - (2.75, 8)
+  - (3.5, 7)
+  answer: 3
+  explanation: The gradient is (-6, 8), so the move is -0.25 × (-6, 8) = (1.5, -2). Adding that move to the start gives (3.5, 7). The first option is only the move, the second goes uphill, and the third forgets the factor of 2 in the gradient.
+- prompt: On a narrow ravine with a fairly large learning rate, the path of gradient descent zigzags. Why?
+  options:
+  - The steepest way down points mostly across the ravine, so each step overshoots to the other wall
+  - The learning rate is too small, so the steps wobble while they creep along the floor
+  - The gradient points uphill, so each step climbs back to the wall it came from
+  - The surface changes shape after every step, so the direction keeps flipping
+  answer: 0
+  explanation: In a ravine the steepest direction is nearly across it, not along it. A step crosses to the far wall, the next one crosses back, and progress along the floor is slow. The gradient does point uphill, but the step goes the opposite way. A small learning rate stops the zigzag.
+- prompt: With f(x) = (x - 5)² / 2 and gradient x - 5, you try a learning rate of 2.5 and start at x = 9. What happens over the first two updates?
+  options:
+  - x goes to 5 on the first update and stays there
+  - x goes to -1, then to 14, farther from 5 each time, because the steps overshoot more and more
+  - x goes to 7, then to 6, halving its distance from 5 each time
+  - x goes to 19, then to 54, because the first step went uphill
+  answer: 1
+  explanation: The gradient at x = 9 is 4, so x becomes 9 - 2.5 × 4 = -1. The gradient there is -6, so x becomes -1 + 15 = 14. Each step lands on the far side of 5 and farther away (distance 4, then 6, then 9), so the learning rate is too big and the run diverges. Halving the distance is what a learning rate of 0.5 does, and 19 then 54 come from adding the step instead of subtracting it.
+- prompt: On a contour map drawn at equal steps of loss, some lines are packed very close together. What does that tell you?
+  options:
+  - The surface is flat there, so the gradient is small
+  - The point is close to the lowest point of the surface
+  - The surface is steep there, so the loss changes quickly
+  - The loss is the same everywhere in that region
+  answer: 2
+  explanation: Equal loss steps squeezed into a small distance mean the loss changes fast, so the surface is steep and the gradient is large. The lowest point is at the center of the rings, where the gradient is near zero.
+- prompt: Which stopping rule makes sense for gradient descent?
+  options:
+  - Stop as soon as the loss is exactly zero
+  - Stop after exactly one step for each parameter
+  - Stop as soon as the loss is lower than at the start
+  - Stop when the gradient is very small, or after a step limit
+  answer: 3
+  explanation: A very small gradient means the steps have shrunk to nothing, so the run has converged. A step limit guards against runs that never settle, such as ones that diverge or hop between two spots. Waiting for an exactly zero gradient or loss may never end, and a loss lower than at the start only shows that the walk began.
+- prompt: When fitting a model, the loss is a function of which quantities?
+  options:
+  - The model's parameters, because the data are fixed
+  - The data points, because the parameters are fixed
+  - The learning rate and the number of steps
+  - The gradient, because each step is built from it
+  answer: 0
+  explanation: For a fixed data set, each choice of parameters gives one loss value. That makes a landscape over the parameters, which is what gradient descent walks across. The learning rate and the gradient are part of the walk, not of the landscape.
+- prompt: A run on a surface with two valleys ends with a gradient close to zero. What can you conclude?
+  options:
+  - It has certainly found the lowest point of the whole surface
+  - The learning rate was too small, so the run should have continued
+  - The ground is flat there, but a deeper valley might exist elsewhere
+  - The loss at that point must be exactly zero
+  answer: 2
+  explanation: A small gradient means flat ground, which also occurs at the bottom of a shallow valley. Gradient descent feels only the slope where it stands, so it cannot tell a shallow valley from the deepest one.

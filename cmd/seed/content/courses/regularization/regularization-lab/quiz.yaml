@@ -1,0 +1,80 @@
+- prompt: On the default sample, raising λ from 0.00001 to 0.01 changes the training error from 0.11 to 0.29 and the validation error from 3.84 to 0.48. What does this show?
+  options:
+  - The penalty made the model worse, because both errors moved
+  - The model fits the dots worse but new points far better, so the penalty cut overfitting
+  - Validation error fell, so training error must have fallen as well
+  - The model was underfitting at λ = 0.00001 and the penalty fixed it
+  answer: 1
+  explanation: The 15 dots are fitted less closely (0.11 to 0.29), but the 18 held-back crosses are predicted far better (3.84 to 0.48). That is shrinkage lowering variance. The error that moved the wrong way is the training error, and that is expected.
+- prompt: With L2 (ridge) at λ = 0.01 the training error is 0.29, and the squares of the nine coefficients add up to 10.95. What is the loss MSE + λ × penalty?
+  options:
+  - 0.11, because only the penalty counts
+  - 11.24, because the penalty is added without λ
+  - About 0.40, because 0.29 + 0.01 × 10.95 = 0.29 + 0.11
+  - 0.30, because λ is added to the training error
+  answer: 2
+  explanation: λ multiplies the penalty before it is added. 0.01 × 10.95 = 0.1095, and 0.29 + 0.1095 = 0.3995, about 0.40. The 0.11 is only the penalty term, and 11.24 forgets λ.
+- prompt: In the lab the training error is lowest at the smallest λ, 0.11, and rises at every step. Why can't the lowest training error choose λ?
+  options:
+  - It always points to the smallest λ, the most overfit setting, so it would never choose a penalty
+  - It is unreliable because the training points change every time you move the slider
+  - It is the same at every λ, so it carries no information
+  - It would choose the largest λ, which is the stiffest model
+  answer: 0
+  explanation: A penalty can only make the fit to the training dots worse, so training error rises with λ and always votes for no penalty. Validation error, measured on the held-back crosses, is the one that falls and then rises.
+- prompt: 'With L2 (ridge) the largest coefficient is 14.81 at λ = 0.00001, 2.61 at λ = 0.01 and 0.38 at λ = 1, and the lab says "Exactly 0: 0 of 9" each time. What does ridge do?'
+  options:
+  - It sets the smallest coefficients to exactly 0 and keeps the big ones
+  - It makes the coefficients bigger so the curve fits the dots better
+  - It switches off whole features, which is why the lab shows rings
+  - It shrinks every coefficient toward 0 without reaching it
+  answer: 3
+  explanation: Ridge divides coefficients down smoothly, so they get small but stay nonzero. The rings on the coefficient chart appear only with L1 (lasso), which can set a coefficient to exactly 0.
+- prompt: 'With L1 (lasso) the lab says "Exactly 0: 4 of 9" at λ = 0.01 and "Exactly 0: 8 of 9" at λ = 1. What does the fitted curve look like at λ = 1?'
+  options:
+  - A flat horizontal line, because most coefficients are 0
+  - A straight line that is not flat, because the power 1 coefficient is still nonzero
+  - The same wiggly degree 9 curve, because lasso keeps the shape
+  - A parabola, because two coefficients are left
+  answer: 1
+  explanation: Eight of nine coefficients are 0, and the one left is the power 1, so the curve is a straight line with a slope. Only when all nine are 0, at λ = 2.5, is the curve flat.
+- prompt: Lasso at λ = 1 keeps one coefficient, -0.372, with a training error of 1.105. With all coefficients set to 0 the training error is 1.615. Which has the lower loss, MSE + λ × sum of absolute values, and so wins?
+  options:
+  - Keeping the coefficient, 1.105 + 0.372 = 1.477, against 1.615
+  - Setting all to 0, because a penalty of 0 always wins
+  - Keeping the coefficient, 1.105 - 0.372 = 0.733, against 1.615
+  - They tie, because the penalty and the error cancel
+  answer: 0
+  explanation: 'The penalty is λ × |w| = 1 × 0.372 = 0.372, and it is added: 1.105 + 0.372 = 1.477, which is below 1.615. The coefficient pays for itself by cutting the error more than it costs.'
+- prompt: At degree 3 the lab gives a training error of 0.34 and a validation error of 0.40 at λ = 0.00001, and 1.45 and 2.84 at λ = 10. What do you conclude?
+  options:
+  - The penalty needs to be even larger to help
+  - Degree 3 overfits, so it needs a stronger penalty
+  - A model that does not overfit gains nothing from a penalty, which only adds bias
+  - Validation error must be wrong, because it never falls as λ grows
+  answer: 2
+  explanation: Degree 3 cannot chase the noise much, so there is little variance to remove. A bigger λ stiffens the curve and raises both errors. Regularization helps a model that overfits and hurts one that does not.
+- prompt: With 8 training points the validation error is 30.43 at the smallest λ and 0.71 at the best λ. With 42 points it is 0.33 and 0.32. What does this suggest?
+  options:
+  - The best λ is always about 43 times better than the smallest
+  - More data makes validation error worse, so you should use fewer points
+  - Validation error cannot be compared across training sizes
+  - A penalty matters most when data is scarce, and with plenty of data a tiny λ is already enough
+  answer: 3
+  explanation: 30.43 / 0.71 is about 43 with 8 points but 0.33 / 0.32 is about 1 with 42. The 18 validation crosses never change, so the numbers can be compared. With enough data, the data keeps the curve in line without much help.
+- prompt: On four samples of the real penguins, the best ridge λ was 1.6, 0.063, 0.10 and 0.025, and the validation error fell and then rose each time. What should you take from this?
+  options:
+  - The ridge penalty does not work on real data
+  - The U-shape holds, but the best λ depends on the sample, so choose λ on validation data each time
+  - The best λ is 0.1 on average, so use that for any dataset
+  - The first sample is wrong, because its best λ is far from the others
+  answer: 1
+  explanation: Every sample shows the same U, so the idea survives, but the best λ moves by a factor of about 60. A single remembered value would be a poor choice. Four samples are a small check, not a proof.
+- prompt: On the default sample, moving λ from 0.00001 to 10 takes the model from a training error of 0.11 and a validation error of 3.84 to 1.41 and 2.85. In bias and variance terms, which way did it move?
+  options:
+  - From high bias to high variance
+  - From low variance to low bias
+  - From high variance toward high bias
+  - It stayed in the same place, because both errors are large at both ends
+  answer: 2
+  explanation: 'At the small λ the training error is tiny and the validation error is large: a big gap, which is high variance. At λ = 10 both errors are large, and the gap has shrunk from 3.7 to 1.4, which is high bias. Both ends are bad for different reasons, and the best λ sits between them.'

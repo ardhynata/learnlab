@@ -1,0 +1,10 @@
+slug: advanced
+title: "Level 3: Advanced"
+summary: "Design, evaluate, and operate an ML system. Explain its performance, failure modes, and behavior after deployment."
+level: advanced
+position: 3
+requires: [intermediate]
+translations:
+  id:
+    title: "Level 3: Lanjutan"
+    summary: "Rancang, evaluasi, dan operasikan sebuah sistem ML. Jelaskan performanya, cara kegagalannya, dan perilakunya setelah deployment."

@@ -1,0 +1,80 @@
+- prompt: The line y = 2x + 3 is used to predict a point at (4, 9). What is the residual?
+  options:
+  - "+2"
+  - "-2"
+  - "11"
+  - "4"
+  answer: 1
+  explanation: The line predicts 2 x 4 + 3 = 11. The residual is actual minus predicted, 9 - 11 = -2, negative because the point lies below the line. The value 11 is the prediction, not the residual.
+- prompt: Four residuals are +1, -3, +2 and 0. What is the mean absolute error?
+  options:
+  - "1.5"
+  - "0"
+  - "3.5"
+  - "6"
+  answer: 0
+  explanation: The absolute values are 1, 3, 2 and 0, which add up to 6, and 6 / 4 = 1.5. The raw residuals add up to 0, which is why the sign must be removed first. The value 3.5 is the mean squared error of the same residuals.
+- prompt: The same four residuals, +1, -3, +2 and 0, give what mean squared error?
+  options:
+  - "1.5"
+  - "0"
+  - "3.5"
+  - "14"
+  answer: 2
+  explanation: The squares are 1, 9, 4 and 0, which add up to 14, and 14 / 4 = 3.5. The value 14 is the total before averaging, and 1.5 is the mean absolute error.
+- prompt: Why can a loss not simply add up the raw residuals?
+  options:
+  - Because residuals are always larger than the loss
+  - Because the result would be in squared units
+  - Because a perfect line would then score 1
+  - Because misses above and below the line cancel, so a poor line could score 0
+  answer: 3
+  explanation: A miss of +3 and a miss of -3 add to 0, so a line that misses badly in both directions would look perfect. Taking absolute values or squares first removes the sign, so every miss counts.
+- prompt: One residual is 6 and another is 2. Compared with the miss of 2, how much more does the miss of 6 add to each total?
+  options:
+  - 3 times as much in both MAE and MSE
+  - 9 times as much in MAE and 3 times as much in MSE
+  - 3 times as much in MAE and 9 times as much in MSE
+  - The same in both, because both are misses
+  answer: 2
+  explanation: The absolute misses are 6 and 2, a ratio of 3. The squared misses are 36 and 4, a ratio of 9. Squaring makes a bigger miss count for disproportionately more.
+- prompt: Two lines both have an MAE of 0.5 on the same four points, but their MSE is 0.5 and 0.625. What explains the gap?
+  options:
+  - The second line passes through more of the points
+  - The second line has one bigger miss, and squaring makes it weigh more
+  - MSE is always larger than MAE
+  - The two losses were computed on different points
+  answer: 1
+  explanation: The second line misses by 0.5 on one point and 1.5 on another, which square to 0.25 and 2.25. The first line has two misses of 1. Both lines pass through two of the four points, and both losses use the same points.
+- prompt: A line has residuals +1, -1, +1, -1 and +4. What share of the MSE total comes from the +4?
+  options:
+  - 20 percent
+  - 50 percent
+  - 100 percent
+  - 80 percent
+  answer: 3
+  explanation: The squares are 1, 1, 1, 1 and 16, which add up to 20, and 16 / 20 is 80 percent. In the MAE total the same point supplies only 4 of 8, which is 50 percent.
+- prompt: The target y is a price in euros. In which unit is the MSE measured?
+  options:
+  - Euros squared
+  - Euros
+  - Percent
+  - It has no unit
+  answer: 0
+  explanation: Each residual is in euros, and squaring it gives euros squared, which is hard to picture. MAE stays in euros. The square root of the MSE brings the number back to euros.
+- prompt: Your data has a few typing errors that put some points far from the true pattern. Which loss is less likely to let those points steer the line?
+  options:
+  - Mean squared error, because it squares the misses
+  - Neither, because both use every point
+  - Mean absolute error, because it counts a miss only by its size
+  - Whichever gives the larger number
+  answer: 2
+  explanation: MSE squares each miss, so a far-off point supplies most of the total and the line tilts toward it. MAE counts that point only in proportion to its size, so it steers the line less. The size of the number does not matter, because the two losses are on different scales.
+- prompt: Line A has an MAE of 1.4 and an MSE of 5.4 on the same data. Does that mean MSE rates line A as worse than MAE does?
+  options:
+  - Yes, 5.4 is bigger than 1.4, so MSE finds more fault
+  - No, the two numbers are on different scales; compare the same loss across lines
+  - Yes, because MSE can never be smaller than MAE
+  - No, because one of the two numbers must be a mistake
+  answer: 1
+  explanation: MAE is in the units of y and MSE in squared units, so the two numbers cannot be ranked against each other. To judge lines, compare line A's MSE with line B's MSE, or its MAE with B's MAE.

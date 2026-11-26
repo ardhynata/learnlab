@@ -1,0 +1,72 @@
+- prompt: Apa yang membuat sebuah split pada decision tree bersifat axis-aligned?
+  options:
+  - Split itu menguji kombinasi beberapa feature sekaligus
+  - Split itu selalu membagi kelompok menjadi dua bagian yang sama besar
+  - Split itu dipilih secara acak dari feature yang tersedia
+  - Split itu menanyakan satu feature, sehingga potongannya sejajar dengan sebuah sumbu
+  answer: 3
+  explanation: Sebuah split membandingkan satu feature dengan sebuah threshold. Pada plot dua feature, itu berupa garis vertikal atau horizontal. Potongan miring membutuhkan kombinasi beberapa feature.
+- prompt: Sebuah kelompok berisi 3 penguin Adelie dan 1 Chinstrap. Berapa Gini impurity-nya?
+  options:
+  - 0,25
+  - 0,375
+  - 0,5
+  - 0,75
+  answer: 1
+  explanation: Proporsinya 3/4 dan 1/4, sehingga Gini = 1 - (9/16 + 1/16) = 1 - 10/16 = 0,375. Kelompok 50/50 akan menghasilkan 0,5.
+- prompt: Sebuah leaf berisi 5 penguin Adelie dan 2 Chinstrap dari data training. Apa yang diprediksi tree untuk penguin baru yang sampai di leaf itu?
+  options:
+  - Adelie, majority class di leaf tersebut
+  - Chinstrap, kelas dengan impurity yang lebih tinggi
+  - Tebakan 50/50 di antara kedua spesies
+  - Tidak ada, karena leaf itu belum murni
+  answer: 0
+  explanation: Sebuah leaf memprediksi label yang paling banyak muncul di antara kasus training-nya. Leaf tidak harus murni untuk dapat membuat prediksi.
+- prompt: Sebuah split membagi sepuluh penguin menjadi kelompok berisi 6 penguin dengan Gini sekitar 0,44 dan kelompok berisi 4 penguin dengan Gini 0,375. Berapa kira-kira weighted Gini split tersebut?
+  options:
+  - 0,20
+  - 0,50
+  - 0,81
+  - 0,41
+  answer: 3
+  explanation: Timbang setiap child menurut ukurannya, 6/10 × 0,44 + 4/10 × 0,375 = 0,264 + 0,15, sekitar 0,41. Rata-rata biasa dari 0,44 dan 0,375 akan mengabaikan ukuran kelompok.
+- prompt: Sebuah kelompok 50/50, dan sebuah split mengirim separuh dari setiap kelas ke tiap sisi, sehingga kedua child juga 50/50. Berapa penurunan impurity-nya?
+  options:
+  - 0
+  - 0,25
+  - 0,5
+  - 1
+  answer: 0
+  explanation: Kedua child memiliki Gini 0,5, sehingga weighted Gini sesudah split adalah 0,5, sama seperti sebelumnya. Penurunannya 0,5 - 0,5 = 0, jadi pertanyaan itu tidak memberi tahu tree apa-apa.
+- prompt: Satu penguin Adelie dan satu Chinstrap sama-sama memiliki panjang flipper 193 mm. Apa artinya bagi split pada panjang flipper?
+  options:
+  - Tree dapat memisahkan keduanya dengan potongan di 192 mm
+  - Tree dapat memisahkan keduanya jika memotong tepat di 193 mm
+  - Potongan flipper tidak akan pernah dapat memisahkan keduanya
+  - Keduanya pasti berasal dari spesies yang sama
+  answer: 2
+  explanation: Sebuah potongan mengirim semua penguin dengan nilai yang sama ke sisi yang sama. Untuk memisahkan keduanya, tree membutuhkan feature lain, seperti bill length.
+- prompt: Pada sepuluh penguin, potongan flipper di 195,5 mm menurunkan Gini sekitar 0,21, dan potongan bill length di 43 mm menurunkannya 0,50. Split mana yang dipilih tree lebih dulu?
+  options:
+  - Potongan flipper, karena panjang flipper muncul lebih awal di data
+  - Potongan bill, karena penurunan impurity-nya lebih besar
+  - Salah satunya, dipilih secara acak
+  - Tidak keduanya, karena tidak ada yang membuat setiap kelompok murni
+  answer: 1
+  explanation: Pembuat tree memilih kandidat dengan penurunan terbesar di semua feature. Potongan bill membuat kedua kelompok murni, sehingga ia menang.
+- prompt: Pernyataan mana tentang Gini dan entropy yang benar?
+  options:
+  - Keduanya bernilai 0 untuk kelompok murni dan tertinggi pada campuran merata, tetapi skalanya berbeda
+  - Keduanya bernilai 0 untuk kelompok murni, dan gain dari yang satu dapat dibandingkan langsung dengan gain dari yang lain
+  - Entropy bernilai 0 untuk kelompok murni, tetapi Gini bernilai 1
+  - Entropy hanya dipakai untuk kelompok dengan tiga kelas atau lebih
+  answer: 0
+  explanation: Keduanya bernilai 0 ketika kelompok murni dan terbesar pada campuran 50/50. Pada dua kelas, Gini mencapai puncak di 0,5 dan entropy di 1, sehingga bandingkan split hanya dalam satu ukuran yang sama.
+- prompt: Dua kelas dipisahkan oleh garis lurus yang miring pada plot dua feature. Bagaimana decision tree mendekati garis itu?
+  options:
+  - Dengan satu split miring
+  - Dengan merata-ratakan kedua feature terlebih dahulu
+  - Dengan banyak split axis-aligned kecil yang membentuk tangga
+  - Tree tidak dapat membuat prediksi sama sekali di sana
+  answer: 2
+  explanation: Setiap split berupa garis vertikal atau horizontal, sehingga tepi diagonal harus ditelusuri dengan serangkaian anak tangga. Ini salah satu alasan sebuah tree dapat membutuhkan banyak split untuk batas miring yang sederhana.

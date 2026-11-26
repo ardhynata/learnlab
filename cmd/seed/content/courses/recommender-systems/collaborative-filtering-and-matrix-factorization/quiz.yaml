@@ -1,0 +1,80 @@
+- prompt: In a table of plays, a user has no play event for a film. What does the blank mean?
+  options:
+  - The user disliked the film
+  - It is unknown, because the user may never have been shown the film
+  - The user's rating is 0
+  - The film should be removed from the table
+  answer: 1
+  explanation: Implicit feedback records only what happened. A missing play can mean dislike, but it can also mean the film was never shown or never noticed, so a blank is unknown, not a zero.
+- prompt: In the toy matrix, the popularity baseline predicts the same rating of Rocket for every user. What is it?
+  options:
+  - 3.0, the mean of Ana's own ratings
+  - 3.4, the mean rating of Orbit
+  - 3.25, the mean of the four ratings Rocket received
+  - 4.5, the mean of the neighbors' ratings
+  answer: 2
+  explanation: Rocket was rated 5, 4, 2 and 2, so the mean is 13 / 4 = 3.25. The baseline ignores who is asking. The 4.5 comes from the neighbor methods, which use Ana's own ratings.
+- prompt: One user rated two films (4, 2) and another rated the same films (2, 1). What is the cosine between them?
+  options:
+  - 0, because the ratings differ
+  - 0.5, the ratio of the two lengths
+  - 10, the dot product
+  - 1, because the two vectors point the same way
+  answer: 3
+  explanation: The dot product is 4 × 2 + 2 × 1 = 10, and the two lengths are √20 and √5, whose product is 10, so the cosine is 1. Cosine ignores length, so it cannot see that the first user rates more generously.
+- prompt: Two neighbors rated a film. The one with similarity 0.9 gave 5 and the one with similarity 0.6 gave 2. What does the similarity-weighted average predict?
+  options:
+  - 3.5, the plain mean of 5 and 2
+  - 3.8
+  - 3.2
+  - 5, the nearest neighbor alone
+  answer: 1
+  explanation: (0.9 × 5 + 0.6 × 2) / (0.9 + 0.6) = 5.7 / 1.5 = 3.8. The closer neighbor counts more, so the result sits nearer to 5 than the plain mean of 3.5. Swapping the weights would give 3.2.
+- prompt: In item-item filtering, how is the similarity of Rocket and Orbit computed?
+  options:
+  - From the two film columns, using the users who rated both films
+  - From the words in the film titles
+  - From Ana's ratings only
+  - From the difference between the two mean ratings
+  answer: 0
+  explanation: Item-item compares film columns. For Rocket and Orbit that means the ratings of Budi, Dewi, Citra and Eko, which give a cosine of 0.99. The mean ratings alone say nothing about whether the same users like both.
+- prompt: A user vector is (1.5, 0.5) and a film vector is (2.0, 1.0). What rating does the factorization predict?
+  options:
+  - 3.0
+  - 2.5
+  - 4.0
+  - 3.5
+  answer: 3
+  explanation: The dot product is 1.5 × 2.0 + 0.5 × 1.0 = 3.0 + 0.5 = 3.5. Using only the first factor gives 3.0, which forgets the second term.
+- prompt: What does the penalty on the length of the vectors do in matrix factorization?
+  options:
+  - It fills the blank cells with zeros
+  - It keeps the vectors short, so they cannot chase the few known ratings of a user too closely
+  - It makes the factors easy to name
+  - It makes training faster by skipping cells
+  answer: 1
+  explanation: This is the L2 penalty of ridge. With few ratings per user, many long vectors fit them exactly, and the penalty picks a short one that generalizes better. It does not fill cells or name factors.
+- prompt: What does one half-sweep of alternating least squares (ALS) do?
+  options:
+  - It moves each vector one small step against the gradient of a single rating
+  - It subtracts each user's mean rating from the matrix
+  - It holds the film vectors fixed and solves every user's vector with a small ridge regression, then the roles swap
+  - It sorts the users by similarity and keeps the nearest k
+  answer: 2
+  explanation: "ALS alternates: with the films fixed, each user's vector is a small regularized least-squares problem, and then the users are fixed and the films solved. Small steps on single ratings describe SGD, not ALS."
+- prompt: A service has 1,000 films, and two users each rated a random 2% of them. About how many films do both rate?
+  options:
+  - 20, the number each user rated
+  - 4, a fifth of that
+  - 0.4, less than one film on average
+  - 0, because 2% is too small to overlap at all
+  answer: 2
+  explanation: Each film is rated by both with probability 0.02 × 0.02, so the expected overlap is 1,000 × 0.02 × 0.02 = 0.4 films. This is why user-user cosine on co-rated films is weak in sparse data.
+- prompt: Why can PCA not be applied directly to a user-item matrix with blanks, while matrix factorization can?
+  options:
+  - PCA needs every cell filled, while factorization is fitted on the known cells only
+  - PCA only works with ratings from 1 to 5
+  - PCA cannot produce vectors for users
+  - PCA needs more users than films
+  answer: 0
+  explanation: PCA is built from the full table, so every cell must have a value. Factorization puts only the known ratings in its loss and ignores the blanks, which is what SGD and ALS minimize.

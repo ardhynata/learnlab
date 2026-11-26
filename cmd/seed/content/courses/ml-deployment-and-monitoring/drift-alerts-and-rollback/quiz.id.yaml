@@ -1,0 +1,72 @@
+- prompt: Outcome sebuah invoice baru diketahui 30 hari setelah invoice dikirim. Sebuah drift dimulai dengan invoice yang dikirim pada hari ke-10. Pada hari keberapa invoice berubah yang pertama diberi label?
+  options:
+  - Hari ke-10, saat invoice dikirim
+  - Hari ke-30, saat label pertama tiba
+  - Hari ke-40, yaitu 30 hari setelah hari ke-10
+  - Hari ke-70, setelah dua kali penundaan penuh
+  answer: 2
+  explanation: Invoice yang dikirim pada hari ke-10 diberi label pada hari ke-10 + 30 = 40. Tidak ada pembacaan accuracy yang dapat menunjukkan kerusakan sebelum itu, dan inilah sebabnya alert accuracy datang terlambat.
+- prompt: Pelanggan dengan profil yang sama seperti sebelumnya kini membayar terlambat karena ketentuan pembayaran berubah. PSI input kecil dan porsi invoice yang diprediksi terlambat normal. Lapisan mana yang dapat menunjukkan drift ini?
+  options:
+  - Operations, lewat tingkat galat
+  - Inputs, lewat PSI
+  - Predictions, lewat porsi yang diprediksi terlambat
+  - Outcomes, dengan membandingkan prediksi dengan kenyataan
+  answer: 3
+  explanation: Ini adalah concept drift. Inputs dan predictions tampak seperti sebelumnya, dan hanya outcome yang sebenarnya menunjukkan bahwa input yang sama kini menghasilkan hasil yang berbeda.
+- prompt: Accuracy semula 85% dan turun menjadi 70% pada invoice yang berubah. Alert melihat 7 hari berlabel terbaru. Pada hari ke-41, dua dari hari-hari itu berisi invoice yang berubah. Berapa accuracy yang ditunjukkan window?
+  options:
+  - 85%
+  - 81%
+  - 79%
+  - 70%
+  answer: 1
+  explanation: 0,85 - 0,15 x 2/7 = 0,807, sekitar 81%. Angka itu masih di atas threshold 80%, jadi belum ada alert. Alert berbunyi pada hari ke-42 di angka 78,6%.
+- prompt: PSI dihitung pada dua bin. Porsi training adalah 0,60 dan 0,40, dan 7 hari terakhir menunjukkan 0,40 dan 0,60. Dengan warning pada 0,10 dan page pada 0,25, apa yang terjadi?
+  options:
+  - PSI-nya 0,16, sehingga hanya warning yang dikirim
+  - PSI-nya 0,16, sehingga seseorang di-page
+  - PSI-nya 0,04, di bawah tingkat warning
+  - PSI-nya 0,20, sehingga hanya warning yang dikirim
+  answer: 0
+  explanation: Suku-sukunya adalah (0,40 - 0,60) x ln(0,40 / 0,60) = 0,081 dan (0,60 - 0,40) x ln(0,60 / 0,40) = 0,081. Jumlahnya 0,162, di atas 0,10 dan di bawah 0,25, sehingga hasilnya warning dan tidak ada page.
+- prompt: Sampel mingguan 50 invoice berlabel manual berbunyi pada 37 atau kurang yang benar. Minggu ini 38 yang benar (76%). Bagaimana pembacaan yang masuk akal?
+  options:
+  - Alert, karena 76% di bawah accuracy 85%
+  - Alert, karena setiap penurunan di bawah 85% berarti drift
+  - Tidak ada alert. Sampel 50 bervariasi sekitar 5 poin, sehingga 76% masih dalam rentang fluktuasi acak
+  - Sampel itu membuktikan bahwa model masih di 85%
+  answer: 2
+  explanation: Dengan 50 invoice, accuracy sebenarnya 85% saja sudah bervariasi sekitar 5 poin dari minggu ke minggu, sehingga 76% tidak melewati threshold. Itu juga bukan bukti bahwa model tidak berubah, karena satu sampel kecil hanya dapat memberi petunjuk.
+- prompt: Kamu memantau 20 feature. Masing-masing punya peluang 2% melanggar secara keliru pada suatu hari. Kira-kira berapa peluang paling sedikit satu alarm palsu pada suatu hari?
+  options:
+  - 2%, peluang untuk satu feature
+  - 33%, yaitu 1 - 0,98^20
+  - 40%, yaitu 20 x 2%
+  - 98%, karena ada banyak feature
+  answer: 1
+  explanation: Peluang tidak ada feature yang melanggar adalah 0,98^20 = 0,67, sehingga paling sedikit satu melanggar dengan peluang 0,33. Menjumlahkan 20 x 2% menghitung terlalu banyak hari dengan dua pelanggaran atau lebih.
+- prompt: PSI dihitung setiap hari dari 7 hari terakhir, bukan dari satu hari. Apa alasan utama window sepanjang itu?
+  options:
+  - Data training panjangnya 7 hari
+  - PSI tidak dapat dihitung pada kurang dari 7 baris
+  - Window yang lebih panjang selalu mendeteksi drift lebih cepat
+  - Window itu mencakup satu siklus mingguan penuh, sehingga hari Senin yang normal tidak tampak seperti drift
+  answer: 3
+  explanation: Satu hari dapat berbeda dari hari rata-rata karena alasan yang tidak berbahaya. Window yang mencakup seluruh siklus meratakannya dan mengurangi alarm palsu, dengan harga bereaksi sedikit lebih lambat.
+- prompt: Sebuah alert berbunyi satu jam setelah versi 14 dirilis. Porsi nilai kosong pada satu feature naik dari 1% menjadi 25%, dan tidak ada feature lain yang bergeser. Apa perbaikan pertama yang terbaik?
+  options:
+  - Retrain pada data baru
+  - Recalibrate probabilitasnya
+  - Menunggu label untuk memastikan kerusakan
+  - Roll back ke versi sebelumnya, lalu perbaiki kode feature
+  answer: 3
+  explanation: Rilis yang baru saja terjadi ditambah satu feature yang rusak menunjuk ke bug, bukan drift. Roll back hanya memerlukan beberapa menit dan menghentikan kerusakan. Me-retrain pada data itu akan mengajarkan bug tersebut ke model berikutnya.
+- prompt: Pada sampel berlabel, AUC model tidak berubah, tetapi model menyebut 42% kasus positif sedangkan yang benar-benar positif 30%. Inputs stabil. Perbaikan mana yang sesuai?
+  options:
+  - Retrain dari awal, karena modelnya rusak
+  - Recalibrate, karena urutannya bertahan tetapi probabilitasnya terlalu tinggi
+  - Roll back, karena modelnya sudah lama
+  - Tidak melakukan apa-apa, karena AUC tidak berubah
+  answer: 1
+  explanation: AUC yang tidak berubah berarti urutannya masih baik. Probabilitas dan flag rate-nya yang meleset, dan recalibration memperbaiki tepat itu dengan sampel berlabel terbaru yang kecil. Biayanya lebih murah daripada retrain penuh.

@@ -1,0 +1,80 @@
+- prompt: Untuk apa k-means memakai label kelas ketika kamu menjalankannya di lab "k-means, lalu ungkap labelnya"?
+  options:
+  - Untuk menempatkan centroid awal, satu pada setiap kelas
+  - Untuk memeriksa dan mengoreksi clusternya pada setiap langkah pembaruan
+  - Untuk menentukan nilai k yang terbaik bagi data
+  - Ia tidak pernah melihatnya; label hanya menilai clusternya sesudahnya
+  answer: 3
+  explanation: k-means mengelompokkan titik hanya berdasarkan posisi. Label disembunyikan sampai kamu menampilkannya, dan sesudah itu label hanya berfungsi sebagai kunci jawaban untuk menilai seberapa cocok cluster dengan kelasnya.
+- prompt: "Tiga cluster pada 48 titik memiliki crosstab berikut (kelas A, kelas B): Cluster 1 berisi 8 dan 4, Cluster 2 berisi 14 dan 3, Cluster 3 berisi 2 dan 17. Berapa purity-nya?"
+  options:
+  - 62,5%
+  - 75,0%
+  - 81,3%
+  - 89,6%
+  answer: 2
+  explanation: "Ambil sel terbesar di tiap baris: 8, 14, dan 17. Jumlahnya 39 titik, dan 39 / 48 = 0,8125, yaitu 81,3%."
+- prompt: Dengan k-means++, lab menunjukkan Cluster 1 berisi 6 titik kelas A dan 20 titik kelas B. Dengan Titik acak, Cluster 1 berisi 18 titik kelas A dan 4 titik kelas B, dan Inertia tetap 110,76. Apa yang terjadi?
+  options:
+  - Pengelompokannya sama, hanya dua nomor cluster-nya yang tertukar
+  - k-means menemukan pengelompokan yang lebih baik pada percobaan kedua
+  - Purity pasti berubah, karena baris-barisnya berbeda
+  - Kelasnya diberi nama ulang oleh lab
+  answer: 0
+  explanation: Nomor cluster hanyalah nama, dan nilainya bergantung pada titik awal. Baris 6 dan 20, serta 18 dan 4, saling bertukar tempat, sehingga kelompok, Inertia, dan purity tidak berubah.
+- prompt: Pada Papan catur dengan k = 4, setiap cluster berisi 12 titik dari satu kelas saja, sehingga purity 100,0%, tetapi adjusted Rand index hanya 0,48. Mengapa?
+  options:
+  - Setiap kelas terbelah ke dua cluster, yang tidak diperhatikan purity
+  - Adjusted Rand index hanya bekerja bila ada tepat dua cluster
+  - Clusternya sebenarnya tidak murni, jadi angka purity pasti keliru
+  - k-means berhenti sebelum konvergen, sehingga clusternya belum selesai
+  answer: 0
+  explanation: Purity hanya menanyakan apakah setiap cluster sebagian besar berisi satu kelas. Di sini kedua kelas masing-masing terpotong menjadi dua cluster, sehingga banyak pasangan titik dari kelas yang sama terpisah, dan indeks berbasis pasangan menilai hal itu.
+- prompt: Pada Cincin konsentris dengan k = 2, lab menampilkan adjusted Rand index −0,02. Apa artinya?
+  options:
+  - Cluster cocok dengan kelas hampir sempurna
+  - Kecocokannya kurang lebih sama baik dengan label acak
+  - k-means gagal berjalan, sehingga skornya tidak sah
+  - Kelasnya tertukar, jadi kamu harus membaca tabel dari belakang
+  answer: 1
+  explanation: Indeks yang mendekati 0 adalah nilai yang diberikan oleh label acak, dan nilai negatif yang kecil hanyalah kebetulan. Setiap cluster mengambil sekitar separuh dari tiap cincin, karena batas di antara dua centroid berupa garis lurus.
+- prompt: Pada data penguin, ketiga spesies masing-masing berjumlah 151, 68, dan 123 penguin. Dengan k = 1, semua 342 penguin berada dalam satu cluster. Berapa purity-nya?
+  options:
+  - 33,3%, sepertiga untuk setiap spesies
+  - 100%, karena hanya ada satu cluster
+  - 44,2%, porsi spesies terbesar
+  - 0%, karena tidak ada yang terpisah
+  answer: 2
+  explanation: "Dengan satu cluster, kelas mayoritasnya adalah Adelie, dan 151 / 342 = 0,4415, sehingga purity-nya 44,2%. Itulah batas bawah: clustering yang berguna pada penguin ini harus mencetak skor di atasnya."
+- prompt: Tanpa standardisasi, k-means dengan k = 3 menempatkan 38 Adelie dan 54 Chinstrap di Cluster 1 (purity 83,9%, ARI 0,64). Apa penyebab yang paling mungkin?
+  options:
+  - Adelie dan Chinstrap sebenarnya spesies yang sama
+  - k-means tidak dapat mengelompokkan lebih dari dua feature sekaligus
+  - Seed-nya salah, dan seed lain mana pun memberi 0,89
+  - Panjang sirip memiliki simpangan baku lebih besar, sehingga mendominasi jarak
+  answer: 3
+  explanation: Panjang sirip memiliki simpangan baku 14,0 mm, dibandingkan 5,5 mm untuk panjang paruh, dan Adelie serta Chinstrap memiliki sirip yang mirip (rata-rata 190,0 dan 195,8 mm). Dengan Titik acak tanpa standardisasi, seed 1 sampai 4 memberi ARI 0,64, 0,64, 0,54, dan 0,53, sehingga skala lebih berpengaruh daripada seed.
+- prompt: "Dengan standardisasi menyala dan Titik acak, seed 1 sampai 7 memberi Inertia 157,82 pada penguin dengan k = 3, dan seed 8 memberi 206,06 (ARI 0,57). Tanpa label, run mana yang kamu simpan?"
+  options:
+  - Run dengan Inertia 157,82, karena pada k yang sama Inertia lebih rendah lebih baik
+  - Run seed 8, karena Inertia yang lebih tinggi berarti lebih banyak cluster ditemukan
+  - Yang mana saja, karena semuanya memakai k = 3 sehingga sama baiknya
+  - Tidak ada, karena cluster tidak dapat dinilai tanpa label
+  answer: 0
+  explanation: Seperti pada pelajaran tentang posisi awal, kamu membandingkan run pada data dan k yang sama berdasarkan Inertia, lalu menyimpan yang paling rendah. Di sini run itu kebetulan juga yang paling cocok dengan spesiesnya.
+- prompt: Pada Cluster tumpang tindih, beralih dari k = 2 ke k = 4 menaikkan purity dari 79,2% menjadi 83,3% tetapi menurunkan adjusted Rand index dari 0,33 menjadi 0,21. Bagaimana cara membacanya dengan benar?
+  options:
+  - Empat cluster lebih cocok dengan kelas, karena purity-nya lebih tinggi
+  - Purity naik hanya karena cluster yang lebih kecil lebih mudah dibuat murni
+  - Indeksnya keliru, karena purity adalah skor standar untuk hal ini
+  - k = 4 adalah jumlah kelas yang benar untuk titik-titik ini
+  answer: 1
+  explanation: Purity cenderung naik seiring k membesar, walaupun kecocokannya tidak lebih baik. Adjusted Rand index menghitung bagaimana pasangan titik terbagi di antara cluster, sehingga nilainya turun ketika kelas terpotong-potong. Data ini memiliki dua kelas, jadi k = 4 bukan jumlah kelasnya.
+- prompt: Sebuah clustering pelanggan, yang tidak kamu miliki labelnya, menghasilkan cluster yang tampak masuk akal bagi tim penjualan. Kemudian kamu mendapat kolom tipe pelanggan yang cocok buruk dengan cluster itu. Pernyataan mana yang paling hati-hati?
+  options:
+  - Clusternya salah, karena berbeda dari tipe pelanggan yang sudah dipakai perusahaan
+  - Tipe pelanggannya salah, karena cluster berasal dari jarak
+  - Kecocokan yang buruk tidak menunjukkan bagian mana yang gagal; periksa feature, skala, dan tipenya
+  - Adjusted Rand index harus dihitung ulang dengan k yang lebih besar agar adil
+  answer: 2
+  explanation: Kelas hanyalah salah satu cara seseorang membagi data. Skor rendah dapat berasal dari metode, feature, skala, atau kelasnya sendiri, sehingga kamu melihat plot dan masukannya sebelum menyalahkan salah satunya.

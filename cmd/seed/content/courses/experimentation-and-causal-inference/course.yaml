@@ -1,0 +1,31 @@
+slug: experimentation-and-causal-inference
+title: "Experimentation and causal inference"
+summary: "Randomized experiments, power, confounding, treatment effects, and observational assumptions."
+topic: Machine learning
+level: advanced
+path: advanced
+position: 9
+translations:
+  id:
+    title: "Eksperimen dan inferensi kausal"
+    summary: "Eksperimen acak, power, confounding, efek perlakuan, dan asumsi data observasional."
+modules:
+- slug: core-ideas
+  title: Core ideas
+  summary: "The concepts, in the order the lab uses them."
+  lessons:
+  - randomized-experiments-and-power
+  - confounding-and-treatment-effects
+  translations:
+    id:
+      title: "Ide inti"
+      summary: "Konsep-konsepnya, sesuai urutan yang dipakai lab."
+- slug: lab
+  title: Lab
+  summary: "Run the idea yourself, then check what you learned."
+  lessons:
+  - causal-lab
+  translations:
+    id:
+      title: "Lab"
+      summary: "Jalankan idenya sendiri, lalu periksa apa yang sudah kamu pelajari."

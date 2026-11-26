@@ -1,0 +1,72 @@
+- prompt: Menggeser sebuah dial naik 0,01 menaikkan loss dari 0,50 ke 0,52. Apa yang ditunjukkan oleh perubahan loss dibagi geseran tentang turunan di titik itu?
+  options:
+  - Nilainya sekitar -2, karena loss berubah
+  - Nilainya sekitar +2, karena 0,02 / 0,01 = 2
+  - Nilainya sekitar +0,02, yaitu perubahan loss
+  - Nilainya sekitar 0,52, yaitu loss yang baru
+  answer: 1
+  explanation: Rasionya 0,02 / 0,01 = 2, dan tanda positifnya menunjukkan bahwa menaikkan dial menaikkan loss di sini. Nilai 0,02 adalah perubahan mentah sebelum dibagi dengan besar geseran, dan loss yang baru sama sekali bukan slope.
+- prompt: Apa itu turunan parsial dari loss?
+  options:
+  - Slope loss untuk satu dial, dengan dial lain ditahan
+  - Setengah dari turunan, karena hanya sebagian loss yang dipakai
+  - Turunan di titik terendah saja
+  - Slope dari garis yang sedang di-fit
+  answer: 0
+  explanation: Turunan parsial menanyakan bagaimana loss berubah ketika satu dial bergerak dan yang lain tetap di tempatnya. Slope garis yang di-fit adalah slope yang berbeda, yaitu parameter model. Loss punya turunan di setiap titik, bukan hanya di dasar.
+- prompt: Pada garis A, gradient MSE adalah (-2; -0,67). Apa yang ditunjukkan oleh -2?
+  options:
+  - Slope harus diturunkan sebesar 2
+  - Loss bernilai -2 pada garis ini
+  - Menaikkan slope menurunkan loss di sini, dan penurunannya curam
+  - Garis meleset dari titik-titiknya rata-rata sebesar 2
+  answer: 2
+  explanation: Turunan parsial negatif berarti loss turun ketika dial itu naik, dan besarnya 2 menunjukkan seberapa curam per satuan slope. Itu adalah laju perubahan, bukan langkah yang harus diambil dan bukan loss, yang tidak pernah negatif.
+- prompt: Garis y = x (slope 1, intercept 0) memprediksi 1, 2, dan 3 untuk titik (1, 2), (2, 3), dan (3, 5), sehingga residualnya +1, +1, dan +2. Berapa turunan parsial MSE terhadap slope?
+  options:
+  - "+6"
+  - "-18"
+  - "-2,67"
+  - "-6"
+  answer: 3
+  explanation: Jumlah x kali r adalah 1 × 1 + 2 × 1 + 3 × 2 = 9, sehingga turunan parsial slope adalah -(2/3) × 9 = -6. Nilai -18 lupa membagi dengan n = 3, -2,67 adalah turunan parsial intercept dari jumlah r saja, dan +6 kehilangan tanda minus.
+- prompt: Gradient pada garis A adalah (-2; -0,67) dan learning rate 0,15. Berapa slope baru setelah satu update, dimulai dari slope 1?
+  options:
+  - "1,3"
+  - "0,7"
+  - "3"
+  - "0,85"
+  answer: 0
+  explanation: Slope baru = 1 - 0,15 × (-2) = 1 + 0,3 = 1,3. Nilai 0,7 menambahkan langkah, bukan mengurangkannya, 3 lupa memakai learning rate, dan 0,85 memakai rate di tempat yang seharusnya gradient.
+- prompt: Mengapa update mengurangkan gradient, bukan menambahkannya?
+  options:
+  - Karena gradient selalu negatif
+  - Karena pengurangan menjaga angka tetap kecil
+  - Karena gradient menunjuk ke arah menanjak dan kita ingin loss lebih rendah
+  - Karena learning rate adalah bilangan negatif
+  answer: 2
+  explanation: Gradient menunjuk ke arah loss naik paling cepat, sehingga langkahnya menuju arah yang berlawanan. Dalam pelajaran, langkah searah gradient menaikkan MSE dari 0,33 ke 1,55 dan langkah berlawanan menurunkannya ke 0,22. Gradient dapat bertanda apa pun, dan learning rate bernilai positif.
+- prompt: Langkah menurun dari garis A menaikkan intercept dari 1 ke 1,1, padahal titik terendah punya intercept 0,33. Apakah ada yang salah?
+  options:
+  - Tidak, gradient menunjukkan arah turun paling curam dari tempat sekarang, bukan arah ke titik terendah
+  - Ya, gradient pasti dihitung dengan salah, sebab gradient yang benar menunjuk ke titik terendah
+  - Ya, langkah yang baik seharusnya selalu mengarah lurus ke titik terendah lembah
+  - Tidak, tetapi hanya karena learning rate-nya cukup kecil sehingga tidak berpengaruh
+  answer: 0
+  explanation: Gradient menggambarkan permukaan tepat di tempat ini. Pada lembah panjang yang miring, arah turun paling curam dapat menunjuk agak menyamping dari tujuan, dan loss tetap turun dari 0,33 ke 0,22. Kedua turunan parsial sudah dicek dengan tangan, dan learning rate tidak mengubah arah.
+- prompt: Dari garis A, rate 0,3 menghasilkan slope 1,6, intercept 1,2, dan MSE 1,2, lebih buruk daripada awalnya yang 0,33. Apa yang ditunjukkan hal ini?
+  options:
+  - Kali ini gradient menunjuk ke arah menanjak, sehingga langkahnya salah arah
+  - Langkah besar dapat melampaui sasaran, karena gradient hanya menggambarkan permukaan di titik awal
+  - MSE tidak bisa turun untuk data ini, langkah apa pun yang diambil
+  - Rate yang lebih besar selalu memberi perbaikan yang lebih besar, sehingga 0,3 seharusnya menang
+  answer: 1
+  explanation: Arahnya benar, tetapi langkahnya cukup panjang untuk menyeberangi lembah dan naik ke sisi seberangnya. Rate 0,15 pada gradient yang sama menurunkan loss ke 0,22, sehingga loss memang bisa turun di sini. Rate yang lebih besar belum tentu lebih baik.
+- prompt: Mengapa geseran pada tabel turunan dibuat sangat kecil, seperti 0,001, bukan 0,5?
+  options:
+  - Karena geseran besar tidak diperbolehkan dalam turunan, hanya geseran kecil
+  - Karena geseran sangat kecil selalu menurunkan loss, di titik awal mana pun
+  - Karena loss hanya ada untuk slope yang kecil, bukan untuk slope yang besar
+  - Karena geseran besar dapat melompati dasar mangkuk, sehingga rasionya tidak lagi menggambarkan permukaan di titik awal
+  answer: 3
+  explanation: Dengan geseran +0,5 loss naik, dari 0,33 ke 0,5, padahal turunan di slope 1 adalah -2, karena geseran itu melewati dasar di slope 1,21. Hanya geseran yang sangat kecil yang mengukur slope di satu titik. Geseran berapa pun diperbolehkan, dan geseran sangat kecil tidak selalu menurunkan loss.

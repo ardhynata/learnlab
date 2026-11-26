@@ -1,0 +1,80 @@
+- prompt: A table has 120 points. How many steps does mini-batch gradient descent with a batch size of 30 take in 5 epochs?
+  options:
+  - 4
+  - 20
+  - 150
+  - 600
+  answer: 1
+  explanation: Each epoch cuts the 120 points into 120 / 30 = 4 groups, and every group is one step. Five epochs give 5 × 4 = 20 steps. The answer 4 is one epoch only, and 600 is what SGD would take (120 steps per epoch).
+- prompt: A table has 100 points and the batch size is 30. What does one epoch look like?
+  options:
+  - 3 steps, and the last 10 points are skipped
+  - 4 steps of 25 points each
+  - 1 step that uses all 100 points
+  - 3 steps of 30 points and one step of 10 points, 4 steps in all
+  answer: 3
+  explanation: The shuffled points are cut into groups of 30, 30, 30 and a last group of 10, so ceil(100 / 30) = 4 steps. Nothing is skipped, because every point is used once per epoch. The last group is just shorter.
+- prompt: Line A (slope 1, intercept 1) is fitted to the points (1, 2), (2, 3) and (3, 5), with learning rate 0.15. What does one SGD step do if it happens to pick the point (1, 2)?
+  options:
+  - It moves the line by the full-batch step, to slope 1.3 and intercept 1.1
+  - It moves the line to slope 1.9 and intercept 1.3
+  - It leaves the line unchanged, because line A already passes through (1, 2)
+  - It moves the line to slope 0.7 and intercept 0.9
+  answer: 2
+  explanation: The residual at (1, 2) is 2 - (1 × 1 + 1) = 0, so its gradient (-2 × x × r, -2 × r) is (0, 0) and the step is zero. Slope 1.9 and intercept 1.3 is what picking (3, 5) gives. Only the average over all three points gives the full step.
+- prompt: The batch size goes from 4 to 16 at the same learning rate. What happens to the noise in each step's gradient?
+  options:
+  - It stays the same, because the learning rate is the same
+  - It about doubles
+  - It about halves
+  - It falls to zero
+  answer: 2
+  explanation: The root-mean-square miss falls roughly like 1 over the square root of the batch size. A batch four times larger halves it (in the lesson, about 3.7 for 4 points and 1.7 for 16). It would reach zero only at full batch.
+- prompt: In the default lab run, wobble is 0.00 for full batch, 0.14 for mini-batch (16) and 0.96 for SGD. What does this say?
+  options:
+  - Almost all of SGD's walk was zigzag that did not get it closer, while full batch walked straight
+  - SGD made the most progress per step
+  - Full batch is the noisiest, because it uses the most points
+  - Full batch ended nearer the best line than SGD, because its path was straight
+  answer: 0
+  explanation: Wobble is the share of a walk that made no progress. 0.96 means SGD's path is long but its start and end are close together, because each point pushes it a different way. Full batch uses the exact gradient, so its path is straight. Wobble says nothing about where a walk ends. In the lab's table full batch is still at loss 1.34 after 10 epochs, above SGD's 0.51.
+- prompt: In the default run SGD reaches a low loss after 0.14 epochs and full batch does not reach one in 10 epochs. Does that mean SGD does less work?
+  options:
+  - Yes, because SGD uses one point per step
+  - Yes, because SGD takes fewer steps than full batch
+  - No, both do the same 80 point-gradients per epoch, but SGD takes 80 steps for them and full batch takes 1
+  - No, SGD does more work, because its path is noisier
+  answer: 2
+  explanation: Every epoch visits every point once, so the work per epoch is the same for all batch sizes. SGD spends it on 80 small steps and full batch on one exact step. SGD needs fewer epochs, but over 10 epochs it takes 800 steps against 10.
+- prompt: At the best line the full gradient is zero, yet SGD at a constant learning rate keeps jittering around it. Why?
+  options:
+  - The learning rate is too small to stop
+  - SGD cannot compute a gradient near the minimum
+  - The best line changes every epoch
+  - Single points still have non-zero gradients there, and each step follows one of them
+  answer: 3
+  explanation: The gradients of single points cancel out on average, but each step uses only one of them, so it still moves. In the lab a single point's gradient at the best line has a root-mean-square size of about 1.8. The jitter shrinks with a smaller or decaying learning rate.
+- prompt: Why can the noise of SGD help on a surface with several dips?
+  options:
+  - A random push can lift the point over the wall of a shallow dip, which plain descent never does
+  - It makes each step point exactly toward the deepest dip
+  - It lowers the loss of every dip
+  - It removes the hump between the dips
+  answer: 0
+  explanation: Plain descent only goes downhill, so it stays in the dip where it started. Random pushes can carry it over the lower wall. The lesson's check had 42 of 200 noisy walks end on the deep side, against none without noise. It is a chance, not a guarantee, and the lab's single bowl cannot show it.
+- prompt: The learning rate decays as rate / (1 + decay × epoch), counting the first epoch as 0. With rate 0.2 and decay 0.5, what is the rate in epoch 3?
+  options:
+  - 0.133
+  - 0.100
+  - 0.080
+  - 0.057
+  answer: 2
+  explanation: Epoch 3 gives 0.2 / (1 + 0.5 × 3) = 0.2 / 2.5 = 0.08. The value 0.133 is epoch 1, where 0.2 / 1.5 applies.
+- prompt: In the lab at batch size 16 and Learning rate 0.3, the table shows blew up for SGD only, while full batch and mini-batch are fine. What is the best fix?
+  options:
+  - Raise the rate, because the other two walks are fine
+  - Lower the learning rate, or use a bigger batch, so a single point's gradient cannot throw the line so far
+  - Add more epochs
+  - Nothing, because blew up means SGD reached the best line
+  answer: 1
+  explanation: A step on one point can fling the line much further than a step on the average. A smaller rate shortens every step, and a larger batch averages the points so each step is calmer. More epochs only give SGD more chances to blow up.

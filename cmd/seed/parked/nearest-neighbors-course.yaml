@@ -1,0 +1,31 @@
+slug: nearest-neighbors
+title: Nearest neighbors
+summary: Classify a new point by asking its closest labeled neighbors, then see what k does to the answer.
+topic: Machine learning
+level: beginner
+path: supervised
+position: 1
+translations:
+  id:
+    title: "Nearest neighbors"
+    summary: "Tentukan kelas titik baru dengan melihat tetangga berlabel yang paling dekat, lalu lihat bagaimana nilai k memengaruhi hasilnya."
+modules:
+- slug: how-it-works
+  title: How it works
+  summary: The voting idea and a lab to explore it.
+  lessons:
+  - how-knn-works
+  - knn-lab
+  translations:
+    id:
+      title: "Cara kerjanya"
+      summary: "Konsep voting dan lab untuk mencobanya sendiri."
+- slug: tuning
+  title: Tuning
+  summary: Choose k without fooling yourself.
+  lessons:
+  - tuning-k
+  translations:
+    id:
+      title: "Tuning"
+      summary: "Memilih k tanpa menipu diri sendiri."

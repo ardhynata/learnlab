@@ -1,0 +1,80 @@
+- prompt: Why does a pipeline fill the gaps before it scales the columns?
+  options:
+  - Scaling needs the labels, and the fill step supplies them
+  - A blank cannot be scaled, and the mean is computed from the filled data
+  - Filling changes the test rows, so it has to come first
+  - The order is a habit, and any order gives the same result
+  answer: 1
+  explanation: A blank is not a number, so there is nothing to scale, and this recipe computes the mean after the gaps are filled, so the fill step must run first. The steps also learn from each other's output, so the order is part of the recipe.
+- prompt: You fit a pipeline on the training rows. What does its scaler learn, and from which rows?
+  options:
+  - A mean and a standard deviation for each column, from the training rows only
+  - A mean and a standard deviation for each column, from the training and test rows together
+  - Weights for each column, from the training rows only
+  - Nothing yet, because a scaler learns when it sees the test rows
+  answer: 0
+  explanation: The scaler's learned numbers are a mean and a standard deviation per column, taken from the rows it is fitted on, which are the training rows. Weights belong to the model. The test rows are only transformed with the numbers already learned.
+- prompt: A scaler fitted on four training masses has mean 4,131.25 g and standard deviation 909.56 g. A test penguin weighs 4,500 g. What z-score does it get?
+  options:
+  - 0.41
+  - -0.41
+  - 0.48
+  - 368.75
+  answer: 0
+  explanation: z = (4,500 - 4,131.25) / 909.56 = 368.75 / 909.56, about 0.41. The value 368.75 is the raw gap before dividing. The value 0.48 would come from the leaky fit on all five masses (mean 4,105, standard deviation 815.23).
+- prompt: Which plan leaks information from the test rows?
+  options:
+  - Split first, then fit the imputer on the training rows and apply its median to the test rows
+  - Split first, then fit the scaler on the training rows and apply its mean to the test rows
+  - Split first, then choose the 10 best columns using the training labels only
+  - Compute the mean and standard deviation of all 344 rows, standardize, and then split
+  answer: 3
+  explanation: Fitting a statistic on all rows before splitting lets the test rows shape the numbers used to prepare them. The other three plans split first and learn only from the training rows.
+- prompt: A random column is a coin flip in each of 10 rows. It matches the labels in at least 9 of 10 rows, or disagrees in at least 9 of 10, with chance 22 in 1,024. About how many of 500 random columns look this good by luck?
+  options:
+  - About 1
+  - About 5
+  - About 11
+  - About 22
+  answer: 2
+  explanation: 500 × 22 / 1,024 is about 10.7, so about 11. About 5 counts only one direction (11 in 1,024). Choosing among so many columns is why a leaky selection finds a few that seem to predict coin flips.
+- prompt: On random labels the lab's correct pipeline averages 47.5% over 50 splits and the leaky pipeline 78.7%. What explains the leaky pipeline's lead?
+  options:
+  - It is a better model, so it learns more from the training rows
+  - It chose its columns by looking at the test labels, so those columns match the test answers by luck
+  - It had more training rows than the correct pipeline
+  - The test rows were easier for it
+  answer: 1
+  explanation: Both pipelines fit the same model on the same training rows and are scored on the same test rows. Only the choice of columns differs, and the leaky one made it with the test labels in view. Its training accuracy was even lower, 90.0% against 100.0% on the first split.
+- prompt: With 30 test rows, each row moves the test accuracy by 3.3 points. Why does the lab repeat the comparison on 50 splits?
+  options:
+  - Because the model needs 50 training rounds to converge
+  - Because the leak only appears after many splits
+  - Because one split is a noisy witness, and the mean over many splits is steadier
+  - Because the correct pipeline needs 50 tries to reach 50%
+  answer: 2
+  explanation: On one split the correct pipeline can score anywhere from 33.3% to 66.7%, so a single bar is mostly luck. The leak shows up on every split, and the mean over 50 shows its size.
+- prompt: On the real penguins, fitting the median and the standardization on all rows or on the training rows gives the same test accuracy, 98.1%, although the means differ (4,200.87 g against 4,171.98 g). What is the right conclusion?
+  options:
+  - Leakage is harmless for scaling, so you may fit scalers on all rows
+  - A mean from many rows moves little and the model barely notices, but it is still a leak, so fit on the training rows
+  - The lab is broken, because different means must give different scores
+  - Both pipelines used the test labels, so the scores match
+  answer: 1
+  explanation: One number per column cannot bend much toward the test rows, so the score barely changes. That does not make the leak safe. You cannot know in advance how large it is, and fitting on the training rows costs nothing.
+- prompt: A table has 100 pairs of duplicate rows. You split randomly, 30% test. About how many pairs end up with one copy in the training set and the other in the test set?
+  options:
+  - About 21
+  - About 30
+  - About 70
+  - About 42
+  answer: 3
+  explanation: For one pair the chance is 2 × 0.3 × 0.7 = 0.42, so about 42 pairs. About 21 counts only one order. In those pairs a model that memorizes its training rows sees the test row's twin.
+- prompt: Which of these steps is most dangerous to fit on all rows before splitting?
+  options:
+  - Filling gaps with a median
+  - Standardizing four columns
+  - Choosing the 10 columns out of 500 that best match the labels
+  - Writing one-hot columns for the island
+  answer: 2
+  explanation: Choosing columns with the labels reads the test answers and can pick among 500 candidates, so it bends strongly toward the test rows. A median or a mean is one number per column, and a one-hot encoding of known categories learns almost nothing from the labels.

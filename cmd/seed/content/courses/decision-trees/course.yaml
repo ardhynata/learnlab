@@ -1,0 +1,31 @@
+slug: decision-trees
+title: "Decision trees"
+summary: "Recursive splits, impurity, depth, and minimum leaf size."
+topic: Machine learning
+level: beginner
+path: beginner
+position: 8
+translations:
+  id:
+    title: "Decision tree"
+    summary: "Split rekursif, impurity, kedalaman, dan ukuran leaf minimum."
+modules:
+- slug: core-ideas
+  title: Core ideas
+  summary: "The concepts, in the order the lab uses them."
+  lessons:
+  - splits-and-impurity
+  - depth-and-leaf-size
+  translations:
+    id:
+      title: "Ide inti"
+      summary: "Konsep-konsepnya, sesuai urutan yang dipakai lab."
+- slug: lab
+  title: Lab
+  summary: "Run the idea yourself, then check what you learned."
+  lessons:
+  - tree-builder-lab
+  translations:
+    id:
+      title: "Lab"
+      summary: "Jalankan idenya sendiri, lalu periksa apa yang sudah kamu pelajari."

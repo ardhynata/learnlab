@@ -1,0 +1,80 @@
+- prompt: On a single split of 120 test rows, x1 alone gets 84 right and x1 plus the noise column z1 gets 89 right. In 5-fold cross-validation the gain is +2.0 points and the spread of the folds is 3.0. What is the fair conclusion?
+  options:
+  - z1 helps, because the single split shows a gain of 4.2 points
+  - z1 helps, because it did not lose in any fold
+  - z1 is not shown to help, because the cross-validated gain is inside the spread and the single split gain is only 5 rows
+  - z1 hurts, because a noise column can never raise the score
+  answer: 2
+  explanation: 89 - 84 = 5 rows of 120, which is 4.2 points, but that is one draw of the test rows. The cross-validated gain of 2.0 is smaller than the spread of 3.0, so the lab does not count it. A noise column can win a few rows by luck; it does not always lose.
+- prompt: A single split has 120 test rows, and a model with one more feature gets 3 more rows right. How many percentage points is that gain?
+  options:
+  - About 2.5
+  - About 3.0
+  - About 0.8
+  - About 4.2
+  answer: 0
+  explanation: The gain is 3 rows, and 3 / 120 = 0.025, which is about 2.5 points. One row is worth 1 / 120, about 0.8 points, so a few lucky rows move the score a lot on a split this small.
+- prompt: With x1 alone, the five folds of 80 rows get 54, 58, 55, 55 and 58 right. What are the mean and the spread (standard deviation, dividing by n - 1) of the fold scores?
+  options:
+  - Mean 70.0%, spread 2.1 points
+  - Mean 70.0%, spread 2.3 points
+  - Mean 72.5%, spread 5.0 points
+  - Mean 68.8%, spread 2.3 points
+  answer: 1
+  explanation: The mean is 56 / 80 = 70.0%. The gaps from 56 are -2, +2, -1, -1 and +2 rows, with squares adding to 14. Divide by 4 to get 3.5, take the square root for 1.87 rows, and divide by 80 for 2.3 points. Dividing by 5 instead would give 2.1.
+- prompt: Adding u × v moves the cross-validated score from 73.0% to 79.3%, a gain of 6.3 points, and the new spread is 5.2 points. What does the lab's rule say?
+  options:
+  - Nothing, because the spread is larger than 5 points
+  - Nothing, because one feature can never move the score that much
+  - It is a gain only if the single split agrees, and the folds are not needed
+  - It holds across folds, because the gain is bigger than the spread, although only by a small margin
+  answer: 3
+  explanation: The rule compares the cross-validated gain with the spread of the folds. 6.3 is bigger than 5.2, so the step holds. The margin is thin, which is a reason to repeat the cross-validation with a different shuffle before relying on it.
+- prompt: Adding x2, a feature with real but weak information, changes the cross-validated score by -1.0 points, against a spread of 6.9. What does this show?
+  options:
+  - That x2 hurts the model and should be removed at once
+  - That x2 carries no information
+  - That this table cannot confirm a gain from x2; the change is inside the noise
+  - That the single split must be wrong
+  answer: 2
+  explanation: A change smaller than the spread is not evidence either way. With 400 rows, a weak feature can sit inside the noise. Within the noise means not shown, not shown to be absent.
+- prompt: In the ablation of eight features the full model scores 78.8% ± 4.8. Removing x1 costs 9.5 points, u × v costs 6.3 and x2 costs 3.5. Which features earn their place?
+  options:
+  - All three, because every drop is above zero
+  - x1 and u × v, because only their drops are bigger than the spread of 4.8
+  - Only x1, because it has the biggest drop
+  - x2 and u × v, because they are the smaller drops
+  answer: 1
+  explanation: A drop earns its place when it is bigger than the spread across folds. 9.5 and 6.3 are bigger than 4.8, while 3.5 is not. Being above zero is not enough, because a drop of a few points can happen by chance.
+- prompt: Once u × v is in the model, removing u or v costs between -1.0 and 0.0 points. Why?
+  options:
+  - The product already carries what u and v carry together, so they add nothing new
+  - u and v are pure noise columns
+  - Removing a feature never costs anything in ablation
+  - The product only works when u and v are removed
+  answer: 0
+  explanation: The goal depends on whether u and v have the same sign, and that is exactly what u × v shows. The parts are redundant once the product is there. They looked useless when added alone because alone they carry nothing a line can use.
+- prompt: With region encoded out of fold the score is 79.8% ± 5.0. Encoded naively, it is 87.3% ± 1.6. What are the 7.5 extra points?
+  options:
+  - New information in region that the honest encoding wasted
+  - The effect of the smaller spread of 1.6
+  - A sign that the naive encoding is the better method
+  - Each row's own label leaking into its own feature, which does not carry over to new rows
+  answer: 3
+  explanation: The naive encoding counts every row's label, before the folds are cut, in the feature of that same row. With about two rows per value, the encoding is nearly the row's label. A held-out row then carries its own answer, which new rows will not.
+- prompt: Why does cross-validation not catch the naive target encoding, and even say Holds across folds?
+  options:
+  - The folds are too small to show a leak
+  - The encoding was built from all labels before the folds were cut, so every held-out row's label is already inside its feature
+  - Cross-validation only measures noise columns
+  - The leak is only present on the single split
+  answer: 1
+  explanation: Cross-validation protects only what is done inside each fold. A step that reads labels before the split, such as a naive target encoding, gives every held-out row its answer. The fix is to build the encoding inside each round, from the training folds only.
+- prompt: On the penguins, Flipper length gains 18.3 points when it is added early, yet removing it from the full model of nine features costs only 0.3. What is the best explanation?
+  options:
+  - The gain of 18.3 was a mistake in the table
+  - Ablation only works with generated data
+  - Other features carry much of the same information, so the model barely misses it
+  - Flipper length stopped being useful as a measurement
+  answer: 2
+  explanation: Adding measures what a feature brings given the features already in. Ablation measures what is lost given the features that remain. When other features overlap, removing one costs little because the others cover for it. Neither number alone says the feature is useless.

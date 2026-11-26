@@ -1,0 +1,72 @@
+- prompt: Pada smoothing alpha 0, sebuah pesan test memuat "parcel", kata yang terlihat 8 kali di pesan training delivery dan tidak pernah di billing maupun technical problem. Pesan itu tidak memiliki kata lain yang tidak pernah dilihat delivery. Apa yang dilakukan model?
+  options:
+  - Model mengabaikan "parcel", karena kata berprobabilitas 0 tidak membawa informasi
+  - Model memberi billing dan technical problem probabilitas 0, sehingga delivery menang
+  - Model memberi delivery probabilitas 0, karena kata itu jarang
+  - Model menurunkan sedikit skor billing dan technical problem, sehingga delivery menang tipis
+  answer: 1
+  explanation: Dengan alpha 0, P(parcel | billing) dan P(parcel | technical problem) tepat 0, dan hasil kali yang memuat satu faktor 0 adalah 0. Delivery tetap memiliki skor positif. Kata itu tidak diabaikan, dan pengaruhnya tidak kecil.
+- prompt: Pada satu model di lab, pesan training billing memuat 393 kata, vocabulary berisi 153 kata, dan "have" muncul 5 kali di billing. Dengan alpha 1, berapa P(have | billing)?
+  options:
+  - 5 / 393 = 0,0127
+  - 6 / 546 = 0,0110
+  - 6 / 393 = 0,0153
+  - 5 / 546 = 0,0092
+  answer: 1
+  explanation: Tambahkan alpha ke hitungan dan alpha dikali ukuran vocabulary ke total kelas, sehingga (5 + 1) / (393 + 1 x 153) = 6 / 546 = 0,0110. Pilihan lain hanya menambahkan alpha pada satu sisi.
+- prompt: '"have" memiliki bar bernilai 2,2 untuk billing. Karena e^2,2 sekitar 9, apa yang dikatakan bar itu?'
+  options:
+  - 2,2% dari semua kata training billing adalah "have"
+  - Pesan billing 9 kali lebih mungkin diklasifikasi dengan benar
+  - Pesan yang memuat kata "have" 2,2 kali lebih mungkin termasuk billing
+  - Di antara kata billing, "have" menempati porsi sekitar 9 kali lebih besar daripada di kelas lain
+  answer: 3
+  explanation: Bar itu adalah ln P(have | billing) dikurangi ln P(have | lainnya), sehingga e pangkat bar adalah rasio kedua probabilitas, sekitar 9. Bar itu menggambarkan kata-kata pada training, bukan probabilitas untuk sebuah pesan.
+- prompt: Di lab pada awalnya, "have" menjadi kata teratas untuk billing padahal kata itu sangat umum. Apa penyebab yang paling mungkin?
+  options:
+  - Lima pesan training billing kebetulan memakainya, dan tidak ada pesan training lain yang memakainya
+  - '"have" adalah kata khas billing dalam bahasa Inggris'
+  - Lab selalu menampilkan kata umum lebih dulu
+  - Model menghitungnya dua kali karena itu stop word
+  answer: 0
+  explanation: Dengan hanya 60 pesan training, kata yang terlihat 5 kali di satu kelas dan tidak pernah di kelas lain mendapat log-odds besar secara kebetulan. Menyalakan Hapus stop words menghilangkannya dari daftar. Pesan training yang lebih banyak akan mengujinya.
+- prompt: Dengan 6 pesan training, model mendapat 100% pada pesan itu dan sekitar 58% pada pesan test. Apa yang ditunjukkan selisih tersebut?
+  options:
+  - Test set dipilih dengan buruk dan berisi terlalu banyak pesan sulit
+  - Smoothing alpha terlalu besar, sehingga model melupakan yang dilihatnya
+  - Model menyesuaikan diri dengan pesannya yang sedikit, bukan pola umum, sehingga butuh lebih banyak pesan
+  - Naive Bayes tidak dapat mempelajari lebih dari 6 pesan sekaligus
+  answer: 2
+  explanation: Skor sempurna pada pesan training di samping skor lemah pada pesan baru adalah overfitting yang sudah kamu temui di Level 1. Di lab, selisihnya menyempit seiring ukuran training set bertambah, menjadi sekitar 4 poin pada 180 pesan.
+- prompt: Pada satu pembagian, Hapus stop words menggeser accuracy test dari 53 ke 55 benar dari 60. Pada pembagian lain, dari 55 ke 52. Apa yang sebaiknya kamu simpulkan?
+  options:
+  - Stop words harus dihapus, karena pembagian pertama lebih baru
+  - Perubahan itu masih dalam batas noise untuk 60 pesan test, karena itu ujilah pada beberapa pembagian sebelum mempercayainya
+  - Lab ini memiliki bug, karena sebuah pengaturan harus selalu membantu atau selalu merugikan
+  - Stop words hanya berpengaruh pada pesan training
+  answer: 1
+  explanation: Satu pesan test bernilai 1 / 60 = 1,7 poin, sehingga selisih beberapa pesan ke kedua arah memang wajar pada pembagian baru. Dirata-ratakan dari 30 pembagian, perubahannya sekitar +0,3 pesan, yang bukan peningkatan yang dapat diandalkan.
+- prompt: Sebuah pesan didorong oleh still +2,33, cancelled +2,15, dan subscription +2,04 ke billing, serta oleh address −1,76, shipment −1,54, dan courier −0,85 ke delivery. Prior-nya sama dan tidak ada kata lain yang mendorong. Kelas mana yang dipilih model, dan berapa kali lebih mungkin?
+  options:
+  - Billing, sekitar 11 kali lebih mungkin
+  - Delivery, karena memiliki lebih banyak angka negatif
+  - Billing, sekitar 2,4 kali lebih mungkin
+  - Tidak ada, dorongannya saling meniadakan
+  answer: 0
+  explanation: Jumlahnya 2,33 + 2,15 + 2,04 − 1,76 − 1,54 − 0,85 = 2,37, dan e^2,37 = 10,7. Jumlah itu adalah log-odds, sehingga faktornya adalah e pangkat jumlah tersebut. Faktornya bukan 2,4 kali.
+- prompt: Pesan salah yang sama mendapat 100,0% untuk billing dengan Jumlah kata dan 62,3% dengan TF-IDF. Jumlah dorongannya +8,64 dan +0,98. Mengapa TF-IDF kurang ekstrem?
+  options:
+  - TF-IDF mengubah prior kelas, sehingga kelas-kelas mulai tidak seimbang
+  - TF-IDF membuat model kurang akurat pada setiap pesan yang dilihatnya
+  - TF-IDF menghapus kata-kata yang menunjuk ke billing dari pesan itu
+  - TF-IDF menskalakan bobot tiap pesan ke panjang 1, sehingga setiap dorongan mengecil
+  answer: 3
+  explanation: TF-IDF di lab menskalakan ulang tiap pesan, yang mengecilkan dorongan dan dengan demikian jumlah log-odds. Urutan kelas dapat tetap sama sementara probabilitasnya turun dari 99,98% menjadi 62,3%.
+- prompt: Model menjawab billing dengan 100,0% untuk pesan yang kelas sebenarnya delivery. Pesan itu meminta perubahan alamat dan juga menanyakan refund untuk langganan yang dibatalkan. Bagaimana pembacaan yang paling tepat?
+  options:
+  - Model pasti dilatih dengan terlalu sedikit pesan sehingga tidak melihat alamatnya
+  - 100,0% membuktikan jawaban model benar, karena itu probabilitas tertinggi
+  - 'Dua keluhan dalam satu pesan: lima kata billing yang kuat mengalahkan kata delivery, dan naive Bayes terlalu yakin'
+  - Test set-nya salah, sehingga kesalahan itu dapat diabaikan saat menilai model
+  answer: 2
+  explanation: Dorongan ke billing berjumlah +9,8 dibanding sekitar −4,2 ke delivery, dan pesan itu memang menyebutkan kedua masalah. Naive Bayes memperlakukan tiap kata sebagai bukti baru, sehingga probabilitasnya sering terlalu ekstrem. Kesalahan itu layak dibaca, bukan diabaikan.

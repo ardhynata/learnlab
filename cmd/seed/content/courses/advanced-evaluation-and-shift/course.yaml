@@ -1,0 +1,31 @@
+slug: advanced-evaluation-and-shift
+title: "Advanced evaluation and shift"
+summary: "Nested cross-validation, model comparison, covariate and concept shift, and out-of-distribution tests."
+topic: Machine learning
+level: advanced
+path: advanced
+position: 1
+translations:
+  id:
+    title: "Evaluasi lanjutan dan shift"
+    summary: "Nested cross-validation, perbandingan model, covariate shift dan concept shift, serta uji out-of-distribution."
+modules:
+- slug: core-ideas
+  title: Core ideas
+  summary: "The concepts, in the order the lab uses them."
+  lessons:
+  - nested-cross-validation
+  - covariate-and-concept-shift
+  translations:
+    id:
+      title: "Ide inti"
+      summary: "Konsep-konsepnya, sesuai urutan yang dipakai lab."
+- slug: lab
+  title: Lab
+  summary: "Run the idea yourself, then check what you learned."
+  lessons:
+  - shift-lab
+  translations:
+    id:
+      title: "Lab"
+      summary: "Jalankan idenya sendiri, lalu periksa apa yang sudah kamu pelajari."

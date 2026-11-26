@@ -1,0 +1,80 @@
+- prompt: A delivery service fits a line to only 5 past deliveries and its prediction for a 6 km trip is far off. Which kind of uncertainty is this, and what reduces it?
+  options:
+  - Aleatoric, and it is reduced by a better loss function
+  - Epistemic, and it is reduced by collecting more deliveries
+  - Aleatoric, and it is reduced by collecting more deliveries
+  - Epistemic, and it cannot be reduced at all
+  answer: 1
+  explanation: A line fitted to 5 deliveries is poorly known because there is little data, which is a lack of knowledge. More data shrinks it. Noise in the deliveries themselves is the aleatoric part, and more data does not remove it.
+- prompt: In the made-up service the wobble of the fitted line at 6 km is 0.45 minutes with 80 training deliveries. About what is it with 320 deliveries?
+  options:
+  - 0.45, because the data is the same kind
+  - 0.11, one quarter of it
+  - 0.23, half of it
+  - 1.80, four times it
+  answer: 2
+  explanation: The wobble falls with the square root of n, so four times the data halves it, 0.45 / 2 = 0.23. The spread of single deliveries, 4.0 minutes, would not change at all.
+- prompt: Five models fitted to bootstrap samples agree closely at 4 km but give predictions from 37.8 to 52.9 minutes at 12 km. What does this suggest?
+  options:
+  - The data says little about 12 km, so the epistemic uncertainty there is large
+  - The deliveries at 12 km are noisy, so the aleatoric uncertainty is large
+  - The models at 4 km are wrong because they agree
+  - Five models are too few, so the result means nothing
+  answer: 0
+  explanation: Disagreement between models trained on different samples marks lack of knowledge, which is epistemic. It can come from thin data, and in the lesson all 14 training deliveries lie below 8 km. It says nothing about noise.
+- prompt: All five models of an ensemble predict 28 minutes at 6 km, with no disagreement. Can you conclude that a single 6 km delivery will take about 28 minutes?
+  options:
+  - Yes, because agreement means the prediction is certain
+  - Yes, because more models always give a narrower range
+  - No, because the ensemble does not show the aleatoric spread of single deliveries
+  - No, because the models must disagree at every distance
+  answer: 2
+  explanation: Agreement shows that the average is well pinned down, which is the epistemic part. Single deliveries can still scatter by a few minutes around it, and that noise stays.
+- prompt: For τ = 0.9, a delivery takes 40 minutes and the model predicted the 0.9 quantile as 30. What is the pinball loss?
+  options:
+  - 9
+  - 1
+  - 10
+  - 36
+  answer: 0
+  explanation: The prediction is too low by 10 minutes, so the loss is τ × (y - q) = 0.9 × 10 = 9. Too high by 10 would cost only 0.1 × 10 = 1.
+- prompt: Why does the pinball loss with τ = 0.9 charge more for a prediction that is too low than for one that is too high?
+  options:
+  - Late deliveries matter more to customers than early ones
+  - It makes the loss easier to compute by hand
+  - The loss must always grow with the size of the prediction
+  - A good 0.9 quantile should sit above 90% of the outcomes, so most misses should be on the high side
+  answer: 3
+  explanation: The tilt is what makes the best prediction the 0.9 quantile. Under-predicting costs 0.9 per minute and over-predicting 0.1, so the loss is lowest where about 90% of outcomes are below the prediction.
+- prompt: For the deliveries 22, 25, 27, 31 and 45 minutes and τ = 0.9, what is the average pinball loss of the prediction 31?
+  options:
+  - 1.5
+  - 4.1
+  - 14.5
+  - 2.9
+  answer: 3
+  explanation: The losses are 0.1 × 9 = 0.9, 0.1 × 6 = 0.6, 0.1 × 4 = 0.4, 0 and 0.9 × 14 = 12.6. They add up to 14.5, and 14.5 / 5 = 2.9. The 14.5 is the sum, not the average.
+- prompt: The lesson's model grows its training set from 80 to 320 deliveries. What happens to the 80% confidence interval for the average at 6 km and to the 80% prediction interval for one delivery?
+  options:
+  - Both are cut in half
+  - Both stay the same
+  - The confidence interval is cut in half and the prediction interval hardly changes
+  - The prediction interval is cut in half and the confidence interval hardly changes
+  answer: 2
+  explanation: The confidence interval measures the epistemic wobble and halves, from ± 0.6 to ± 0.3. The prediction interval contains the aleatoric spread of 4 minutes, which more data cannot shrink, so it goes only from ± 5.2 to ± 5.1.
+- prompt: Noise grows with distance, and the standard deviation of a delivery is 2.0 at 2 km and 7.0 at 12 km. One 80% band of ± 5.8 minutes is used for all trips. What is wrong with it?
+  options:
+  - It is too narrow at 2 km and too wide at 12 km
+  - It is too wide at 2 km and too narrow at 12 km, where only about 59% of deliveries fall inside
+  - It is right everywhere, because it holds 80% on average
+  - It is too wide everywhere, because the noise is smaller than 5.8
+  answer: 1
+  explanation: A single width ignores heteroscedastic noise. At 2 km the band is far wider than needed (99.6% inside) and at 12 km it is too narrow (59%). An average coverage near 80% can hide this.
+- prompt: How can a model give an 80% interval for one delivery by using quantile regression?
+  options:
+  - Fit one model for τ = 0.1 and one for τ = 0.9, and use their predictions as the two ends
+  - Fit one model for τ = 0.5 and add 80% to its prediction
+  - Fit one model with squared loss and use its prediction twice
+  - Fit one model for τ = 0.8 and use it as the upper end only
+  answer: 0
+  explanation: The 0.1 quantile has 10% of outcomes below it and the 0.9 quantile has 10% above it, so what lies between holds 80%. Each model is fitted with the pinball loss for its own τ.

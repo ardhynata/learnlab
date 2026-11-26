@@ -1,0 +1,37 @@
+entity: QuestionText
+fields:
+    - name: id
+      type: string
+      required: true
+      auto: true
+    - name: lesson_id
+      type: string
+      required: true
+      ref: Lesson
+      on_delete: cascade
+    - name: position
+      type: int
+    - name: locale
+      type: string
+      required: true
+      max_length: 8
+    - name: prompt
+      type: string
+      required: true
+      max_length: 500
+    - name: options
+      type: '[]string'
+      required: true
+    - name: explanation
+      type: string
+      max_length: 800
+operations:
+    - Create
+    - GetByID
+    - List
+    - Update
+    - Delete
+transports:
+    - rest
+repository: postgresql
+display_field: prompt

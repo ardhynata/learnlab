@@ -1,0 +1,72 @@
+- prompt: Untuk membandingkan dua kelas pada satu pesan, naive Bayes memakai score(c) = P(c) x P(words | c) dan membuang P(words). Mengapa itu diperbolehkan?
+  options:
+  - P(words) selalu 1 untuk pesan yang pernah dilihat saat training
+  - P(words) jauh lebih kecil daripada prior, sehingga hampir tidak berpengaruh
+  - P(words) sama untuk setiap kelas, sehingga tidak dapat mengubah skor mana yang lebih besar
+  - P(words) sudah termasuk dalam setiap probabilitas kata
+  answer: 2
+  explanation: Membagi semua skor kelas dengan bilangan yang sama tidak mengubah urutannya. Suku itu baru berperan jika kamu menginginkan probabilitas yang sebenarnya, dan saat itu kamu mendapatkannya kembali dengan membagi tiap skor dengan jumlah semua skor.
+- prompt: Pada training set di pelajaran ini, pesan ham berisi total 6 kata dan "now" muncul 2 kali. Vocabulary-nya 7 kata. Dengan Laplace smoothing (tambah 1), berapa P(now | ham)?
+  options:
+  - 2 / 6
+  - 3 / 13
+  - 3 / 6
+  - 2 / 13
+  answer: 1
+  explanation: Smoothing menambah 1 pada hitungan (2 + 1 = 3) dan menambah ukuran vocabulary pada total (6 + 7 = 13). Estimasi mentahnya adalah 2 / 6.
+- prompt: Mengapa classifier ini disebut "naive"?
+  options:
+  - Ia mengasumsikan kata-kata saling independen begitu kelasnya diketahui, padahal biasanya tidak demikian
+  - Ia hanya memakai kata pertama dari setiap pesan
+  - Ia mengabaikan prior dan hanya melihat kata-katanya
+  - Ia tidak memerlukan data latih
+  answer: 0
+  explanation: Hasil kali satu faktor per kata hanya benar bila kata-kata independen jika kelasnya diketahui. Pada teks nyata kata-kata saling terkait ("free" dengan "prize"), jadi asumsinya naive, tetapi classifier-nya sering tetap berguna.
+- prompt: Tanpa smoothing, sebuah pesan memuat kata "meeting" yang tidak pernah muncul di pesan spam mana pun saat training. Apa yang terjadi pada skor spam?
+  options:
+  - Skornya sedikit mengecil, karena satu kata jarang muncul
+  - Skornya tidak berubah, karena kata yang belum pernah terlihat dilewati
+  - Skornya membesar, karena kata itu mengejutkan
+  - Skornya menjadi tepat 0, apa pun kata-kata lainnya
+  answer: 3
+  explanation: P(meeting | spam) = 0 / 6 = 0, dan hasil kali yang memuat satu faktor nol bernilai 0. Itulah sebabnya satu kata yang belum pernah terlihat dapat menggagalkan sebuah kelas, dan itulah sebabnya Laplace smoothing dipakai.
+- prompt: Pada dua kelas di pelajaran ini, mengapa V = 7 ditambahkan ke penyebut setiap probabilitas hasil smoothing?
+  options:
+  - Agar angkanya lebih mudah dihitung dengan tangan
+  - Karena vocabulary berisi 7 pesan
+  - Agar probabilitas satu kelas tetap berjumlah 1 setelah 1 ditambahkan pada masing-masing dari 7 hitungan
+  - Agar spam mendapat prior yang lebih tinggi daripada ham
+  answer: 2
+  explanation: Menambah 1 pada tiap dari 7 hitungan kata berarti menambah 7 pada total kelas. Probabilitas spam lalu menjadi 2, 3, 3, 2, 1, 1 dan 1, semuanya di atas 13, yang berjumlah 13 / 13 = 1.
+- prompt: Untuk "free now meeting", skor spam adalah 2,4 / 2197 dan skor ham adalah 5,4 / 2197. Apa jawaban classifier, dan berapa probabilitas spam-nya?
+  options:
+  - Spam, dengan probabilitas 0,69
+  - Ham, dengan P(spam) = 2,4 / (2,4 + 5,4) = 0,31
+  - Ham, dengan P(spam) = 2,4 / 5,4 = 0,44
+  - Spam, karena "free" adalah kata spam
+  answer: 1
+  explanation: Skor yang lebih besar menang, dan itu ham. Probabilitas didapat dengan membagi dengan jumlah skor, 2,4 / 7,8 = 0,31. Membagi dengan skor yang satunya hanya memberi rasio skor, bukan probabilitas.
+- prompt: Mengapa classifier naive Bayes sungguhan menjumlahkan log probabilitas, bukan mengalikan probabilitas?
+  options:
+  - Logaritma membuat setiap probabilitas lebih besar
+  - Log mengubah kelas mana yang punya skor lebih besar, sehingga akurasi membaik
+  - Log membuat model dapat mempelajari kata yang belum pernah dilihat
+  - Hasil kali banyak bilangan kecil dapat mengalami underflow menjadi 0, sedangkan jumlah log tetap berupa bilangan normal dan menjaga urutan yang sama
+  answer: 3
+  explanation: Mengambil log menjaga urutan skor (skor yang lebih besar punya log yang lebih besar) dan mengubah hasil kali sangat kecil seperti 10^-334 menjadi bilangan negatif biasa. Prediksinya tidak berubah, dan pengetahuan tentang kata yang belum pernah dilihat juga tidak bertambah.
+- prompt: Untuk "free prize now", log score spam adalah -5,720 dan ham adalah -7,107. Apa arti selisih sekitar 1,39 itu?
+  options:
+  - Skor spam adalah e^1,39 = 4 kali skor ham, sehingga P(spam) = 0,80
+  - Skor spam adalah 1,39 kali skor ham
+  - Pesan itu berpeluang 1,39 persen sebagai spam
+  - Modelnya salah, karena log score harus positif
+  answer: 0
+  explanation: Selisih dua log adalah log dari sebuah rasio, sehingga rasio skornya e^1,39 = 4. Maka P(spam) = 4 / (4 + 1) = 0,80. Log probabilitas bernilai negatif, dan itu normal.
+- prompt: Kata "free" dan "prize" hampir selalu muncul bersamaan di spam, tetapi naive Bayes mengalikan satu faktor untuk masing-masing. Apa efek yang biasa terjadi pada probabilitas spam yang diprediksi?
+  options:
+  - Menjadi terlalu rendah, karena faktor-faktornya kecil
+  - Tepat benar, karena faktor-faktornya diestimasi dari hitungan
+  - Cenderung terlalu ekstrem, karena evidence yang sama dihitung dua kali
+  - Tidak berubah, karena kedua kata saling meniadakan
+  answer: 2
+  explanation: Dua kata yang saling terkait sebagian besar membawa satu evidence, tetapi model menghitungnya dua kali, sehingga probabilitas terdorong ke arah 0 atau 1. Pilihan kelasnya sering tetap benar, jadi urutkan berdasarkan skor dan jangan memercayai 0,97 secara harfiah.

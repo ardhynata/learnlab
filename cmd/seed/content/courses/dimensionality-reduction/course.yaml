@@ -1,0 +1,31 @@
+slug: dimensionality-reduction
+title: "Dimensionality reduction"
+summary: "PCA, explained variance, reconstruction error, and t-SNE and UMAP for exploration."
+topic: Machine learning
+level: intermediate
+path: intermediate
+position: 9
+translations:
+  id:
+    title: "Reduksi dimensi"
+    summary: "PCA, explained variance, reconstruction error, serta t-SNE dan UMAP untuk eksplorasi."
+modules:
+- slug: core-ideas
+  title: Core ideas
+  summary: "The concepts, in the order the lab uses them."
+  lessons:
+  - pca-and-explained-variance
+  - reconstruction-and-embeddings
+  translations:
+    id:
+      title: "Ide inti"
+      summary: "Konsep-konsepnya, sesuai urutan yang dipakai lab."
+- slug: lab
+  title: Lab
+  summary: "Run the idea yourself, then check what you learned."
+  lessons:
+  - pca-lab
+  translations:
+    id:
+      title: "Lab"
+      summary: "Jalankan idenya sendiri, lalu periksa apa yang sudah kamu pelajari."

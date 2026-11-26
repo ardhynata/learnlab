@@ -1,0 +1,80 @@
+- prompt: A network has 2 inputs, one hidden layer of 8 units and 1 output unit. How many parameters does the lab count for it?
+  options:
+  - 24
+  - 25
+  - 33
+  - 41
+  answer: 2
+  explanation: The hidden layer has 2 × 8 weights plus 8 biases, which is 24. The output unit has 8 weights plus 1 bias, which is 9. The total is 33. The number 24 forgets the output unit, and 25 forgets the biases of the hidden layer.
+- prompt: In a run, the training loss and the validation loss both stay at 0.693 for all 400 epochs, and the accuracy is 50.0%. What does this show?
+  options:
+  - The network answers about 0.5 for every point, so it has learned nothing
+  - The network is overfitting, because the two losses are equal
+  - The network is learning slowly but correctly, and needs more epochs
+  - The network classifies half of the points perfectly and the other half wrongly
+  answer: 0
+  explanation: A network that always answers 0.5 has a loss of -ln 0.5 = 0.693 and gets about half of the points right by chance. In the lab, starting with every weight at 0 gives exactly this run. Overfitting would show a gap between the two losses.
+- prompt: On the gradient chart, Layer 1 sits at -4 and Layer 3 sits at -2. How do their gradients compare?
+  options:
+  - Layer 3's gradient is twice as large as Layer 1's
+  - Layer 3's gradient is 100 times as large as Layer 1's
+  - Layer 1's gradient is 100 times as large as Layer 3's
+  - They are equal, because both are small numbers
+  answer: 1
+  explanation: The chart shows log10 of the mean gradient. -4 means 0.0001 and -2 means 0.01, and 0.01 / 0.0001 = 100. Each gridline is a factor of 10, so two gridlines are a factor of 100.
+- prompt: With 4 sigmoid layers, the Quick Quiz reports a first-layer gradient of 1.3e-4 and an output-layer gradient of 2.8e-3. About how many times smaller is the first layer's gradient?
+  options:
+  - About 0.05 times
+  - About 2 times
+  - About 22 times
+  - About 360 times
+  answer: 2
+  explanation: 2.8e-3 / 1.3e-4 = 0.0028 / 0.00013, which is about 21.5, so the first layer's gradient is about 22 times smaller. The sigmoid's slope is at most 0.25, so the gradient shrinks at every layer it is passed back through.
+- prompt: At a learning rate of 0.01, the first layer's mean gradient is 0.039 at the start. About how far does SGD move a weight in that layer on the first step, and how far does Adam?
+  options:
+  - Both about 0.0004, because they use the same learning rate
+  - SGD about 0.01 and Adam about 0.0004
+  - SGD about 0.039 and Adam about 0.01
+  - SGD about 0.0004 and Adam about 0.01
+  answer: 3
+  explanation: SGD steps by the learning rate times the gradient, 0.01 × 0.039 = 0.00039. Adam divides each gradient by the size of its own recent gradients, so its first step is about the learning rate, 0.01, which is about 25 times larger. That is why Adam reaches a loss of 0.002 while SGD is still at 0.362 at epoch 400.
+- prompt: Why can Adam not rescue a network that starts with every weight at 0?
+  options:
+  - Adam needs a learning rate above 0.1 to move weights that start at 0
+  - Every gradient is exactly 0, and Adam only rescales a gradient, so 0 stays 0
+  - Adam works only with sigmoid units, and this network has ReLU
+  - Adam needs 2000 epochs before it can leave a flat loss
+  answer: 1
+  explanation: With every weight 0, no unit passes a signal, so every gradient is exactly 0 and the gradient lines sit at the bottom of the chart. Adam multiplies a gradient by a factor based on its size, and 0 times any factor is 0. A random start is what breaks the tie.
+- prompt: With ReLU and Adam at a learning rate of 1, the loss ends at 0.291 and the Layer 2 histogram says dead 75%. Which statement is true?
+  options:
+  - 6 of the 8 units in Layer 2 pass no gradient, so training cannot bring them back
+  - 75% of the training points are classified wrongly
+  - 75% of the weights in Layer 2 are exactly 0
+  - The network is overfitting, because the loss is above 0.2
+  answer: 0
+  explanation: 75% of 8 units is 6 units whose slope is zero for every training point, so no gradient reaches their weights. The accuracy at the end is 82.1%, so 75% is not the share of wrong points. Overfitting would show a validation loss above the training loss that grows, not dead units.
+- prompt: On the penguins, the default network has a validation loss of 0.103 at epoch 50 and 0.227 at epoch 400, while its training loss falls from 0.078 to 0.012. What is the best reading?
+  options:
+  - The network is too small, so it needs more units
+  - The lab has a bug, because validation loss cannot be higher than at epoch 50
+  - The learning rate is too high, so the units died
+  - It is overfitting, so try a larger L2 strength or fewer epochs
+  answer: 3
+  explanation: The training loss keeps improving while the validation loss gets worse, so the network is fitting the 84 training penguins and not the pattern. L2 strength 0.01 brings the validation loss down to 0.033. A network that was too small would have a high training loss as well.
+- prompt: On the first penguin sample, L2 strength 0.01 lowers the validation loss from 0.227 to 0.033. On the second sample it raises it from 0.027 to 0.042. What should you conclude?
+  options:
+  - L2 has no effect, because the two samples disagree
+  - L2 can help on one sample and hurt on another, so check several samples before trusting it
+  - The second sample has a bug, so ignore it
+  - L2 always helps, because the first sample improved by so much
+  answer: 1
+  explanation: With only 36 validation points a single sample is noisy. In the lab, L2 helps on three of four samples and hurts on one. That is why the last experiment asks you to repeat the check on a new sample before you trust it.
+- prompt: On two moons, a network with 1 hidden layer of 2 units ends with 88.1% accuracy on training points and 72.2% on validation points. With 8 units it reaches 100.0% on both. What explains the small network?
+  options:
+  - Overfitting, because the validation accuracy is lower than the training accuracy
+  - A bug, because a network should always reach 100%
+  - Too few units to bend the boundary enough, so even the training accuracy is low
+  - A learning rate that is too high, which killed its units
+  answer: 2
+  explanation: Each unit adds one piece to the boundary, and 2 units cannot follow the two moons. The training accuracy is low too, so the network cannot fit even the points it sees. Overfitting would show a high training accuracy and a lower validation accuracy.

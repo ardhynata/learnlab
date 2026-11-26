@@ -1,0 +1,80 @@
+- prompt: Sebuah promosi mendatangkan banyak penonton ringan. Hubungan antara jam menonton dan berhenti berlangganan tidak berubah, tetapi komposisi penontonnya berubah. Ini jenis shift apa?
+  options:
+  - Label shift
+  - Concept shift
+  - Covariate shift
+  - Leakage
+  answer: 2
+  explanation: Input, P(x), yang bergeser, sedangkan hubungan P(y given x) tetap, itulah covariate shift. Label shift berarti perubahan pada jumlah pelanggan yang berhenti, dan concept shift berarti perubahan pada arti jam menonton itu.
+- prompt: Sebuah model akurat 60% untuk penonton di bawah 2 jam, 80% untuk 2 sampai 6 jam, dan 95% untuk di atas 6 jam. Setelah promosi, komposisinya 60%, 30%, dan 10%. Berapa akurasi keseluruhannya?
+  options:
+  - 78,3%, rata-rata biasa dari ketiganya
+  - 69,5%
+  - 87%, akurasi pada komposisi training
+  - 95%, wilayah terbaik
+  answer: 1
+  explanation: 0,60 x 0,60 + 0,30 x 0,80 + 0,10 x 0,95 = 0,36 + 0,24 + 0,095 = 0,695. Rata-rata biasa mengabaikan banyaknya penonton di tiap wilayah, dan 87% adalah milik komposisi yang lama.
+- prompt: Sebuah tes skrining menandai 90% orang yang sakit dan 5% orang yang sehat. Tes itu dipindahkan dari klinik tempat 20% orang sakit ke check-up warga tempat 2% yang sakit. Apa yang paling berubah?
+  options:
+  - Porsi orang sakit yang ditandainya
+  - Porsi orang sehat yang ditandainya
+  - Tidak ada, karena tesnya sendiri tidak berubah
+  - Porsi orang yang ditandai yang benar-benar sakit, dari 0,82 menjadi 0,27
+  answer: 3
+  explanation: Orang sakit dan orang sehat tampak seperti sebelumnya, sehingga laju penandaan tetap. Tanda itu kini berarti lebih sedikit, karena orang sehat jauh lebih banyak, dan precision turun dari 180 / 220 menjadi 18 / 67.
+- prompt: Setelah seorang pesaing meluncurkan paket bundel, PSI setiap input adalah 0,00 dan laju berhenti hanya bergeser dari 45% ke 50%, tetapi akurasi turun dari 85% ke 60%. Apa penjelasan terbaiknya?
+  options:
+  - Concept shift, ketika input yang sama kini berujung pada hasil yang berbeda
+  - PSI dihitung dengan bin yang salah
+  - Covariate shift, karena model melihat input yang baru
+  - Model mengalami overfitting pada training set
+  answer: 0
+  explanation: Bila input dan angka totalnya tidak berubah, berarti hubungan antara input dan label yang bergeser. Detektor yang hanya melihat input tidak dapat melihat ini, dan hanya membandingkan prediksi dengan hasil nyata yang dapat melihatnya.
+- prompt: Pada training, 10%, 30%, dan 60% penonton jatuh ke tiga bin jam menonton per minggu. Pada data baru, porsinya 60%, 30%, dan 10%. Berapa PSI-nya?
+  options:
+  - 0
+  - 0,90
+  - 1,79
+  - 3,58
+  answer: 2
+  explanation: Bin pertama memberi (0,60 - 0,10) x ln 6 = 0,896, bin tengah memberi 0, dan bin terakhir memberi (0,10 - 0,60) x ln(1/6) = 0,896. Totalnya 1,79, jauh di atas aturan praktis 0,25 untuk shift yang besar.
+- prompt: Kamu melatih classifier untuk membedakan baris lama dari baris baru, dan AUC-nya pada baris yang ditahan adalah 0,50. Apa yang dikatakan hasil itu?
+  options:
+  - Baris baru sangat berbeda dari baris lama
+  - Classifier tidak dapat membedakan baris lama dari baru, sehingga tidak ada shift pada input yang dapat dideteksi, walaupun concept shift masih mungkin terjadi
+  - Model terkalibrasi dengan baik pada baris baru (probabilitasnya sesuai frekuensi nyata)
+  - Data lama terlalu kecil untuk dipakai melatih
+  answer: 1
+  explanation: AUC 0,5 sama dengan menebak, sehingga input tampak sama di kedua kelompok. Itu tidak mengatakan apa-apa tentang label, jadi concept shift masih dapat bersembunyi.
+- prompt: Sebuah model dilatih pada penguin dengan panjang sirip 172 sampai 231 mm, dan kini menerima baris dengan 300 mm. Bagaimana penanganan yang masuk akal?
+  options:
+  - Percayai prediksinya, karena model selalu memberi jawaban
+  - Hapus kolom panjang sirip
+  - Bulatkan baris itu ke nilai training terdekat lalu prediksi
+  - Tandai baris itu sebagai out-of-distribution, jangan percayai prediksinya
+  answer: 3
+  explanation: Baris itu berada di luar yang pernah dilihat model, sehingga jawabannya adalah ekstrapolasi. Menandainya mencegah prediksi yang meragukan dipakai seolah-olah itu hasil pengukuran.
+- prompt: Pernyataan mana tentang setup validasi dan shift yang benar?
+  options:
+  - Split acak tidak mengantisipasi satu pun dari ketiga jenis, karena baris ujinya berasal dari kumpulan yang sama dengan baris latih
+  - Split acak mengantisipasi covariate shift, karena ia mencampur semua baris
+  - Grouped split mengantisipasi concept shift, karena kelompok berbeda-beda
+  - Temporal split hanya mengantisipasi label shift
+  answer: 0
+  explanation: Split acak mereproduksi komposisi, proporsi, dan hubungan training, sehingga skornya adalah skor sebelum shift. Grouped dan temporal split hanya mengantisipasi shift yang ada di antara kelompok atau waktu dalam data yang kamu kumpulkan.
+- prompt: Porsi training adalah 10%, 30%, dan 60% penonton per wilayah, dan porsi baru adalah 60%, 30%, dan 10%. Bobot mana, dari wilayah pertama sampai terakhir, yang membuat baris lama dihitung seperti komposisi baru?
+  options:
+  - 1/6, 1, dan 6
+  - 6, 1, dan 1/6
+  - 0,6, 0,3, dan 0,1
+  - 10, 30, dan 60
+  answer: 1
+  explanation: Bobotnya adalah porsi baru dibagi porsi lama di wilayah itu, yaitu 0,60 / 0,10 = 6, 0,30 / 0,30 = 1, dan 0,10 / 0,60 = 1/6. Wilayah yang langka pada training menjadi umum pada data baru dan mendapat bobot yang besar.
+- prompt: Paket bundel seorang pesaing telah mengubah pelanggan mana yang berhenti. Respons mana yang sesuai?
+  options:
+  - Beri bobot ulang pada baris lama menurut komposisi jam yang baru
+  - Turunkan threshold keputusan
+  - Latih ulang pada data berlabel yang terbaru dan periksa model baru dengan temporal split
+  - Menunggu saja, karena komposisi input tidak berubah
+  answer: 2
+  explanation: Baris lama mengajarkan hubungan yang lama, sehingga bobot ulang tidak dapat memperbaiki concept shift. Dibutuhkan baris berlabel yang segar, dan temporal split menilai model baru dengan cara yang sama seperti ia akan dipakai.

@@ -1,0 +1,72 @@
+- prompt: Which of these is a hyperparameter of a decision tree?
+  options:
+  - The feature used for the first question
+  - The sex a leaf predicts
+  - The maximum depth
+  - The threshold chosen for the first question
+  answer: 2
+  explanation: Maximum depth is fixed by you before training. The feature, the threshold and the leaf labels are parameters, which training finds from the data.
+- prompt: A grid search tries maximum depth 1, 2, 3 and 4 with minimum leaf size 1, 5 and 10, scoring each with five-fold cross-validation. How many trees does it fit?
+  options:
+  - 12
+  - 60
+  - 17
+  - 20
+  answer: 1
+  explanation: There are 4 x 3 = 12 configurations, and each needs 5 fits, so 12 x 5 = 60. The number 12 counts configurations, not fits.
+- prompt: Only one of two settings really matters. A 3 x 3 grid and a random search of 9 draws have the same budget. How many different values of the important setting can each try?
+  options:
+  - 9 for the grid and 3 for random search
+  - 3 for both, because the budget is the same
+  - 9 for both, because each trial is different
+  - 3 for the grid and up to 9 for random search
+  answer: 3
+  explanation: The grid reuses each value of the important setting for 3 trials, so it tries only 3 values. Random draws can land on up to 9 different values of it.
+- prompt: In the nine-configuration grid, depth 6 with leaf size 1 got 233 of 267 right and depth 4 with leaf size 1 got 232 of 267. What should you conclude?
+  options:
+  - They are effectively tied, because one penguin is about 0.4 points and the noise is about 2 points
+  - Depth 6 is clearly better, because 233 is higher than 232
+  - Depth 4 is better, because a smaller tree is always more accurate
+  - Neither result means anything, because cross-validation cannot compare settings
+  answer: 0
+  explanation: One penguin out of 267 is about 0.4 points, and the standard error of an 88% score on 267 penguins is about 2 points. A one-penguin gap is far inside that noise.
+- prompt: You score 20 coin-flipping guessers on the same 50 examples, and the best one gets 64% right. What is the best estimate of that guesser's accuracy on new examples?
+  options:
+  - 64%, because that is what it scored
+  - Somewhere between 50% and 64%
+  - About 50%, because every guesser is a coin flip
+  - Below 50%, because the winner used up its luck
+  answer: 2
+  explanation: The guessers have no skill, so the winner was only the luckiest one. The expected best of 20 on 50 examples is 63.1%, and its real accuracy is 50%.
+- prompt: You try 30 configurations and keep the one with the best score on the test set. What does that test score tell you?
+  options:
+  - The exact accuracy the model will have on new data
+  - A flattered number, because the test set helped choose the winner
+  - Nothing, because test sets can only be used for training
+  - A pessimistic number, because the test set was not used for fitting
+  answer: 1
+  explanation: Choosing by the test score picks the configuration whose luck on those rows was best, so the score is too good. Tune with cross-validation, then use the test set once.
+- prompt: Nested cross-validation uses 5 outer folds, and each outer round runs a search over 9 configurations with a 4-fold inner cross-validation. How many inner fits does it make, not counting the final refits?
+  options:
+  - 45
+  - 100
+  - 144
+  - 180
+  answer: 3
+  explanation: Each outer round fits 9 x 4 = 36 trees, and there are 5 rounds, so 5 x 36 = 180. A single level of 5-fold cross-validation over the same 9 configurations needs only 45.
+- prompt: In nested cross-validation, what does the score on the outer held-out folds measure?
+  options:
+  - How well the whole recipe, search included, does on penguins the search never saw
+  - How well the single best configuration does on the data it was tuned on
+  - How well the model fits the training rows
+  - Which configuration is best for the final model
+  answer: 0
+  explanation: Each round runs its own search and picks its own winner, so the outer score judges the recipe. The final model comes from running the search once more on all the tuning data.
+- prompt: Two people run the same grid search on the same penguin data with five-fold cross-validation and get different winners. What is the most likely cause?
+  options:
+  - One of them used a different computer
+  - Cross-validation cannot be repeated
+  - They used different seeds for shuffling the folds
+  - The grid search picks a random configuration
+  answer: 2
+  explanation: The folds depend on the shuffle seed, and the lesson's table shows the winner moving with it, from depth 7 and leaf 3 at seed 1 to depth 5 and leaf 1 at seed 3. Record the seed.

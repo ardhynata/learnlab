@@ -1,0 +1,80 @@
+- prompt: Pada sampel di pelajaran ini, k = 1 menjawab benar 165 dari 200 titik validasi. Berapa validation accuracy-nya?
+  options:
+  - 100%
+  - 17,5%
+  - 82,5%
+  - 41,25%
+  answer: 2
+  explanation: 165 dibagi 200 sama dengan 0,825, atau 82,5%. Angka 100% adalah training accuracy k = 1, yang merupakan pengukuran lain.
+- prompt: Mengapa training accuracy k = 1 selalu 100% (kalau tidak ada dua titik yang identik)?
+  options:
+  - Neighbor terdekat setiap titik latih adalah dirinya sendiri, sehingga vote-nya selalu benar
+  - Satu neighbor selalu lebih akurat daripada banyak neighbor
+  - Model dilatih lebih lama kalau k kecil
+  - Titik validasi ikut dipakai untuk vote
+  answer: 0
+  explanation: Saat sebuah titik dinilai terhadap data yang tersimpan, titik yang sama itu ditemukan pada jarak 0, sehingga vote mengembalikan labelnya sendiri. Karena itu training accuracy tidak dapat dipakai untuk memilih k.
+- prompt: Deskripsi mana yang sesuai dengan model dengan k yang sangat kecil?
+  options:
+  - Boundary yang sangat mulus dan mengabaikan detail lokal
+  - Model yang harus dilatih dalam waktu lama
+  - Model yang tidak dapat memakai jumlah vote ganjil
+  - Boundary bergerigi dengan pulau-pulau yang mengikuti noise di data latih
+  answer: 3
+  explanation: Dengan hanya satu atau dua pemberi vote, satu titik janggal dapat membalik jawaban di sekitarnya, sehingga boundary mengikuti noise. Boundary yang mulus berasal dari k yang besar.
+- prompt: Dari tabel (k = 1, 3, 13, 31, 41 dengan validation accuracy 82,5%, 88,0%, 89,0%, 86,0%, 75,0%), k mana yang akan kamu pilih?
+  options:
+  - k = 1, karena training accuracy-nya 100%
+  - k = 13, karena validation accuracy-nya paling tinggi
+  - k = 41, karena k yang besar selalu paling aman
+  - k = 31, karena paling banyak titik latih yang benar
+  answer: 1
+  explanation: Kita memilih berdasarkan accuracy pada data yang disisihkan, dan 89,0% pada k = 13 adalah yang tertinggi di tabel. Training accuracy tidak dapat memilih k, dan k = 41 mengalami oversmoothing.
+- prompt: Validasi mendapat 178 dari 200 benar pada k = 13 dan 176 dari 200 pada k = 3. Bagaimana pembacaan yang masuk akal?
+  options:
+  - k = 3 jelas lebih buruk, jadi tolak
+  - k = 13 persis 1% lebih baik di dunia nyata
+  - Selisih 2 dari 200 masih dalam batas goyangan validation set berisi 200 titik, sehingga keduanya kurang lebih sama bagusnya
+  - Validation set-nya pasti salah
+  answer: 2
+  explanation: Kumpulan 200 titik acak yang lain dapat dengan mudah membalik selisih 2 dari 200, sehingga kedua nilai itu pada dasarnya seri. Pilih dari tengah bagian yang datar, bukan dari puncak yang paling atas.
+- prompt: Pada five-fold cross-validation untuk k = 13, fold-fold itu mendapat 15, 14, 13, 15, dan 14 dari 16. Berapa cross-validation accuracy-nya?
+  options:
+  - 88,75%, karena 71 dari 80 benar
+  - 14%, rata-rata dari skornya
+  - 93,75%, fold terbaik
+  - 81,25%, fold terburuk
+  answer: 0
+  explanation: 'Jumlahkan kelima skor, 15 + 14 + 13 + 15 + 14 = 71, lalu bagi dengan 80 titik yang masing-masing dinilai satu kali: 71 ÷ 80 = 0,8875.'
+- prompt: Apa keuntungan utama cross-validation dibandingkan satu pembagian validasi?
+  options:
+  - Cross-validation menghilangkan kebutuhan akan test set
+  - Cross-validation membuat k menjadi lebih kecil
+  - Cross-validation membuat setiap prediksi lebih cepat
+  - Setiap titik dinilai satu kali, sehingga perkiraannya kurang bergantung pada satu pembagian yang beruntung atau kurang beruntung
+  answer: 3
+  explanation: Lima putaran dengan fold yang disisihkan berbeda-beda meratakan faktor keberuntungan dari satu pembagian. Kamu tetap memerlukan test set terpisah untuk pemeriksaan akhir.
+- prompt: Seorang rekan berkata "Saya pakai 5-fold cross-validation, jadi saya coba k = 5". Apa yang salah?
+  options:
+  - 'Tidak ada: angka 5 pada 5-fold adalah jumlah neighbor'
+  - Angka 5 pada 5-fold menghitung fold, dan tidak berhubungan dengan jumlah neighbor k
+  - Cross-validation hanya bekerja dengan k = 1
+  - Lima fold tidak diizinkan untuk k-NN
+  answer: 1
+  explanation: Kedua pemakaian huruf k itu tidak berhubungan. Five-fold berarti lima fold, sedangkan k pada k-NN adalah jumlah neighbor yang memberi vote.
+- prompt: Kamu punya 100 titik latih dan dua kelas. Tebakan awal k mana yang sesuai dengan aturan praktis di pelajaran ini?
+  options:
+  - k = 1
+  - k = 50
+  - k = 9 atau 11, akar kuadrat dari 100 yang dijadikan ganjil
+  - k = 100
+  answer: 2
+  explanation: Akar kuadrat dari 100 adalah 10, dan k ganjil menghindari seri antara dua kelas, jadi coba 9 dan 11. Setelah itu periksa keduanya, dan nilai di sekitarnya, pada data yang disisihkan.
+- prompt: Mana di antara berikut yang membocorkan informasi dari test set ke model?
+  options:
+  - Men-scale feature dengan rata-rata dan sebaran dari bagian data latih saja
+  - Memilih k dari skor pada test set, atau men-scale dengan rata-rata seluruh data sebelum dibagi
+  - Memilih k dengan five-fold cross-validation pada data latih
+  - Menilai model akhir pada test set satu kali
+  answer: 1
+  explanation: Menyetel pada test set, atau men-fit langkah apa pun dengan seluruh data lebih dulu, membuat informasi test sampai ke model, sehingga skor akhirnya terlalu optimistis. Ketiga pilihan lain menjaga test set tetap tidak tersentuh sampai akhir.

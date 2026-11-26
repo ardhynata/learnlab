@@ -1,0 +1,80 @@
+- prompt: File penguin punya 344 baris. Baris #4 dan #272 kosong di keempat kolom ukuran dan di kolom sex, dan sembilan baris lain hanya tidak punya jenis kelamin. Berapa baris yang tersisa jika setiap baris yang punya celah dibuang?
+  options:
+  - '344'
+  - '342'
+  - '333'
+  - '322'
+  answer: 2
+  explanation: Ada 2 + 9 = 11 baris yang punya celah, dan 344 - 11 = 333 baris tersisa. Angka 342 masih menyimpan sembilan baris yang hanya tidak punya jenis kelamin.
+- prompt: Mengapa "buang setiap baris yang punya celah" bukan rencana yang lengkap untuk model yang akan dipakai pada data baru?
+  options:
+  - Baris baru dapat datang dengan celah, dan kamu tetap harus memberikan prediksi untuknya
+  - Baris yang sudah dibuang tidak pernah bisa dipulihkan dari file, sehingga kerugiannya permanen
+  - Model membutuhkan minimal 1.000 baris untuk berlatih, sehingga tidak boleh ada yang dibuang
+  - Membuang baris membuat kolom yang tersisa menjadi non-numerik bagi model
+  answer: 0
+  explanation: Kamu bisa membuang celah dari tabel training, tetapi tidak bisa menolak memberi prediksi untuk baris baru. Kamu membutuhkan aturan yang mengisi celah pada baris mana pun, sehingga aturan isian tetap diperlukan.
+- prompt: Empat massa training adalah 3.650, 3.475, 3.700, dan 5.700 g. Berapa median-nya?
+  options:
+  - 3.650 g
+  - 3.700 g
+  - 4.131,25 g
+  - 3.675 g
+  answer: 3
+  explanation: Setelah diurutkan, nilainya 3.475, 3.650, 3.700, 5.700. Dengan empat nilai, median adalah rata-rata dua nilai tengah, (3.650 + 3.700) / 2 = 3.675 g. Mean-nya 4.131,25 g.
+- prompt: Untuk keempat massa itu, mean-nya 4.131,25 g dan median-nya 3.675 g. Apa yang terutama menjelaskan selisihnya?
+  options:
+  - Median mengabaikan nilai-nilai yang lebih kecil
+  - Penguin 5.700 g menarik mean ke atas, sedangkan median nyaris tidak bergerak
+  - Mean selalu lebih besar daripada median
+  - Empat nilai terlalu sedikit untuk menghitung median
+  answer: 1
+  explanation: Satu nilai yang berat menambah jumlah dengan banyak, sehingga mean naik. Median hanya melihat bagian tengah dari daftar yang sudah diurutkan. Mean tidak selalu lebih besar; ia hanya bergeser ke arah ekor yang panjang.
+- prompt: Kolom sex terbagi 168 male dan 165 female. Apa masalahnya bila 11 celahnya diisi dengan nilai yang paling sering muncul?
+  options:
+  - Sebanyak 11 penguin diberi label "male" dengan yakin, padahal kolomnya hampir seperti lemparan koin
+  - Nilai yang paling sering muncul tidak dapat dihitung untuk kolom kategori
+  - Ke-11 barisnya akan hilang, sehingga tabel menjadi lebih pendek
+  - Kolomnya diubah menjadi angka yang tidak dapat dibaca model
+  answer: 0
+  explanation: Male unggul hanya 3 penguin, sehingga aturan ini nyaris seperti melempar koin dan setiap isian adalah tebakan lemah yang disajikan sebagai fakta. Kategori "unknown" atau flag missing lebih jujur.
+- prompt: Apa yang ditambahkan kolom missing indicator pada kolom yang sudah diisi?
+  options:
+  - Tebakan yang lebih baik untuk setiap nilai isian
+  - Cara untuk menghapus baris yang diisi nanti
+  - Salinan kolom yang di-scale antara 0 dan 1
+  - Catatan tentang nilai mana yang asli dan mana yang diisi
+  answer: 3
+  explanation: Flag bernilai 1 di tempat nilainya hilang dan 0 di tempat nilainya ada. Flag tidak memperbaiki tebakan, tetapi memungkinkan model membedakan hasil pengukuran dari isian, dan belajar dari fakta bahwa sebuah nilai pernah hilang.
+- prompt: Pulau diberi kode Biscoe 0, Dream 1, Torgersen 2. Apa yang disimpulkan rumus jarak dari kode-kode ini?
+  options:
+  - Torgersen berjarak dua kali lebih jauh dari Biscoe dibanding Dream
+  - Ketiga pulau berjarak sama satu sama lain
+  - Dream dan Torgersen adalah pasangan yang paling jauh
+  - Tidak ada, karena kata tidak dapat dibandingkan
+  answer: 0
+  explanation: Selisih Biscoe ke Torgersen adalah 2 dan Biscoe ke Dream adalah 1, sehingga kode-kode itu mengarang urutan dan jarak. Pulau-pulau itu tidak punya urutan semacam itu, dan penomoran yang berbeda akan memberi jarak yang berbeda.
+- prompt: Penguin Dream adalah (0, 1, 0) dan penguin Torgersen adalah (0, 0, 1) pada kolom one-hot (Biscoe, Dream, Torgersen). Berapa jarak keduanya?
+  options:
+  - '1'
+  - Sekitar 1,41
+  - '2'
+  - '0'
+  answer: 1
+  explanation: Kolom Dream dan Torgersen masing-masing berbeda 1, sehingga jaraknya adalah akar dari 1 + 1 = 1,41. Dua pulau yang berbeda selalu berjarak sama.
+- prompt: Imputer di-fit pada empat baris training dan mempelajari mean massa 4.131,25 g. Sebuah penguin test tidak punya catatan massa. Dengan apa kamu mengisinya?
+  options:
+  - 0, supaya barisnya tetap valid dan model dapat berjalan
+  - 4.105, mean semua massa yang diketahui termasuk baris test
+  - Mean dari baris test saja, karena baris itulah yang sedang diisi
+  - 4.131,25, angka yang dipelajari dari baris training
+  answer: 3
+  explanation: Nilai isian di-fit hanya pada baris training lalu diterapkan tanpa diubah pada semua baris lain. Fit ulang dengan menyertakan baris test membuat data test ikut membentuk input, dan itu adalah leakage.
+- prompt: Kolom mana yang sesuai memakai kode ordinal (0, 1, 2) dan bukan kolom one-hot?
+  options:
+  - 'Island: Biscoe, Dream, Torgersen'
+  - 'Species: Adelie, Chinstrap, Gentoo'
+  - 'Ukuran baju: small, medium, large'
+  - 'Warna: merah, hijau, biru'
+  answer: 2
+  explanation: Ukuran punya urutan yang nyata, sehingga kode yang naik mengikuti ukuran mengatakan hal yang benar. Pulau, spesies, dan warna tidak punya urutan, sehingga kolom one-hot lebih aman.

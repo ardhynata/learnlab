@@ -1,0 +1,80 @@
+- prompt: Two groups, {1, 5} and {10, 14}, have centroids 3 and 12. What is the inertia?
+  options:
+  - 8
+  - 4
+  - 16
+  - 32
+  answer: 2
+  explanation: Every point is 2 away from its centroid, so each adds 2 squared, which is 4. Four points give 4 + 4 + 4 + 4 = 16. Adding the plain distances gives 8, which is not inertia because inertia squares them.
+- prompt: Two runs of k-means on the same data and the same k end with different groups. What is the usual reason?
+  options:
+  - One of the runs has a bug
+  - They started from different centroids and stopped at different stable answers
+  - The data changed between the runs
+  - k-means picks k at random each time
+  answer: 1
+  explanation: k-means stops at the first stable grouping it reaches, and that depends on where the centroids began. Both runs can be correct runs of the algorithm.
+- prompt: In the six-point example, the start 0, 1, 10 stopped at inertia 101 while the best answer is 1.5. Why did the loop not fix this itself?
+  options:
+  - It stopped after exactly three passes
+  - It cannot move a centroid onto a data point
+  - Inertia was zero at that moment
+  - Neither the assign step nor the update step could lower inertia from there
+  answer: 3
+  explanation: Each point already had its nearest centroid, and each centroid was already at the mean of its points. Reaching 1.5 means moving a centroid across a gap, which neither step does.
+- prompt: You ran k-means with k = 3 from five random starts. The inertias were 1.5, 101, 1.5, 57 and 101. Which run do you keep?
+  options:
+  - One of the runs with inertia 1.5
+  - A run with inertia 57, the middle one
+  - A run with inertia 101, the highest
+  - Average the five runs
+  answer: 0
+  explanation: On the same data and the same k, lower inertia means tighter groups, so keep a run at 1.5. Starts are cheap, which is why trying several is the standard protection.
+- prompt: The first k-means++ centroid is the point 0. Which statement about the second pick is true?
+  options:
+  - All remaining points are equally likely
+  - The nearest point is the most likely
+  - Points far from 0 are the most likely
+  - The farthest point is always picked
+  answer: 2
+  explanation: Each point is weighted by its squared distance to the nearest chosen centroid, so far points are likely. The pick is still random, so the farthest point is likely but not certain.
+- prompt: With the first centroid at 0, the point 20 has weight 400 and the point 1 has weight 1. How many times more likely is k-means++ to pick 20 than 1?
+  options:
+  - 20 times
+  - 400 times
+  - 21 times
+  - They are equally likely
+  answer: 1
+  explanation: The chance is proportional to the squared distance, so the ratio is 400 to 1. A plain random pick would give both a 20% chance.
+- prompt: Why can't you choose k by taking the k with the lowest inertia?
+  options:
+  - Inertia only works for k = 2
+  - Inertia can be negative for large k
+  - Inertia is the same for every k
+  - Inertia keeps falling as k grows and reaches 0 when every point is its own cluster
+  answer: 3
+  explanation: More centroids always puts points closer to one of them. At k equal to the number of points, inertia is 0, which describes nothing useful.
+- prompt: The best inertia for k = 1 to 6 is 401.5, 101.5, 1.5, 1, 0.5, 0. Where is the elbow?
+  options:
+  - k = 3
+  - k = 2
+  - k = 6
+  - k = 1
+  answer: 0
+  explanation: The big drops stop at k = 3. Going to 4 saves only 0.5 more. Choosing k = 6 for the lowest number would split the data into single points.
+- prompt: The inertia curve for your data falls smoothly with no clear bend. What is the sensible next step?
+  options:
+  - Pick the largest k you tried
+  - Pick k = 1, the simplest
+  - Choose k from what the groups are for, and check that the groups are useful
+  - Re-run until a bend appears
+  answer: 2
+  explanation: The elbow is only a hint. When it is missing, domain needs and a look at the groups decide, and a later score such as the silhouette can help.
+- prompt: Does k-means++ guarantee that k-means finds the lowest possible inertia?
+  options:
+  - Yes, it always finds the global best
+  - No, it makes bad starts less likely, but the start is still random
+  - Yes, but only when k is 2
+  - No, and it makes bad starts more likely
+  answer: 1
+  explanation: k-means++ spreads the starting centroids out, which helps, but the process is still random and can still end at a local optimum. That is why it is combined with several starts.

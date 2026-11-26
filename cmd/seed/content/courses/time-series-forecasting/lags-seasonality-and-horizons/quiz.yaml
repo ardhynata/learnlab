@@ -1,0 +1,80 @@
+- prompt: Why should you not shuffle the rows of a time series before splitting it into training and test sets?
+  options:
+  - Shuffling makes the series longer, so training takes more time
+  - Shuffling changes the mean of the values
+  - A model cannot read rows that are out of order
+  - Later values end up in training, which breaks the link between a value and the ones before it
+  answer: 3
+  explanation: A forecast uses the past to predict the future. A shuffle puts future quarters among the training rows and test quarters between training quarters, so the score measures gap filling, not forecasting. The mean and the length do not change.
+- prompt: "In the shop's series, the seasonal naive forecast for quarter 11 (Q3 of year 3) is the value one period earlier. Quarter 7 was 113 and quarter 10 was 150. What is the forecast?"
+  options:
+  - "113"
+  - "125"
+  - "150"
+  - "102"
+  answer: 0
+  explanation: The period is 4 quarters, so quarter 11 is forecast with quarter 7, which is 113. The value 150 is the previous quarter, which is the naive forecast, and 125 is the actual value of quarter 11.
+- prompt: The naive forecast is 129 for all four test quarters, and the actual values are 109, 150, 125 and 143. What is its MAE?
+  options:
+  - "12"
+  - "14.75"
+  - "16.22"
+  - "59"
+  answer: 1
+  explanation: The errors are -20, +21, -4 and +14, so the absolute errors add up to 59 and the MAE is 59 / 4 = 14.75. The value 12 is the MAE of seasonal naive, 16.22 is the RMSE of naive, and 59 is the sum before dividing.
+- prompt: A series has 20 values. You build training rows from lag 1 and lag 4, and a row needs both lags to exist. How many rows do you get?
+  options:
+  - "20"
+  - "17"
+  - "16"
+  - "4"
+  answer: 2
+  explanation: The first four values have no lag 4, so rows start at value 5, and 20 - 4 = 16. The shop's series did the same, with 8 training values giving 4 rows.
+- prompt: A model must forecast 3 steps ahead and may not feed its own forecasts back in. What is the shortest lag it can use?
+  options:
+  - Lag 3
+  - Lag 1
+  - Lag 2
+  - Lag 4
+  answer: 0
+  explanation: At the origin you know values up to the origin. A forecast 3 steps ahead needs a lag of at least 3 to land on a known value. Lag 1 and lag 2 would need values that are still in the future, and lag 4 works but is not the shortest.
+- prompt: Which statement about multi-step forecasting is true?
+  options:
+  - A direct forecast feeds each forecast back in as the next lag
+  - A recursive forecast trains one model per horizon
+  - A recursive forecast repeats one one-step model on its own output, so an early error is carried forward
+  - A direct forecast is always more accurate than a recursive one
+  answer: 2
+  explanation: Recursive means one one-step model reused on its own forecasts, so step 2 starts from step 1's guess. Direct means a separate model for each horizon. Neither is always better; direct costs more models and recursive carries errors forward.
+- prompt: Forecast A misses by 10 in each of four quarters. Forecast B misses by 0, 0, 0 and 40. Both have an MAE of 10. Which has the larger RMSE?
+  options:
+  - They are equal, because the MAE is equal
+  - B, because RMSE gives big misses more weight (20 against 10)
+  - A, because it misses in every quarter
+  - Neither, because RMSE needs MASE first
+  answer: 1
+  explanation: RMSE squares the errors. For A it is the square root of 100, which is 10. For B it is the square root of 1600 / 4 = 400, which is 20. One large miss costs more in RMSE than the same total spread evenly.
+- prompt: A forecast has an MAE of 6 units. Seasonal naive's average error on the training years is 8 units. What is the MASE and what does it say?
+  options:
+  - 0.75, which means the forecast is right 75% of the time
+  - 1.33, which means it is worse than seasonal naive
+  - 14, which is the two numbers added together
+  - 0.75, which means its typical miss is smaller than seasonal naive's typical miss in training
+  answer: 3
+  explanation: MASE is 6 / 8 = 0.75. Below 1 means the forecast misses by less than the benchmark did on the training years. It is a ratio of errors, not an accuracy percentage.
+- prompt: The actual value is 100. Forecast A is 50 and forecast B is 150, so both miss by 50. What does sMAPE say?
+  options:
+  - Both score 50%, because the misses are equal
+  - A scores 66.7% and B scores 40%, so the under-forecast is punished more
+  - A scores 40% and B scores 66.7%, so the over-forecast is punished more
+  - Both score 33.3%, because 100 is the middle of 50 and 150
+  answer: 1
+  explanation: sMAPE is 2 x |e| / (actual + forecast). For A it is 100 / 150 = 66.7% and for B it is 100 / 250 = 40%. Equal misses give different scores, which is one reason not to rank models by sMAPE alone.
+- prompt: A forecaster scales the whole 12-quarter series to the range 0 to 1, then trains on quarters 1 to 8 and tests on quarters 9 to 12. What is wrong?
+  options:
+  - Nothing, because scaling never uses the target
+  - Scaling is not allowed for a time series
+  - The test quarters should have been scaled with their own range
+  - The test quarters shaped the scaler, so information from the future leaked into the features
+  answer: 3
+  explanation: The range of the whole series includes the test year, so the scaler has seen the future. Fit the scaler on the training quarters only and apply it to the test quarters, as in "Pipelines and leakage". The test peak of 150 then falls at 1.21, outside the training range, as it would in real use.

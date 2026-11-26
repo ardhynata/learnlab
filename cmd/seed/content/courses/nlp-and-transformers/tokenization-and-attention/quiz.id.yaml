@@ -1,0 +1,80 @@
+- prompt: Vocabulary tingkat kata tidak punya id untuk kata "unhappiness". Apa yang dilakukan tokenizer subword pada kata seperti itu?
+  options:
+  - Membuang kata itu, karena kata yang tidak dikenal tidak membawa makna
+  - Memecah kata itu menjadi potongan kecil yang dikenal, misalnya un, happi, dan ness
+  - Memberi kata itu vektor acak sampai training selesai
+  - Mengeja kata itu dan berhenti pada huruf pertama yang tidak dikenal
+  answer: 1
+  explanation: Tokenizer subword mempertahankan kata umum secara utuh dan memecah kata langka atau yang belum pernah dilihat menjadi potongan yang dipakai ulang oleh kata lain, sehingga hampir tidak ada yang tanpa id. Potongan yang ditampilkan hanyalah satu kemungkinan pemecahan.
+- prompt: Pada korpus low (5 kali), lower (2), newer (6), dan wider (3), mengapa byte-pair encoding menjadikan e + r merge pertamanya?
+  options:
+  - Karena e dan r adalah huruf pertama yang muncul dalam alfabet
+  - Karena er adalah token terpendek yang dapat dibentuknya
+  - Karena setiap kata dalam korpus berakhir dengan r
+  - Karena pasangan itu paling sering muncul, yaitu 2 + 6 + 3 = 11 kali
+  answer: 3
+  explanation: Byte-pair encoding menggabungkan pasangan bertetangga yang paling sering muncul. e + r muncul 11 kali, mengungguli w + e yang 8. Kata low tidak berakhir dengan r, dan alfabet tidak berperan.
+- prompt: Setelah merge 2 korpus berisi 51 token. Merge 3 menggabungkan l + o, yang muncul 7 kali. Berapa token setelahnya?
+  options:
+  - '44'
+  - '51'
+  - '58'
+  - '7'
+  answer: 0
+  explanation: Setiap dari 7 kemunculan l o menjadi satu token, sehingga korpus kehilangan 7 token, dan 51 - 7 = 44.
+- prompt: Self-attention tanpa informasi posisi menerima "the cat chased the dog" dan "the dog chased the cat". Apa yang dilakukannya pada keduanya?
+  options:
+  - Membaca kalimat pertama dari kiri dan kalimat kedua dari kanan
+  - Memberi kalimat kedua skor lebih tinggi karena dog muncul lebih dulu
+  - Setiap kata mendapat vektor output yang sama di kedua kalimat, karena ia melihat himpunan vektor yang sama
+  - Menolak memproses kalimat yang seluruh katanya sama
+  answer: 2
+  explanation: Skor satu token dengan token lain hanya bergantung pada vektor keduanya, tidak pernah pada posisinya, sehingga output hanya bertukar tempat ketika tokennya bertukar. Karena itu vektor posisi ditambahkan, dan kehilangannya sama seperti pada bag of words.
+- prompt: Sebuah token punya embedding (2, 1), dan vektor posisi untuk posisi 2 adalah (0,91, -0,42). Apa yang dilihat model pada posisi itu?
+  options:
+  - (2,91, 1,42)
+  - (2,91, 0,58)
+  - (1,09, 1,42)
+  - (2, 1)
+  answer: 1
+  explanation: Vektor posisi ditambahkan ke embedding, sehingga 2 + 0,91 = 2,91 dan 1 + (-0,42) = 0,58. Pilihan terakhir adalah yang akan dilihat model tanpa informasi posisi.
+- prompt: Untuk token "sat", skor dengan ketiga key adalah 1, 4, dan 3 sebelum diskalakan. Token mana yang mendapat attention weight terbesar, dan mengapa?
+  options:
+  - the, karena muncul pertama dalam kalimat
+  - sat, karena sebuah token selalu paling banyak memperhatikan dirinya sendiri
+  - the, karena skornya paling kecil dan softmax menyukai skor kecil
+  - cat, karena key-nya punya dot product terbesar dengan query "sat"
+  answer: 3
+  explanation: Softmax memberi bagian terbesar pada skor terbesar, dan 4 milik cat. Posisi dalam kalimat tidak berperan dalam skor, dan sebuah token tidak selalu paling banyak memperhatikan dirinya sendiri.
+- prompt: Weight "sat" adalah 0,07 pada "the", 0,62 pada "cat", dan 0,31 pada "sat", dengan value (1, 0), (0, 2), dan (2, 1). Berapa angka pertama dari outputnya?
+  options:
+  - '0,69'
+  - '1,55'
+  - '1,00'
+  - '0,62'
+  answer: 0
+  explanation: Angka pertamanya adalah 0,07 × 1 + 0,62 × 0 + 0,31 × 2 = 0,07 + 0,62 = 0,69. Angka kedua dari output, 1,55, adalah 0,62 × 2 + 0,31 × 1.
+- prompt: Mengapa skor dot product dibagi dengan akar kuadrat dari d sebelum softmax?
+  options:
+  - Agar weight berjumlah 1
+  - Untuk menghilangkan informasi posisi dari skor
+  - Agar skor tidak membesar mengikuti d, yang akan mendorong softmax ke satu token dan gradien yang sangat kecil
+  - Untuk mengubah query menjadi vektor satuan sebelum dibandingkan
+  answer: 2
+  explanation: Softmax sudah membuat weight berjumlah 1. Pada vektor panjang, dot product biasa menjadi besar, dan softmax dari skor besar hampir one-hot. Pembagian dengan akar kuadrat dari d menjaga skor tipikal di sekitar 1.
+- prompt: Di dalam transformer block, apa perbedaan antara bagian attention dan bagian feed-forward?
+  options:
+  - Attention memakai label dan bagian feed-forward tidak
+  - Attention mencampur informasi antar token, dan bagian feed-forward mengubah vektor setiap token sendiri-sendiri
+  - Attention hanya berjalan di block pertama dan bagian feed-forward berjalan di semua block lainnya
+  - Attention mengubah setiap token sendiri-sendiri, dan bagian feed-forward mencampur antar token
+  answer: 1
+  explanation: Attention adalah satu-satunya bagian tempat token saling bertukar informasi. Feed-forward network adalah jaringan kecil yang diterapkan pada vektor setiap token secara terpisah, dengan weight yang sama untuk semua token.
+- prompt: Apa yang dilakukan residual connection dalam sebuah transformer block?
+  options:
+  - Menskalakan ulang setiap vektor menjadi rata-rata 0 dan simpangan baku 1
+  - Menjalankan beberapa langkah attention berdampingan
+  - Membuang token yang menerima weight terendah
+  - Menambahkan input sebuah bagian kembali ke outputnya, out = x + f(x), sebagai jalan pintas melewati bagian itu
+  answer: 3
+  explanation: Jalan pintas itu membuat informasi dan gradien dapat melewati bagian tersebut, yang membantu tumpukan dalam untuk dilatih. Penskalaan ulang adalah normalisasi, dan menjalankan beberapa langkah attention berdampingan adalah multi-head attention.

@@ -1,0 +1,72 @@
+- prompt: A three-species penguin classifier scores 40% on the validation set. Always answering "Adelie" scores 43.5% there. What does this tell you?
+  options:
+  - The model is a good start, because 40% is far above zero
+  - The model needs more test data before anyone can say anything
+  - The model does worse than a rule that never looks at the features
+  - The model is fine, since accuracy below 50% is normal with three classes
+  answer: 2
+  explanation: A baseline sets the bar. Answering "Adelie" every time beats 40%, so this model has learned nothing useful yet. With three classes, 43.5% is the number to beat here, not 50%.
+- prompt: Which is the usual baseline for a regression problem such as predicting body mass?
+  options:
+  - Give every row the mean of the training targets
+  - Give every row a random number from the feature range
+  - Give every row the largest target in the training set
+  - Fit the most flexible model you can find
+  answer: 0
+  explanation: A constant prediction, usually the training mean, ignores every feature and costs nothing to compute. A model has to beat it to be worth using.
+- prompt: A mean baseline is fitted on penguins 1 to 4 (3750, 3250, 3500 and 3900 g). It is scored on held-out penguins 5 and 6 (4500 and 5700 g). What is its mean absolute error?
+  options:
+  - 900 g
+  - 1500 g
+  - 2100 g
+  - 3000 g
+  answer: 1
+  explanation: The training mean is 14400 / 4 = 3600 g. The misses are 900 and 2100 g, and their average is 1500 g. Adding them gives 3000, which is a total, not a mean.
+- prompt: A model that stores the whole training table and answers by lookup gets error 0 on the training rows. Why is that not good news?
+  options:
+  - Zero error is impossible, so the score must be a mistake
+  - Training error is always higher than validation error
+  - The model must have been fitted on the test set
+  - It says nothing about new rows, which the model never learned to handle
+  answer: 3
+  explanation: Memorizing makes training error zero without learning a pattern. Only held-out rows show how the model behaves on new data. In the lesson, the memorizer missed validation penguins by 391 g.
+- prompt: You are choosing between a line and a more flexible curve for the same data. Which set should decide?
+  options:
+  - The training set, because the models were fitted there
+  - The validation set, because neither model was fitted to it
+  - The test set, because it is the most trustworthy
+  - Whichever set gives the lowest error
+  answer: 1
+  explanation: Training error favors the model that fits the training rows best, which can mean memorizing them. The test set must stay unused until the final report, so choosing models is the validation set's job.
+- prompt: You compared five models on the validation set and chose the best one. What should you report as your final result?
+  options:
+  - The best validation score, since you already have it
+  - The average of the five validation scores
+  - The chosen model's score on the test set, measured once
+  - The best training score, since that model fits the data well
+  answer: 2
+  explanation: You picked the winner because it scored well on validation, so that score is slightly optimistic. The test set was never used to choose anything, so it gives the honest estimate.
+- prompt: A table is sorted by species, and someone holds out its last 20% of rows as the validation set. What goes wrong?
+  options:
+  - The validation set holds mostly one species, which the model barely saw in training
+  - Nothing, because the rows are all labeled
+  - The model trains on too many rows
+  - The validation set becomes larger than the training set
+  answer: 0
+  explanation: A sorted table makes a lopsided cut. Shuffle the rows first so each set is a fair sample of the whole.
+- prompt: A plain random cut leaves 5 of 69 test penguins as Chinstrap (7.2%), while Chinstrap is 19.9% of all penguins. What does a stratified split do about this?
+  options:
+  - It makes the test set larger
+  - It removes the Chinstrap penguins so the sets match
+  - It reuses test rows in training
+  - It cuts each species separately, so every set keeps about the same mix
+  answer: 3
+  explanation: Stratifying splits each class on its own, so every set has about 20% Chinstrap here. A test set with too few Chinstrap penguins would say little about that class.
+- prompt: Which of these is data leakage?
+  options:
+  - Fitting the model on the training set
+  - Computing the mean for a mean baseline from all rows before the split
+  - Shuffling the rows before the split
+  - Scoring the model on the validation set
+  answer: 1
+  explanation: The mean of all rows includes the held-out rows, so they helped build the baseline. Fit anything learned from data on the training rows only, then apply it to the others.

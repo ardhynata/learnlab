@@ -1,0 +1,80 @@
+- prompt: At its defaults the lab prints Margin width 2.10, and the model's |w| is 0.951. Which rule links the two?
+  options:
+  - width = 2 × |w|, which is 1.90
+  - width = |w| / 2, which is 0.48
+  - width = 2 / |w|, which is 2.10
+  - width = 1 / |w|, which is 1.05
+  answer: 2
+  explanation: The score climbs by 2 from one edge of the street (-1) to the other (+1), and it climbs by |w| per unit of distance, so the width is 2 / |w| = 2 / 0.951 = 2.10. A larger |w| means a narrower street.
+- prompt: At C 10 you drag the circled diamond from about x 0.35, y 0.31 toward the line, to about x 0, y 0, and the margin width falls from 1.38 to 0.91. Why?
+  options:
+  - The street must fit between the moved point and the class A support vectors
+  - The lab lowers C by itself, to a smaller value, whenever you drag any point
+  - The moved point is now held out, so the model stops using it for training
+  - Dragging a point changes the 24 held-out points, and those set the width
+  answer: 0
+  explanation: The diamond is a support vector, so it sits on an edge of the street. Moving it toward the other class leaves less room between the classes, and the street narrows. C is a slider and only you change it, and a training point never becomes held out by being dragged.
+- prompt: At C 0.1 the same drag leaves the margin at 2.10. What explains it best?
+  options:
+  - At a small C the model ignores every point that you move or drag
+  - A circled point only counts as a support vector once C reaches 10 or more
+  - The street cannot get narrower than 2.10 at any C, whatever you do to the points
+  - Three points on the edges fix the line, and the dragged point sits inside the street
+  answer: 3
+  explanation: At C 0.1 the diamond scores about 0.45, inside the street, and its weight is stuck at the cap C, so its pull is limited. The 3 support vectors on the edges alone fix the line, so moving a point inside the street barely moves it. At C 10 all the support vectors sit on the edges, so a drag moves one of the points that fix the line.
+- prompt: You drag a held-out cross across the boundary at C 10. What changes in the status line?
+  options:
+  - Margin width falls and one more point becomes a support vector
+  - Only the held-out accuracy, from 100.0% to 95.8%
+  - Training accuracy falls by 1.8 points
+  - Nothing, because crosses are not scored
+  answer: 1
+  explanation: The model never trained on the cross, so the boundary, the margin and the circled points stay as they were. The cross is still scored, and one wrong point out of 24 moves the held-out accuracy by 4.2 points.
+- prompt: The lab holds out 24 points. By how much does the held-out accuracy move for each extra wrong point?
+  options:
+  - 1.0 point
+  - 2.4 points
+  - 4.2 points
+  - 5.6 points
+  answer: 2
+  explanation: One point out of 24 is 1 / 24 = 0.0417, or 4.2 percentage points. This is why a difference of one or two held-out points, such as 95.8% against 91.7%, is a small signal.
+- prompt: From C 0.1 to C 10 on Two blobs, the margin width goes from 2.10 to 1.38 and the support vectors from 13 to 3. Which sentence explains the drop in support vectors?
+  options:
+  - A larger C adds weight to the points far from the street, so those points stop being support vectors
+  - A larger C makes points inside the street costly, so the street narrows around fewer points
+  - A larger C widens the street, and a wider street always touches fewer points than a narrow one
+  - A larger C makes the lab drop the points that it cannot classify correctly
+  answer: 1
+  explanation: At a small C the street is wide and many points lie inside it, and every one of them counts as a support vector. A large C punishes each of them, so the street squeezes in and fewer points are left on it or in it.
+- prompt: On Two blobs you raise C from 10 to 100 and still read Margin width 1.38 and 3 support vectors. Why does nothing change?
+  options:
+  - The slider stops working for any value above 10
+  - The points are too far apart for C to make any difference
+  - Gamma, not C, sets the margin once C is this high
+  - No point is inside the street, so a larger C has nothing to squeeze
+  answer: 3
+  explanation: With C at 10 the three support vectors already sit exactly on the edges and no point is inside the street. A larger price for points inside the street has nothing to act on, so the fit is the same.
+- prompt: On Two rings the Linear kernel gets 60.7% on training points and 54.2% on held-out points, and no C gets it above 64.3% on training points. RBF gets 100.0% on both. What do you conclude?
+  options:
+  - No straight line separates this shape, but a curved RBF boundary can
+  - The Linear kernel only needs a larger C to reach 100.0% accuracy
+  - The held-out points must be mislabeled, since the scores differ so much
+  - RBF is the better kernel on every dataset, so use it everywhere
+  answer: 0
+  explanation: One class sits inside the other, so no straight line can split them, and changing C only moves the line. RBF can draw a closed curve. That does not make it better everywhere, because on the penguins the line does at least as well.
+- prompt: On Overlapping blobs, RBF, C 10, raising gamma from 0.1 to 10 takes training accuracy from 87.5% to 100.0%, support vectors from 18 to 50, and leaves held-out accuracy at 79.2%. What does this show?
+  options:
+  - The model learned the classes better, because the training accuracy went up
+  - Gamma 10 is the best setting, because it makes no errors on the training points
+  - The curve wraps training points, so training improves and held-out does not
+  - The held-out points were used for training once gamma reached 10
+  answer: 2
+  explanation: A large gamma gives each point a small patch of its own, so the training score tends to go up. Held-out points show whether that was real learning, and here it was not. This is overfitting.
+- prompt: On four penguin samples at C 10, Linear gets 100.0% held-out every time, and RBF with gamma 10 gets 100.0% training but 91.7%, 95.8%, 91.7% and 91.7% held-out. Which kernel do you keep, and why?
+  options:
+  - RBF, because 100.0% training accuracy is the highest score a model can get
+  - Linear, because it scores at least as well on held-out penguins and is simpler
+  - Neither, because any held-out accuracy under 100.0% means the model failed
+  - RBF, because it uses more support vectors and so knows more about the data
+  answer: 1
+  explanation: Held-out accuracy is the score that matters, and Linear matches or beats RBF on all four samples with a simpler boundary. The gaps are one or two penguins out of 24, so four samples are a small check and not a proof.

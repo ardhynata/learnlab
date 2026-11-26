@@ -1,0 +1,80 @@
+- prompt: A monitoring plan row says "check accuracy sometimes, someone should look if it drops". Which parts of a plan row are missing?
+  options:
+  - Only the model name, because every other part of a row is already implied by it
+  - How often to check, the threshold that triggers action, and a named owner
+  - A picture of the metric, since plans are read by managers who want a chart first
+  - Nothing is missing, because accuracy is the best single metric to watch
+  answer: 1
+  explanation: A plan row says what is measured, how, how often, at which threshold something happens and who owns it. "Sometimes" is no schedule, "drops" is no threshold and "someone" is no owner, so nobody is made to act.
+- prompt: The queue holds 71 frauds a day until day 33 and 44 a day from day 34. What is the 7-day mean hit rate on day 36, with 200 reviews a day?
+  options:
+  - 22.0%, because the new level is already in force
+  - 35.5%, because the 7-day mean has not moved
+  - 29.7%, from (4 × 71 + 3 × 44) / 7 = 59.4 frauds out of 200
+  - 24.0%, because day 36 is the day the page fires
+  answer: 2
+  explanation: The window of days 30 to 36 holds four days at 71 and three at 44, a mean of 416 / 7 = 59.4 frauds, which is 29.7% of 200. That is below the 30% warn line, and the page line of 24% is crossed only on day 39.
+- prompt: The queue now holds 44 frauds a day. The baseline rule catches 38. Net value is 80 per fraud minus 2 per review, with 200 reviews. What should the runbook say?
+  options:
+  - Switch to the rule at once, because any drop is an emergency
+  - Switch off the queue until the cause is known
+  - Retrain the model today to be safe
+  - Keep the model running and investigate, because 3,120 a day beats the rule's 2,640
+  answer: 3
+  explanation: 44 × 80 - 400 = 3,120 and 38 × 80 - 400 = 2,640, so the degraded model is still worth 480 a day more than the rule. The fallback is for hit rates below 38 frauds (19%). Retraining before the cause is known is the wrong first move.
+- prompt: The first step of the failure analysis is to reproduce the failure. Why does it come first?
+  options:
+  - It gives a case you can rerun on demand, and shows if the system is reproducible
+  - It proves which person made the mistake that caused the failure
+  - It replaces the later steps when the rerun gives the same answer
+  - It is the cheapest way to fix the failure once it is found
+  answer: 0
+  explanation: With the saved snapshot, versions and seed, the bad output returns on demand, so every later test can be repeated. If the rerun gives a different answer, that is the first finding. Reproducing neither fixes the failure nor assigns blame.
+- prompt: Before and after day 34, the queue held app 46 and 19 frauds out of 120, and web 25 and 25 frauds out of 80. What does the slice say?
+  options:
+  - The web channel caused the drop, because its share of the queue is smaller
+  - Both channels share the drop equally
+  - "The drop sits in the app, because all 27 lost frauds are in that slice"
+  - Slicing cannot say anything, because the queue is a fixed 200 payments
+  answer: 2
+  explanation: The queue lost 71 - 44 = 27 frauds, and the app lost 46 - 19 = 27 of them while the web slice did not change. The slice points the next step at what changed for app payments on day 34.
+- prompt: Release 5.2 and a marketing campaign both started on day 34. A replay of a healthy day with the device age blanked leaves 45 frauds in the queue. A replay with 5% extra payments leaves 71. What follows?
+  options:
+  - Release 5.2 is the cause, because only its replay reproduces the drop
+  - The campaign is the cause, because it adds payments
+  - Both are causes, because both started on day 34
+  - No cause can be named until labels for day 36 arrive
+  answer: 0
+  explanation: Testing each candidate alone on a healthy day separates what timing could not. Only the missing device age reproduces the fall, 71 to 45, close to the 44 seen live. The extra payments change nothing.
+- prompt: A team retrains the model on days 34 to 41 to "fix" the drop. What goes wrong?
+  options:
+  - Nothing goes wrong, because new data always helps the model
+  - The labels for those days are too early to use for training
+  - The model will be overconfident on the web channel afterwards
+  - It learns an empty device age as normal, and labels take up to 30 days
+  answer: 3
+  explanation: Retraining first bakes the failure in, since the model learns an empty device age as ordinary data. It is also slow, because chargeback labels arrive up to 30 days late, and the loss goes on at 2,160 a day meanwhile.
+- prompt: Which sentence belongs in a blameless failure report?
+  options:
+  - The analyst who owns the feature code missed the change
+  - The plan watched three of the model's twelve features, so an empty device age raised no alert
+  - The team should have been more careful with releases
+  - The app team caused the loss by shipping release 5.2
+  answer: 1
+  explanation: A blameless report names the condition of the system that let the failure through and that an action can change. The other sentences point at people or tell them to try harder, and neither changes what happens when the next person is busy.
+- prompt: Probabilities from the fraud model are slightly too high, but the ranking is fine. If the team recalibrates with a monotone map, what happens to a queue of the 200 highest scores?
+  options:
+  - It becomes more accurate, because the probabilities are better
+  - It shrinks, because lower probabilities pass fewer payments
+  - It stays the same 200 payments, because the map keeps the order of the scores
+  - It reverses, because the map flips the scale
+  answer: 2
+  explanation: A monotone map never changes which payment ranks above which, so the top 200 is the same set. Recalibration matters only where the probability itself is used, such as a block-above-0.9 rule or an expected-loss figure.
+- prompt: An empty-share check on all 12 features would have fired on day 35. With the same three days from page to fix, the fix goes live on day 38. How much would the incident cost, at 2,160 a day lost from day 34?
+  options:
+  - 4 days × 2,160 = 8,640, half of the 17,280 that it cost
+  - 3 days × 2,160 = 6,480, counting only the days of the fix
+  - 8 days × 2,160 = 17,280, because the loss does not depend on the alert
+  - 0, because the alert prevents the failure
+  answer: 0
+  explanation: Days 34, 35, 36 and 37 are lost, which is 4 days and 8,640. An alert shortens the time to a fix and does not prevent the failure. The real incident lost days 34 to 41, 8 days and 17,280.

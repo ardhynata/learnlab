@@ -1,0 +1,72 @@
+- prompt: In the lesson's hospital, 350 of 500 treated patients recovered and 370 of 500 untreated patients recovered. Why can you not conclude that the drug lowers the chance of recovery by 0.04?
+  options:
+  - Because 500 patients is too few to compare two groups
+  - Because the treated group was mostly severely ill, so the groups differed before any drug was given
+  - Because recovery is a yes or no outcome, and such outcomes cannot be compared
+  - Because the untreated patients also received a different drug
+  answer: 1
+  explanation: Doctors gave the drug mostly to severe patients, who recover less often whatever they get. The raw gap mixes the drug's effect with that difference between the groups. The size of the groups and the type of outcome are not the problem.
+- prompt: Students choose whether to use a tutoring app, and you ask whether the app raises exam scores. Which variable is most plausibly a confounder?
+  options:
+  - The exam score at the end of the term
+  - The student's score on an in-app quiz after one month of use
+  - Motivation measured before the term, which affects both who signs up and the score
+  - The color scheme of the app
+  answer: 2
+  explanation: A confounder is measured before the treatment and drives both who gets it and the outcome, and motivation does both. The final score is the outcome, the in-app quiz score is changed by the treatment, and the color scheme influences neither.
+- prompt: A clinic has 30% mild patients and 70% severe patients. The drug adds 0.10 for mild patients and 0.15 for severe ones. What is the average treatment effect?
+  options:
+  - 0.135, because 0.3 × 0.10 + 0.7 × 0.15 = 0.03 + 0.105
+  - 0.125, the average of 0.10 and 0.15
+  - 0.15, the effect for the larger group
+  - 0.25, because 0.10 + 0.15 = 0.25
+  answer: 0
+  explanation: The ATE weights each stratum effect by the share of patients in it. With 30% and 70% the weights are 0.3 and 0.7, which gives 0.135. The plain average 0.125 would be right only if the two strata were the same size.
+- prompt: In the lesson's hospital, suppose every severe patient had been given the drug. What would go wrong when you try to adjust for severity?
+  options:
+  - Severity would stop being a confounder, so no adjustment would be needed
+  - The effect for mild patients would become impossible to compute
+  - The adjusted estimate would simply become more precise
+  - The severe stratum would have no untreated patients to compare with, so its effect could not be computed from the data
+  answer: 3
+  explanation: Overlap means each stratum contains both treated and untreated patients. Without untreated severe patients there is nothing to compare, and a model would have to extrapolate instead of using data.
+- prompt: In inverse-propensity weighting, the probability of treatment for severe patients is 0.8. What weight does a treated severe patient get?
+  options:
+  - 0.8, the probability itself
+  - 1.25, because 1 / 0.8 = 1.25
+  - 5, because 1 / 0.2 = 5
+  - 0.2, the chance of not being treated
+  answer: 1
+  explanation: The weight is 1 divided by the probability of the treatment the patient actually got. A treated severe patient is common, so the weight is only 1 / 0.8 = 1.25. A weight of 5 belongs to the rare combinations, such as treated mild patients.
+- prompt: In the lesson's trial of a drug that does nothing, only followed-up patients are analysed (every treated patient, and untreated patients only if still sick). Why does this show a gap of 0.50?
+  options:
+  - Because the drug really works in followed-up patients
+  - Because 400 patients are too few for a fair comparison
+  - Because who is followed up depends on both the treatment and the outcome, so restricting to them creates a link the drug did not cause
+  - Because the untreated group was healthier before the trial
+  answer: 2
+  explanation: Follow-up is a collider, caused by both treatment and outcome. Keeping only followed-up patients creates a false link between them, with 100 of 200 treated recovered and 0 of 100 untreated. The true effect is 0.
+- prompt: A drug lowers blood pressure, and lower blood pressure raises recovery. You adjust for blood pressure measured after the treatment. What happens to the estimated effect of the drug?
+  options:
+  - It shrinks toward zero, because the adjustment removes the part of the effect that works through blood pressure
+  - It becomes exact, because more adjustment always removes more bias
+  - It grows, because blood pressure was a confounder
+  - It stays the same, because blood pressure is only an outcome
+  answer: 0
+  explanation: Blood pressure here is a post-treatment variable, something the drug changes. Holding it fixed blocks the very path through which the drug acts, so the estimate misses that part of the effect.
+- prompt: Why does a randomized trial need no adjustment for severity?
+  options:
+  - Because severity does not matter in a trial
+  - Because trials always have more patients than hospital data
+  - Because patients in a trial are not allowed to be severely ill
+  - Because a coin flip decides who is treated, so severity is unrelated to treatment and the groups are alike on average
+  answer: 3
+  explanation: Randomization breaks the link between the confounder and the treatment. In the lesson's trial of 800 patients, each group has about 200 mild and 200 severe patients, so the plain difference of 0.775 and 0.65 estimates the effect.
+- prompt: A model predicts recovery well from patient records, and a colleague reads its coefficient for "got the drug" as the effect of prescribing the drug. What is the main problem?
+  options:
+  - Prediction models cannot use a yes or no feature
+  - The coefficient describes how the model uses data shaped by who doctors chose to treat, so it need not equal the effect of changing the treatment
+  - The coefficient is always exactly zero for an accurate model
+  - A model that predicts well is automatically a causal model
+  answer: 1
+  explanation: A prediction model is fitted to the data as they were produced, including the doctors' choices. Its coefficients and importances describe that, not what happens when the treatment is changed.

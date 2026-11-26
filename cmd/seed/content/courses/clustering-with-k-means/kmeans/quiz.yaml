@@ -1,0 +1,80 @@
+- prompt: A cluster holds three penguins with flipper lengths 181, 186 and 195 mm. With squared Euclidean distance, where does the update step put its centroid?
+  options:
+  - 181, the smallest value
+  - 186, the middle value
+  - 187.33, the mean
+  - 195, the largest value
+  answer: 2
+  explanation: The update step uses the mean, (181 + 186 + 195) / 3 = 187.33. The middle value 186 is the median, which is the center for Manhattan distance, not squared Euclidean.
+- prompt: The centroids are at 183.5 and 211.5. Which cluster does a penguin with a flipper length of 195 mm join in the assign step?
+  options:
+  - The cluster at 183.5, because 11.5 is less than 16.5
+  - The cluster at 211.5, because 195 is closer to the bigger number
+  - Neither until the next update
+  - Either one, because the two distances are close
+  answer: 0
+  explanation: The distance to 183.5 is 195 - 183.5 = 11.5 and the distance to 211.5 is 211.5 - 195 = 16.5. The assign step picks the smaller distance, so the penguin joins the cluster at 183.5.
+- prompt: In the k-means loop, when does the run stop?
+  options:
+  - After exactly k passes, one for each centroid
+  - When Inertia reaches zero and no distance is left
+  - When every centroid sits exactly on a data point
+  - When an assign step leaves every point where it was
+  answer: 3
+  explanation: If no point changes cluster, the next update would compute the same means, so nothing can change again. Inertia usually stays above zero, and the number of passes is not fixed.
+- prompt: In the lab, on Overlapping clusters with k = 2, Inertia reads 260.09 after the first assign step and 189.99 after the first update step. What does this show?
+  options:
+  - The update step can raise Inertia, so the loop may need many tries
+  - Moving each centroid to the mean of its points lowers the total squared distance
+  - The assign step is the only one that matters
+  - k = 2 is the best choice for this data
+  answer: 1
+  explanation: The mean is the spot with the smallest total squared distance to a cluster's points, so an update cannot raise Inertia. The drop from 260.09 to 189.99 is that effect. One run says nothing about whether k = 2 is the best choice.
+- prompt: A cluster has the points 4, 6 and 8, and its centroid is at 6. What does this cluster add to Inertia?
+  options:
+  - 0
+  - 4
+  - 8
+  - 12
+  answer: 2
+  explanation: The squared distances are (4 - 6)² = 4, (6 - 6)² = 0 and (8 - 6)² = 4. They add up to 8.
+- prompt: In the lab, why is the readout called Total distance, not Inertia, when Distance is set to Manhattan?
+  options:
+  - Manhattan adds absolute differences, not squared distances, so it is a different quantity
+  - Manhattan runs ignore the centroids and only look at the points
+  - Total distance is only shown once the run has reached Converged
+  - Manhattan always gives a lower number than squared Euclidean
+  answer: 0
+  explanation: Inertia is defined with squared Euclidean distance. Under Manhattan the lab adds up absolute differences (82.66 on the default data, against 110.89 for Inertia), which is a different quantity, so the two do not compare.
+- prompt: On Concentric rings with k = 2, why does k-means cut across both rings?
+  options:
+  - The inner ring has too few points for a centroid to reach it
+  - The loop stops too early, before it can separate the rings
+  - Euclidean distance cannot be used on rings of points
+  - The border between two centroids is a straight line, and no straight line separates the rings
+  answer: 3
+  explanation: Each point goes to its nearest of two centroids, so the border between the clusters is a straight line. A straight line through the middle cuts both rings, so each cluster gets part of each ring.
+- prompt: On Checkerboard with k = 4, ten random starts end at Inertia 114.24 six times and at higher values four times, such as 135.91. Every run reached Converged. Which result do you keep?
+  options:
+  - The first run, because it stopped first
+  - A run at 114.24, the lowest Inertia on the same data and the same k
+  - The run with the most iterations
+  - The average of all ten results
+  answer: 1
+  explanation: Every run stopped at a stable answer, but not every stable answer is equally good. With the same data, distance and k, the lowest Inertia is the best result found.
+- prompt: You place two centroids at exactly the same spot and run the loop. What happens to the second one?
+  options:
+  - Both share the points equally, since every point is the same distance from both
+  - k-means refuses to run until the two centroids are moved apart
+  - It gets no points and stays where it is
+  - It is deleted after the first update because its cluster is empty
+  answer: 2
+  explanation: Both centroids are equally close to every point, and the one listed first wins each tie. The second cluster is empty, and an empty cluster keeps its current centroid.
+- prompt: After Randomize draws new points, the loop converges at Inertia 140, while the first run on the default points ended at 110.89. Does 140 mean the clustering is worse?
+  options:
+  - No, because a different draw is different data, so the two numbers do not compare
+  - Yes, because a higher Inertia always means worse groups on any data
+  - Yes, because the centroids must have moved further during the loop
+  - No, because Inertia is random and means nothing for a single run
+  answer: 0
+  explanation: Inertia adds up distances over the points in the run. A different draw has different points, so the two numbers measure different things. Compare Inertia only for the same data, distance and k.

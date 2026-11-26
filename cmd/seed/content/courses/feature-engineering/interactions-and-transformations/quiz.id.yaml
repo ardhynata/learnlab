@@ -1,0 +1,80 @@
+- prompt: Pada percobaan kebun, model linear tanpa kolom hasil kali adalah 5 + 10 × f + 10 × w. Berapa prediksinya untuk petak yang diberi pupuk dan air banyak?
+  options:
+  - 15 kg
+  - 20 kg
+  - 25 kg
+  - 30 kg
+  answer: 2
+  explanation: Dengan f = 1 dan w = 1, prediksinya 5 + 10 + 10 = 25 kg. Rata-rata sebenarnya untuk petak itu 30 kg, dan model yang sama memprediksi 15 kg untuk masing-masing faktor sendirian, padahal rata-rata sebenarnya 10 kg. Itulah pola yang tidak dapat dilihat oleh model aditif yang lurus.
+- prompt: Sebuah model adalah y = 1 + 2 × x1 + 3 × x2 + 0,5 × (x1 × x2). Berapa perubahan y ketika x1 naik 1 dan x2 ditahan pada 4?
+  options:
+  - 2
+  - 4
+  - 2,5
+  - 8
+  answer: 1
+  explanation: Dengan suku hasil kali, pengaruh x1 adalah b1 + b3 × x2 = 2 + 0,5 × 4 = 4. Tanpa hasil kali, pengaruhnya 2 untuk setiap nilai x2.
+- prompt: Hasil fit dengan kolom hasil kali pada percobaan kebun adalah 10 + 0 × f + 0 × w + 20 × (f × w). Berapa prediksinya untuk petak yang diberi pupuk dan air sedikit?
+  options:
+  - 10 kg
+  - 20 kg
+  - 30 kg
+  - 40 kg
+  answer: 0
+  explanation: Dengan f = 1 dan w = 0, hasil kalinya 0, sehingga prediksinya 10 + 0 + 0 + 0 = 10 kg. Bonus 20 kg hanya muncul bila keduanya bernilai 1. Model ini menyatakan bahwa masing-masing faktor sendirian tidak berpengaruh, sesuai dengan rata-rata kelompok.
+- prompt: Kolom mana yang paling cocok untuk transformasi log?
+  options:
+  - Kolom 0/1 yang menyatakan apakah pelanggan adalah member
+  - Usia murid sekolah dalam tahun, semuanya antara 6 dan 12
+  - Kolom suhu yang negatif pada separuh barisnya
+  - Pendapatan rumah tangga, ketika segelintir nilainya sangat besar
+  answer: 3
+  explanation: Log memampatkan ekor yang panjang, dan itulah yang dimiliki kolom miring seperti pendapatan, harga, dan hitungan. Penanda 0/1 dan rentang usia yang sempit tidak punya ekor, dan log tidak dapat diambil dari nilai negatif.
+- prompt: Setelah transformasi log10, berapa selisih antara nilai 40 dan 160?
+  options:
+  - 0,30
+  - 0,60
+  - 1,20
+  - 120
+  answer: 1
+  explanation: 160 adalah 40 yang digandakan dua kali, dan setiap penggandaan menambah log10(2) = 0,30 pada log, sehingga selisihnya 0,60. Rasio yang sama menjadi langkah yang sama. Selisih 120 adalah jarak sebelum di-log.
+- prompt: Titik x = -2, -1, 0, 1, 2 memiliki y = 4, 1, 0, 1, 4. Mengapa menambahkan kolom x² membuat model linear dapat mencocokkannya dengan tepat?
+  options:
+  - Kolom itu membuat x lebih besar sehingga garis hasil fit makin curam
+  - Kolom itu menghilangkan noise dari y sebelum model di-fit
+  - Kolom itu memberi model lengkungan yang tidak dimiliki garis lurus
+  - Kolom itu menstandarkan x sehingga kemiringan lebih mudah ditemukan
+  answer: 2
+  explanation: Polanya simetris, sehingga garis lurus terbaik datar pada rata-rata, yaitu 2. Dengan x² sebagai kolom kedua, model y = 0 + 0 × x + 1 × x² melewati setiap titik. Model itu tetap linear terhadap kolom-kolomnya; kolom baru yang membawa lengkungannya.
+- prompt: Penguin Chinstrap dan Gentoo punya panjang paruh yang mirip (rata-rata sekitar 48,8 dan 47,5 mm), tetapi rata-rata panjang paruh dibagi kedalaman paruh mereka 2,65 dan 3,18. Apa yang ditunjukkan hal ini?
+  options:
+  - Kolom rasio memperlihatkan perbedaan yang disembunyikan oleh panjang paruh saja
+  - Kedalaman paruh tidak relevan dan dapat dibuang
+  - Rasionya pasti salah, karena panjangnya hampir sama
+  - Rasio hanya berguna bila kedua spesies berbeda panjangnya
+  answer: 0
+  explanation: Paruh Gentoo lebih dangkal daripada paruh Chinstrap, sehingga panjang dibagi kedalaman memisahkan kedua spesies walaupun panjang saja tidak. Rasio itu membawa informasi dari kolom kedalaman yang tidak dimiliki panjang saja.
+- prompt: Apa yang hilang ketika kamu memotong usia menjadi pita di bawah 30, 30 sampai 59, dan 60 ke atas?
+  options:
+  - Kemampuan memakai usia sebagai kolom dalam model sama sekali
+  - Intersep model, yang terserap oleh pita-pita itu
+  - Kebutuhan untuk mem-fit koefisien apa pun untuk kolom usia
+  - Detail di dalam setiap pita, ketika usia diperlakukan sama
+  answer: 3
+  explanation: Bin membuat pengaruh dapat melompat antarpita, tetapi semua orang di dalam satu pita mendapat nilai yang sama. Bila batas bin berasal dari data, seperti pada kuantil, batas itu harus dihitung hanya dari baris training.
+- prompt: Seorang siswa membuat kolom flipper × body mass pada semua baris, mem-fit scaler pada semua baris, lalu membagi data menjadi training set dan test set. Apa kesalahannya?
+  options:
+  - Hasil kali seharusnya dibuat setelah split karena membutuhkan baris test
+  - Mean dan simpangan baku pada scaler mencakup baris test, sehingga informasi tentangnya bocor
+  - Hasil kali dua kolom tidak pernah dapat distandarkan
+  - Tidak ada, karena scaler tidak punya parameter yang dapat bocor
+  answer: 1
+  explanation: Hasil kali hanya memakai satu baris pada satu waktu, sehingga membuatnya sebelum split aman. Mean dan simpangan baku scaler dipelajari dari data, jadi keduanya harus di-fit hanya pada baris training dan dipakai tanpa diubah pada baris test.
+- prompt: Penambahan f × w menurunkan MSE training pada percobaan kebun dari 26,75 menjadi 1,75. Mengapa penurunan itu saja tidak cukup untuk mempertahankan sebuah kolom baru secara umum?
+  options:
+  - Galat training hanya dapat turun untuk kolom interaction, tidak untuk kolom lain
+  - MSE tidak bermakna untuk model dengan kolom hasil kali
+  - Galat training tidak pernah naik ketika kolom ditambah, sehingga ia tidak dapat menunjukkan bahwa kolom itu nyata
+  - Penurunan sebesar itu selalu berarti data salah diberi label
+  answer: 2
+  explanation: Menambah kolom hanya dapat mempertahankan galat training atau menurunkannya, bahkan bila kolom itu noise. Untuk melihat apakah sebuah kolom pantas dipertahankan, periksa skor pada data yang ditahan atau gunakan cross-validation, dan pertimbangkan penalti ketika jumlah kolom bertambah.

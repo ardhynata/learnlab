@@ -1,0 +1,72 @@
+- prompt: A team can review only 200 payments a day. Which metric is closest to what the company gains from the model?
+  options:
+  - AUC over all of the day's payments, as a single number for the whole ranking
+  - Accuracy over all of the day's payments, counting every correct label
+  - The fraud caught among the 200 queued payments, turned into net value
+  - Log loss on the training set, averaged over every training row
+  answer: 2
+  explanation: The decision uses only the top 200 of the ranking, so the metric should measure that top 200 and turn it into money. AUC, accuracy and log loss measure the whole list or the training data, which the reviewers never act on.
+- prompt: A fraud is worth 80 and a review costs 2. A model catches 71 frauds in the 200 queued payments. What is the net value per day?
+  options:
+  - 5,680
+  - 5,280
+  - 5,480
+  - 71
+  answer: 1
+  explanation: 71 × 80 = 5,680 is the value of the frauds, and the 200 reviews cost 200 × 2 = 400, so the net value is 5,680 - 400 = 5,280. The figure 5,680 forgets the cost of the reviews.
+- prompt: Model A has AUC 0.95 and catches 62 frauds in the top 200. Model B has AUC 0.92 and catches 71. Which statement is right?
+  options:
+  - A is better, because a higher AUC always means a better queue of 200
+  - They are equal, because both AUCs are above 0.9 and so both are good
+  - Neither can be compared until the accuracy of each is known
+  - B is better for this decision, because AUC counts the whole ranking and the queue uses only the top
+  answer: 3
+  explanation: AUC averages over every pair of payments, including the frauds ranked far down that nobody reviews. B earns 720 a day more than A, so B is the better choice here even with the lower AUC.
+- prompt: Chargebacks arrive up to 30 days after a payment. The system is built on day 150. Which training days have final labels?
+  options:
+  - Days 1 to 120
+  - Days 1 to 150
+  - Days 121 to 150
+  - All 180 days
+  answer: 0
+  explanation: A payment from the last 30 days may still have an unreported fraud, so it looks like a normal payment. Only days 1 to 120 are old enough to have final labels. The history file holds final labels for later days too, but the system did not have them on day 150.
+- prompt: The baseline "queue the 200 largest amounts" has a net value of 2,640 a day. Model A has 4,560. How much more does A earn each day than the baseline?
+  options:
+  - 4,560
+  - 2,640
+  - 1,920
+  - 24
+  answer: 2
+  explanation: 4,560 - 2,640 = 1,920 a day. That is 24 more frauds caught, 24 × 80 = 1,920, with the same 200 reviews. The number 24 counts frauds, not money.
+- prompt: A colleague splits the 180 days at random, 80% to training and 20% to test. What is wrong with this for the fraud system?
+  options:
+  - Nothing, because random splits are always the fairest
+  - The test set is too small to contain any fraud
+  - The model trains on days after the ones it is tested on, with labels that would not exist yet
+  - The training set would contain no fraud
+  answer: 2
+  explanation: In deployment the model scores days it has never seen, with the labels available at that time. A random cut lets later days and late labels into training, so its score is not the score you will get.
+- prompt: You rerun a colleague's pipeline from the raw file with their one command and get a different results table. What is the most likely cause?
+  options:
+  - Tables are never the same twice
+  - A seed, a data version or a manual step is missing from the record
+  - The baseline row should be removed
+  - The model needs a higher AUC
+  answer: 1
+  explanation: A table that cannot be regenerated has something outside the record, such as an unfixed seed, a different data file or library version, or a step done by hand. Finding it is the point of the rerun test.
+- prompt: Reviewers start work each morning on yesterday's payments. Which way of serving the model fits?
+  options:
+  - A nightly batch job that scores the day's payments before the queue is needed
+  - Online scoring that must answer within a second for each payment
+  - Scoring once, then never again
+  - Scoring only the payments that were already reviewed
+  answer: 0
+  explanation: The score is needed before a scheduled step, not while a customer waits, so batch is enough and simpler to rerun. Online scoring would add latency limits and a fallback rule that this decision does not need.
+- prompt: Labels arrive up to 30 days after scoring. What must the log keep so you can measure the real fraud caught for day 40?
+  options:
+  - Only the average score of day 40
+  - Only the model's training metrics
+  - The number of requests on day 40
+  - For each payment of day 40, its id, the model version, the score and rank, and what was done with it
+  answer: 3
+  explanation: When the labels arrive, you join them to the log by id and recompute the operational metric on the payments that were really queued. An average, training metrics or a request count cannot be joined to labels.

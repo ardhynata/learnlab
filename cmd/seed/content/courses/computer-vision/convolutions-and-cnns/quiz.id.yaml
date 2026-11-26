@@ -1,0 +1,80 @@
+- prompt: Mengapa meratakan gambar 28 × 28 menjadi satu baris berisi 784 kolom merugikan model yang memperlakukan setiap kolom secara terpisah?
+  options:
+  - Angkanya menjadi terlalu besar untuk dibaca model
+  - Model tidak lagi diberi tahu piksel mana yang bertetangga
+  - Nilai kecerahannya hilang
+  - Gambarnya berakhir dengan piksel yang lebih sedikit
+  answer: 1
+  explanation: Ke-784 nilai itu masih ada, tetapi posisi di grid hilang, padahal pada gambar informasi berada pada bagaimana piksel bertetangga saling berbeda. Model tabel yang menganggap kolom saling lepas tidak dapat memanfaatkannya.
+- prompt: Filter 3 × 3 bergeser satu piksel setiap kali, tanpa padding, di atas potongan 5 × 5. Berapa ukuran feature map-nya?
+  options:
+  - 5 × 5
+  - 4 × 4
+  - 3 × 3
+  - 2 × 2
+  answer: 2
+  explanation: Filter muat di 5 - 3 + 1 = 3 posisi ke samping dan 3 ke bawah, sehingga petanya 3 × 3. Ukurannya baru tetap 5 × 5 jika bingkai angka nol ditambahkan lebih dulu (padding).
+- prompt: Filter tepi berisi -1 di kolom kiri, 0 di tengah, dan 1 di kolom kanan, pada setiap baris. Sebuah window berisi baris (2, 2, 8), (1, 1, 9), dan (0, 2, 8). Angka apa yang dihasilkan filter?
+  options:
+  - 22
+  - 25
+  - 28
+  - 3
+  answer: 0
+  explanation: Kolom kanan berjumlah 8 + 9 + 8 = 25 dan kolom kiri 2 + 1 + 0 = 3, sehingga hasilnya 25 - 3 = 22. Window itu jauh lebih terang di kanan, itulah yang dicari filter ini.
+- prompt: Filter yang sama diletakkan di atas window yang semua pikselnya bernilai 5. Apa hasilnya?
+  options:
+  - 45
+  - 15
+  - 5
+  - 0
+  answer: 3
+  explanation: Pada setiap baris hasilnya -5 + 0 + 5 = 0, sehingga jumlahnya 0. Filter yang membandingkan kedua sisi tidak menghasilkan apa-apa jika tidak ada perbedaan, itulah sebabnya area datar tetap sunyi di feature map.
+- prompt: Sebuah blok 2 × 2 dari feature map berisi 0, 9, 4, dan 1, sehingga max pooling menghasilkan 9. Respons yang kuat itu berpindah satu piksel ke sel tetangga di blok yang sama. Apa hasil blok itu sekarang?
+  options:
+  - 4
+  - 9
+  - 0
+  - 14
+  answer: 1
+  explanation: Angka terbesar di blok itu tetap 9, hanya berada di sel lain, sehingga nilai hasil pooling tidak berubah. Begitulah pooling mentoleransi pergeseran kecil. Angka 14 berasal dari penjumlahan, yang tidak dilakukan pooling.
+- prompt: Sebuah layer convolution punya 16 filter 3 × 3 dan membaca input dengan 8 feature map. Dengan satu bias per filter, berapa parameter yang dimilikinya?
+  options:
+  - 1.168
+  - 1.152
+  - 144
+  - 4.010
+  answer: 0
+  explanation: Setiap filter berisi 3 × 3 × 8 = 72 weight ditambah 1 bias, sehingga 16 × 73 = 1.168. Jawaban 1.152 melupakan bias, dan 144 melupakan bahwa setiap filter membaca ke-8 peta.
+- prompt: Apa yang membuat weight sharing memangkas jumlah weight sebesar itu?
+  options:
+  - Pooling menghapus separuh weight
+  - Setiap filter hanya dipakai pada satu piksel
+  - Weight dibulatkan menjadi bilangan bulat
+  - Weight satu filter dipakai ulang di setiap posisi window
+  answer: 3
+  explanation: Ke-9 weight filter 3 × 3 dipakai di semua 676 window pada gambar 28 × 28, sehingga pola dipelajari sekali dan ditemukan di mana saja. Layer dense membutuhkan weight terpisah untuk setiap posisi.
+- prompt: Dua convolution 3 × 3 ditumpuk, dengan stride 1 dan tanpa pooling. Seberapa besar receptive field satu angka di feature map kedua?
+  options:
+  - 3 × 3
+  - 6 × 6
+  - 5 × 5
+  - 9 × 9
+  answer: 2
+  explanation: Setiap angka di peta kedua membaca 3 × 3 angka dari peta pertama, yang bersama-sama mencakup 5 × 5 piksel. Setiap layer 3 × 3 yang ditumpuk melebarkan field sebesar 2, bukan 3.
+- prompt: Gambar abu-abu 28 × 28 melewati convolution dengan 8 filter 3 × 3, tanpa padding. Apa bentuk outputnya?
+  options:
+  - 28 × 28 × 8
+  - 26 × 26 × 8
+  - 26 × 26 × 1
+  - 13 × 13 × 8
+  answer: 1
+  explanation: Setiap filter menghasilkan peta 26 × 26, dan 8 filter menghasilkan 8 peta, sehingga 26 × 26 × 8. Bentuk 13 × 13 baru muncul setelah layer pooling berikutnya.
+- prompt: Pada CNN yang sudah dilatih, dari mana datangnya sembilan angka di dalam filter 3 × 3?
+  options:
+  - Programmer menulis satu pendeteksi tepi untuk setiap filter
+  - Layer pooling mengaturnya setelah setiap gambar
+  - Angka itu dimulai secara acak dan pelatihan memperbaruinya dengan langkah gradient
+  - Angka itu disalin dari tabel filter standar
+  answer: 2
+  explanation: Weight filter adalah weight biasa. Pelatihan menyesuaikannya dengan backpropagation, sehingga filter menjadi pola apa pun yang membantu menurunkan loss. Filter tepi buatan tangan di pelajaran ini hanya untuk belajar.

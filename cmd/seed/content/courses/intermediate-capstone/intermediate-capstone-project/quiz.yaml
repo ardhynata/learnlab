@@ -1,0 +1,80 @@
+- prompt: On Dataset 1, 93 of 1,200 transactions are fraud, and a missed fraud costs 50. What is the total cost of a model that never flags anything?
+  options:
+  - '465'
+  - '1,107'
+  - '4,650'
+  - '5,535'
+  answer: 2
+  explanation: Never flagging misses all 93 frauds, so the cost is 93 × 50 = 4,650, or 3.88 per transaction. The figure 5,535 is the cost of the opposite rule, flagging everything, which raises 1,107 false alarms at 5 each. Its accuracy is 92.3%, which is why accuracy hides the problem.
+- prompt: A false alarm costs 10 and a missed fraud costs 40. At what fraud probability does flagging a transaction become the cheaper choice?
+  options:
+  - 20%, because 10 / (10 + 40) = 0.2
+  - 25%, because 10 / 40 = 0.25
+  - 80%, because 40 / (10 + 40) = 0.8
+  - 40%, because it is the cost of a miss
+  answer: 0
+  explanation: Flag when p × 40 is at least (1 - p) × 10, that is when 50p ≥ 10, so p ≥ 0.2. A costlier miss pushes the threshold down; the ratio 10 / 40 leaves out the part of the cost that a flag also carries.
+- prompt: The reference forest scores AUC 0.84 on a random split and 0.72 on a grouped split of the same data. What is the best explanation?
+  options:
+  - The grouped split has fewer rows, so any model scores lower
+  - On a random split the same customers are in the training and test rows, so the forest can recognise a customer and its history
+  - The random split is the stricter test, so its score is the more honest one
+  - The grouped split contains more frauds in its test rows
+  answer: 1
+  explanation: A random split puts a customer's other transactions in training, and a flexible model can use that through the device fingerprint. A grouped split removes the trick, so 0.72 is closer to what the model will do on new customers. A random split is the more optimistic of the two here, not the stricter.
+- prompt: A model will score next month's transactions for the bank's existing customers. Which split imitates that use best?
+  options:
+  - Random, because every transaction is equally likely to be tested
+  - Grouped by customer, because customers must never be seen in training
+  - Any of the three, because they all give about the same AUC
+  - Temporal, training on earlier days and testing on later days
+  answer: 3
+  explanation: What will be new here is the future, not the customers, so the temporal split matches the use. It still keeps every customer in training, and that is fine when the same customers return. For customers the model has never seen, the grouped split would be the right one. The three splits do not give the same AUC.
+- prompt: On the grouped split the best forest depth is 2 (validation AUC 0.76) and depth 12 scores 0.63. On the random split depth 8 is best. Why does the best depth change?
+  options:
+  - The grouped search has a bug, because deeper trees should always score higher
+  - Deep trees can remember each customer, which pays only when validation rows come from customers already in training
+  - The random split has more training rows, so it needs deeper trees
+  - The L2 penalty is stronger on the grouped split
+  answer: 1
+  explanation: A deep tree can memorise customer-specific patterns. With random folds the validation rows share customers with the training rows, so memorising pays. With grouped folds it does not, and the extra depth only adds noise. The best setting depends on the split you will defend.
+- prompt: On 300 held-out rows with 18 frauds, the logistic regression has AUC 0.74 and the forest 0.70. The AUC difference, logistic minus forest, is +0.05 with a 95% interval of -0.02 to 0.11. What can you report?
+  options:
+  - The logistic regression is better, because 0.74 is above 0.70
+  - The forest is better, because it led in validation
+  - These rows cannot say which model is better, because the interval of the difference includes zero
+  - Both models are no better than the baseline
+  answer: 2
+  explanation: An interval that includes zero is compatible with no difference, and with the forest being ahead. Both models are above 0.5, so they beat the baseline. A fair report says that the models are not separated by 18 frauds, not that one wins.
+- prompt: You raise the number of bootstrap resamples B from 200 to 1000, and the AUC interval stays about 0.58 to 0.81. Why?
+  options:
+  - The width comes from the few frauds in the held-out rows; a larger B only makes the interval smoother
+  - A larger B should have halved the interval, so the bootstrap is broken
+  - A larger B adds more frauds to the held-out rows
+  - The interval does not depend on the data, only on B
+  answer: 0
+  explanation: Each resample draws from the same 300 rows, with the same 18 frauds. More resamples give a steadier estimate of the interval's ends, but they add no new information. Only more frauds, or more customers, would narrow it.
+- prompt: The held-out rows of the grouped split come from 15 customers, and the lab resamples the 300 transactions one by one. What does that do to the intervals?
+  options:
+  - Nothing, because resampling always gives the right width
+  - It makes them too wide, because the same customer is counted twice
+  - It makes them exact, because a resample has the same size as the data
+  - It makes them too narrow, because one customer's transactions are not independent
+  answer: 3
+  explanation: Transactions of one customer move together, so 300 rows carry less information than 300 independent cases. Resampling rows as if they were independent understates the uncertainty. "Defending an evaluation" resampled whole patients for this reason.
+- prompt: The cost curve of the held-out rows dips at 13.5%, where the cost is 1.90 against 2.65 at the cost threshold of 9.1%. You move the threshold there. What is wrong?
+  options:
+  - Nothing, the lowest point of the curve is always the best threshold
+  - The threshold must always equal 50%
+  - You picked the cut by looking at the test rows, so the reported cost of 1.90 is optimistic
+  - A higher threshold always flags more transactions
+  answer: 2
+  explanation: Choosing the threshold from the held-out curve tunes it on the test rows, so the cost it reports is flattered. Take the cut from the costs, here 5 / (5 + 50) = 9.1%, and say it is approximate. A higher threshold flags fewer transactions, not more.
+- prompt: At the 9.1% threshold the logistic regression misses 4 frauds and raises 119 false alarms on 300 rows. A miss costs 50 and a false alarm 5. What is its expected cost per transaction?
+  options:
+  - '3.97'
+  - '2.65'
+  - '3.00'
+  - '795'
+  answer: 1
+  explanation: 4 × 50 + 119 × 5 = 200 + 595 = 795 in total, and 795 / 300 = 2.65 per transaction. The figure 795 is the total, 3.00 is the cost of flagging nothing (18 × 50 / 300), and 3.97 is a different case, a missed-fraud cost of 100.

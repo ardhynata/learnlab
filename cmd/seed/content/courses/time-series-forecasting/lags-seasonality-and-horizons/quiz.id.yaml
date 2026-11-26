@@ -1,0 +1,80 @@
+- prompt: Mengapa baris deret waktu tidak boleh diacak sebelum dibagi menjadi data latih dan data uji?
+  options:
+  - Pengacakan membuat deret menjadi lebih panjang, sehingga pelatihan lebih lama
+  - Pengacakan mengubah rata-rata nilai
+  - Model tidak dapat membaca baris yang urutannya kacau
+  - Nilai yang lebih akhir masuk ke data latih, sehingga hubungan antara sebuah nilai dan nilai-nilai sebelumnya terputus
+  answer: 3
+  explanation: Forecast memakai masa lalu untuk memprediksi masa depan. Pengacakan menaruh kuartal masa depan di antara baris latih dan kuartal uji di antara kuartal latih, sehingga skornya mengukur pengisian celah, bukan forecasting. Rata-rata dan panjang deret tidak berubah.
+- prompt: "Pada deret toko, forecast seasonal naive untuk kuartal 11 (Q3 tahun 3) adalah nilai satu periode sebelumnya. Kuartal 7 bernilai 113 dan kuartal 10 bernilai 150. Berapa forecast-nya?"
+  options:
+  - "113"
+  - "125"
+  - "150"
+  - "102"
+  answer: 0
+  explanation: Periodenya 4 kuartal, sehingga kuartal 11 diprediksi dengan kuartal 7, yaitu 113. Nilai 150 adalah kuartal sebelumnya, yaitu forecast naive, dan 125 adalah nilai aktual kuartal 11.
+- prompt: Forecast naive bernilai 129 untuk keempat kuartal uji, dan nilai aktualnya 109, 150, 125, dan 143. Berapa MAE-nya?
+  options:
+  - "12"
+  - "14,75"
+  - "16,22"
+  - "59"
+  answer: 1
+  explanation: Galatnya -20, +21, -4, dan +14, sehingga jumlah galat mutlaknya 59 dan MAE-nya 59 / 4 = 14,75. Nilai 12 adalah MAE seasonal naive, 16,22 adalah RMSE naive, dan 59 adalah jumlah sebelum dibagi.
+- prompt: Sebuah deret punya 20 nilai. Kamu membuat baris latih dari lag 1 dan lag 4, dan setiap baris membutuhkan kedua lag itu. Berapa baris yang kamu dapatkan?
+  options:
+  - "20"
+  - "17"
+  - "16"
+  - "4"
+  answer: 2
+  explanation: Empat nilai pertama belum punya lag 4, sehingga baris dimulai dari nilai ke-5, dan 20 - 4 = 16. Deret toko mengalami hal yang sama, dengan 8 nilai latih yang menghasilkan 4 baris.
+- prompt: Sebuah model harus memprediksi 3 langkah ke depan dan tidak boleh memasukkan kembali forecast-nya sendiri. Berapa lag terpendek yang dapat dipakainya?
+  options:
+  - Lag 3
+  - Lag 1
+  - Lag 2
+  - Lag 4
+  answer: 0
+  explanation: Di origin kamu mengetahui nilai sampai origin. Forecast 3 langkah ke depan membutuhkan lag minimal 3 agar jatuh pada nilai yang sudah diketahui. Lag 1 dan lag 2 membutuhkan nilai yang masih berada di masa depan, dan lag 4 berfungsi tetapi bukan yang terpendek.
+- prompt: Pernyataan manakah tentang forecasting multi-langkah yang benar?
+  options:
+  - Forecast direct memasukkan tiap forecast kembali sebagai lag berikutnya
+  - Forecast recursive melatih satu model untuk tiap horizon
+  - Forecast recursive mengulang satu model satu langkah pada keluarannya sendiri, sehingga galat awal ikut terbawa
+  - Forecast direct selalu lebih akurat daripada forecast recursive
+  answer: 2
+  explanation: Recursive berarti satu model satu langkah dipakai ulang pada forecast-nya sendiri, sehingga langkah 2 berangkat dari tebakan langkah 1. Direct berarti model terpisah untuk tiap horizon. Tidak ada yang selalu lebih baik; direct membutuhkan lebih banyak model dan recursive membawa galat ke depan.
+- prompt: Forecast A salah 10 di setiap kuartal dari empat kuartal. Forecast B salah 0, 0, 0, dan 40. Keduanya punya MAE 10. Mana yang RMSE-nya lebih besar?
+  options:
+  - Sama, karena MAE-nya sama
+  - B, karena RMSE memberi bobot lebih pada kesalahan besar (20 dibanding 10)
+  - A, karena salah di setiap kuartal
+  - Tidak ada, karena RMSE membutuhkan MASE lebih dulu
+  answer: 1
+  explanation: RMSE mengkuadratkan galat. Untuk A hasilnya akar dari 100, yaitu 10. Untuk B hasilnya akar dari 1600 / 4 = 400, yaitu 20. Satu kesalahan besar lebih mahal dalam RMSE daripada total yang sama yang tersebar merata.
+- prompt: Sebuah forecast punya MAE 6 unit. Galat rata-rata seasonal naive pada tahun latih adalah 8 unit. Berapa MASE-nya dan apa artinya?
+  options:
+  - 0,75, artinya forecast itu benar pada 75% kasus
+  - 1,33, artinya lebih buruk daripada seasonal naive
+  - 14, yaitu penjumlahan kedua angka
+  - 0,75, artinya galat khasnya lebih kecil daripada galat khas seasonal naive pada data latih
+  answer: 3
+  explanation: MASE adalah 6 / 8 = 0,75. Di bawah 1 berarti forecast salah lebih sedikit daripada pembandingnya pada tahun latih. MASE adalah rasio galat, bukan persentase akurasi.
+- prompt: Nilai aktual adalah 100. Forecast A bernilai 50 dan forecast B bernilai 150, sehingga galat keduanya 50. Apa kata sMAPE?
+  options:
+  - Keduanya bernilai 50%, karena galatnya sama
+  - A bernilai 66,7% dan B bernilai 40%, sehingga forecast yang terlalu rendah dihukum lebih berat
+  - A bernilai 40% dan B bernilai 66,7%, sehingga forecast yang terlalu tinggi dihukum lebih berat
+  - Keduanya bernilai 33,3%, karena 100 berada di tengah 50 dan 150
+  answer: 1
+  explanation: sMAPE adalah 2 x |e| / (aktual + forecast). Untuk A nilainya 100 / 150 = 66,7% dan untuk B 100 / 250 = 40%. Galat yang sama memberi skor berbeda, salah satu alasan untuk tidak memeringkat model hanya dengan sMAPE.
+- prompt: Seorang forecaster menskalakan seluruh deret 12 kuartal ke rentang 0 sampai 1, lalu melatih pada kuartal 1 sampai 8 dan menguji pada kuartal 9 sampai 12. Apa yang salah?
+  options:
+  - Tidak ada, karena scaling tidak pernah memakai target
+  - Scaling tidak diperbolehkan untuk deret waktu
+  - Kuartal uji seharusnya diskalakan dengan rentangnya sendiri
+  - Kuartal uji ikut membentuk scaler, sehingga informasi dari masa depan bocor ke dalam fitur
+  answer: 3
+  explanation: Rentang seluruh deret mencakup tahun uji, sehingga scaler sudah melihat masa depan. Pelajari scaler hanya dari kuartal latih lalu terapkan ke kuartal uji, seperti di "Pipelines and leakage". Puncak uji 150 kemudian jatuh di 1,21, di luar rentang latih, seperti yang terjadi pada pemakaian nyata.

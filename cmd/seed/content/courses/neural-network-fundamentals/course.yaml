@@ -1,0 +1,31 @@
+slug: neural-network-fundamentals
+title: "Neural network fundamentals"
+summary: "Multilayer perceptrons, backpropagation, activations, initialization, optimizers, and regularization."
+topic: Machine learning
+level: advanced
+path: advanced
+position: 3
+translations:
+  id:
+    title: "Dasar neural network"
+    summary: "Multilayer perceptron, backpropagation, activation, inisialisasi, optimizer, dan regularization."
+modules:
+- slug: core-ideas
+  title: Core ideas
+  summary: "The concepts, in the order the lab uses them."
+  lessons:
+  - neurons-and-backpropagation
+  - activations-initialization-and-optimizers
+  translations:
+    id:
+      title: "Ide inti"
+      summary: "Konsep-konsepnya, sesuai urutan yang dipakai lab."
+- slug: lab
+  title: Lab
+  summary: "Run the idea yourself, then check what you learned."
+  lessons:
+  - network-lab
+  translations:
+    id:
+      title: "Lab"
+      summary: "Jalankan idenya sendiri, lalu periksa apa yang sudah kamu pelajari."

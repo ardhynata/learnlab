@@ -1,0 +1,32 @@
+slug: k-nearest-neighbors
+title: "Classification with k-nearest neighbors"
+summary: "Distance, feature scaling, decision boundaries, and choosing k."
+topic: Machine learning
+level: beginner
+path: beginner
+position: 5
+translations:
+  id:
+    title: "Klasifikasi dengan k-nearest neighbors"
+    summary: "Jarak, scaling fitur, decision boundary, dan cara memilih k."
+modules:
+- slug: core-ideas
+  title: Core ideas
+  summary: "The concepts, in the order the lab uses them."
+  lessons:
+  - how-knn-works
+  - distance-and-similarity
+  - tuning-k
+  translations:
+    id:
+      title: "Ide inti"
+      summary: "Konsep-konsepnya, sesuai urutan yang dipakai lab."
+- slug: lab
+  title: Lab
+  summary: "Run the idea yourself, then check what you learned."
+  lessons:
+  - knn-lab
+  translations:
+    id:
+      title: "Lab"
+      summary: "Jalankan idenya sendiri, lalu periksa apa yang sudah kamu pelajari."

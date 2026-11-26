@@ -1,0 +1,29 @@
+entity: Module
+context: ""
+display_field: title
+fields:
+    - name: id
+      type: string
+      auto: true
+      required: true
+    - name: course_id
+      type: string
+      required: true
+      ref: Course
+      on_delete: cascade
+    - name: slug
+      type: string
+      required: true
+      max_length: 80
+    - name: title
+      type: string
+      required: true
+      max_length: 120
+    - name: summary
+      type: string
+      max_length: 400
+    - name: position
+      type: int
+operations: [Create, GetByID, List, Update, Delete]
+transports: [rest]
+repository: postgresql

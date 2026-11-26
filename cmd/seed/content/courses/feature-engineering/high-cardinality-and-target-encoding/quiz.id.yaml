@@ -1,0 +1,80 @@
+- prompt: Sebuah tabel berisi 2.000 pelanggan dan kolom kode pos dengan 412 nilai berbeda. Berapa kolom yang ditulis one-hot encoding untuk kolom itu?
+  options:
+  - 1
+  - 3
+  - 412
+  - 2.000
+  answer: 2
+  explanation: One-hot encoding menulis satu kolom per kategori, sehingga 412 kolom yang hampir semuanya nol, untuk hanya 2.000 baris. Pilihan lain mencampuradukkan jumlah kategori dengan jumlah baris atau dengan kolom yang cardinality-nya rendah.
+- prompt: Mengapa frequency encoding tidak dapat membocorkan label?
+  options:
+  - Ia dibangun hanya dari seberapa sering tiap kategori muncul, dan tidak pernah membaca label
+  - Ia dihitung pada baris test, bukan pada baris training
+  - Ia memberi setiap kategori angka yang sama
+  - Ia merata-ratakan label tiap kategori, lalu membulatkan hasilnya
+  answer: 0
+  explanation: Jumlah atau porsi baris tidak membutuhkan label, sehingga tidak ada label yang dapat menyelip ke dalamnya. Harganya, ia hanya berguna bila seberapa umum sebuah kategori berhubungan dengan label. Hitungannya tetap berasal dari baris training.
+- prompt: Kode pos C punya 3 pelanggan training, semuanya membeli. Rata-rata keseluruhan 0,40 dan m = 4. Berapa smoothed target encoding untuk C?
+  options:
+  - 1,00, karena semua pelanggan membeli
+  - 0,40, rata-rata keseluruhan
+  - 0,52
+  - 0,66
+  answer: 3
+  explanation: (3 × 1,00 + 4 × 0,40) / (3 + 4) = 4,6 / 7 = 0,66. Nilai 0,52 milik kode pos D, yang hanya punya satu pelanggan, dan 1,00 adalah rata-rata tanpa smoothing.
+- prompt: Pada smoothed target encoding, apa yang terjadi pada nilai encoding ketika m dinaikkan?
+  options:
+  - Nilainya bergerak mendekati rata-rata tiap kategori itu sendiri
+  - Nilainya bergerak mendekati rata-rata keseluruhan, sehingga kategori kecil makin kurang dipercaya
+  - Hanya kategori tanpa baris yang berubah
+  - Tidak ada, karena m hanya mengubah urutan kategori
+  answer: 1
+  explanation: m berperan seperti m pelanggan khayalan di rata-rata keseluruhan yang ditambahkan ke setiap kategori. Makin besar m, makin besar bobot mereka, sehingga setiap nilai encoding tertarik ke rata-rata keseluruhan, paling kuat untuk kategori dengan sedikit baris.
+- prompt: Sebuah kategori punya 10 baris training dengan rata-rata sendiri 0,80. Rata-rata keseluruhan 0,40 dan m = 10. Berapa smoothed encoding-nya?
+  options:
+  - 0,40
+  - 0,70
+  - 0,60
+  - 0,80
+  answer: 2
+  explanation: (10 × 0,80 + 10 × 0,40) / (10 + 10) = 12 / 20 = 0,60. Karena n sama dengan m, rata-rata kategori dan rata-rata keseluruhan mendapat bobot yang sama, sehingga hasilnya tepat di tengah keduanya.
+- prompt: Mengapa naive target encoding, yang di-fit dan diterapkan pada baris training yang sama, membocorkan label?
+  options:
+  - Ia memakai baris test set untuk mencari rata-rata kategori
+  - Ia mengurutkan baris menurut label sebelum meng-encode-nya
+  - Ia membuang baris yang paling sulit diprediksi dari tabel
+  - Label setiap baris menjadi bagian dari rata-rata kategori yang kemudian menjadi fiturnya
+  answer: 3
+  explanation: "Label sebuah baris menggeser rata-rata kategorinya sendiri, sehingga fitur itu membawa sepotong jawaban. Efeknya paling kuat pada kategori dengan sedikit baris: kode pos dengan satu pelanggan di-encode sebagai label pelanggan itu."
+- prompt: Pada contoh out of fold, satu-satunya pelanggan dari kode pos D berada di fold 1, dan 16 pelanggan lainnya mencakup 5 pembeli. Dengan m = 4, berapa encoding yang diterima pelanggan itu?
+  options:
+  - 0,31, rata-rata keseluruhan dari fold lain
+  - 1,00, label pelanggan itu sendiri
+  - 0,40, rata-rata keseluruhan dari semua 20 pelanggan
+  - 0,00, karena tidak ada pelanggan D lain
+  answer: 0
+  explanation: Tabel dibangun dari fold lain yang tidak berisi baris D, sehingga n = 0 dan encoding-nya adalah rata-rata keseluruhan dari baris-baris itu, 5 / 16 = 0,3125, sekitar 0,31. Label pelanggan itu sendiri tidak pernah dipakai.
+- prompt: Dalam sebuah simulasi, kode pos tidak berguna dan label adalah lempar koin. Naive target encoding mendapat skor 71,7% pada baris training dan 50,0% pada baris baru. Apa yang ditunjukkan ini?
+  options:
+  - Model mengalami underfitting dan membutuhkan m yang lebih besar untuk menyesuaikan baris training
+  - Baris baru diambil dari populasi yang berbeda dengan baris training
+  - Kode pos adalah fitur yang kuat dan hanya butuh lebih banyak data untuk menunjukkannya
+  - "Leakage: encoding membawa label training, sehingga skor training tidak nyata"
+  answer: 3
+  explanation: Dengan label lempar koin, tidak ada yang dapat dipelajari dari kode pos, sehingga 50,0% pada baris baru adalah tingkat yang sebenarnya. Tambahan 21,7 poin pada baris training berasal dari label yang tersembunyi di dalam fitur. Smoothing dengan m = 10 memberi 71,7% dan 50,0% yang sama.
+- prompt: Kamu membandingkan fitur dengan cross-validation 5 fold, dan salah satu fiturnya adalah kode pos yang di-target-encode. Di mana encoding harus di-fit?
+  options:
+  - Sekali pada semua baris, sebelum fold dipotong
+  - Pada setiap putaran, hanya dari fold training, dengan fold validation di-encode oleh tabel itu
+  - Pada fold validation, karena fold itulah yang perlu di-encode
+  - Tidak masalah, karena label tidak pernah diperlihatkan kepada model
+  answer: 1
+  explanation: Target encoder membaca label, sehingga ia harus di-fit di dalam setiap putaran pada fold training. Jika di-fit pada semua baris, label setiap baris validation masuk ke encoding-nya sendiri, dan skor cross-validation menjadi menggembung.
+- prompt: Seorang rekan berkata bahwa smoothing membuat naive target encoding aman. Jawaban mana yang paling tepat?
+  options:
+  - Benar, smoothing menghilangkan label setiap baris dari rata-rata kategorinya
+  - Benar, tetapi hanya jika m di atas 100 untuk setiap kategori
+  - Tidak. Smoothing memperkecil kategori kecil, tetapi label setiap baris tetap berada di dalam encoding-nya sendiri
+  - Tidak. Smoothing memperparah kebocoran pada kategori yang jarang
+  answer: 2
+  explanation: Smoothing mengatur seberapa jauh kategori kecil dipercaya. Ia tidak mengeluarkan label sebuah baris dari rata-ratanya. Pada tabel lempar koin, naive encoding dengan m = 10 tetap mendapat 71,7% pada baris training dan 50,0% pada baris baru.

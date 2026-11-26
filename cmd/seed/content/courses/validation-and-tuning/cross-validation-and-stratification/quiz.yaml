@@ -1,0 +1,72 @@
+- prompt: The same 5-neighbor model is scored on 20 different hold-outs of 50 penguins from one pool, and the counts run from 40 to 49 right. What is the best explanation?
+  options:
+  - The model changed from one run to the next.
+  - The penguins in the pool changed from one run to the next.
+  - Each hold-out contains a different 50 penguins, and 50 rows is a small sample.
+  - Accuracy cannot be measured on penguins.
+  answer: 2
+  explanation: Nothing about the model or the pool changed. Only the shuffle did, and a score from 50 rows moves a lot with which rows land in it. This is why one validation split is a noisy judge.
+- prompt: Five fold scores are 72, 80, 84, 76 and 88. What is their mean?
+  options:
+  - 78
+  - 80
+  - 82
+  - 84
+  answer: 1
+  explanation: The scores add to 72 + 80 + 84 + 76 + 88 = 400, and 400 / 5 = 80.
+- prompt: The same five fold scores are 72, 80, 84, 76 and 88, with mean 80. What is their spread, the standard deviation dividing by n - 1?
+  options:
+  - 5.7
+  - 8.0
+  - 40
+  - 6.3
+  answer: 3
+  explanation: The gaps from 80 are -8, 0, 4, -4 and 8, so the squared gaps are 64, 0, 16, 16 and 64, which add to 160. Divide by 4 to get 40, and the square root is 6.3. The value 40 is the variance, and 5.7 comes from dividing by 5.
+- prompt: Model A has a 5-fold mean of 88.0 with SD 4.7. Model B has a mean of 88.6 with SD 4.5. What is the fair reading?
+  options:
+  - They are a tie, because a gap of 0.6 points is far smaller than the spread of the folds.
+  - B is better, because its mean is higher.
+  - A is better, because its SD is larger.
+  - Nothing can be said until the test set is scored.
+  answer: 0
+  explanation: A gap of 0.6 points is tiny next to a fold-to-fold spread of about 4.5. Comparing fold by fold or repeating the cross-validation could say more. The test set must never be used to choose between A and B.
+- prompt: A dataset has 200 rows, 10 of them positive. You cut 5 stratified folds of 40 rows. How many positive rows does each fold hold?
+  options:
+  - 1
+  - 4
+  - 2
+  - Anywhere from 0 to 4, depending on the shuffle
+  answer: 2
+  explanation: Stratifying deals the 10 positives out evenly, so each of the 5 folds gets 10 / 5 = 2 positives and 38 negatives. Plain random folds are the ones that can hold none.
+- prompt: A plain fold holds no positive rows at all. Why is that a problem?
+  options:
+  - The fold has too few rows to be scored.
+  - Recall on that fold is 0 / 0, undefined, and its accuracy only reflects the majority class.
+  - The model is trained on too many positives in that round.
+  - The folds are no longer the same size.
+  answer: 1
+  explanation: Recall divides by the number of real positives, which is zero here. The accuracy of such a fold tells you nothing about the class you care about. Stratified folds avoid it.
+- prompt: What does repeating 5-fold cross-validation with new shuffles reduce?
+  options:
+  - The noise from having this particular set of penguins and no others.
+  - The need for a test set.
+  - The number of models that must be fitted.
+  - The dependence of the result on one particular shuffle into folds.
+  answer: 3
+  explanation: Averaging over several shuffles steadies the part of the noise that comes from how the rows were dealt into folds. It does not make the penguins any more numerous, it costs more fits, and the test set is still needed.
+- prompt: After choosing 15 neighbors with cross-validation, you also score 5 neighbors on the test set "just to check" and keep whichever is better. What went wrong?
+  options:
+  - The test set was used to choose, so it became a validation set and its score is optimistic.
+  - Nothing, because the test set is meant for comparing models.
+  - The test set should have been used inside every fold.
+  - The test set was too small to score even one model.
+  answer: 0
+  explanation: A test set gives an honest report only if no choice depends on it. Once you pick the better model by its test score, that score is a winner's score, like a validation score.
+- prompt: You compare 4 settings, each with 5-fold cross-validation repeated 3 times. How many models are fitted for the comparison, not counting the final refit?
+  options:
+  - 20
+  - 15
+  - 60
+  - 12
+  answer: 2
+  explanation: One setting needs 5 folds x 3 repeats = 15 fits. Four settings need 4 x 15 = 60 fits. The final refit on the whole pool is one more.

@@ -1,0 +1,80 @@
+- prompt: Sebuah network punya 2 input, satu hidden layer berisi 8 unit, dan 1 unit output. Berapa parameter yang dihitung lab untuknya?
+  options:
+  - 24
+  - 25
+  - 33
+  - 41
+  answer: 2
+  explanation: Hidden layer punya 2 × 8 weight ditambah 8 bias, yaitu 24. Unit output punya 8 weight ditambah 1 bias, yaitu 9. Totalnya 33. Angka 24 melupakan unit output, dan 25 melupakan bias hidden layer.
+- prompt: Pada sebuah run, loss training dan loss validasi sama-sama bertahan di 0,693 selama 400 epoch, dan akurasinya 50,0%. Apa yang ditunjukkan hal ini?
+  options:
+  - Network menjawab sekitar 0,5 untuk setiap titik, jadi ia belum belajar apa pun
+  - Network overfitting, karena kedua loss-nya sama
+  - Network belajar dengan lambat tetapi benar, dan butuh lebih banyak epoch
+  - Network mengklasifikasikan separuh titik dengan sempurna dan separuh lainnya dengan salah
+  answer: 0
+  explanation: Network yang selalu menjawab 0,5 punya loss -ln 0,5 = 0,693 dan benar pada sekitar separuh titik secara kebetulan. Di lab, memulai dengan semua weight 0 menghasilkan run yang persis seperti ini. Overfitting akan menunjukkan jarak antara kedua loss.
+- prompt: Pada gradient chart, Layer 1 berada di -4 dan Layer 3 berada di -2. Bagaimana perbandingan gradient keduanya?
+  options:
+  - Gradient Layer 3 dua kali lebih besar daripada Layer 1
+  - Gradient Layer 3 adalah 100 kali gradient Layer 1
+  - Gradient Layer 1 adalah 100 kali gradient Layer 3
+  - Keduanya sama, karena sama-sama angka kecil
+  answer: 1
+  explanation: Chart menampilkan log10 dari rata-rata gradient. Nilai -4 berarti 0,0001 dan -2 berarti 0,01, dan 0,01 / 0,0001 = 100. Setiap garis grid adalah kelipatan 10, jadi dua garis grid berarti kelipatan 100.
+- prompt: Dengan 4 layer sigmoid, Kuis Cepat melaporkan gradient layer pertama 1,3e-4 dan gradient layer output 2,8e-3. Gradient layer pertama sekitar berapa kali lebih kecil?
+  options:
+  - Sekitar 0,05 kali
+  - Sekitar 2 kali
+  - Sekitar 22 kali
+  - Sekitar 360 kali
+  answer: 2
+  explanation: 2,8e-3 / 1,3e-4 = 0,0028 / 0,00013, yang kira-kira 21,5, jadi gradient layer pertama sekitar 22 kali lebih kecil. Slope sigmoid paling besar 0,25, sehingga gradient menyusut di setiap layer yang dilaluinya saat dikirim mundur.
+- prompt: Pada learning rate 0,01, rata-rata gradient layer pertama adalah 0,039 di awal. Kira-kira sejauh apa SGD menggeser sebuah weight di layer itu pada langkah pertama, dan sejauh apa Adam?
+  options:
+  - Keduanya sekitar 0,0004, karena memakai learning rate yang sama
+  - SGD sekitar 0,01 dan Adam sekitar 0,0004
+  - SGD sekitar 0,039 dan Adam sekitar 0,01
+  - SGD sekitar 0,0004 dan Adam sekitar 0,01
+  answer: 3
+  explanation: SGD melangkah sebesar learning rate dikali gradient, 0,01 × 0,039 = 0,00039. Adam membagi setiap gradient dengan besar gradient terbarunya sendiri, sehingga langkah pertamanya sekitar sebesar learning rate, 0,01, yaitu sekitar 25 kali lebih besar. Itulah sebabnya Adam mencapai loss 0,002 sementara SGD masih di 0,362 pada epoch 400.
+- prompt: Mengapa Adam tidak dapat menyelamatkan network yang dimulai dengan semua weight 0?
+  options:
+  - Adam butuh learning rate di atas 0,1 untuk menggerakkan weight yang mulai dari 0
+  - Setiap gradient tepat 0, dan Adam hanya menskalakan ulang gradient, jadi 0 tetap 0
+  - Adam hanya bekerja dengan unit sigmoid, sedangkan network ini memakai ReLU
+  - Adam butuh 2.000 epoch sebelum dapat keluar dari loss yang datar
+  answer: 1
+  explanation: Dengan semua weight 0, tidak ada unit yang meneruskan sinyal, sehingga setiap gradient tepat 0 dan garis gradient berada di dasar chart. Adam mengalikan gradient dengan faktor yang bergantung pada besarnya, dan 0 dikali faktor apa pun tetap 0. Titik awal yang acaklah yang memecahkan kesetaraan itu.
+- prompt: Dengan ReLU dan Adam pada learning rate 1, loss berakhir di 0,291 dan histogram Layer 2 berbunyi mati 75%. Pernyataan mana yang benar?
+  options:
+  - 6 dari 8 unit di Layer 2 tidak meneruskan gradient, sehingga training tidak dapat menghidupkannya kembali
+  - 75% titik training diklasifikasikan dengan salah
+  - 75% weight di Layer 2 tepat bernilai 0
+  - Network overfitting, karena loss-nya di atas 0,2
+  answer: 0
+  explanation: 75% dari 8 unit adalah 6 unit yang slope-nya nol untuk setiap titik training, sehingga tidak ada gradient yang sampai ke weight-nya. Akurasi di akhir adalah 82,1%, jadi 75% bukan porsi titik yang salah. Overfitting akan menunjukkan loss validasi di atas loss training yang terus membesar, bukan unit mati.
+- prompt: Pada penguin, network bawaan punya loss validasi 0,103 pada epoch 50 dan 0,227 pada epoch 400, sementara loss training-nya turun dari 0,078 ke 0,012. Bagaimana pembacaan terbaiknya?
+  options:
+  - Network terlalu kecil, jadi butuh lebih banyak unit
+  - Lab punya bug, karena loss validasi tidak mungkin lebih tinggi daripada pada epoch 50
+  - Learning rate terlalu tinggi, jadi unit-unitnya mati
+  - Network overfitting, jadi coba Kekuatan L2 yang lebih besar atau epoch yang lebih sedikit
+  answer: 3
+  explanation: Loss training terus membaik sementara loss validasi memburuk, jadi network sedang menyesuaikan diri dengan 84 penguin training, bukan dengan polanya. Kekuatan L2 0,01 menurunkan loss validasi ke 0,033. Network yang terlalu kecil akan punya loss training yang tinggi juga.
+- prompt: Pada sampel penguin pertama, Kekuatan L2 0,01 menurunkan loss validasi dari 0,227 ke 0,033. Pada sampel kedua, ia menaikkannya dari 0,027 ke 0,042. Apa kesimpulanmu?
+  options:
+  - L2 tidak berpengaruh, karena kedua sampel tidak sepakat
+  - L2 dapat membantu pada satu sampel dan merugikan pada sampel lain, jadi periksa beberapa sampel sebelum mempercayainya
+  - Sampel kedua punya bug, jadi abaikan saja
+  - L2 selalu membantu, karena sampel pertama membaik sebegitu banyak
+  answer: 1
+  explanation: Dengan hanya 36 titik validasi, satu sampel itu mengandung banyak noise. Di lab, L2 membantu pada tiga dari empat sampel dan merugikan pada satu. Itulah sebabnya eksperimen terakhir memintamu mengulangi pemeriksaan pada sampel baru sebelum mempercayainya.
+- prompt: Pada dua bulan sabit, network dengan 1 hidden layer berisi 2 unit berakhir dengan akurasi 88,1% pada titik training dan 72,2% pada titik validasi. Dengan 8 unit, akurasinya mencapai 100,0% pada keduanya. Apa yang menjelaskan network yang kecil itu?
+  options:
+  - Overfitting, karena akurasi validasinya lebih rendah daripada akurasi training
+  - Bug, karena network seharusnya selalu mencapai 100%
+  - Unit terlalu sedikit untuk membengkokkan boundary secukupnya, sehingga akurasi training pun rendah
+  - Learning rate yang terlalu tinggi, yang mematikan unit-unitnya
+  answer: 2
+  explanation: Setiap unit menambahkan satu potongan pada boundary, dan 2 unit tidak dapat mengikuti kedua bulan sabit. Akurasi training-nya juga rendah, jadi network tidak dapat menyesuaikan diri bahkan dengan titik yang dilihatnya. Overfitting akan menunjukkan akurasi training yang tinggi dan akurasi validasi yang lebih rendah.

@@ -1,0 +1,32 @@
+# hexago.lock: identifiers hexago must never reassign once published
+# (proto field tags, workspace port slots) and the main.go wire calls
+# gen last wrote. Commit it. No secrets.
+# Edit only to resolve a merge conflict: give one side the next free
+# number, then re-run hexago. See docs/yaml-spec.md#hexagolock.
+version: 1
+wire: # the call gen last wrote per main.go declaration; one that differs is hand-edited
+  cmd/app/main.go:
+    courseHandler: "courserest.NewHandler(courseSvc, cfg.MaxBodyBytes, logger)"
+    courseSvc: "courseservice.NewService(courseRepo, pathRepo, lessonRepo, moduleRepo, tx)"
+    courseTextHandler: "coursetextrest.NewHandler(courseTextSvc, cfg.MaxBodyBytes, logger)"
+    courseTextSvc: "coursetextservice.NewService(courseTextRepo, courseRepo, tx)"
+    learnerHandler: "learnerrest.NewHandler(learnerSvc, cfg.MaxBodyBytes, logger)"
+    learnerSvc: "learnerservice.NewService(learnerRepo, progressRepo, tx)"
+    lessonHandler: "lessonrest.NewHandler(lessonSvc, cfg.MaxBodyBytes, logger)"
+    lessonSvc: "lessonservice.NewService(lessonRepo, courseRepo, moduleRepo, progressRepo, questionRepo, tx)"
+    lessonTextHandler: "lessontextrest.NewHandler(lessonTextSvc, cfg.MaxBodyBytes, logger)"
+    lessonTextSvc: "lessontextservice.NewService(lessonTextRepo, lessonRepo, tx)"
+    moduleHandler: "modulerest.NewHandler(moduleSvc, cfg.MaxBodyBytes, logger)"
+    moduleSvc: "moduleservice.NewService(moduleRepo, courseRepo, lessonRepo, tx)"
+    moduleTextHandler: "moduletextrest.NewHandler(moduleTextSvc, cfg.MaxBodyBytes, logger)"
+    moduleTextSvc: "moduletextservice.NewService(moduleTextRepo, moduleRepo, tx)"
+    pathHandler: "pathrest.NewHandler(pathSvc, cfg.MaxBodyBytes, logger)"
+    pathSvc: "pathservice.NewService(pathRepo, tx)"
+    pathTextHandler: "pathtextrest.NewHandler(pathTextSvc, cfg.MaxBodyBytes, logger)"
+    pathTextSvc: "pathtextservice.NewService(pathTextRepo, pathRepo, tx)"
+    progressHandler: "progressrest.NewHandler(progressSvc, cfg.MaxBodyBytes, logger)"
+    progressSvc: "progressservice.NewService(progressRepo, learnerRepo, lessonRepo, tx)"
+    questionHandler: "questionrest.NewHandler(questionSvc, cfg.MaxBodyBytes, logger)"
+    questionSvc: "questionservice.NewService(questionRepo, lessonRepo, tx)"
+    questionTextHandler: "questiontextrest.NewHandler(questionTextSvc, cfg.MaxBodyBytes, logger)"
+    questionTextSvc: "questiontextservice.NewService(questionTextRepo, lessonRepo, tx)"

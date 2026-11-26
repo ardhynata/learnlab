@@ -1,0 +1,26 @@
+entity: PathText
+context: ""
+display_field: title
+fields:
+  - name: id
+    type: string
+    auto: true
+  - name: path_id
+    type: string
+    required: true
+    ref: Path
+    on_delete: cascade
+  - name: locale
+    type: string
+    required: true
+    max_length: 8
+  - name: title
+    type: string
+    required: true
+    max_length: 120
+  - name: summary
+    type: string
+    max_length: 400
+operations: [Create, GetByID, List, Update, Delete]
+transports: [rest]
+repository: postgresql

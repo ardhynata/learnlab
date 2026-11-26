@@ -1,0 +1,31 @@
+slug: regularization
+title: "Regularization"
+summary: "L1, L2, the bias-variance trade-off, coefficient shrinkage, and learning curves."
+topic: Machine learning
+level: intermediate
+path: intermediate
+position: 3
+translations:
+  id:
+    title: "Regularization"
+    summary: "L1, L2, trade-off bias-variance, penyusutan koefisien, dan learning curve."
+modules:
+- slug: core-ideas
+  title: Core ideas
+  summary: "The concepts, in the order the lab uses them."
+  lessons:
+  - bias-variance-and-shrinkage
+  - l1-and-l2
+  translations:
+    id:
+      title: "Ide inti"
+      summary: "Konsep-konsepnya, sesuai urutan yang dipakai lab."
+- slug: lab
+  title: Lab
+  summary: "Run the idea yourself, then check what you learned."
+  lessons:
+  - regularization-lab
+  translations:
+    id:
+      title: "Lab"
+      summary: "Jalankan idenya sendiri, lalu periksa apa yang sudah kamu pelajari."

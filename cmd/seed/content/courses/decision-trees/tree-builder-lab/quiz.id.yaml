@@ -1,0 +1,72 @@
+- prompt: Pada split awal lab, Feature 1 ≤ 3,4, sisi kanan berisi 70 titik training, 19 Kelas A dan 51 Kelas B. Berapa Gini impurity-nya?
+  options:
+  - 0,000
+  - 0,277
+  - 0,396
+  - 0,500
+  answer: 2
+  explanation: 1 - (19/70)² - (51/70)² = 1 - 2962/4900 = 0,396. Nilai 0,277 adalah Gini berbobot dari seluruh split, dan 0,000 adalah Gini sisi kiri, yang semuanya Kelas A.
+- prompt: Seluruh training set punya Gini 0,500, dan splitmu punya Gini berbobot 0,277 setelah dipotong. Berapa penurunan impurity-nya?
+  options:
+  - 0,223
+  - 0,277
+  - 0,723
+  - 0,500
+  answer: 0
+  explanation: Penurunannya adalah Gini sebelum dikurangi Gini berbobot sesudah, 0,500 - 0,277 = 0,223. Penurunan yang lebih besar berarti split yang lebih baik.
+- prompt: Split awal punya sisi kiri yang murni sempurna (30 titik, semuanya Kelas A), tetapi split pertama terbaik punya penurunan 0,371 dibandingkan 0,223 dan menyisakan 5 titik Kelas B di sisi kirinya. Mengapa ia menang?
+  options:
+  - Sebuah split dinilai hanya dari sisinya yang paling murni, dan sisi paling murni milik split terbaik lebih besar
+  - Lab selalu memilih split dengan sisi kiri yang lebih besar
+  - Titik Kelas B di sisi kiri tidak dihitung dalam Gini
+  - Kedua sisinya hampir murni, sedangkan split awal menyisakan kelompok campur berisi 70 titik yang menaikkan Gini berbobotnya
+  answer: 3
+  explanation: Skornya adalah Gini berbobot dari kedua sisi. Split awal menyisakan sisi kanan berisi 70 titik dengan Gini 0,396. Split terbaik menghasilkan 52 titik pada 0,174 dan 48 titik pada 0,080, atau berbobot 0,129. Satu kelompok murni berisi 30 titik tidak cukup.
+- prompt: Di lab ini, apa hasil dari kedalaman maksimum 1?
+  options:
+  - Satu leaf yang selalu menjawab kelas mayoritas
+  - Split pertamamu saja, yang menghasilkan 2 leaf
+  - Tepat satu leaf untuk setiap kelas
+  - Tree dengan paling banyak 1 titik per leaf
+  answer: 1
+  explanation: Kedalaman 1 berarti satu pertanyaan berurutan, yaitu split pertamamu. Lab ini tidak punya kedalaman 0. Kedalaman maksimum 1 tidak berkaitan dengan jumlah titik di sebuah leaf.
+- prompt: Dari split pertama terbaik pada gumpalan yang tumpang tindih, training accuracy mencapai 100% di kedalaman 5 dengan 10 leaf dan tetap di sana sampai kedalaman 10. Mengapa tree tidak tumbuh pada kedalaman 6 sampai 10?
+  options:
+  - Slider kedalaman maksimum berhenti bekerja di atas 5
+  - Validation accuracy akan turun, sehingga lab menghentikannya
+  - Setiap leaf sudah murni, sehingga tidak ada lagi yang dapat dibelah
+  - Sebuah tree tidak pernah boleh punya lebih dari 10 leaf
+  answer: 2
+  explanation: Kelompok murni punya Gini 0, dan tidak ada potongan yang dapat menurunkannya lagi. Kedalaman hanyalah batas atas, sehingga tree berhenti ketika leaf-nya sudah murni. Dataset lain dapat dengan mudah punya lebih dari 10 leaf.
+- prompt: Pada pola papan catur, training accuracy naik dari 93% di kedalaman 4 ke 100% di kedalaman 7, sementara validation accuracy turun dari 88% ke 78%. Bagaimana pembacaan yang paling tepat?
+  options:
+  - Tree yang lebih dalam telah menghafal label yang dibalik pada titik training, dan itu tidak terbawa ke data baru
+  - Titik validation-nya rusak dan sebaiknya diabaikan
+  - Tree yang lebih dalam telah mempelajari pola dengan lebih baik, karena training accuracy-nya lebih tinggi
+  - Validation accuracy selalu turun begitu tree punya lebih dari 20 leaf
+  answer: 0
+  explanation: Training accuracy tidak pernah turun saat tree tumbuh, sehingga ia tidak dapat menunjukkan kapan harus berhenti. Penurunan validation sebesar 10 poin berarti leaf tambahan itu mencocokkan noise. Aturan 20 leaf itu tidak ada dasarnya.
+- prompt: Pada gumpalan dengan split pertama terbaik, menaikkan ukuran leaf minimum dari 1 ke 5 menurunkan training accuracy dari 100% ke 95% dan validation accuracy dari 84% ke 82%, dan jumlah leaf turun dari 10 ke 6. Apa kesimpulan yang paling adil?
+  options:
+  - Ukuran leaf minimum 1 jelas lebih baik, karena 84% lebih tinggi daripada 82%
+  - Ukuran leaf minimum 5 jelas lebih baik, karena training accuracy-nya lebih dekat ke validation accuracy
+  - Ukuran leaf minimum tidak berpengaruh pada tree
+  - Perubahan validation-nya satu titik dari 50, yaitu seri, sehingga tree 6 leaf adalah pilihan yang lebih sederhana dan cukup baik
+  answer: 3
+  explanation: Dengan 50 titik validasi, satu titik bernilai 2 poin persentase, sehingga 84% menjadi 82% adalah seri. Tree yang lebih kecil melepaskan sebagian training accuracy, dan itulah tujuan pengaturan ini, serta lebih mudah dibaca.
+- prompt: Pada empat sampel penguin, validation accuracy terbaik muncul di kedalaman 2 atau 3, dan tree berkedalaman 10 tidak pernah lebih baik, sementara training accuracy-nya 100% setiap kali. Apa yang didukung oleh temuan ini?
+  options:
+  - Kedalaman 2 adalah kedalaman yang tepat untuk setiap dataset
+  - Setelah sekitar kedalaman 3, kedalaman tambahan hanya membeli training accuracy dan bukan validation accuracy pada sampel-sampel ini
+  - Validation accuracy selalu turun setelah kedalaman 3
+  - Training accuracy adalah penunjuk yang lebih baik untuk kedalaman terbaik
+  answer: 1
+  explanation: Polanya bertahan di empat sampel, yang lebih kuat daripada satu potongan. Itu tidak menjadikan 2 sebagai kedalaman universal, dan penurunannya tidak dijamin, karena pada sampel ketiga validation tetap di 98%. Training accuracy tidak dapat menjadi penunjuk, karena ia terus naik.
+- prompt: Mengapa kamu perlu menekan Sampel baru dan mengulang percobaan pada penguin nyata sebelum memercayai apa yang kamu lihat?
+  options:
+  - Sampel baru selalu menghasilkan accuracy yang lebih tinggi
+  - Sampel pertama selalu salah
+  - Setiap sampel hanya punya 50 titik validasi, sehingga satu sampel dapat menguntungkan atau merugikan sebuah tree, dan pola yang berulang lebih layak dipercaya
+  - Sampel baru mengubah spesies penguin
+  answer: 2
+  explanation: Satu titik validasi menggeser skor sebesar 2 poin, dan 150 penguin acak yang berbeda menggesernya lebih banyak lagi. Pada empat sampel, validation accuracy di kedalaman 10 adalah 90%, 90%, 98%, dan 90%. Kesimpulan yang layak dipercaya adalah yang berulang.

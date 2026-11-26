@@ -1,0 +1,31 @@
+slug: preparing-tabular-data
+title: "Preparing tabular data"
+summary: "Missing values, encoding, scaling, preprocessing pipelines, and leakage."
+topic: Machine learning
+level: beginner
+path: beginner
+position: 9
+translations:
+  id:
+    title: "Menyiapkan data tabular"
+    summary: "Missing value, encoding, scaling, pipeline preprocessing, dan leakage."
+modules:
+- slug: core-ideas
+  title: Core ideas
+  summary: "The concepts, in the order the lab uses them."
+  lessons:
+  - missing-values-and-encoding
+  translations:
+    id:
+      title: "Ide inti"
+      summary: "Konsep-konsepnya, sesuai urutan yang dipakai lab."
+- slug: lab
+  title: Lab
+  summary: "Run the idea yourself, then check what you learned."
+  lessons:
+  - scaling-and-encoding
+  - pipelines-and-leakage
+  translations:
+    id:
+      title: "Lab"
+      summary: "Jalankan idenya sendiri, lalu periksa apa yang sudah kamu pelajari."

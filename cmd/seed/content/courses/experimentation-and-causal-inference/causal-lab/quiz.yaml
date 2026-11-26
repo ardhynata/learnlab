@@ -1,0 +1,80 @@
+- prompt: At its start the lab shows a true effect of +2.00 and a naive difference of +4.15. What is the main reason the naive difference is so much larger?
+  options:
+  - The sample of 400 people is too small, so the estimate is noisy and wanders from study to study.
+  - Treated people have a higher z on average, and a higher z raises the outcome even without treatment.
+  - The treatment effect is bigger for the treated people than it is for the control people here.
+  - The naive difference is divided by the wrong standard error, which inflates the estimate itself.
+  answer: 1
+  explanation: The treated group starts with a head start on z, and the naive difference counts that head start as treatment effect. Noise would make the estimate wander in both directions, and it would not push 400 people to the same side every time. The standard error only sizes the interval.
+- prompt: In the lab, treated people have a mean z of +0.62 and control people of −0.45, and the outcome without treatment rises by about 2 for each step of z. About how large is the confounding bias in the naive difference?
+  options:
+  - '0.50'
+  - '1.07'
+  - '2.15'
+  - '4.15'
+  answer: 2
+  explanation: The gap in z is 0.62 − (−0.45) = 1.07, and the outcome rises 2 for each step, so the head start is 2 × 1.07 = 2.15. That is the Error the table shows for the naive row. The 4.15 is the whole naive difference, which is the true effect 2.00 plus this bias.
+- prompt: You press Run randomized experiment. Why does the gap between treated and control on z shrink from 1.26 to 0.16 standard deviations?
+  options:
+  - The lab removes people with an extreme z from the sample before it compares the two groups.
+  - The coin flip decides who is treated, so z no longer steers who gets the treatment.
+  - Regression adjustment subtracts the effect of z from the outcome before the groups are compared.
+  - The treatment effect is set to zero for the new assignment, so the groups look more alike.
+  answer: 1
+  explanation: The same people keep their z and their potential outcomes. Only the assignment changes, and a fair coin ignores z. The small gap that is left, 0.16, is chance.
+- prompt: Confounding strength is 0. The naive difference is +1.87 and the randomized experiment is +1.68, against a true effect of +2.00. Which statement is right?
+  options:
+  - The naive difference wins, because 1.87 is nearer to 2.00 than 1.68 is.
+  - The randomized experiment wins, because randomizing always beats the naive difference.
+  - Nothing is left to confound, so the naive difference is already unbiased, and the 0.19 gap is about the size of the noise (standard error near 0.23).
+  - Neither can be used, because with no confounding there is no effect to estimate.
+  answer: 2
+  explanation: With confounding at 0 the treated and control groups are alike apart from the treatment, so the naive difference aims at the truth just as the randomized experiment does. The errors, −0.13 and −0.32, differ by 0.19, which is less than the standard error of either estimate (about 0.23), so neither is clearly closer. Randomizing pays off when something confounds. The lab calls two errors equal on exactly this rule.
+- prompt: Over 200 studies the naive difference has bias +2.15 and spread 0.20 with 400 people. What happens when you set Sample size to 1600 and run 200 studies again?
+  options:
+  - The spread falls to about 0.10 and the bias stays at about +2.14.
+  - 'Both fall: the bias drops to about 0.5 and the spread to about 0.10.'
+  - Nothing changes, because the effect size did not change.
+  - The bias falls to about 0.5 and the spread stays at about 0.20.
+  answer: 0
+  explanation: More people average away the noise, so the spread falls (by about half for four times the people). The head start of the treated group is built into the groups themselves, so a bigger sample measures the same wrong number more precisely.
+- prompt: Over 200 studies the randomized experiment has bias −0.04 and spread 0.21. Which statement is right?
+  options:
+  - Any single randomized study is within 0.04 of the truth, because the bias is that small.
+  - Its bias is small only because the sample is large, and a smaller sample would bias it.
+  - It is worse than the naive difference, because its spread is larger than the naive spread.
+  - It is unbiased on average, but a single study can still miss by about 0.2 or more.
+  answer: 3
+  explanation: A bias near zero says the average aims at the truth. The spread says a single study scatters about 0.21 around that average. The naive difference has a smaller spread (0.20) but a bias of +2.15, which is far worse.
+- prompt: You turn on Add an unmeasured confounder. Regression adjustment on z moves to +3.30, and the randomized experiment gives +2.01 on its second flip. Why does randomizing still work?
+  options:
+  - The coin flip breaks the link between the hidden variable and the treatment, as it does for z.
+  - The randomized experiment adjusts for the hidden variable automatically, as regression would.
+  - The hidden variable only affects the control group, so it cannot bias the comparison.
+  - The randomized experiment uses more people than the regression does, so it is more exact.
+  answer: 0
+  explanation: A coin flip ignores every variable, measured or not. Regression can only adjust for z, because z is the only confounder it is told about. The first randomized flip read +1.36 and missed the truth, which is the chance 1 in 20 that a 95% interval misses.
+- prompt: With Add a collider on, the row Adjusting for the collider reads −0.07 against a true effect of +2.00. What went wrong?
+  options:
+  - The collider is a confounder, so adjusting for it should have worked as usual.
+  - Adjusting for something caused by both treatment and outcome creates a false link and wipes out the effect.
+  - The sample is too small for a collider, so the estimate drifted away from the truth.
+  - The interval is too narrow to cover the truth, so the estimate only looks wrong.
+  answer: 1
+  explanation: A collider is caused by the treatment and by the outcome. Holding it fixed ties them together in a way that is not in the world. The lesson's rule is to adjust for variables fixed before the treatment that drive both treatment and outcome.
+- prompt: In the power card the effect is 0.5, the spread is 1 and there are 50 people per group. What is the standard error of the difference, and how many standard errors is the effect?
+  options:
+  - 0.20 and 2.5
+  - 0.14 and 3.5
+  - 0.50 and 1.0
+  - 1.00 and 0.5
+  answer: 0
+  explanation: The standard error is 1 × sqrt(2 / 50) = 0.2, and 0.5 / 0.2 = 2.5. Clearing 1.96 from 2.5 leaves 0.54, which gives the 70.5% power the card shows.
+- prompt: With no real effect and 5 looks, the lab shows about 14.7% false positives when you stop at the first significant result, instead of 5%. What is the best fix?
+  options:
+  - Look more often, so you stop as soon as the first look crosses the line.
+  - Raise the effect to detect until the false positives fall to the target rate.
+  - Use a smaller alpha only for the last look and keep the earlier looks as they are.
+  - Fix the sample size and the number of looks beforehand, and test each look at a stricter cutoff such as alpha divided by the looks.
+  answer: 3
+  explanation: Each look is another chance for luck. Planning the looks beforehand and using a stricter cutoff for each one, which the Corrected line shows near 3%, brings the error rate back to about the target. Looking more often makes it worse.

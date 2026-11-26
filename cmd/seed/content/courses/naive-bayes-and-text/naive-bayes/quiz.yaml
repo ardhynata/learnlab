@@ -1,0 +1,72 @@
+- prompt: To compare two classes for one message, naive Bayes uses score(c) = P(c) x P(words | c) and leaves out P(words). Why is that allowed?
+  options:
+  - P(words) is always 1 for a message that was seen in training
+  - P(words) is much smaller than the prior, so it hardly matters
+  - P(words) is the same for every class, so it cannot change which score is larger
+  - P(words) is already included in each word probability
+  answer: 2
+  explanation: Dividing every class score by the same number keeps their order. The term only matters if you want actual probabilities, and then you get it back by dividing each score by the sum of the scores.
+- prompt: In the lesson's training set, the ham messages contain 6 words in total and "now" appears 2 times. The vocabulary has 7 words. With Laplace smoothing (add 1), what is P(now | ham)?
+  options:
+  - 2 / 6
+  - 3 / 13
+  - 3 / 6
+  - 2 / 13
+  answer: 1
+  explanation: Smoothing adds 1 to the count (2 + 1 = 3) and adds the vocabulary size to the total (6 + 7 = 13). The raw estimate would be 2 / 6.
+- prompt: Why is the classifier called "naive"?
+  options:
+  - It assumes words are independent of each other once the class is known, which is usually not true
+  - It uses only the first word of each message
+  - It ignores the prior and looks only at the words
+  - It needs no training data
+  answer: 0
+  explanation: The product of one factor per word is only correct if words are independent given the class. In real text they are linked ("free" with "prize"), so the assumption is naive, yet the classifier is often still useful.
+- prompt: Without smoothing, a message contains the word "meeting", which never appeared in any spam message in training. What happens to the spam score?
+  options:
+  - It becomes slightly smaller, because one word is rare
+  - It is unchanged, because unseen words are skipped
+  - It becomes larger, because the word is surprising
+  - It becomes exactly 0, whatever the other words are
+  answer: 3
+  explanation: P(meeting | spam) = 0 / 6 = 0, and a product with one zero factor is 0. That is why one unseen word can veto a class, and why Laplace smoothing is used.
+- prompt: In the lesson's two classes, why is V = 7 added to the denominator of every smoothed probability?
+  options:
+  - To make the numbers easier to compute by hand
+  - Because the vocabulary has 7 messages
+  - So that the probabilities of one class still add up to 1 after adding 1 to each of the 7 counts
+  - To give spam a higher prior than ham
+  answer: 2
+  explanation: Adding 1 to each of the 7 word counts adds 7 to the class total. The spam probabilities are then 2, 3, 3, 2, 1, 1 and 1, all over 13, which add up to 13 / 13 = 1.
+- prompt: For "free now meeting" the spam score is 2.4 / 2197 and the ham score is 5.4 / 2197. What does the classifier answer, and with what probability of spam?
+  options:
+  - Spam, with probability 0.69
+  - Ham, with P(spam) = 2.4 / (2.4 + 5.4) = 0.31
+  - Ham, with P(spam) = 2.4 / 5.4 = 0.44
+  - Spam, because "free" is a spam word
+  answer: 1
+  explanation: The larger score wins, and that is ham. Probabilities come from dividing by the sum of the scores, 2.4 / 7.8 = 0.31. Dividing by the other score instead gives a ratio of scores, not a probability.
+- prompt: Why do real naive Bayes classifiers add log probabilities instead of multiplying probabilities?
+  options:
+  - Logarithms make every probability larger
+  - Logs change which class has the larger score, which improves accuracy
+  - Logs let the model learn words it has not seen
+  - A product of many small numbers can underflow to 0, while a sum of logs stays a normal number and keeps the same order
+  answer: 3
+  explanation: Taking logs keeps the order of the scores (a larger score has a larger log) and turns a tiny product like 10^-334 into an ordinary negative number. It does not change the prediction or add knowledge about unseen words.
+- prompt: For "free prize now" the log score of spam is -5.720 and of ham is -7.107. What does the gap of about 1.39 mean?
+  options:
+  - Spam's score is e^1.39 = 4 times the ham score, so P(spam) = 0.80
+  - Spam's score is 1.39 times the ham score
+  - The message is 1.39 percent likely to be spam
+  - The model is wrong, because log scores must be positive
+  answer: 0
+  explanation: A difference of logs is the log of a ratio, so the ratio of scores is e^1.39 = 4. Then P(spam) = 4 / (4 + 1) = 0.80. Log probabilities are negative, and that is normal.
+- prompt: The words "free" and "prize" nearly always appear together in spam, but naive Bayes multiplies a factor for each. What is the usual effect on the predicted probability of spam?
+  options:
+  - It becomes too low, because the factors are small
+  - It is exactly right, because the factors are estimated from counts
+  - It tends to be too extreme, because the same evidence is counted twice
+  - It does not change, because the two words cancel
+  answer: 2
+  explanation: Two linked words carry mostly one piece of evidence, but the model counts it twice, which pushes the probability toward 0 or 1. The choice of class is often still right, so rank by score rather than trusting 0.97 literally.

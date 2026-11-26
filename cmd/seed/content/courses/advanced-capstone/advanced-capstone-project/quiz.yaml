@@ -1,0 +1,80 @@
+- prompt: A review costs 4, a false alarm costs 6 extra and a missed positive costs 40. At what probability of being positive does flagging a case become the cheaper choice?
+  options:
+  - 15%, because 6 / 40 = 0.15
+  - 25%, because 10 / 40 = 0.25
+  - 21.7%, because (4 + 6) / (40 + 6) = 0.217
+  - 10%, because 4 / 40 = 0.1
+  answer: 2
+  explanation: 'Flagging costs 4 + (1 - p) × 6 = 10 - 6p, and leaving the case costs 40p. Flagging is cheaper when 10 - 6p is at most 40p, that is when p ≥ 10 / 46 = 21.7%. The shortcuts leave out part of the flagging cost or part of the miss cost.'
+- prompt: A history has 2,880 cases, 161 of them positive, and a missed positive costs 100. What does a model that never flags cost per case?
+  options:
+  - '0.56'
+  - '5.59'
+  - '9.72'
+  - '55.90'
+  answer: 1
+  explanation: Never flagging misses all 161 positives, so the cost is 161 × 100 = 16,100, and 16,100 / 2,880 = 5.59 per case. The figure 9.72 is the cost of flagging every case. The model is 94.4% accurate, which is why accuracy hides the problem.
+- prompt: The reference forest reads 0.84 AUC on the random split, 0.64 on the grouped split and 0.83 on the temporal split. On new entities after launch it scores 0.67, 0.62 and 0.71. What does the grouped split's gap of +0.02 show?
+  options:
+  - The grouped split has the most training data, so it is the most accurate
+  - A forest never overfits when entities are grouped
+  - The gap is only noise, so every split is equally good
+  - It keeps entities apart, so its test side meets entities the model has never seen, as the new entities will
+  answer: 3
+  explanation: With a grouped split no entity is on both sides, so the forest cannot recognise an entity by its identifier (such as deviceId), just as it cannot recognise the 40% of entities that are new after launch. The random split flatters by +0.17 and the temporal split by +0.12 because both keep every entity on both sides.
+- prompt: A colleague says a temporal split cannot flatter a model, because it never trains on the future. In the lab it reads 0.83 against 0.71 on new entities. What is the best reply?
+  options:
+  - It removes the future from training but not the entities, so the forest can still recognise them
+  - The temporal split trains on less data, which raises its score
+  - The gap is bootstrap noise, because the temporal split has only one cut
+  - Temporal splits are meant for regression, not for AUC
+  answer: 0
+  explanation: Every entity is on both sides of a temporal split, so a flexible model can use what it learned about each entity. The gap is +0.12. A temporal split fits a different question, whether the future looks like the past, and it does not tell you how the model treats entities it has never met.
+- prompt: On the grouped split the baseline costs 2.78 per case and the logistic regression 3.00. The logistic AUC is 0.78, and the cost difference, logistic minus baseline, is +0.22 with a 95% interval of -0.55 to +1.08. What do you report?
+  options:
+  - The logistic regression is better, because 0.78 is far above the baseline's AUC of 0.50
+  - The logistic regression is worse, because 3.00 is above 2.78
+  - These test cases cannot say which is cheaper, so the model does not clearly beat doing nothing at this price
+  - The interval proves that the baseline is cheaper
+  answer: 2
+  explanation: The interval includes 0, so the difference of +0.22 is within the noise of 20 positives. A good AUC measures the ranking, but the cost also counts every review and every miss. Report both, and say that no model clearly beats doing nothing here.
+- prompt: A test side has 720 cases and 20 positives. A model flags 121 cases and catches 10 of the 20 positives. A review costs 5, a false alarm 5 extra and a miss 100. What is the expected cost per case?
+  options:
+  - '2.78'
+  - '3.00'
+  - '1.39'
+  - '0.84'
+  answer: 1
+  explanation: 'The 10 missed positives cost 10 × 100 = 1,000. The 121 reviews cost 121 × 5 = 605. The 111 false alarms (121 - 10) cost 111 × 5 = 555. The total is 2,160, and 2,160 / 720 = 3.00. 2.78 is the baseline, 1.39 counts only the 10 misses (1,000 / 720) and 0.84 only the 121 reviews (605 / 720).'
+- prompt: In the lab, raising the review capacity by 4 changes no recorded number, but raising the cost of a miss by 10 changes 6. Why?
+  options:
+  - The check is broken, because every setting should change something
+  - The record does not store the capacity
+  - Capacity never matters to any model
+  - The model flags 121 cases, below the 216 the capacity allows, so the cap never limited anything
+  answer: 3
+  explanation: The test side allows 216 flagged cases (24 of 80 a day, scaled to 720 cases), and the model flags only 121. A bigger cap changes nothing. The record does store the capacity, and the lab says so and asks you to change another setting, so you know the check can fail.
+- prompt: A monitoring plan with PSI above 0.10 alerts on day 47. Its cost until detection is 303 and it has 1 false alarm day, at 50 each. How does its total compare with the default plan, which costs 453?
+  options:
+  - 353, cheaper than the default plan
+  - 303, cheaper than the default plan
+  - 353, dearer than the default plan
+  - 453, the same as the default plan
+  answer: 0
+  explanation: 'The total adds the false alarm cost to the cost until detection: 303 + 1 × 50 = 353, which is less than 453. A tighter threshold alerts sooner, but each false alarm costs a day of investigation, so a plan tuned on one replay still has to be checked on another scenario.'
+- prompt: On day 63 the amount PSI is 2.37 and the other features are below 0.10. The served values equal the offline ones. The delayed AUC is 0.80 against 0.79 before launch, and the observed positive share is 15.1% against a mean predicted score of 15.0%. Which diagnosis fits?
+  options:
+  - Training-serving skew, because amount changed
+  - Concept shift, because the model's rule changed
+  - Covariate drift in amount, because the input moved while the model still ranks and predicts well
+  - Label shift, because the share of positives moved
+  answer: 2
+  explanation: Skew would show served values that differ from the offline ones, and here none do. Concept shift would pull the delayed AUC down. Label shift would leave the inputs alone and push the observed share far above the mean score. Only the input moved.
+- prompt: In scenario 1, Keep costs 17,372, Roll back 17,422, Recalibrate 17,472 and Retrain 17,876 (500 to carry out, live after 3 days). What should the team do?
+  options:
+  - Retrain, because a confirmed cause needs a new model
+  - Keep the model, because the diagnosis is right but no repair beats leaving it alone
+  - Roll back, because the inputs changed
+  - Recalibrate, because the probabilities are shown to reviewers
+  answer: 1
+  explanation: The model still ranks and predicts well, so a repair adds its own cost and removes none of the decisions' cost; retraining costs 500 more to carry out and does no better on decisions. A right diagnosis does not always call for action, and the numbers decide.

@@ -1,0 +1,72 @@
+- prompt: A point has a = 2 and b = 8. What is its silhouette?
+  options:
+  - 0.25
+  - 0.75
+  - 6
+  - -0.75
+  answer: 1
+  explanation: s = (b - a) / max(a, b) = (8 - 2) / 8 = 0.75. Dividing by 6 would not use the larger of the two, and a negative value would need a to be larger than b.
+- prompt: A point has a = 5 and b = 3. What does its silhouette tell you?
+  options:
+  - s = 0.4, so it sits well inside its cluster
+  - s = 0, so it is exactly on the border
+  - s = 1.67, so it is very well placed
+  - s = -0.4, so it is probably in the wrong cluster
+  answer: 3
+  explanation: s = (3 - 5) / max(5, 3) = -2/5 = -0.4. A negative value means the point is closer, on average, to another cluster than to its own. The value can never exceed 1.
+- prompt: A point has a silhouette close to 0. Where does it most likely sit?
+  options:
+  - On the border between two clusters
+  - Right at the center of its cluster
+  - Far from every cluster, as noise
+  - Inside a tight cluster, with the nearest other cluster far away
+  answer: 0
+  explanation: s is near 0 when a and b are about equal, so the point is as close to its own cluster as to the next one. That is a border point.
+- prompt: In the six-point example, the point 5 has the lowest silhouette (0.25). Why?
+  options:
+  - It is the largest number in the data, so its distances are the biggest
+  - Cluster B is larger than cluster A, so distances to it come out bigger
+  - It is the point of A nearest to B, so a = 3 is not much smaller than b = 4
+  - It is in the wrong cluster, because its silhouette is below zero
+  answer: 2
+  explanation: The point 5 sits at the edge of A. Its mean distance to its mates (3) is only a little below its mean distance to B (4), which gives (4 - 3) / 4 = 0.25. The value is still positive, so it is closer to A on average.
+- prompt: The six points {1, 3, 5, 8, 9, 10} have an average silhouette of about 0.64 with two clusters and about 0.31 with the three clusters {1, 3}, {5, 8}, {9, 10}. Which k does the score prefer?
+  options:
+  - k = 3, because more clusters always mean smaller distances inside each cluster
+  - k = 2, because its average silhouette, 0.64, is higher than 0.31
+  - Neither, because a score like this cannot compare different values of k
+  - k = 3, because the extra cluster shows more detail in the data
+  answer: 1
+  explanation: A higher average silhouette means the groups are tighter and farther apart. The three-cluster split even puts the point 8 at s = -0.5, with a mate that is farther away than the cluster next door.
+- prompt: Why can the average silhouette help choose k when inertia cannot?
+  options:
+  - Inertia is not computed from distances, so it cannot compare values of k
+  - The silhouette is always highest at k = 2, so no comparison is needed
+  - The silhouette needs the true labels, which tell it the right number of clusters
+  - Inertia only falls as k grows, but the average silhouette can fall again when k is too large
+  answer: 3
+  explanation: Inertia reaches its lowest value when every point is its own cluster, so it never says stop. The average silhouette drops when clusters are split without a reason, so it has a peak.
+- prompt: The two true rings in a dataset score a silhouette of 0.01, while a k-means split that cuts across both rings scores 0.36. What does this show?
+  options:
+  - The k-means split is the better grouping, because its score is much higher
+  - The silhouette favors round clusters, so it can rate a wrong split higher
+  - The rings are not really two clusters, because their score is almost zero
+  - The silhouette was computed with the wrong k, so the 0.01 cannot be trusted
+  answer: 1
+  explanation: A ring has points far from their own mates, so a is large even when the grouping is right. A high score means tight, well-separated groups, which is not always the same as correct groups.
+- prompt: Why is the silhouette undefined when a method finds only one cluster?
+  options:
+  - There is no other cluster, so b does not exist
+  - There are no points left to measure
+  - a becomes zero for every point
+  - Every point has s = 1
+  answer: 0
+  explanation: b is the mean distance to the nearest other cluster. With a single cluster there is none, so s cannot be computed. It also means the score cannot tell you that data has no clusters.
+- prompt: You measure the same points in centimeters instead of meters, so every distance is 100 times larger. What happens to each point's silhouette?
+  options:
+  - It becomes 100 times larger
+  - It becomes 100 times smaller
+  - It stays the same
+  - It becomes negative
+  answer: 2
+  explanation: Both a and b are multiplied by 100, and so is max(a, b), so the 100 cancels in (b - a) / max(a, b). That is why the score has no units. What does change the score is rescaling one feature, which alters the distances unevenly.

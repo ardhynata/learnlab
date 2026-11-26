@@ -1,0 +1,80 @@
+- prompt: In Interval lab, split conformal has 100 calibration residuals and alpha is 0.1. Which residual is q?
+  options:
+  - The 90th smallest
+  - The 91st smallest
+  - The 92nd smallest
+  - The largest, the 100th
+  answer: 1
+  explanation: The rank is ceil((n + 1)(1 - alpha)) = ceil(101 × 0.9) = ceil(90.9) = 91. Taking the 90th would leave out the "+ 1" that counts the new case, and the band would come out a little too narrow.
+- prompt: The lab's q is 0.677 and the fitted curve says 1.52 at x = 0.8. What is the split conformal band there?
+  options:
+  - 0.84 to 1.52
+  - 1.52 to 2.20
+  - 0.84 to 2.20
+  - 0.17 to 2.87
+  answer: 2
+  explanation: The band is the fitted value minus and plus q, so 1.52 - 0.677 = 0.84 and 1.52 + 0.677 = 2.20. The band 0.17 to 2.87 wrongly adds and subtracts the whole width, 1.35, instead of q.
+- prompt: At a shift of 40% the lab shows split conformal coverage of 66.5% against a target of 90%. What does the "Gap to target" column say?
+  options:
+  - -23.5 pts
+  - -33.5 pts
+  - +23.5 pts
+  - -2.35 pts
+  answer: 0
+  explanation: The gap is coverage minus target, 66.5 - 90 = -23.5 percentage points. The negative sign means the band holds the true value less often than it promised.
+- prompt: With no shift, the bootstrap ensemble band covers only 17.5% of the test points at a 90% target. What does that tell you?
+  options:
+  - The calibration set is too small, so the band came out too narrow
+  - The bootstrap code has a bug, so the band is computed wrongly
+  - The shift is set too high, so the points fell outside the band
+  - The band shows only model uncertainty, not the noise in each y
+  answer: 3
+  explanation: The ensemble spread shows how unsure the model is about its curve, which here is small, so the band is only 0.15 tall. A single y still scatters by the noise, which is not in that band. It answers a different question.
+- prompt: Why does split conformal coverage fall as the test inputs move away from the training inputs?
+  options:
+  - Alpha becomes larger as the shift grows, so the band may miss more
+  - The new cases no longer look like the calibration cases, so the promise lapses
+  - The calibration residuals get smaller as the shift grows, so q shrinks
+  - The test set gets smaller as the shift grows, so the coverage is noisier
+  answer: 1
+  explanation: The guarantee needs the new case to be exchangeable with the calibration cases. After the shift the inputs lie outside the range the model and the residuals came from, and the cubic curve runs far from the truth (at x = 1.8 it says -9.09 where the truth is -1.47), so the same q is not enough.
+- prompt: As the shift grows from 0% to 100%, the mean width of the split conformal band stays at 1.35. Why?
+  options:
+  - The widths of all three methods stay the same as the shift grows
+  - The band widens only when the fitted curve is wrong, and it is not
+  - One q, set from the calibration residuals, is used for every test input
+  - The shift makes the calibration set bigger, which holds q fixed
+  answer: 2
+  explanation: Split conformal uses one q for every input, taken from the calibration residuals. It cannot know that the new inputs are different. Quantile regression (0.87 to 3.57) and the bootstrap band (0.15 to 6.01) widen, but still miss.
+- prompt: With no shift, you raise alpha from 0.1 to 0.3. What do you expect from split conformal?
+  options:
+  - A narrower band, because the rank drops from 91 to 71 and q gets smaller
+  - The same band, because alpha only changes the label of the target
+  - A wider band, because a larger alpha asks for more safety margin
+  - An infinite band, because a larger alpha needs more calibration points
+  answer: 0
+  explanation: The rank is ceil(101 × 0.7) = ceil(70.7) = 71 instead of 91, so q is smaller. In the lab the width drops from 1.35 to 0.68 and coverage falls to 72.5%, near the 70% target.
+- prompt: You set alpha to 0.05 and the calibration set size to 15. What does split conformal give?
+  options:
+  - A band with q equal to the 15th residual and 95% coverage
+  - An error message, and no band is drawn on the plot at all
+  - A band with 95% coverage, but a bit wider than at 20 points
+  - An infinite band that covers everything and says nothing
+  answer: 3
+  explanation: The rank is ceil(16 × 0.95) = ceil(15.2) = 16, which is more than the 15 residuals there are. In general you need at least 1 / alpha - 1 = 19 points, so the lab shows a width of ∞ until the size reaches 20.
+- prompt: On the real penguins the lab holds out one species. Why does coverage hold near 90% with Chinstrap held out but drop with Gentoo?
+  options:
+  - Chinstrap penguins weigh less than Gentoo penguins, so the line fits them
+  - Every Chinstrap flipper is in the training range; most Gentoo flippers are not
+  - The calibration set is larger when Chinstrap is the held-out species
+  - Gentoo has more missing values, so its test points are less reliable
+  answer: 1
+  explanation: In the first sample, 100% of the Chinstrap test flippers are inside the range the line was fitted on, so the test set still looks like the calibration set and coverage stays near 90%. Only 21.7% of the Gentoo test flippers are, and coverage falls to 56.7%.
+- prompt: On ten fresh samples with no shift, split conformal at a 90% target covers between 86.0% and 94.0% and averages 89.9%. What should you conclude?
+  options:
+  - The promise failed, because many samples fell below 90%
+  - Alpha should be changed to 0.14 to push coverage up to 90%
+  - The promise holds on average, and 89.9% is close to 90%
+  - The test set was shifted, so coverage varies between samples
+  answer: 2
+  explanation: Conformal promises at least 1 - alpha on average over calibration sets and new cases, not on every sample. One sample of 100 calibration points varies by a few points either way, and the ten-sample mean is 89.9%, close to 90%.

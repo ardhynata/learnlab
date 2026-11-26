@@ -1,0 +1,80 @@
+- prompt: Pada tabel pemutaran, seorang pengguna tidak punya kejadian putar untuk sebuah film. Apa arti sel kosong itu?
+  options:
+  - Pengguna tidak menyukai film itu
+  - Tidak diketahui, karena mungkin film itu tidak pernah ditampilkan kepada pengguna
+  - Rating pengguna adalah 0
+  - Film itu sebaiknya dihapus dari tabel
+  answer: 1
+  explanation: Implicit feedback hanya mencatat apa yang terjadi. Tidak adanya pemutaran bisa berarti tidak suka, tetapi bisa juga berarti film itu tidak pernah ditampilkan atau tidak terlihat, sehingga sel kosong berarti tidak diketahui, bukan nol.
+- prompt: Pada matriks contoh, popularity baseline memprediksi rating Rocket yang sama untuk setiap pengguna. Berapa nilainya?
+  options:
+  - 3,0, rata-rata rating Ana sendiri
+  - 3,4, rata-rata rating Orbit
+  - 3,25, rata-rata dari empat rating yang diterima Rocket
+  - 4,5, rata-rata rating para neighbor
+  answer: 2
+  explanation: Rocket dinilai 5, 4, 2, dan 2, sehingga rata-ratanya 13 / 4 = 3,25. Baseline tidak peduli siapa yang bertanya. Angka 4,5 berasal dari metode neighbor, yang memakai rating Ana sendiri.
+- prompt: Satu pengguna menilai dua film dengan (4, 2) dan pengguna lain menilai film yang sama dengan (2, 1). Berapa cosine di antara keduanya?
+  options:
+  - 0, karena ratingnya berbeda
+  - 0,5, rasio kedua panjang vektor
+  - 10, hasil kali titik
+  - 1, karena kedua vektor menunjuk ke arah yang sama
+  answer: 3
+  explanation: Hasil kali titiknya 4 × 2 + 2 × 1 = 10, dan kedua panjangnya √20 dan √5, yang hasil kalinya 10, sehingga cosine-nya 1. Cosine mengabaikan panjang, sehingga ia tidak dapat melihat bahwa pengguna pertama memberi rating lebih tinggi.
+- prompt: Dua neighbor menilai sebuah film. Yang berkemiripan 0,9 memberi 5 dan yang berkemiripan 0,6 memberi 2. Berapa prediksi rata-rata berbobot kemiripan?
+  options:
+  - 3,5, rata-rata biasa dari 5 dan 2
+  - 3,8
+  - 3,2
+  - 5, hanya neighbor terdekat
+  answer: 1
+  explanation: (0,9 × 5 + 0,6 × 2) / (0,9 + 0,6) = 5,7 / 1,5 = 3,8. Neighbor yang lebih dekat berbobot lebih besar, sehingga hasilnya lebih dekat ke 5 daripada rata-rata biasa 3,5. Jika bobotnya ditukar, hasilnya 3,2.
+- prompt: Pada item-item filtering, bagaimana kemiripan Rocket dan Orbit dihitung?
+  options:
+  - Dari kedua kolom film, memakai pengguna yang menilai kedua film
+  - Dari kata-kata pada judul film
+  - Dari rating Ana saja
+  - Dari selisih antara kedua rata-rata rating
+  answer: 0
+  explanation: Item-item membandingkan kolom film. Untuk Rocket dan Orbit, itu berarti rating Budi, Dewi, Citra, dan Eko, yang memberi cosine 0,99. Rata-rata rating saja tidak mengatakan apakah pengguna yang sama menyukai keduanya.
+- prompt: Vektor pengguna adalah (1,5; 0,5) dan vektor film adalah (2,0; 1,0). Rating berapa yang diprediksi factorization?
+  options:
+  - 3,0
+  - 2,5
+  - 4,0
+  - 3,5
+  answer: 3
+  explanation: Hasil kali titiknya 1,5 × 2,0 + 0,5 × 1,0 = 3,0 + 0,5 = 3,5. Memakai faktor pertama saja memberi 3,0, yang melupakan suku kedua.
+- prompt: Apa yang dilakukan penalti pada panjang vektor dalam matrix factorization?
+  options:
+  - Mengisi sel kosong dengan nol
+  - Menjaga vektor tetap pendek, sehingga tidak terlalu mengejar sedikit rating yang diketahui dari seorang pengguna
+  - Membuat faktor mudah diberi nama
+  - Mempercepat pelatihan dengan melewati sebagian sel
+  answer: 1
+  explanation: Ini adalah penalti L2 dari ridge. Dengan sedikit rating per pengguna, banyak vektor panjang sesuai dengan tepat, dan penalti memilih yang pendek, yang generalisasinya lebih baik. Penalti tidak mengisi sel dan tidak memberi nama faktor.
+- prompt: Apa yang dilakukan setengah putaran alternating least squares (ALS)?
+  options:
+  - Menggeser setiap vektor satu langkah kecil melawan gradient dari satu rating
+  - Mengurangi rata-rata rating setiap pengguna dari matriks
+  - Menahan vektor film tetap dan menyelesaikan vektor setiap pengguna dengan ridge regression kecil, lalu perannya bertukar
+  - Mengurutkan pengguna menurut kemiripan dan menyimpan k yang terdekat
+  answer: 2
+  explanation: "ALS bergantian: dengan film tetap, vektor setiap pengguna adalah masalah least squares berregularisasi yang kecil, lalu pengguna ditahan dan film diselesaikan. Langkah kecil pada satu rating menggambarkan SGD, bukan ALS."
+- prompt: Sebuah layanan punya 1.000 film, dan dua pengguna masing-masing menilai 2% film secara acak. Kira-kira berapa film yang dinilai oleh keduanya?
+  options:
+  - 20, jumlah yang dinilai setiap pengguna
+  - 4, seperlima dari itu
+  - 0,4, kurang dari satu film rata-rata
+  - 0, karena 2% terlalu kecil untuk beririsan sama sekali
+  answer: 2
+  explanation: Setiap film dinilai oleh keduanya dengan probabilitas 0,02 × 0,02, sehingga irisan yang diharapkan adalah 1.000 × 0,02 × 0,02 = 0,4 film. Karena itu cosine user-user pada film yang sama-sama dinilai lemah pada data yang sparse.
+- prompt: Mengapa PCA tidak dapat langsung diterapkan pada user-item matrix yang punya sel kosong, sedangkan matrix factorization dapat?
+  options:
+  - PCA memerlukan setiap sel terisi, sedangkan factorization dilatih hanya pada sel yang diketahui
+  - PCA hanya bekerja dengan rating 1 sampai 5
+  - PCA tidak dapat menghasilkan vektor untuk pengguna
+  - PCA memerlukan pengguna lebih banyak daripada film
+  answer: 0
+  explanation: PCA dibangun dari tabel penuh, sehingga setiap sel harus punya nilai. Factorization hanya memasukkan rating yang diketahui ke dalam loss dan mengabaikan sel kosong, itulah yang diminimalkan SGD dan ALS.

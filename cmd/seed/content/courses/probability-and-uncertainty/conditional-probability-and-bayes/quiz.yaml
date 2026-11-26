@@ -1,0 +1,72 @@
+- prompt: Of the 344 penguins, 168 live on Biscoe island, and 124 of those are Gentoo. What is P(Gentoo | Biscoe)?
+  options:
+  - 0.36, because 124 of 344 penguins are Gentoo
+  - 0.74, because 124 of the 168 Biscoe penguins are Gentoo
+  - 1.00, because every Gentoo penguin lives on Biscoe
+  - 0.49, because 168 of 344 penguins live on Biscoe
+  answer: 1
+  explanation: A conditional probability counts only among the cases where the condition holds, so the group is the 168 Biscoe penguins. 1.00 answers the flipped question, P(Biscoe | Gentoo), and 0.36 ignores the condition.
+- prompt: A screening test catches 90 percent of sick people, and you test positive. A friend says "so there is a 90 percent chance you are sick". What is wrong with that?
+  options:
+  - Nothing, sensitivity is the probability of being sick after a positive result
+  - The test must be 100 percent sensitive before a positive result means anything
+  - It confuses P(positive | sick) with P(sick | positive), which also depends on how common the condition is
+  - It should use the false alarm rate instead of the sensitivity
+  answer: 2
+  explanation: Sensitivity is P(positive | sick). What you want is P(sick | positive), and Bayes' rule needs the base rate and the false alarm rate to get it. With a 2 percent base rate it was only 0.27.
+- prompt: A test has sensitivity 0.90 and a false alarm rate of 0.05. In a group where 10 in 100 are sick, you test 1,000 people. What share of the positive results are people who are really sick?
+  options:
+  - About 0.67, since 90 of the 135 positives are sick
+  - About 0.90, since the test catches 90 percent of the sick
+  - About 0.10, since 10 percent of the group is sick
+  - About 0.33, since 45 of the 135 positives are sick
+  answer: 0
+  explanation: 100 are sick and 90 of them test positive. Of the 900 healthy, 5 percent (45) test positive too. So 90 / (90 + 45) = 0.67. The 0.33 is the share of positives that are healthy.
+- prompt: The same test (sensitivity 0.90, false alarm rate 0.05) is used on two groups. Which statement about a positive result is right?
+  options:
+  - It means the same in both groups, because the test is the same
+  - It means more in the group with fewer sick people, because rare conditions are easier to spot
+  - It means the same in both groups as long as the groups are the same size
+  - It means more in the group where the condition is more common, because there are fewer false alarms per true positive
+  answer: 3
+  explanation: With 2 percent sick, a positive means 0.27. With 20 percent sick, it means 0.82. The false alarms come from the healthy group, which shrinks as the condition becomes more common, while the true positives grow.
+- prompt: In the Bayes' rule view of a classifier alert, which probability is precision?
+  options:
+  - The prior, P(fraud)
+  - The likelihood, P(alert | fraud)
+  - The posterior, P(fraud | alert)
+  - The evidence, P(alert)
+  answer: 2
+  explanation: Precision is the share of alerts that are really fraud, which is P(fraud | alert), the posterior. The likelihood P(alert | fraud) is recall, and the prior is the positive rate.
+- prompt: Of 1,000 payments, a fraud model alerts on 6 of the 10 frauds and on 14 of the 990 honest payments. What does 6 / 20 = 0.30 tell an analyst who opens an alert?
+  options:
+  - The model finds 30 percent of all frauds
+  - About 3 alerts in 10 are real fraud, so about 7 in 10 are false alarms
+  - 30 percent of all payments are fraud
+  - The model is wrong on 30 percent of all payments
+  answer: 1
+  explanation: 20 payments raise an alert and 6 of them are fraud, so 6 / 20 = 0.30 is the precision. Finding 60 percent of the frauds is recall, 6 / 10.
+- prompt: In the same 1,000-payment table, a better model keeps its 6 caught frauds but cuts the false alarms from 14 to 7. What is its precision?
+  options:
+  - About 0.46, because 6 / 13 of the alerts are fraud
+  - About 0.60, because recall did not change
+  - About 0.30, because the fraud rate did not change
+  - About 0.86, because 6 / 7 of the alerts are fraud
+  answer: 0
+  explanation: Alerts are now 6 + 7 = 13, so precision is 6 / 13 = 0.46. The 6 / 7 option divides by the false alarms only, not by all alerts.
+- prompt: P(Gentoo) is 0.36, but P(Gentoo | Biscoe) is 0.74. What does that say about species and island?
+  options:
+  - They are independent, because both numbers are probabilities of the same event
+  - They are independent, because a conditional probability can never be equal to P(Gentoo)
+  - Nothing yet, because P(Gentoo | Biscoe) must equal P(Biscoe | Gentoo)
+  - They are dependent, because knowing the island changes the probability of the species
+  answer: 3
+  explanation: Independence means P(A | B) = P(A). Here knowing the island more than doubles the chance of Gentoo, so the two are dependent. Species and sex were different, since P(male) stayed near 0.50 in every species.
+- prompt: A lab repeats a positive test by running the very same flawed method on the very same sample. Why is the second positive result weak evidence?
+  options:
+  - A second test can never change a probability
+  - Probabilities cannot be multiplied
+  - The two results share their errors, so they are not independent and the evidence is counted twice
+  - The base rate falls after the first test
+  answer: 2
+  explanation: Multiplying likelihoods for two results is valid only when their errors are independent given the truth. If both come from the same flaw, the second result adds little, and the chance may stay near 0.27 instead of rising to 0.87.

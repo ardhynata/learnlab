@@ -1,0 +1,72 @@
+- prompt: A fraud detector treats fraud as the positive class. A fraudulent payment goes through and the detector says it is fine. Which cell of the confusion matrix does this case count in?
+  options:
+  - True positive
+  - False positive
+  - False negative
+  - True negative
+  answer: 2
+  explanation: The detector said no (negative) and was wrong, because the payment was fraud. A wrong no on a real positive is a false negative, a missed case.
+- prompt: "A test on 200 cases gives TP = 30, FP = 10, FN = 20 and TN = 140. What is its precision?"
+  options:
+  - 0.60
+  - 0.75
+  - 0.85
+  - 0.15
+  answer: 1
+  explanation: Precision is TP / (TP + FP) = 30 / 40 = 0.75. The recall is 30 / 50 = 0.60, and 0.85 is the accuracy, (30 + 140) / 200.
+- prompt: "With the same counts (TP = 30, FP = 10, FN = 20, TN = 140), what is the recall?"
+  options:
+  - 0.75
+  - 0.85
+  - 0.67
+  - 0.60
+  answer: 3
+  explanation: Recall is TP / (TP + FN) = 30 / 50 = 0.60, so the test found 30 of the 50 real positives. The 0.75 is the precision, which divides by the 40 yes answers instead.
+- prompt: Precision and recall both have TP on top. What is different about their bottoms?
+  options:
+  - Precision divides by the number of real positives, and recall divides by all cases
+  - Precision divides by the cases the classifier called yes, and recall divides by the real positives
+  - Precision divides by the real negatives, and recall divides by the cases called no
+  - Nothing is different; they are two names for the same ratio
+  answer: 1
+  explanation: Precision divides by TP + FP, the yes column of the matrix. Recall divides by TP + FN, the actually-yes row. Same top, different totals, so they answer different questions.
+- prompt: A data set has 500 cases, of which 25 are positive. A lazy classifier answers no to every case. What are its accuracy and recall?
+  options:
+  - Accuracy 95 percent, recall 0 percent
+  - Accuracy 95 percent, recall 95 percent
+  - Accuracy 5 percent, recall 100 percent
+  - Accuracy 50 percent, recall 0 percent
+  answer: 0
+  explanation: It is right on all 475 negatives, so accuracy is 475 / 500 = 0.95, but it finds none of the 25 positives, so recall is 0. High accuracy next to zero recall is the accuracy trap.
+- prompt: A classifier has precision 0.9 and recall 0.1. Which is closest to its F1?
+  options:
+  - 0.50
+  - 0.90
+  - 0.18
+  - 0.10
+  answer: 2
+  explanation: F1 = 2 x 0.9 x 0.1 / (0.9 + 0.1) = 0.18. The plain average, 0.50, hides that the classifier finds only one positive in ten. F1 is pulled toward the smaller number.
+- prompt: The clinic test in this lesson (TP = 15, FP = 9, FN = 5, TN = 171) is made more eager, so it says yes to 39 people and now catches 18 of the 20 sick ones. What happens?
+  options:
+  - Recall and precision both rise
+  - Recall falls and precision rises
+  - Recall rises and precision falls
+  - Recall rises and precision stays the same
+  answer: 2
+  explanation: Recall rises from 15 / 20 = 0.75 to 18 / 20 = 0.90. The 21 false alarms make precision fall from 0.625 to 18 / 39 = 0.46. Catching more usually costs more false alarms.
+- prompt: A bank closes an account automatically whenever a classifier flags it as fraud, with no human check. Which metric matters most?
+  options:
+  - Precision, because a false alarm closes an honest customer's account
+  - Recall, because every fraud case must be found
+  - Accuracy, because it counts every case
+  - F1, because it is the only metric that includes every cell
+  answer: 0
+  explanation: Here the costly mistake is a false positive, so you want most yes answers to be right, which is high precision. Recall would be the choice when a missed case is the costly mistake.
+- prompt: Two classifiers both reach 90 percent accuracy on the same 100 cases. Which statement must be true?
+  options:
+  - They make the same kinds of mistakes
+  - They have the same precision
+  - They have the same recall
+  - Both make 10 mistakes, though the kinds can differ
+  answer: 3
+  explanation: 90 percent of 100 cases is 90 right answers, so 10 wrong ones. One classifier may have 10 false alarms and the other 10 misses, so precision and recall can differ a lot. This is why the matrix is needed.

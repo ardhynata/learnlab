@@ -1,0 +1,80 @@
+- prompt: A promotion brings in many light viewers. How hours watched relates to cancelling has not changed, but the mix of viewers has. Which kind of shift is this?
+  options:
+  - Label shift
+  - Concept shift
+  - Covariate shift
+  - Leakage
+  answer: 2
+  explanation: The inputs, P(x), moved while the relationship P(y given x) stayed the same, which is covariate shift. Label shift would be a change in how many subscribers cancel, and concept shift a change in what the hours mean.
+- prompt: A model is 60% accurate for viewers under 2 hours, 80% for 2 to 6 hours and 95% for over 6 hours. After a promotion the mix is 60%, 30% and 10%. What is the overall accuracy?
+  options:
+  - 78.3%, the plain average of the three
+  - 69.5%
+  - 87%, the accuracy on the training mix
+  - 95%, the best region
+  answer: 1
+  explanation: 0.60 x 0.60 + 0.30 x 0.80 + 0.10 x 0.95 = 0.36 + 0.24 + 0.095 = 0.695. The plain average ignores how many viewers each region has, and 87% belongs to the old mix.
+- prompt: A screening test flags 90% of sick people and 5% of healthy ones. It is moved from a clinic where 20% are sick to a community check-up where 2% are sick. What changes the most?
+  options:
+  - The share of sick people it flags
+  - The share of healthy people it flags
+  - Nothing, because the test itself did not change
+  - The share of flagged people who are really sick, from 0.82 to 0.27
+  answer: 3
+  explanation: Sick and healthy people look as they did, so the flag rates stay put. The flag now means less, because healthy people are far more numerous, and precision falls from 180 / 220 to 18 / 67.
+- prompt: After a rival launches a bundle, the PSI of every input is 0.00 and the cancel rate moved only from 45% to 50%, yet accuracy fell from 85% to 60%. What is the best explanation?
+  options:
+  - Concept shift, where the same inputs now lead to different outcomes
+  - The PSI was computed with the wrong bins
+  - Covariate shift, because the model sees new inputs
+  - The model is overfitting to the training set
+  answer: 0
+  explanation: With inputs and totals unchanged, the relationship between the inputs and the label must have moved. Detectors that look only at the inputs cannot see this, and only comparing predictions with real outcomes does.
+- prompt: In training 10%, 30% and 60% of viewers fall in three bins of weekly hours. In new data the shares are 60%, 30% and 10%. What is the PSI?
+  options:
+  - 0
+  - 0.90
+  - 1.79
+  - 3.58
+  answer: 2
+  explanation: The first bin gives (0.60 - 0.10) x ln 6 = 0.896, the middle bin gives 0, and the last gives (0.10 - 0.60) x ln(1/6) = 0.896. The total is 1.79, far above the 0.25 rule of thumb for a large shift.
+- prompt: You train a classifier to tell old rows from new rows, and its AUC on held-out rows is 0.50. What does that tell you?
+  options:
+  - The new rows are very different from the old rows
+  - The classifier cannot tell old rows from new ones, so no shift in the inputs is detectable, although concept shift is still possible
+  - The model is well calibrated on the new rows (its probabilities match real frequencies)
+  - The old data set is too small to train on
+  answer: 1
+  explanation: An AUC of 0.5 is guessing, so the inputs look the same in both groups. That says nothing about the labels, so a concept shift can still be hiding.
+- prompt: A model was trained on penguins with flipper lengths from 172 to 231 mm and now receives a row with 300 mm. What is the sensible handling?
+  options:
+  - Trust the prediction, since the model always returns something
+  - Delete the flipper length column
+  - Round the row to the nearest training value and predict
+  - Flag the row as out of distribution instead of trusting the prediction
+  answer: 3
+  explanation: The row lies outside what the model has seen, so its answer is an extrapolation. Flagging it keeps a doubtful prediction from being used as if it were a measured one.
+- prompt: Which statement about validation setups and shift is correct?
+  options:
+  - A random split anticipates none of the three kinds, because its test rows come from the same pool as the training rows
+  - A random split anticipates covariate shift, because it mixes all the rows
+  - A grouped split anticipates concept shift, because groups differ
+  - A temporal split anticipates only label shift
+  answer: 0
+  explanation: A random split reproduces the training mix, balance and relationship, so its score is the before score. Grouped and temporal splits anticipate only the shift that is present across groups or time in the data you collected.
+- prompt: Training shares are 10%, 30% and 60% of viewers per region and new shares are 60%, 30% and 10%. Which weights, from the first region to the last, make old rows count as the new mix?
+  options:
+  - 1/6, 1 and 6
+  - 6, 1 and 1/6
+  - 0.6, 0.3 and 0.1
+  - 10, 30 and 60
+  answer: 1
+  explanation: The weight is the new share over the old share of the region, so 0.60 / 0.10 = 6, 0.30 / 0.30 = 1 and 0.10 / 0.60 = 1/6. The rare region in training becomes common in the new data and gets the large weight.
+- prompt: A rival's bundle has changed which subscribers cancel. Which response fits?
+  options:
+  - Reweight the old rows by the new mix of hours
+  - Lower the decision threshold
+  - Retrain on recent labeled data and check the new model with a temporal split
+  - Wait, because the mix of inputs has not changed
+  answer: 2
+  explanation: Old rows teach the old relationship, so reweighting them cannot fix concept shift. Fresh labeled rows are needed, and a temporal split judges the new model the way it will be used.

@@ -1,0 +1,80 @@
+- prompt: Banyak garis lurus memisahkan kedua kelas pada data latih. Bagaimana support vector machine memilih salah satunya?
+  options:
+  - Ia memilih garis yang melewati paling banyak titik latih
+  - Ia memilih garis dengan jalan kosong terlebar di antara kedua kelas
+  - Ia memilih garis yang paling dekat dengan pusat seluruh dataset
+  - Ia memilih garis dengan kemiringan terkecil
+  answer: 1
+  explanation: Aturan maximum-margin memilih garis yang sejauh mungkin dari kedua kelas, yaitu garis tengah dari jalan terlebar. Aturan lainnya bukan cara kerja SVM.
+- prompt: "Pada contoh, kelas A adalah (1, 1), (2, 1), (1, 2), (2, 2) dan kelas B adalah (4, 4), (5, 4), (5, 5), (4, 6). Titik mana yang menjadi support vector?"
+  options:
+  - Kedelapan titik
+  - (1, 1) dan (5, 5), dua titik yang paling ekstrem
+  - (4, 6), karena ia titik yang paling tinggi
+  - (2, 2) dan (4, 4), titik-titik di tepi jalan
+  answer: 3
+  explanation: Jalan tertahan oleh pasangan terdekat, (2, 2) dan (4, 4), yang skornya tepat -1 dan +1. Semua titik lain mendapat skor di luar keduanya dan tidak menyentuh tepi.
+- prompt: Dengan w = (0,5; 0,5) dan b = -3, berapa skor titik (5, 4)?
+  options:
+  - 1,5
+  - 1
+  - 4,5
+  - -1,5
+  answer: 0
+  explanation: Skornya 0,5 × 5 + 0,5 × 4 - 3 = 4,5 - 3 = 1,5. Nilai ini melewati +1, sehingga (5, 4) berada di sisi B dan bukan di tepi. Bila b terlupa, hasilnya 4,5.
+- prompt: Sebuah garis pemisah punya w = (3, 4) setelah tepinya diskalakan ke skor -1 dan +1. Berapa lebar jalannya?
+  options:
+  - 0,29
+  - 2,5
+  - 0,4
+  - 7
+  answer: 2
+  explanation: "Panjang w adalah √(3² + 4²) = 5, sehingga lebarnya 2 / 5 = 0,4. Menjumlahkan kedua bobot hingga mendapat 7 adalah kekeliruan yang umum, dan hasilnya 0,29."
+- prompt: Pada contoh, kamu menghapus (1, 1) dan (5, 5). Keduanya bukan support vector. Apa yang terjadi pada jalan maximum-margin?
+  options:
+  - Jalan menyempit, karena datanya lebih sedikit
+  - Jalan melebar, karena dua titik hilang
+  - Jalan miring ke arah titik yang hilang
+  - Jalan tidak berubah, dengan lebar 2,83
+  answer: 3
+  explanation: Hanya support vector (2, 2) dan (4, 4) yang menekan tepi. Menghapus titik yang tidak menyentuhnya membuat jalan tetap persis seperti semula.
+- prompt: Pada contoh, kamu menghapus support vector (4, 4). Titik B terdekat dari (2, 2) kini adalah (5, 4). Apa yang terjadi pada margin?
+  options:
+  - Margin tetap 2,83, karena hanya satu titik yang hilang
+  - Margin melebar menjadi 3,61, jarak dari (2, 2) ke (5, 4)
+  - Margin menyempit menjadi 2,24
+  - Margin turun menjadi 0 karena B kehilangan support vector-nya
+  answer: 1
+  explanation: Pasangan terdekat yang baru adalah (2, 2) dan (5, 4), terpisah √(3² + 2²) = √13 = 3,61, sehingga jalan melebar. Titik (5, 4) menjadi support vector baru untuk B.
+- prompt: Kamu menambahkan titik B di (3, 4), di dalam jalan yang lama. Jaraknya √5 dari (2, 2). Menjadi berapa margin sekarang?
+  options:
+  - Tetap 2,83, karena jalannya sudah terbentuk
+  - Menyempit menjadi 1,41, separuh dari 2,83
+  - Menyempit menjadi 2,24, jarak dari (2, 2) ke (3, 4)
+  - Melebar menjadi 3,61
+  answer: 2
+  explanation: Pasangan terdekat dari kelas yang berbeda kini adalah (2, 2) dan (3, 4), terpisah √(1² + 2²) = √5 = 2,24, dan jarak itulah yang menentukan lebar. Titik baru di dalam jalan hanya dapat mempersempitnya.
+- prompt: Seorang siswa menghapus semua titik latih yang bukan support vector, lalu melatih SVM garis lurus yang sama sekali lagi. Apa yang terjadi pada boundary-nya?
+  options:
+  - Boundary tetap persis di tempatnya
+  - Boundary menjadi kurva yang mengitari titik yang tersisa
+  - Boundary bergerak ke arah titik yang dihapus
+  - Boundary menjadi sama dengan boundary regresi logistik
+  answer: 0
+  explanation: Boundary hanya bergantung pada support vector, jadi titik lainnya memang tidak mengubahnya. Inilah perbedaan utama dengan regresi logistik, tempat setiap titik menambah loss.
+- prompt: Pernyataan mana tentang boundary ketiga model yang benar?
+  options:
+  - k-NN selalu menggambar garis lurus, seperti SVM
+  - Regresi logistik ditentukan hanya oleh titik yang paling dekat dengan boundary
+  - SVM mengikutsertakan setiap titik latih, seperti k-NN
+  - SVM ditentukan oleh support vector-nya, sedangkan loss regresi logistik menghitung setiap titik
+  answer: 3
+  explanation: Titik yang jauh tetap menambah sedikit pada loss regresi logistik, sehingga semua titik berperan. Boundary SVM ditentukan oleh support vector saja, dan k-NN melengkung mengitari setiap titik yang disimpan.
+- prompt: Mengapa aturan jalan terlebar yang biasa tidak dapat menangani dua kelas yang titiknya tumpang tindih?
+  options:
+  - Jalannya akan selebar tak terhingga
+  - Ia akan memilih w terpendek, yang selalu 0
+  - Tidak ada garis lurus yang menjaga setiap titik di luar jalan dan di sisinya sendiri
+  - Semua support vector akan berada di kelas yang sama
+  answer: 2
+  explanation: Bila kelas-kelas tumpang tindih, tidak ada jalan dengan bagian tengah yang kosong, sehingga tidak ada margin untuk dimaksimalkan. Pelajaran berikutnya membolehkan beberapa titik berada di dalam jalan atau di sisi yang salah, dengan membayar sejumlah harga.

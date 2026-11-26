@@ -1,0 +1,80 @@
+- prompt: Pada f(x) = (x - 5)² / 2, learning rate mana yang membuat titik memantul di antara dua tempat selamanya?
+  options:
+  - 0,5
+  - 1,0
+  - 2,0
+  - 2,1
+  answer: 2
+  explanation: Mangkuk ini punya curvature 1, sehingga satu langkah mengalikan jarak ke titik terendah dengan 1 - lr. Pada lr 2,0 faktornya tepat -1, sehingga titik melompat di antara dua tempat selamanya. Pada 0,5 faktornya 0,5, sehingga titik merayap masuk dari satu sisi. Pada 1,0 faktornya 0, sehingga titik mendarat di titik terendah dan berhenti. Pada 2,1 faktornya -1,1 dan lompatannya membesar.
+- prompt: Sebuah mangkuk punya curvature 4. Learning rate mana di bawah ini yang membuat gradient descent divergen?
+  options:
+  - 0,1
+  - 0,3
+  - 0,45
+  - 0,6
+  answer: 3
+  explanation: Batasnya 2 / 4 = 0,5, dan faktornya 1 - 4 × lr. Pada 0,6 faktornya -1,4, sehingga setiap lompatan lebih jauh daripada yang sebelumnya. Pada 0,45 faktornya -0,8, yang masih memantul tetapi menyusut, sehingga titik menetap. Pada 0,1 dan 0,3 faktornya 0,6 dan -0,2.
+- prompt: Pada f(x) = (x - 5)² / 2 dengan lr 1,9 dan titik awal x = 1, di mana x setelah satu langkah?
+  options:
+  - -6,6
+  - 8,6
+  - 5,0
+  - 1,76
+  answer: 1
+  explanation: Kemiringan di x = 1 adalah 1 - 5 = -4, sehingga x = 1 - 1,9 × (-4) = 8,6. Jawaban -6,6 berasal dari salah tanda, dan 1,76 adalah tempat titik mendarat setelah langkah kedua.
+- prompt: Di lab, loss terhadap langkah turun sedikit di setiap langkah dan masih turun ketika run berakhir, titik bergerak ke arah yang sama di setiap langkah, dan Diagnosis berbunyi Terlalu lambat. Apa perubahan pertama yang terbaik?
+  options:
+  - Naikkan learning rate, misalnya dengan faktor 3
+  - Potong learning rate dengan faktor 10
+  - Pindahkan titik awal ke tempat lain
+  - Berhenti, karena loss-nya turun sehingga rate-nya sudah tepat
+  answer: 0
+  explanation: Penurunan yang stabil tetapi lambat, dengan titik bergerak ke satu arah, adalah tanda rate yang terlalu kecil. Naikkan bertahap sambil mengawasi gelombang atau pertumbuhan, yang berarti kamu sudah terlalu jauh. Jika titik melompat dari sisi ke sisi, penurunan yang tampak lambat dapat menyembunyikan rate yang terlalu besar, karena itu periksa jalurnya lebih dulu, seperti yang dikatakan bagian Awas di pelajaran.
+- prompt: Pada fit garis ke data penguin, panjang sirip dalam milimeter membuat lengkungan terajam sekitar 40.565, sehingga learning rate terbesar yang aman sekitar 0,000049. Setelah kolom di-standardisasi, berapa learning rate terbesar yang aman untuk fit sejenis?
+  options:
+  - Masih sekitar 0,000049, karena scaling tidak mengubah bentuk loss
+  - Sekitar 40.565, karena batasnya sama dengan lengkungan terajam dari loss
+  - Sekitar 0,5, karena standardisasi membuat batasnya separuh, bukan lengkungannya
+  - Sekitar 2, karena lengkungannya menjadi 1 dan batasnya 2 dibagi angka itu
+  answer: 3
+  explanation: Batasnya adalah 2 dibagi lengkungan terajam. Kolom yang sudah di-standardisasi punya rata-rata 0 dan simpangan baku 1, sehingga lengkungannya 1 dan batasnya 2, sekitar 40.000 kali lebih besar. Scaling mengubah bentuk loss pada parameter, itulah sebabnya rate yang aman bergeser, dan angka seperti 40.565 adalah sebuah lengkungan, bukan sebuah rate.
+- prompt: Apa yang dilakukan momentum pada gradient descent?
+  options:
+  - Momentum memperkecil learning rate sedikit di setiap langkah, sehingga langkahnya makin lama makin pendek
+  - Momentum menjamin loss turun di setiap langkah, dengan memilih arah gerak yang aman bagi titik
+  - Momentum mempertahankan sebagian langkah terakhir, sehingga dorongan yang searah saling menambah dan zigzag sebagian saling meniadakan
+  - Momentum memilih titik awal acak yang baru setiap kali titik berhenti bergerak untuk beberapa saat, lalu menyimpan run terbaik
+  answer: 2
+  explanation: Momentum menyimpan kecepatan yang mengingat langkah-langkah sebelumnya. Itu mempercepat lereng yang panjang dan landai serta menenangkan zigzag, tetapi dapat melewati dasar, sehingga ia tidak menjamin loss yang selalu turun.
+- prompt: Mengapa gradient descent biasa dapat berhenti di lembah dangkal yang bukan titik terendah?
+  options:
+  - Learning rate selalu terlalu kecil begitu titik berada di dalam lembah
+  - Kemiringan di dasar lembah adalah nol, sehingga langkahnya nol dan titik tetap di sana
+  - Loss tepat nol di dalam lembah mana pun, sehingga tidak ada lagi yang dapat dikurangi
+  - Gradient descent tidak dapat membedakan arah turun di dekat punggungan
+  answer: 1
+  explanation: Langkahnya adalah kemiringan dikali learning rate, sehingga dengan kemiringan nol titik tetap di tempatnya. Untuk mencapai lembah yang lebih dalam, titik harus lebih dulu mendaki punggungan di antara keduanya, dan descent biasa dengan rate yang sedang hanya bergerak turun.
+- prompt: Di lab, kurva Dua lembah dengan contoh pengaturan Pas dari Posisi awal 1 berakhir di lembah dangkal. Punggungan di antara kedua lembah berada di dekat x = 4,7. Satu perubahan mana yang paling mungkin mencapai titik terendah?
+  options:
+  - Turunkan learning rate ke 0,002, agar langkahnya lebih hati-hati
+  - Naikkan Langkah ke 200, agar run punya waktu lebih lama untuk menemukan lembah dalam
+  - Atur Posisi awal ke 6, di kanan punggungan
+  - Centang Grafik loss menggunakan skala log, agar loss terlihat lebih jelas
+  answer: 2
+  explanation: Mulai dari kanan punggungan menaruh titik di lereng yang menuju lembah dalam. Rate yang lebih kecil atau langkah yang lebih banyak hanya mengubah seberapa cepat titik bergerak, bukan di mana ia berakhir, dan pengaturan grafik hanya mengubah tampilan.
+- prompt: Mengapa learning rate dicari sebagai 0,1; 0,03; 0,01; 0,003, bukan 0,1; 0,2; 0,3; 0,4?
+  options:
+  - Ukuran yang tepat tidak diketahui, dan faktor sekitar 3 per langkah mencakup banyak orde besaran
+  - Angka yang lebih kecil selalu lebih aman, sehingga pencarian harus berakhir di dekat nol dan tetap di sana
+  - Komputer menangani pangkat sepuluh lebih cepat daripada angka lain, sehingga pencarian selesai lebih cepat
+  - Loss sebanding dengan learning rate, sehingga rasio yang sama memberi loss yang sama pada kurva apa pun
+  answer: 0
+  explanation: Rate yang berhasil bergantung pada curvature h, yang jarang kamu ketahui, dan batas 2 / h bisa besar atau sangat kecil. Hanya hasil kali lr × h yang penting, sehingga tangga dengan tiap rate sekitar sepertiga dari yang sebelumnya mencakup semua ukuran. Tebakan dengan jarak sama antara 0,1 dan 0,4 semuanya berada di dekat puncak rentang; jika rate yang baik dekat 0,003, tidak satu pun mendekatinya.
+- prompt: Dengan momentum 0,9, loss naik pada 1 dari 20 langkah terakhir dan turun pada semua yang lain, sehingga jauh lebih rendah daripada saat awal. Bagaimana cara membacanya dengan benar?
+  options:
+  - Ini bug, karena loss harus turun di setiap langkah gradient descent, dengan atau tanpa momentum
+  - Rate-nya terlalu besar, sehingga harus dibagi dua sebelum run dilanjutkan, karena kenaikan berarti overshoot
+  - Momentum-nya terlalu rendah, sehingga harus dinaikkan untuk menenangkan kenaikan yang terlihat pada run
+  - "Tidak masalah: satu kenaikan kecil di antara banyak langkah yang turun itu normal dengan momentum, sehingga nilailah trennya"
+  answer: 3
+  explanation: Momentum dapat membawa titik melewati dasar sehingga loss naik selama satu langkah sementara tren keseluruhannya tetap turun, dan satu kenaikan dari dua puluh langkah jauh dari gelombang. Tidak ada yang mengharuskan rate dibagi dua, dan menaikkan momentum akan memperparah overshoot. Kenaikan setiap beberapa langkah berarti gelombang, dan saat itu menurunkan momentum atau rate adalah solusinya. Loss yang naik di setiap langkah dan tidak pernah berbalik adalah hal yang berbeda, yaitu divergensi.

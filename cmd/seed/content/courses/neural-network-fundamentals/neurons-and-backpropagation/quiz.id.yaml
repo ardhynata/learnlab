@@ -1,0 +1,80 @@
+- prompt: Sebuah neuron punya weight 0,8 dan 0,2 serta bias -0,4. Ia membaca input 1 dan 2 dan memakai sigmoid sebagai aktivasinya. Berapa output-nya?
+  options:
+  - 0,80
+  - 0,69
+  - 0,50
+  - 1,20
+  answer: 1
+  explanation: Skornya z = 0,8 × 1 + 0,2 × 2 - 0,4 = 0,8, dan output-nya sigmoid(0,8) = 0,69. Nilai 0,80 adalah skor sebelum aktivasi dikenakan.
+- prompt: Berapa jumlah parameter (weight dan bias) pada network 3-4-1?
+  options:
+  - 12
+  - 16
+  - 17
+  - 21
+  answer: 3
+  explanation: Tiap dari 4 neuron hidden punya 3 weight dan 1 bias, jadi 4 × 4 = 16. Neuron output punya 4 weight dan 1 bias, yaitu 5. Totalnya 16 + 5 = 21.
+- prompt: Pada multilayer perceptron, output sebuah neuron hidden mewakili apa?
+  options:
+  - Feature yang dibangun network untuk dirinya sendiri, yang dibaca lapisan berikutnya
+  - Prediksi akhir network
+  - Salinan salah satu input
+  - Loss yang disebabkan neuron itu
+  answer: 0
+  explanation: Output hidden adalah feature baru yang dihitung dari input, dan lapisan berikutnya memakainya seperti regresi logistik memakai kolom pada tabel. Training yang menentukan feature seperti apa yang dibutuhkan.
+- prompt: Output sigmoid sebuah neuron hidden adalah h = 0,9. Berapa kemiringan sigmoid di titik itu, dengan rumus h × (1 - h)?
+  options:
+  - 0,90
+  - 0,10
+  - 0,09
+  - 0,81
+  answer: 2
+  explanation: Kemiringannya 0,9 × (1 - 0,9) = 0,9 × 0,1 = 0,09. Kemiringan kecil di tempat sigmoid hampir datar, dan terbesar (0,25) pada h = 0,5.
+- prompt: Loss berubah mengikuti skor output z dengan laju -0,4435, dan z membaca output hidden h1 lewat weight v1 = 1,2. Dengan laju berapa loss berubah mengikuti h1?
+  options:
+  - -0,3696
+  - -0,5322
+  - 0,5322
+  - -1,6435
+  answer: 1
+  explanation: Aturan rantai mengalikan kemiringan lokal, jadi lajunya -0,4435 × 1,2 = -0,5322. Membagi atau menjumlahkan kedua angka itu tidak mengikuti aturan rantai.
+- prompt: Gradient weight w11 adalah -0,1317. Apa arti tanda minusnya?
+  options:
+  - w11 sebaiknya diatur menjadi 0
+  - Network membuat prediksi negatif
+  - Menurunkan w11 akan menurunkan loss
+  - Menaikkan w11 akan menurunkan loss
+  answer: 3
+  explanation: Gradient negatif berarti loss turun ketika weight naik, sehingga gradient descent, yang mengurangkan gradient, menaikkan w11. Tanda itu tidak mengatakan apa-apa tentang tanda prediksi.
+- prompt: Mengapa backpropagation bekerja mundur dari loss?
+  options:
+  - Kemiringan yang ditemukan dekat output dipakai ulang oleh setiap parameter sebelumnya, sehingga satu backward pass menghasilkan semua gradient
+  - Backward pass menggantikan forward pass, yang lalu dapat dilewati
+  - Weight hanya dapat diubah ke arah mundur
+  - Berjalan mundur menurunkan loss dengan sendirinya
+  answer: 0
+  explanation: Kemiringan pada skor output menjadi awal rantai untuk setiap parameter, dan kemiringan pada z1 melayani w11, w12, dan b1 sekaligus. Tiap faktor dihitung sekali lalu dipakai ulang. Backward pass tetap membutuhkan nilai dari forward pass.
+- prompt: Weight w11 = 0,5 punya gradient -0,1317, dan learning rate-nya 0,5. Berapa nilai baru w11?
+  options:
+  - 0,4341
+  - 0,6317
+  - 0,5659
+  - 0,3683
+  answer: 2
+  explanation: w11 baru = 0,5 - 0,5 × (-0,1317) = 0,5 + 0,0659 = 0,5659. Menambahkan gradient langsung menghasilkan 0,4341, dan melupakan learning rate menghasilkan 0,6317.
+- prompt: Mengapa satu neuron tidak dapat menyelesaikan XOR?
+  options:
+  - Parameternya terlalu sedikit untuk menyimpan empat titik
+  - Batasnya berupa garis lurus, dan tidak ada garis lurus yang memisahkan label XOR
+  - Sigmoid tidak pernah dapat mengeluarkan 0 atau 1
+  - XOR tidak punya label yang konsisten
+  answer: 1
+  explanation: Satu neuron membelah input di sepanjang garis tempat skornya 0. Titik (0, 0) dan (1, 1) berlabel 0 sedangkan (0, 1) dan (1, 0) berlabel 1, dan tidak ada satu garis pun yang menaruh tiap pasangan di sisinya sendiri.
+- prompt: Pada network XOR yang diatur dengan tangan, h2 = sigmoid(10 x1 + 10 x2 - 15). Untuk input apa h2 mendekati 1?
+  options:
+  - Ketika setidaknya satu input bernilai 1
+  - Ketika tepat satu input bernilai 1
+  - Hanya ketika kedua input bernilai 1
+  - Hanya ketika kedua input bernilai 0
+  answer: 2
+  explanation: Hanya untuk x1 = x2 = 1 skornya 10 + 10 - 15 = 5, yang memberi 0,99. Jika hanya satu input menyala, skornya -5 dan h2 bernilai 0,01. Jadi h2 mendeteksi "keduanya menyala", dan neuron output memakainya untuk mematikan kasus (1, 1).

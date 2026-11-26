@@ -1,0 +1,80 @@
+- prompt: Pada data buatan di lab, true accuracy-nya 85,0% dan setiap sampel berisi n = 100 kasus. Berapa standard error menurut rumus buku untuk accuracy sebuah sampel?
+  options:
+  - Sekitar 0,4 poin
+  - Sekitar 3,6 poin
+  - Sekitar 7,0 poin
+  - Sekitar 14,0 poin
+  answer: 1
+  explanation: SE = sqrt(0,85 × 0,15 / 100) = sqrt(0,001275) = 0,0357, atau 3,6 poin. Angka 7,0 adalah 1,96 standard error, setengah lebar 95% tengah, dan 14,0 adalah lebar penuhnya.
+- prompt: Setelah 200 sampel berisi 100 kasus, arsiran pada histogram menunjukkan 78,0% sampai 92,0%. Apa yang digambarkannya?
+  options:
+  - Interval bootstrap dari sampel terakhir, yang dibuat dari 500 resample-nya
+  - Rentang tempat true accuracy berada dengan probabilitas 95%
+  - 95% dari 200 sampel yang semuanya mendapat tepat 85,0%
+  - Rentang tempat 95% tengah dari 200 accuracy sampel berada
+  answer: 3
+  explanation: Arsiran adalah pernyataan tentang tumpukan sampel, dengan 2,5% terendah dan 2,5% tertinggi dibuang. Arsiran itu berpusat pada true accuracy. Interval bootstrap adalah hal yang berbeda, dibuat dari satu sampel, dan true accuracy adalah satu angka yang tetap, bukan sesuatu yang punya probabilitas.
+- prompt: Sampel terakhir benar 83 dari 100, dan interval bootstrap-nya 74,5% sampai 90,0%. Mengapa interval ini berpusat di sekitar 83%, bukan di true accuracy 85,0%?
+  options:
+  - Resample-nya hanya terdiri dari kasus-kasus di sampel itu, sehingga berpusat pada accuracy sampel itu
+  - Lab menggeser interval ke arah sampel agar tampak lebih meyakinkan
+  - B terlalu kecil, dan B yang lebih besar akan memindahkan interval ke true accuracy 85,0%
+  - Populasinya sendiri hanya benar 83%, sehingga interval berpusat padanya
+  answer: 0
+  explanation: Setiap resample terdiri dari 100 kasus yang ada di tangan, sehingga accuracy resample menumpuk di sekitar 83%. B yang lebih besar hanya menghaluskan garis tepinya. Populasinya benar 85,0%, dan interval itu kebetulan mencakupnya.
+- prompt: Untuk sampel yang sama, kamu mengubah B dari 100 ke 1.000 dan intervalnya berubah dari 75,0% sampai 89,0% menjadi 75,0% sampai 90,0%. Apa yang ditunjukkan hal ini?
+  options:
+  - Resample yang lebih banyak membuat interval sekitar separuh lebarnya, karena estimasi lebih presisi
+  - Jumlah resample menentukan apakah interval mencakup true accuracy atau tidak
+  - Resample yang lebih banyak hanya menghaluskan estimasi; tidak ada kasus baru, sehingga lebarnya hampir tidak berubah
+  - Bootstrap membutuhkan B = 1.000 agar dapat bekerja sama sekali, dan 100 resample terlalu sedikit
+  answer: 2
+  explanation: Setiap resample diambil dari 100 kasus yang sama, sehingga B yang lebih besar tidak dapat menambah informasi. B hanya membuat persentilnya lebih stabil, itulah sebabnya lebarnya bergeser 1 poin. Hanya kasus yang lebih banyak, yaitu n yang lebih besar, yang mempersempit interval.
+- prompt: Kamu menekan Jalankan 200 eksperimen dan meter menunjukkan 97,5%. Apa kesimpulan yang masuk akal?
+  options:
+  - Metodenya rusak, karena metode 95% seharusnya memberi tepat 95% di setiap putaran
+  - Hasilnya mendekati janjinya, karena putaran berisi 200 eksperimen naik-turun sekitar 3 poin
+  - Tepat 195 interval mencakup nilai sebenarnya, sehingga setiap putaran berikutnya juga menunjukkan 97,5%
+  - 5 interval yang meleset membuktikan bahwa lab punya bug dalam cara mengambil sampel
+  answer: 1
+  explanation: Porsi itu sendiri adalah hasil pengukuran dari 200 eksperimen, dengan standard error sekitar 1,5 poin, sehingga sekitar ±3 poin pada 95%. Menekan tombol lagi memberi 95,5% dan 96,5%, dan interval yang meleset memang diharapkan, sekitar 1 dari 20.
+- prompt: Pada n = 100 standard error-nya 3,6 poin. Kamu menaikkan n ke 400, kasus empat kali lebih banyak. Berapa standard error sekarang?
+  options:
+  - Sekitar 7,2 poin
+  - Sekitar 3,6 poin, karena n tidak mengubah standard error
+  - Sekitar 0,9 poin
+  - Sekitar 1,8 poin
+  answer: 3
+  explanation: SE = sqrt(0,85 × 0,15 / 400) = 0,0179, atau 1,8 poin. n berada di bawah akar kuadrat, sehingga kasus empat kali lebih banyak membuat standard error dan lebar intervalnya separuh, dan untuk membuatnya separuh lagi kamu butuh 1.600 kasus.
+- prompt: Dengan n = 100, standard error-nya 4,2 poin untuk penguin (true accuracy 76,9%) dan 3,6 poin untuk data buatan (85,0%). Mengapa keduanya berbeda padahal n-nya sama?
+  options:
+  - Data nyata selalu lebih berisik daripada data buatan, sehingga standard error-nya lebih besar
+  - Sampel penguin diambil tanpa pengembalian, yang menyebarkannya lebih lebar
+  - Bootstrap menambah noise ekstra setiap kali datanya nyata, bukan buatan
+  - p × (1 - p) lebih besar ketika accuracy lebih dekat ke 50%, di sini 0,178 dibandingkan 0,128
+  answer: 3
+  explanation: SE = sqrt(p(1 - p) / n), dan p(1 - p) membesar ketika p mendekati 50%. Untuk 76,9% nilainya 0,769 × 0,231 = 0,178, sehingga SE = sqrt(0,00178) = 0,042. Kedua populasi diambil sampelnya dengan pengembalian.
+- prompt: Di kartu "Apakah interval itu menepati janjinya?" satu garis digambar tebal dan diberi tanda silang. Apa artinya?
+  options:
+  - Interval bootstrap dari eksperimen itu tidak menyentuh garis putus-putus true accuracy
+  - Eksperimen itu mengambil sampel yang lebih besar daripada yang lain
+  - Sampel eksperimen itu mendapat tepat 85,0%
+  - Eksperimen itu tidak selesai
+  answer: 0
+  explanation: Lab menggambar interval dengan garis tipis jika mencakup true accuracy, dan tebal dengan tanda silang jika meleset. Dari 200 eksperimen, sekitar 5% diharapkan meleset; pada putaran pertama dari layar awal, 5 dari 200 meleset.
+- prompt: Dalam proyek nyata kamu hanya punya satu test set dan tidak mengetahui true accuracy. Langkah lab mana yang benar-benar dapat kamu lakukan?
+  options:
+  - Mengambil 200 sampel dan membaca 95% tengah dari accuracy-nya
+  - Menjalankan 200 eksperimen dan membaca meternya
+  - Mem-bootstrap satu sampel yang kamu punya dan membaca interval 95%-nya
+  - Membaca baris true accuracy di tabel
+  answer: 2
+  explanation: Mengambil banyak sampel, menjalankan eksperimen, dan membaca true accuracy semuanya membutuhkan seluruh populasi, yang dimiliki lab tetapi tidak dimiliki proyek nyata. Bootstrap hanya membutuhkan satu sampel yang ada, dan hasilnya interval dengan lebar yang hampir sama dengan tumpukan.
+- prompt: Lab menampilkan tumpukan berisi 200 sampel. Kamu mengambil satu sampel lagi dari populasi yang sama. Apa yang berubah?
+  options:
+  - Tumpukan diganti oleh satu sampel itu, dan 95% tengahnya dibangun ulang darinya
+  - Tumpukan bertambah menjadi 201 sampel, dan interval bootstrap dibangun ulang dari sampel yang baru
+  - Tumpukan tetap 200 sampel, karena lab selalu menyimpan tepat 200 sampel
+  - Tumpukan bertambah menjadi 201 sampel, tetapi interval bootstrap tetap berasal dari sampel terakhir yang lama
+  answer: 1
+  explanation: Sampel baru bergabung ke tumpukan (200 + 1 = 201) dan menjadi sampel terakhir, yaitu sampel yang diolah bootstrap, sehingga interval ikut bergeser. Hanya mengambil 200 sampel, mengubah n, atau berganti data yang memulai tumpukan baru.

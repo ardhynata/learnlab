@@ -1,0 +1,80 @@
+- prompt: In the lesson's sample, k = 1 gets 165 of 200 validation points right. What is its validation accuracy?
+  options:
+  - 100%
+  - 17.5%
+  - 82.5%
+  - 41.25%
+  answer: 2
+  explanation: 165 divided by 200 is 0.825, or 82.5%. The 100% figure is the training accuracy of k = 1, which is a different measurement.
+- prompt: Why is the training accuracy of k = 1 always 100% (when no two points are identical)?
+  options:
+  - Each training point's nearest neighbor is itself, so its vote is always right
+  - A single neighbor is always more accurate than many
+  - The model is trained for longer when k is small
+  - The validation points are used for voting too
+  answer: 0
+  explanation: Scoring a point against the stored data finds that same point at distance 0, so the vote returns its own label. That is why training accuracy cannot be used to choose k.
+- prompt: Which description fits a model with a very small k?
+  options:
+  - A very smooth boundary that ignores local detail
+  - A model that has to be trained for a long time
+  - A model that cannot use an odd number of votes
+  - A jagged boundary with islands that follow noise in the training data
+  answer: 3
+  explanation: With only one or two voters, a single odd point can flip the answer in its neighborhood, so the boundary follows noise. A smooth boundary comes from a large k.
+- prompt: From the table (k = 1, 3, 13, 31, 41 with validation accuracy 82.5%, 88.0%, 89.0%, 86.0%, 75.0%), which k would you choose?
+  options:
+  - k = 1, because its training accuracy is 100%
+  - k = 13, because it has the highest validation accuracy
+  - k = 41, because a large k is always safest
+  - k = 31, because it has the most training points right
+  answer: 1
+  explanation: We choose by held-out accuracy, and 89.0% at k = 13 is the highest in the table. Training accuracy cannot choose k, and k = 41 oversmooths.
+- prompt: Validation gets 178 of 200 right at k = 13 and 176 of 200 at k = 3. What is the sensible reading?
+  options:
+  - k = 3 is clearly worse, so reject it
+  - k = 13 is exactly 1% better in the real world
+  - The gap of 2 of 200 is within the wobble of a 200-point validation set, so both are about equally good
+  - The validation set must be wrong
+  answer: 2
+  explanation: Another random set of 200 points could easily reverse a gap of 2 of 200, so the two values are effectively tied. Pick from the middle of the flat part, not the very top.
+- prompt: In five-fold cross-validation of k = 13 the folds score 15, 14, 13, 15 and 14 of 16. What is the cross-validation accuracy?
+  options:
+  - 88.75%, since 71 of 80 are right
+  - 14%, the average of the scores
+  - 93.75%, the best fold
+  - 81.25%, the worst fold
+  answer: 0
+  explanation: 'Add the five scores, 15 + 14 + 13 + 15 + 14 = 71, and divide by the 80 points that were scored once each: 71 ÷ 80 = 0.8875.'
+- prompt: What is the main benefit of cross-validation over one validation split?
+  options:
+  - It removes the need for a test set
+  - It makes k smaller
+  - It makes every prediction faster
+  - Every point gets scored once, so the estimate depends less on one lucky or unlucky split
+  answer: 3
+  explanation: Five rounds with different held-out folds average out the luck of a single split. You still need a separate test set for the final check.
+- prompt: A teammate says "I used 5-fold cross-validation, so I tried k = 5". What is wrong?
+  options:
+  - 'Nothing: the 5 in 5-fold is the number of neighbors'
+  - The 5 in 5-fold counts the folds, and it is unrelated to the number of neighbors k
+  - Cross-validation only works with k = 1
+  - Five folds is not allowed for k-NN
+  answer: 1
+  explanation: The two uses of the letter k are unrelated. Five-fold means five folds, and k in k-NN is the number of neighbors that vote.
+- prompt: You have 100 training points and two classes. Which first guess for k follows the lesson's rules of thumb?
+  options:
+  - k = 1
+  - k = 50
+  - k = 9 or 11, the square root of 100 made odd
+  - k = 100
+  answer: 2
+  explanation: The square root of 100 is 10, and an odd k avoids ties between two classes, so try 9 and 11. Then check them, and nearby values, on held-out data.
+- prompt: Which of these leaks information from the test set into the model?
+  options:
+  - Scaling the features with the mean and spread of the training part only
+  - Picking k by the score on the test set, or scaling with the mean of all the data before splitting
+  - Choosing k with five-fold cross-validation on the training data
+  - Scoring the final model on the test set once
+  answer: 1
+  explanation: Tuning on the test set, or fitting any step on all the data first, lets test information reach the model, so the final score is too optimistic. The other three keep the test set untouched until the end.

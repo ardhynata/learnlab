@@ -1,0 +1,80 @@
+- prompt: Which statement about the two penalties is right?
+  options:
+  - Ridge sets some coefficients exactly to zero, and lasso shrinks them all but keeps every feature
+  - Both penalties set coefficients exactly to zero as soon as lambda is large enough
+  - Lasso (L1) can set coefficients exactly to zero, while ridge (L2) only shrinks them
+  - Neither penalty changes the coefficients, they only change the training error
+  answer: 2
+  explanation: Lasso subtracts a fixed amount and stops at zero, so small coefficients vanish and the feature drops out. Ridge divides by a number above 1, and dividing a nonzero value never gives exactly zero.
+- prompt: Flipper length alone has a standardised coefficient of 0.6976. Ridge with lambda = 0.8 divides it by 1 + lambda. What does it give?
+  options:
+  - 0.388
+  - 0.298
+  - 0.349
+  - 0.558
+  answer: 0
+  explanation: 0.6976 / 1.8 = 0.388. The value 0.298 is what lasso gives (0.6976 - 0.4). Dividing by 2 or multiplying by 0.8 does not follow the ridge formula.
+- prompt: A standardised coefficient of 0.30 meets a lasso penalty with lambda = 0.8, which subtracts lambda / 2 and stops at zero. What does it become?
+  options:
+  - 0.17
+  - 0.30, because lasso only touches big coefficients
+  - -0.10
+  - 0
+  answer: 3
+  explanation: lambda / 2 = 0.4, and 0.30 - 0.4 is below zero, so lasso stops at exactly 0. A coefficient smaller than lambda / 2 is removed. The value 0.17 is what ridge gives (0.30 / 1.8).
+- prompt: Spend a total weight of 1 on two coefficients, either as (1, 0) or as (0.5, 0.5). How do the penalties compare?
+  options:
+  - L1 charges 1 for both, while L2 charges 1 for (1, 0) but 0.5 for (0.5, 0.5)
+  - L1 charges 1 for (1, 0) but 0.5 for (0.5, 0.5), while L2 charges 1 for both
+  - Both penalties charge exactly 1 for both of the two choices
+  - L2 charges 0.5 for (1, 0) and 1 for (0.5, 0.5), while L1 charges 1 for both
+  answer: 0
+  explanation: L1 adds absolute values, 1 + 0 = 1 and 0.5 + 0.5 = 1. L2 adds squares, 1 + 0 = 1 but 0.25 + 0.25 = 0.5. So L2 favors spreading the weight, while L1 does not mind concentrating it on one coefficient.
+- prompt: You measure flipper length in meters instead of millimeters and fit ridge without standardising. What happens?
+  options:
+  - Nothing changes, because the predictions are the same in any unit of length
+  - The coefficient gets 1000 times smaller, so ridge hardly touches it at all
+  - The coefficient grows 1000 times, so the penalty hits it far harder
+  - The coefficient is set to exactly zero by the penalty, whatever lambda is
+  answer: 2
+  explanation: A feature with small numbers needs a big coefficient, and the penalty charges coefficients by size. In the lesson's table the meter version keeps only 0.4% of its slope at lambda = 0.05, while the millimeter version keeps 99.97%. Standardising removes the unit from the penalty.
+- prompt: Two identical copies of a feature deserve a total weight of 0.8. What do ridge and lasso typically do, ignoring the shrinkage itself?
+  options:
+  - Both give 0.8 to the first copy and 0 to the second copy
+  - Ridge gives 0.4 and 0.4, and lasso typically keeps one copy and drops the other
+  - Ridge keeps one copy and drops the other, and lasso gives 0.4 and 0.4 to the two
+  - Both give 0.8 to each copy, so the total weight becomes 1.6
+  answer: 1
+  explanation: Splitting evenly costs the least in squares, so ridge shares the weight. In absolute values every split of 0.8 costs the same, so lasso has no reason to share and in practice tends to keep one copy.
+- prompt: Why can training error not be used to choose lambda?
+  options:
+  - Training error is not defined when lambda is above 0
+  - Training error always falls as lambda grows, so it would choose the largest lambda
+  - Training error does not depend on lambda at all, so every lambda looks the same
+  - It is lowest at lambda = 0, so it always picks no penalty
+  answer: 3
+  explanation: The penalty only holds the model back from fitting the training rows. In the lesson's table training error rises from 0.043 to 0.098 as lambda grows, so it always prefers the smallest penalty. Validation error is what shows overfitting.
+- prompt: In the lesson's table, lambda = 0.0001 gives ridge training error 0.043 and validation error 0.211. What does that gap say?
+  options:
+  - The model underfits the data, so lambda should be larger to fix it
+  - The validation set is too small to say anything about the model
+  - It overfits the 20 training penguins, so more penalty may help
+  - The model is ready to use, because its training error is so low
+  answer: 2
+  explanation: A low training error with a much higher validation error is overfitting. The lowest validation error, 0.150, came at lambda = 0.03, with more training error (0.080), which is the price of the penalty.
+- prompt: Lasso at lambda = 0.2 on the penguins gives coefficients 0 for bill length, 0 for bill depth, 0.578 for flipper length and 0.094 for sex (male = 1). Which features are in the model?
+  options:
+  - Bill length and bill depth
+  - All four, because lasso keeps every feature
+  - Only flipper length
+  - Flipper length and sex
+  answer: 3
+  explanation: A coefficient of exactly 0 removes the feature, and flipper length and sex are the nonzero ones. At lambda = 0.2 sex is still in, and the lesson's path shows it leaving at about lambda = 0.44.
+- prompt: Where should the means and standard deviations used to standardise the features come from?
+  options:
+  - From the validation rows, because that is where the model is judged
+  - From the training rows only, then reused on the validation rows
+  - From all the rows together, because more data gives better numbers
+  - From the test rows, to make the test fair
+  answer: 1
+  explanation: Fitting the scaling on the training rows and applying it to the others keeps information about held-out rows out of training, as in "Pipelines and leakage". Using validation or test rows to compute it leaks them into the model.

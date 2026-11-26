@@ -1,0 +1,80 @@
+- prompt: Six values are 22, 23, 24, 25, 26 and 27. A value of 95 is added. Which summary changes the most?
+  options:
+  - The median, from 24.5 to 25
+  - The mean, from 24.5 to about 34.6
+  - Neither changes
+  - Both change by the same amount
+  answer: 1
+  explanation: The mean sums every value, so 95 drags it up by about 10. The median only moves from the middle pair to the fourth of seven values, a change of 0.5.
+- prompt: An analyst finds a delivery time of 95 minutes among values near 25. What should happen first?
+  options:
+  - Delete it, because every outlier is an error
+  - Keep it, because deleting data is never allowed
+  - Find out where it came from, then decide
+  - Replace it with the mean
+  answer: 2
+  explanation: An outlier can be a mistake, a rare real case or a different group. The number alone cannot say which, so check the source before removing anything.
+- prompt: For the values 22, 23, 24, 25, 26, 27 and 95, Q1 is 23 and Q3 is 27. Which values does the 1.5 x IQR rule flag?
+  options:
+  - None
+  - Only 22
+  - 22 and 95
+  - 95 only
+  answer: 3
+  explanation: The IQR is 4, so the fences are 23 - 6 = 17 and 27 + 6 = 33. Only 95 lies outside them; 22 is above 17.
+- prompt: Which of these is robust, meaning one extreme value barely changes it?
+  options:
+  - The mean
+  - The median
+  - The range
+  - The sum of the values
+  answer: 1
+  explanation: The median depends on the order of the values, not their size. The mean, range and sum all use the extreme value directly.
+- prompt: In a scatterplot the dots fall from the top left to the bottom right and hug a straight line. What is r closest to?
+  options:
+  - 1
+  - 0
+  - -1
+  - 0.5
+  answer: 2
+  explanation: A falling pattern is a negative relationship, and hugging the line means it is strong, so r is near -1.
+- prompt: In the lesson example, hours studied are 1 to 5 and the scores are 50, 55, 65, 60 and 70. What does r = 0.90 say?
+  options:
+  - Students gain 0.90 points for every hour studied
+  - 90 percent of students passed
+  - Studying caused 90 percent of the score
+  - The dots follow a strong upward straight-line trend
+  answer: 3
+  explanation: r gives the direction and tightness of a linear trend, not the slope and not a cause. Here it says the dots rise along a line quite tightly.
+- prompt: The sixth student studies 6 hours and scores 30, and r falls from 0.90 to -0.23. What is the best explanation?
+  options:
+  - One point far from the trend can dominate the calculation
+  - Six students are too few for r to exist
+  - r always shrinks when a point is added
+  - Studying more hours lowers the score
+  answer: 0
+  explanation: That point is far from both means, so its products and squared distances are large and it outweighs the other five.
+- prompt: Ten points show no pattern and have r of about -0.08. A single new point far up and to the right raises r to 0.82. What does this mean?
+  options:
+  - The ten points were secretly correlated
+  - Strong evidence of a real trend
+  - The first r was calculated wrongly
+  - The high r comes from one point, not from a pattern
+  answer: 3
+  explanation: A single far point can create a correlation. Check the scatterplot, and compare r with and without that point.
+- prompt: A scatterplot clearly shows a U-shaped curve, yet r is near 0. Why?
+  options:
+  - r measures only straight-line trends
+  - The data must contain a mistake
+  - r near 0 always means the columns are unrelated
+  - The curve is too small to count
+  answer: 0
+  explanation: A U shape goes down and then up, so a straight line fits neither half. r misses the curve, which is why you should draw the plot.
+- prompt: Ice cream sales and sunburn cases are strongly correlated across the year. What can you conclude?
+  options:
+  - Ice cream causes sunburn
+  - The two move together, but r alone does not show why
+  - Sunburn causes people to buy ice cream
+  - The correlation must be an outlier effect
+  answer: 1
+  explanation: Both can be driven by a third factor, such as hot sunny weather. Correlation shows that columns move together, not that one causes the other.

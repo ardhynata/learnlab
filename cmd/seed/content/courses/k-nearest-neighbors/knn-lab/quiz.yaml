@@ -1,0 +1,72 @@
+- prompt: On the default clusters the lab's score goes from 34 of 40 at k = 3 to 38 of 40 at k = 15. How many percentage points is that?
+  options:
+  - 4 percentage points
+  - 10 percentage points
+  - 2.5 percentage points
+  - 38 percentage points
+  answer: 1
+  explanation: One test point is 1 ÷ 40 = 2.5 percentage points, so 4 more points is 4 × 2.5 = 10. That is 85% rising to 95%. The 4 counts test points, not percentage points.
+- prompt: Why are the 40 test points not allowed to vote in the lab?
+  options:
+  - Votes from 40 more points would make the plot too crowded to read
+  - They would force the value of k to be larger than 15
+  - They only get class labels after the score is computed
+  - A test point would be its own neighbor, so the score would reward memorizing
+  answer: 3
+  explanation: A point that votes for itself is always right at k = 1. Keeping the test points out of the vote means each one is classified by training points that have never seen it, like a new example.
+- prompt: On Concentric rings you keep the boundary at k = 3 (40 of 40 right), then drag k to 15. The lab shows 26 of 40 now. What does the readout show in the parentheses?
+  options:
+  - −14
+  - +14
+  - −26
+  - −40
+  answer: 0
+  explanation: "The readout shows the change from the kept score, 26 − 40 = −14. The score fell by 14 test points. −26 would be the score itself with a sign."
+- prompt: A query has two nearest candidates. Point P is 0.6 across and 0.8 up from it. Point R is 0 across and 1.2 up. You stretch the horizontal feature by 5. Which point is nearer afterwards?
+  options:
+  - P, because stretching never changes who is nearest
+  - P, because its distance after the stretch is still 1.0
+  - R, because its distance stays 1.2 while P's grows to about 3.10
+  - Neither, because they are tied
+  answer: 2
+  explanation: Before the stretch P is nearer, 1.0 against 1.2. After it, P's across gap is 3, so its distance is the square root of (9 + 0.64), about 3.10. R has no gap across, so it stays at 1.2. The order flips.
+- prompt: A penguin neighbor differs from the query by 10 mm of flipper length and 100 g of body mass. You stretch flipper length by 10. What is the distance now?
+  options:
+  - 110, the sum of 100 and 10
+  - About 141.4, the square root of (100² + 100²)
+  - About 100.5
+  - 200
+  answer: 1
+  explanation: The 10 mm gap becomes 100, so the distance is the square root of (100² + 100²) = 141.4. Before the stretch it was the square root of (10² + 100²) = 100.5, which is almost entirely the mass gap.
+- prompt: Without any stretch, body mass dominates the neighbors in the penguin data. Why?
+  options:
+  - Body mass is by far the more important feature for telling species apart
+  - The lab gives the vertical feature extra weight before it measures distance
+  - Euclidean distance ignores the horizontal feature when the units differ
+  - Its gaps in grams are numerically far larger than the gaps in millimeters
+  answer: 3
+  explanation: Distance adds up gaps as raw numbers, so the feature with the bigger numbers decides. Nothing says it is more useful. The standard deviation of body mass is about 800 g against about 14 mm for flipper length, a factor of about 57.
+- prompt: A classmate says "stretching a feature always raises the score, because it makes that feature count more". Which result in the lab disproves it?
+  options:
+  - On Concentric rings the score falls from 40 to 35 of 40 at ×5
+  - On the default clusters the score rises from 34 to 36 of 40
+  - On the penguins the score rises from 51 to 53 of 69
+  - On Checkerboard the score at k = 3 is 39 of 40
+  answer: 0
+  explanation: On the rings the class depends on distance in every direction, so a stretch breaks the structure and the score falls. The other results are gains or unrelated to a stretch. A stretch helps only when the stretched feature carries the class.
+- prompt: On the shared penguin draw, flipper length at ×10 gains 1 test point at k = 3. What is the sensible next step?
+  options:
+  - Conclude that stretching hardly matters on the penguins
+  - Conclude that it works, and report 1 point as the gain
+  - Press Randomize for several draws and compare ×1 with ×10 on each
+  - Raise k to 15 until the number looks bigger
+  answer: 2
+  explanation: One draw is one sample, and a change of 1 of 69 is within noise either way. Over 1,000 random draws the stretch lost on about 4% and gained about 4 test points on average, so a single draw can understate it.
+- prompt: On Concentric rings at k = 15 the score is 26 of 40 and every miss is on the outer ring. What explains it?
+  options:
+  - k = 15 switches the distance to Manhattan
+  - The 15 neighbors of an outer-ring point reach into the inner ring and outvote its own ring
+  - The test points move to the inner ring
+  - The inner ring has too few points for any vote
+  answer: 1
+  explanation: A large k stops being local. For an outer-ring query, the nearest 15 points include inner-ring points, which can outvote the query's own ring, while an inner-ring query still finds mostly inner points.

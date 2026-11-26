@@ -1,0 +1,32 @@
+slug: clustering
+title: Clustering without labels
+summary: Group unlabeled points by hand-stepping k-means and DBSCAN, and learn when each one breaks.
+topic: Machine learning
+level: beginner
+path: unsupervised
+position: 1
+translations:
+  id:
+    title: "Clustering tanpa label"
+    summary: "Kelompokkan titik tanpa label dengan menjalankan k-means dan DBSCAN langkah demi langkah, lalu lihat kapan masing-masing gagal."
+modules:
+- slug: basics
+  title: The basics
+  summary: What clustering is and your first algorithm.
+  lessons:
+  - what-is-clustering
+  - kmeans
+  translations:
+    id:
+      title: "Dasar-dasar"
+      summary: "Apa itu clustering, serta algoritma pertamamu."
+- slug: density-and-choice
+  title: Density and choosing
+  summary: Find groups by density, then decide which method fits.
+  lessons:
+  - dbscan
+  - choosing-an-algorithm
+  translations:
+    id:
+      title: "Kepadatan dan pemilihan"
+      summary: "Cari kelompok lewat kepadatan, lalu pilih metode yang paling cocok."

@@ -1,0 +1,80 @@
+- prompt: Dua cincin titik berpusat di titik asal, satu berjari-jari 2 dan satu berjari-jari 4. Angka tunggal mana yang menjelaskan setiap titik sehingga satu threshold dapat memisahkan kedua cincin?
+  options:
+  - Koordinat x
+  - Koordinat y
+  - Jarak dari titik asal
+  - Jumlah x + y
+  answer: 2
+  explanation: Jarak dari titik asal adalah 2 untuk setiap titik cincin dalam dan 4 untuk setiap titik cincin luar, sehingga "di atas 3" memisahkan keduanya. Koordinat x, koordinat y, dan jumlahnya masing-masing membentang melintasi kedua cincin.
+- prompt: Pada embedding mainan, kucing berada di (4, 3) dan anjing di (3, 5). Berapa jarak Euclidean di antara keduanya?
+  options:
+  - 2,24, akar dari 5
+  - 1,41, akar dari 2
+  - 3, jumlah kedua selisih
+  - 5, jumlah selisih kuadrat
+  answer: 0
+  explanation: Selisihnya 1 dan 2, sehingga kuadrat jaraknya 1 + 4 = 5 dan jaraknya adalah akar dari itu, 2,24. Jawaban 5 melupakan akarnya.
+- prompt: Apa yang dilatih untuk dihasilkan autoencoder sebagai outputnya?
+  options:
+  - Label yang diberikan oleh manusia
+  - Baris berikutnya dari tabel
+  - Code di bagian tengah
+  - Rekonstruksi dari inputnya sendiri
+  answer: 3
+  explanation: Targetnya adalah inputnya sendiri, sehingga data menyediakan jawabannya sendiri dan tidak diperlukan label. Code adalah hasil antara, bukan output.
+- prompt: Autoencoder linear yang kecil punya w = v = (0,707; 0,707) dan rata-rata (3, 3). Code apa yang didapat titik (3, 4)?
+  options:
+  - 0
+  - 0,71
+  - 1,41
+  - 3,5
+  answer: 1
+  explanation: Setelah dipusatkan, titiknya (0, 1), sehingga z = 0,707 × 0 + 0,707 × 1 = 0,71. Nilai 3,5 bukan code, melainkan koordinat titik hasil rekonstruksi.
+- prompt: Dengan weight yang sama, autoencoder merekonstruksi titik (5, 5) menjadi apa?
+  options:
+  - (4, 4)
+  - (4,5; 4,5)
+  - (5, 5), tepat
+  - (3, 3), yaitu rata-rata
+  answer: 2
+  explanation: Setelah dipusatkan, titiknya (2, 2), sehingga z = 2,83 dan decoder memberi (3 + 0,707 × 2,83, 3 + 0,707 × 2,83) = (5, 5). Titik itu terletak pada diagonal, sehingga tidak ada yang hilang.
+- prompt: Pada kelima titik, weight pada diagonal memberi loss 0,4 dan weight pada sumbu pertama memberi 2,0. Apa kesimpulannya?
+  options:
+  - Weight sumbu pertama lebih baik, karena menyalin satu kolom dengan tepat
+  - Keduanya memberi loss yang sama, karena kedua code punya satu angka
+  - Loss tidak dapat dibandingkan tanpa label
+  - Weight diagonal lebih baik, karena menyimpan lebih banyak sebaran
+  answer: 3
+  explanation: Diagonal adalah arah dengan varians terbesar, sehingga code sepanjang arah itu kehilangan paling sedikit. Kedua code punya satu angka, tetapi mutu sebuah code ditentukan oleh apa yang disimpannya.
+- prompt: Code sebuah autoencoder sama panjang dengan inputnya, dan jaringannya cukup fleksibel. Apa yang paling mungkin terjadi setelah pelatihan?
+  options:
+  - Ia meneruskan input hampir tanpa perubahan, dengan loss mendekati nol dan hampir tidak ada yang berharga untuk dipelajari
+  - Ia dipaksa mengompresi dan menemukan code yang sama dengan PCA
+  - Ia tidak dapat dilatih, karena tidak ada bottleneck
+  - Loss-nya tetap di total varians data
+  answer: 0
+  explanation: Tanpa lorong yang sempit, menyalin adalah cara termudah untuk menurunkan loss. Model mencapai loss mendekati nol tanpa mempelajari kombinasi input mana yang penting.
+- prompt: Autoencoder linear dengan code satu angka dilatih memakai galat kuadrat. Bagaimana hubungan hasil belajarnya dengan PCA?
+  options:
+  - Ia memilih garis melalui titik tengah dengan arah sembarang
+  - Code-nya merentang garis yang sama dengan PC1
+  - Ia selalu mengalahkan PCA, karena dilatih
+  - Ia menemukan garis yang paling baik memisahkan kelas
+  answer: 1
+  explanation: Dengan encoder dan decoder linear serta galat kuadrat, code k angka yang terbaik merentang k arah principal pertama. Pelatihan tidak memakai label, sehingga tidak dapat mencari pemisahan kelas.
+- prompt: Untuk empat kolom penguin yang sudah distandarisasi, kira-kira berapa bagian sebaran kuadrat yang hilang pada autoencoder linear dengan code 2 angka?
+  options:
+  - 88,2%
+  - 31,2%
+  - 11,8%
+  - 2,7%
+  answer: 2
+  explanation: Dua komponen menyimpan 88,2% sebaran, sehingga 11,8% hilang. Angka 31,2% adalah kehilangan pada code satu angka, dan 2,7% pada code tiga angka.
+- prompt: Titik-titik terletak pada busur yang melengkung, dan code-nya satu angka. Apa yang dapat dilakukan autoencoder nonlinear tetapi tidak dapat dilakukan yang linear?
+  options:
+  - Memakai kurang dari satu angka
+  - Merekonstruksi titik-titik itu dengan loss di atas nol
+  - Melewati pelatihan, karena busurnya sederhana
+  - Melakukan decode mengikuti lengkungan, sehingga posisi di sepanjang busur sudah cukup
+  answer: 3
+  explanation: Decoder dengan bagian nonlinear dapat mengikuti busur, sehingga satu angka, yaitu posisi di sepanjang busur, secara prinsip dapat merekonstruksi setiap titik. Code linear adalah garis lurus dan kehilangan lengkungannya.

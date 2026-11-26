@@ -1,0 +1,72 @@
+- prompt: On the calm series the table shows a mean MASE of 0.45 for the learned lag model and 1.07 for seasonal naive. What does 0.45 say?
+  options:
+  - The learned model's forecasts are wrong 45% of the time, as a share of all the values
+  - Its error is about 0.45 times what seasonal naive errs in its own training slices
+  - The learned model beat seasonal naive by 0.45 units in every one of the 8 windows
+  - The learned model explains 45% of the variation in the whole generated series here
+  answer: 1
+  explanation: MASE divides a window's error by the error seasonal naive made on that window's own training slice, so 0.45 means less than half of that benchmark. It is not a percentage of wrong forecasts, and it has no units.
+- prompt: The series has a trend of +0.10 per step and a season of 12 steps. For a step 18 ahead, seasonal naive can only copy a value 24 steps back. How much trend does that copy ignore?
+  options:
+  - 0.6 units
+  - 1.2 units
+  - 2.4 units
+  - 1.8 units
+  answer: 2
+  explanation: 24 steps of trend at 0.10 per step is 24 x 0.10 = 2.4 units, twice the 12 x 0.10 = 1.2 that a one-season copy ignores. That doubling is why seasonal naive's mean MASE goes from 1.02 to 2.00 past step 12.
+- prompt: With Lags used set to 1 and the season marker off, the learned model scores a mean MASE of 1.94, worse than seasonal naive at 1.07. Why?
+  options:
+  - It sees only the last value and a trend, so it cannot tell a peak from a trough
+  - Fewer lags always give a worse model, so a model with one lag cannot beat any baseline at all
+  - The learned model cannot fit a trend at all when it is given fewer than 12 lags of history
+  - Seasonal naive uses the test values, so it has an unfair advantage over the learned model
+  answer: 0
+  explanation: The season has to enter somewhere, through 12 lags or through the marker. With neither, the model is close to naive (1.88). Turning the marker on brings it to 0.75, so the lags are not the only way in, and seasonal naive does not see the test values.
+- prompt: After the +6 shift the learned model's mean MASE goes from 0.46 to 1.69. How many times larger is it?
+  options:
+  - About 1.2 times
+  - About 0.3 times
+  - About 1.7 times
+  - About 3.7 times
+  answer: 3
+  explanation: 1.69 / 0.46 is about 3.7. The increase is 1.69 - 0.46 = 1.23, which is a different number, and 0.46 / 1.69 is about 0.27, the ratio the wrong way round. Seasonal naive, from 1.04 to 1.61, grew by a much smaller factor.
+- prompt: Why does the learned model lose more, by a wide factor, than seasonal naive after the shift?
+  options:
+  - Seasonal naive is retrained at every window on all the history, and the learned model is trained only once at the start
+  - It was fitted mostly on pre-shift history, so it keeps applying the old pattern until post-shift values fill its lags
+  - The shift removes the season from the series, and only the learned model needs the season to forecast well
+  - Any model that uses lags fails whenever the level of the series changes, however much data it has seen
+  answer: 1
+  explanation: Seasonal naive is wrong for one season only, because it copies one value from the old regime, then copies post-shift values. The learned model learned an old relationship and needs new values in its lags to recover. It does recover in windows 7 and 8.
+- prompt: In window 6 the learned model's MAE is 6.90 and the in-sample seasonal-naive error of its training slice (the MASE scale) is 2.42. What is its MASE?
+  options:
+  - 9.32
+  - 4.48
+  - 0.35
+  - 2.85
+  answer: 3
+  explanation: MASE = MAE / scale = 6.90 / 2.42, which is about 2.85. Adding or subtracting the two numbers, or dividing the other way round, gives 9.32, 4.48 or 0.35, none of which is a ratio of the error to its benchmark.
+- prompt: You want to compare sliding and expanding backtests on the same forecasts. Why switch Error measure to MAE first?
+  options:
+  - MAE is always the better measure for a forecast, so MASE should never be used to compare anything
+  - MASE cannot be computed for a sliding window, because that slice is too short to give a scale
+  - Each window's MASE scale comes from its training slice, so one forecast scores differently
+  - MAE ignores the regime shift, so with it the comparison between the two styles becomes fair
+  answer: 2
+  explanation: Seasonal naive's forecast in window 6 is identical under both styles, but its MASE is 0.61 with sliding and 0.93 with expanding because the scale differs (2.42 against 1.60). MAE (1.49 in both) is in the series' own units and does not change with the slice.
+- prompt: With the shift, the 80% band holds 53% of the actual values overall and only 1 of 12 in window 5. What is the best explanation?
+  options:
+  - The coverage target of 80% is too high for a learned model, so its bands always miss when the series moves
+  - Eight windows are too few for any interval to work, so a coverage figure from them means nothing
+  - The band is cut once from calm history and never updated, so it cannot follow a level that moved
+  - The learned model's forecasts become random after the shift, so no band could ever cover them
+  answer: 2
+  explanation: Without the shift the same band holds 80%. The band's width comes from errors before the first window, and a level jump makes every later error larger and one-sided. The fix is to recalibrate on recent errors.
+- prompt: On seeds 2 to 7 the learned model wins all 8 windows on the calm series and loses by a wider factor after the shift every time. What does this add, and what does it not?
+  options:
+  - It proves the learned model beats seasonal naive on any real series you will meet, since it won on every seed
+  - It shows the finding is no accident of one seed, but every series is generated, so real data is untested
+  - It shows that the seed has no effect on the series, because the findings held on all of them
+  - It shows that the learned model never needs a baseline beside it, since it won every window on every seed
+  answer: 1
+  explanation: A fresh seed changes the noise and tests against one lucky draw. It cannot test a different kind of data, and the course has no real time series for the lab. Run the baselines and a backtest on a real series before you trust a model.

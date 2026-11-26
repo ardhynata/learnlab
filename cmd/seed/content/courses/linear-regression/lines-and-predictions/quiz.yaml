@@ -1,0 +1,72 @@
+- prompt: The taxi rule is fare = 2 × km + 3. What fare does it predict for a 4 km trip?
+  options:
+  - "8"
+  - "11"
+  - "14"
+  - "24"
+  answer: 1
+  explanation: Put 4 in place of km, 2 × 4 + 3 = 11. The value 8 forgets the base fee of 3, and 14 multiplies the fee as well, 2 × (4 + 3).
+- prompt: A line predicts mass = 50 × flipper - 5800, with mass in grams and flipper length in millimeters. Two penguins differ by 10 mm in flipper length. How much more does the line predict for the longer-flippered one?
+  options:
+  - 50 g
+  - 10 g
+  - 500 g
+  - 5,800 g
+  answer: 2
+  explanation: The slope is 50 g for each millimeter, so ten millimeters add 10 × 50 = 500 g. The intercept, -5,800, does not enter a difference between two predictions because it cancels.
+- prompt: What does the intercept of a line tell you?
+  options:
+  - The prediction when x is 0
+  - How much the prediction changes when x grows by 1
+  - The largest miss the line makes
+  - The x value where the prediction is 0
+  answer: 0
+  explanation: Put x = 0 into slope × x + intercept and only the intercept is left. The change in the prediction when x grows by 1 is the slope, not the intercept.
+- prompt: A line is y = -3x + 20. What does the -3 say?
+  options:
+  - The line starts at -3 on the vertical axis
+  - The prediction is -3 when x is 20
+  - The prediction rises by 3 when x grows by 1
+  - The prediction falls by 3 when x grows by 1
+  answer: 3
+  explanation: The slope is the change in the prediction per one step of x, and a negative slope means it goes down. At x = 2 the line predicts 14, and at x = 3 it predicts 11.
+- prompt: A penguin has a 200 mm flipper and weighs 3,975 g. The line predicts 4,200 g for it. What is the residual?
+  options:
+  - +225 g
+  - -225 g
+  - -4,200 g
+  - +8,175 g
+  answer: 1
+  explanation: Residual is actual minus predicted, 3,975 - 4,200 = -225 g. The point is below the line, so the line predicted too high. +225 g comes from subtracting the other way round.
+- prompt: Four residuals are +500, +300, -700 and -400 g, and they add up to -300 g. Why is that sum a poor score for the line?
+  options:
+  - It is negative, and scores must be positive
+  - It only counts three of the four points
+  - Misses above and below cancel, so a line that misses a lot can look nearly perfect
+  - Residuals can never be added up
+  answer: 2
+  explanation: Every point here is at least 300 g from the line, yet the signed misses nearly cancel. A score has to make each miss positive first. The next lesson does that.
+- prompt: Our line was drawn from data with flipper lengths from 172 to 231 mm and predicts 1,700 g for 150 mm. How should you treat that number?
+  options:
+  - With suspicion, because 150 mm is outside the range the line was drawn from
+  - As reliable, because a line is exact at every x
+  - As reliable, because the line fits the 342 penguins well
+  - As wrong only if the slope is positive
+  answer: 0
+  explanation: A line keeps going outside the data, but nothing shows that penguins follow it there. Predicting beyond the measured range is a guess.
+- prompt: You plot the residuals of a line on 100 points, and 90 of them are negative. What does this suggest?
+  options:
+  - The line is perfect, because negative residuals are small
+  - The data contains 90 outliers
+  - The slope must be zero
+  - The line sits too high, and moving it down would shrink many misses
+  answer: 3
+  explanation: A negative residual means the point is below the line. If nearly all points are below it, the whole line is above the data, so sliding it down helps most points at once.
+- prompt: Two lines have the same slope, 2, and intercepts 3 and 6. How do they compare?
+  options:
+  - They cross at x = 0
+  - They are parallel, and the second is 3 higher than the first at every x
+  - The second is steeper than the first
+  - They cross at x = 3
+  answer: 1
+  explanation: The slope sets the tilt, so equal slopes mean parallel lines. The intercept slides a line up or down, and 6 - 3 = 3 is the gap at every x. They would only cross if their slopes differed.

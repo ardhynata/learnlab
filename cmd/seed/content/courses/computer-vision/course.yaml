@@ -1,0 +1,31 @@
+slug: computer-vision
+title: "Computer vision"
+summary: "Convolutions, CNNs, augmentation, transfer learning, and classification and detection metrics."
+topic: Machine learning
+level: advanced
+path: advanced
+position: 5
+translations:
+  id:
+    title: "Computer vision"
+    summary: "Convolution, CNN, augmentation, transfer learning, serta metrik klasifikasi dan deteksi."
+modules:
+- slug: core-ideas
+  title: Core ideas
+  summary: "The concepts, in the order the lab uses them."
+  lessons:
+  - convolutions-and-cnns
+  - augmentation-transfer-and-detection-metrics
+  translations:
+    id:
+      title: "Ide inti"
+      summary: "Konsep-konsepnya, sesuai urutan yang dipakai lab."
+- slug: lab
+  title: Lab
+  summary: "Run the idea yourself, then check what you learned."
+  lessons:
+  - vision-lab
+  translations:
+    id:
+      title: "Lab"
+      summary: "Jalankan idenya sendiri, lalu periksa apa yang sudah kamu pelajari."

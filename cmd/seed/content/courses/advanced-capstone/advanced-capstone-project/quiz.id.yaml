@@ -1,0 +1,80 @@
+- prompt: Satu peninjauan berbiaya 4, satu alarm palsu berbiaya 6 tambahan, dan satu positif yang terlewat berbiaya 40. Pada probabilitas positif berapa menandai sebuah kasus menjadi pilihan yang lebih murah?
+  options:
+  - 15%, karena 6 / 40 = 0,15
+  - 25%, karena 10 / 40 = 0,25
+  - 21,7%, karena (4 + 6) / (40 + 6) = 0,217
+  - 10%, karena 4 / 40 = 0,1
+  answer: 2
+  explanation: 'Menandai berbiaya 4 + (1 - p) × 6 = 10 - 6p, dan membiarkan kasus itu berbiaya 40p. Menandai lebih murah bila 10 - 6p paling besar 40p, yaitu bila p ≥ 10 / 46 = 21,7%. Jalan pintas lainnya melupakan sebagian biaya menandai atau sebagian biaya terlewat.'
+- prompt: Sebuah riwayat berisi 2.880 kasus, 161 di antaranya positif, dan satu positif yang terlewat berbiaya 100. Berapa biaya per kasus model yang tidak pernah menandai?
+  options:
+  - '0,56'
+  - '5,59'
+  - '9,72'
+  - '55,90'
+  answer: 1
+  explanation: Tidak pernah menandai berarti melewatkan semua 161 positif, sehingga biayanya 161 × 100 = 16.100, dan 16.100 / 2.880 = 5,59 per kasus. Angka 9,72 adalah biaya menandai setiap kasus. Model itu punya accuracy 94,4%, dan itulah sebabnya accuracy menyembunyikan masalahnya.
+- prompt: Forest acuan membaca AUC 0,84 pada split acak, 0,64 pada split per entitas, dan 0,83 pada split temporal. Pada entitas baru setelah peluncuran, skornya 0,67, 0,62, dan 0,71. Apa yang ditunjukkan selisih +0,02 pada split per entitas?
+  options:
+  - Split per entitas punya data training paling banyak, sehingga paling akurat
+  - Forest tidak pernah overfitting bila entitasnya dikelompokkan
+  - Selisih itu hanya noise, sehingga semua split sama baiknya
+  - Ia memisahkan entitas, sehingga sisi test-nya berisi entitas yang belum pernah dikenal model, seperti entitas baru nanti
+  answer: 3
+  explanation: Pada split per entitas tidak ada entitas yang berada di kedua sisi, sehingga forest tidak dapat mengenali sebuah entitas dari pengenalnya (seperti deviceId), sama seperti ia tidak dapat mengenali 40% entitas yang baru setelah peluncuran. Split acak memuji sebesar +0,17 dan split temporal +0,12 karena keduanya menjaga setiap entitas ada di kedua sisi.
+- prompt: Seorang rekan berkata split temporal tidak dapat memuji model, karena ia tidak pernah melatih pada masa depan. Di lab, ia membaca 0,83 dibanding 0,71 pada entitas baru. Apa jawaban terbaik?
+  options:
+  - Ia menyingkirkan masa depan dari training tetapi tidak menyingkirkan entitasnya, sehingga forest tetap dapat mengenalinya
+  - Split temporal berlatih pada data yang lebih sedikit, dan itu menaikkan skornya
+  - Selisih itu noise bootstrap, karena split temporal hanya punya satu titik potong
+  - Split temporal dibuat untuk regression, bukan untuk AUC
+  answer: 0
+  explanation: Setiap entitas ada di kedua sisi split temporal, sehingga model yang fleksibel dapat memakai apa yang dipelajarinya tentang tiap entitas. Selisihnya +0,12. Split temporal menjawab pertanyaan yang berbeda, yaitu apakah masa depan mirip masa lalu, dan ia tidak memberi tahu bagaimana model memperlakukan entitas yang belum pernah ditemuinya.
+- prompt: Pada split per entitas, baseline berbiaya 2,78 per kasus dan regresi logistik 3,00. AUC logistik 0,78, dan selisih biayanya, logistik dikurangi baseline, adalah +0,22 dengan interval 95% -0,55 sampai +1,08. Apa yang kamu laporkan?
+  options:
+  - Regresi logistik lebih baik, karena 0,78 jauh di atas AUC baseline sebesar 0,50
+  - Regresi logistik lebih buruk, karena 3,00 di atas 2,78
+  - Kasus test ini tidak dapat menyatakan mana yang lebih murah, sehingga model belum jelas mengalahkan tidak berbuat apa-apa pada harga ini
+  - Interval itu membuktikan bahwa baseline lebih murah
+  answer: 2
+  explanation: Interval itu memuat 0, sehingga selisih +0,22 masih dalam batas noise dari 20 positif. AUC yang bagus mengukur urutan, sedangkan biaya juga menghitung setiap peninjauan dan setiap kasus terlewat. Laporkan keduanya, dan katakan bahwa tidak ada model yang jelas mengalahkan tidak berbuat apa-apa di sini.
+- prompt: Sebuah sisi test berisi 720 kasus dan 20 positif. Sebuah model menandai 121 kasus dan menangkap 10 dari 20 positif. Satu peninjauan berbiaya 5, alarm palsu 5 tambahan, dan satu kasus terlewat 100. Berapa expected cost per kasus?
+  options:
+  - '2,78'
+  - '3,00'
+  - '1,39'
+  - '0,84'
+  answer: 1
+  explanation: 'Ke-10 positif yang terlewat berbiaya 10 × 100 = 1.000. Ke-121 peninjauan berbiaya 121 × 5 = 605. Ke-111 alarm palsu (121 - 10) berbiaya 111 × 5 = 555. Totalnya 2.160, dan 2.160 / 720 = 3,00. 2,78 adalah baseline, 1,39 hanya menghitung 10 kasus terlewat (1.000 / 720) dan 0,84 hanya 121 peninjauan (605 / 720).'
+- prompt: Di lab, menaikkan kapasitas peninjauan sebesar 4 tidak mengubah satu pun angka tercatat, tetapi menaikkan biaya kasus terlewat sebesar 10 mengubah 6. Mengapa?
+  options:
+  - Pemeriksaannya rusak, karena setiap pengaturan seharusnya mengubah sesuatu
+  - Catatan tidak menyimpan kapasitas
+  - Kapasitas tidak pernah berpengaruh pada model mana pun
+  - Model menandai 121 kasus, di bawah 216 yang diizinkan kapasitas, sehingga batasnya tidak pernah menahan apa pun
+  answer: 3
+  explanation: Sisi test mengizinkan 216 kasus ditandai (24 dari 80 per hari, diskalakan ke 720 kasus), dan model hanya menandai 121. Batas yang lebih besar tidak mengubah apa pun. Catatan memang menyimpan kapasitas, dan lab menyatakannya lalu memintamu mengubah pengaturan lain, supaya kamu tahu pemeriksaannya dapat gagal.
+- prompt: Sebuah rencana monitoring dengan PSI di atas 0,10 mengirim alert pada hari ke-47. Biaya sampai terdeteksinya 303 dan ada 1 hari alarm palsu, masing-masing 50. Bagaimana totalnya dibanding rencana bawaan yang berbiaya 453?
+  options:
+  - 353, lebih murah daripada rencana bawaan
+  - 303, lebih murah daripada rencana bawaan
+  - 353, lebih mahal daripada rencana bawaan
+  - 453, sama dengan rencana bawaan
+  answer: 0
+  explanation: 'Total menambahkan biaya alarm palsu ke biaya sampai terdeteksi: 303 + 1 × 50 = 353, yang lebih kecil dari 453. Threshold yang lebih ketat mengirim alert lebih cepat, tetapi setiap alarm palsu menghabiskan investigasi sehari, sehingga rencana yang di-tune pada satu replay tetap perlu diperiksa pada skenario lain.'
+- prompt: Pada hari ke-63, PSI amount adalah 2,37 dan feature lain di bawah 0,10. Nilai yang disajikan sama dengan yang offline. AUC tertunda 0,80 dibanding 0,79 sebelum peluncuran, dan porsi positif teramati 15,1% dibanding rata-rata skor prediksi 15,0%. Diagnosis mana yang sesuai?
+  options:
+  - Training-serving skew, karena amount berubah
+  - Concept shift, karena aturan model berubah
+  - Covariate drift pada amount, karena inputnya bergeser sementara model masih mengurutkan dan memprediksi dengan baik
+  - Label shift, karena porsi positif bergeser
+  answer: 2
+  explanation: Skew akan menunjukkan nilai yang disajikan berbeda dari yang offline, dan di sini tidak ada yang berbeda. Concept shift akan menarik AUC tertunda turun. Label shift akan membiarkan input tetap dan mendorong porsi teramati jauh di atas rata-rata skor. Hanya inputnya yang bergeser.
+- prompt: Pada skenario 1, Pertahankan berbiaya 17.372, Rollback 17.422, Recalibrate 17.472, dan Retrain 17.876 (500 untuk melaksanakannya, aktif setelah 3 hari). Apa yang sebaiknya dilakukan tim?
+  options:
+  - Retrain, karena penyebab yang terkonfirmasi membutuhkan model baru
+  - Pertahankan model, karena diagnosisnya benar tetapi tidak ada perbaikan yang mengalahkan membiarkannya
+  - Rollback, karena inputnya berubah
+  - Recalibrate, karena probabilitasnya ditampilkan kepada peninjau
+  answer: 1
+  explanation: Model masih mengurutkan dan memprediksi dengan baik, sehingga sebuah perbaikan menambah biayanya sendiri dan tidak mengurangi biaya keputusan; retraining berbiaya 500 lebih banyak untuk dilaksanakan dan tidak lebih baik pada keputusan. Diagnosis yang benar tidak selalu menuntut tindakan, dan angkalah yang memutuskan.

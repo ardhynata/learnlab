@@ -1,0 +1,72 @@
+- prompt: In the lab's starting split, Feature 1 ≤ 3.4, the right side holds 70 training points, 19 Class A and 51 Class B. What is its Gini impurity?
+  options:
+  - 0.000
+  - 0.277
+  - 0.396
+  - 0.500
+  answer: 2
+  explanation: 1 - (19/70)² - (51/70)² = 1 - 2962/4900 = 0.396. The 0.277 is the weighted Gini of the whole split, and 0.000 is the Gini of the left side, which is all Class A.
+- prompt: The whole training set has Gini 0.500, and your split has a weighted Gini of 0.277 after the cut. What is the impurity drop?
+  options:
+  - 0.223
+  - 0.277
+  - 0.723
+  - 0.500
+  answer: 0
+  explanation: The drop is the Gini before minus the weighted Gini after, 0.500 - 0.277 = 0.223. A bigger drop means a better split.
+- prompt: The start split has a perfectly pure left side (30 points, all Class A), yet the best first split has a drop of 0.371 against 0.223 and leaves 5 Class B points on its left. Why does it win?
+  options:
+  - A split is judged only by its purest side, and the best split's purest side is bigger
+  - The lab always prefers the split with the larger left side
+  - Class B points on the left do not count in the Gini
+  - Both of its sides are nearly pure, while the start split leaves a messy group of 70 that raises its weighted Gini
+  answer: 3
+  explanation: The score is the weighted Gini of both sides. The start split leaves a right side of 70 points with Gini 0.396. The best split gives 52 points at 0.174 and 48 points at 0.080, a weighted 0.129. A pure group of 30 is not enough.
+- prompt: In this lab, what does a maximum depth of 1 give?
+  options:
+  - A single leaf that always answers the majority class
+  - Your first split alone, which makes 2 leaves
+  - Exactly one leaf per class
+  - A tree with at most 1 point per leaf
+  answer: 1
+  explanation: Depth 1 is one question in a row, which is your first split. The lab has no depth 0. A maximum depth of 1 has nothing to do with the number of points in a leaf.
+- prompt: From the best first split on the overlapping blobs, training accuracy reaches 100% at depth 5 with 10 leaves and stays there up to depth 10. Why does the tree not grow at depths 6 to 10?
+  options:
+  - The maximum depth slider stops working above 5
+  - Validation accuracy would fall, so the lab stops it
+  - Every leaf is already pure, so there is nothing left to split
+  - A tree can never have more than 10 leaves
+  answer: 2
+  explanation: A pure group has Gini 0, and no cut can lower that. The depth is only a ceiling, so the tree stops when its leaves are pure. A different dataset can easily have more than 10 leaves.
+- prompt: On the checker pattern, training accuracy goes from 93% at depth 4 to 100% at depth 7, while validation accuracy goes from 88% to 78%. What is the best reading?
+  options:
+  - The deeper tree has memorized flipped labels in the training points, which do not carry over
+  - The validation points are broken and should be ignored
+  - The deeper tree has learned the pattern better, because training accuracy is higher
+  - Validation accuracy always falls once the tree has more than 20 leaves
+  answer: 0
+  explanation: Training accuracy never falls as a tree grows, so it cannot show when to stop. The validation drop of 10 points says the extra leaves fit noise. The 20-leaf rule is invented.
+- prompt: On the blobs with the best first split, raising the minimum leaf size from 1 to 5 lowers training accuracy from 100% to 95% and validation accuracy from 84% to 82%, and the leaves fall from 10 to 6. What is the fairest conclusion?
+  options:
+  - Minimum leaf size 1 is clearly better, because 84% is higher than 82%
+  - Minimum leaf size 5 is clearly better, because training accuracy is closer to validation accuracy
+  - Minimum leaf size has no effect on a tree
+  - The validation change is one point out of 50, a tie, so the 6-leaf tree is the simpler good choice
+  answer: 3
+  explanation: With 50 validation points, one point is 2 percentage points, so 84% to 82% is a tie. The smaller tree gives up some training accuracy, which is the point of the setting, and is easier to read.
+- prompt: On four samples of the penguins, the best validation accuracy came at depth 2 or 3, and the tree with depth 10 never did better, while its training accuracy was 100% each time. What does this support?
+  options:
+  - Depth 2 is the right depth for every dataset
+  - Past about depth 3, extra depth bought training accuracy and no validation accuracy on these samples
+  - Validation accuracy always falls after depth 3
+  - Training accuracy is the better guide to the best depth
+  answer: 1
+  explanation: The pattern held across four samples, which is stronger than one cut. It does not make 2 a universal depth, and the fall is not guaranteed, because on the third sample validation stayed at 98%. Training accuracy cannot guide the choice, since it keeps rising.
+- prompt: Why press New sample and repeat an experiment on the real penguins before trusting what you saw?
+  options:
+  - A new sample always gives a higher accuracy
+  - The first sample is always wrong
+  - Each sample has only 50 validation points, so one sample can flatter or punish a tree, and a pattern that repeats is more trustworthy
+  - New samples change the species of the penguins
+  answer: 2
+  explanation: One validation point moves the score by 2 points, and a different random 150 penguins moves it by more. On four samples the validation score at depth 10 was 90%, 90%, 98% and 90%. The conclusion to trust is the one that repeats.

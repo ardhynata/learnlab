@@ -1,0 +1,80 @@
+- prompt: Pada contoh lima titik, dengan hanya PC1 titik (1, 2) dibangun ulang di (1,5; 1,5). Berapa jarak titik hasil rekonstruksi itu dari titik aslinya?
+  options:
+  - 0,5
+  - 0,71
+  - 1,41
+  - 2,12
+  answer: 1
+  explanation: Selisihnya (0,5; -0,5), yang panjangnya akar dari 0,25 + 0,25 = 0,71. Angka 0,5 adalah kuadrat galat, bukan jaraknya.
+- prompt: Data punya d kolom dan kamu menyimpan semua d komponen, lalu membangun ulang. Berapa galat rekonstruksinya?
+  options:
+  - Varians komponen pertama
+  - Bergantung pada seberapa kuat korelasi antarkolom
+  - Selalu paling sedikit sebesar eigenvalue terkecil
+  - Nol, karena kamu hanya memutar sumbu
+  answer: 3
+  explanation: Menyimpan semua komponen hanya menggambarkan titik yang sama dari sudut yang diputar. Tidak ada yang dibuang, sehingga pembangunan ulang mengembalikan titik aslinya. Galat baru muncul ketika komponen dibuang.
+- prompt: Enam penguin punya total kuadrat panjang 12, dan pembangunan ulang dari PC1 menyisakan total kuadrat galat 0,698. Berapa porsi kuadrat panjang yang hilang?
+  options:
+  - 5,8%
+  - 94,2%
+  - 0,7%
+  - 58%
+  answer: 0
+  explanation: 0,698 / 12 = 0,058, jadi 5,8% hilang dan 94,2% tersimpan. Angka 94,2% adalah explained variance PC1, dan keduanya selalu berjumlah 100%.
+- prompt: Pada lima titik, PC2 punya eigenvalue 0,4 dan PC1 punya 3,6. Kamu hanya menyimpan PC1. Berapa rata-rata kuadrat galat rekonstruksi per titik?
+  options:
+  - 3,6
+  - 0,9
+  - 0,4
+  - 0,1
+  answer: 2
+  explanation: Rata-rata kuadrat galat adalah varians komponen yang dibuang, yaitu eigenvalue PC2, 0,4. Kelima kuadrat galat 0,5, 0,5, 0,5, 0,5, dan 0 juga rata-ratanya 0,4.
+- prompt: Untuk empat kolom penguin, galat rekonstruksi adalah 31,2% pada k = 1, 11,8% pada k = 2, dan 2,7% pada k = 3. Kamu dapat menerima kehilangan paling banyak 5%. Berapa k terkecil yang memenuhi?
+  options:
+  - k = 1
+  - k = 2
+  - k = 3
+  - k = 4
+  answer: 2
+  explanation: k = 2 masih kehilangan 11,8%, melewati anggaran, sedangkan k = 3 kehilangan 2,7%, di bawah anggaran. Pilih k terkecil yang memenuhi, karena komponen tambahan menambah kolom tanpa menambah banyak.
+- prompt: Sebuah model yang hanya memakai PC1 berkinerja buruk, padahal PC1 menjelaskan 85% varians input. Apa penyebab yang paling mungkin?
+  options:
+  - Explained variance dihitung dengan salah
+  - PCA tidak pernah melihat label, sehingga arah yang memisahkan kelas bisa saja bervarians kecil
+  - Sebuah model tidak dapat memakai kolom yang lebih sedikit daripada tabelnya
+  - PC1 harus selalu dibuang sebelum membuat model
+  answer: 1
+  explanation: PCA bersifat unsupervised. Ia mempertahankan sebaran, dan arah yang memisahkan dua kelas bisa berupa arah dengan varians kecil yang dibuang lebih dulu. Explained variance mengukur kesetiaan pada input, bukan kegunaan untuk label.
+- prompt: Urutan mana yang menjaga test set tetap jujur ketika PCA ditambahkan ke pipeline?
+  options:
+  - Fit PCA pada semua baris, lalu bagi menjadi train dan test
+  - Fit PCA terpisah pada baris test agar mereka punya sumbu sendiri
+  - Fit PCA pada baris training dan test bersama-sama agar komponennya stabil
+  - Bagi dulu, fit scaler dan PCA pada baris training, lalu terapkan ke baris test
+  answer: 3
+  explanation: Mem-fit pada baris yang kelak menjadi test set membuat mereka ikut menentukan sumbu, dan itu leakage. Baris test hanya ditransformasi dengan rata-rata, skala, dan komponen yang dipelajari dari baris training.
+- prompt: PCA di-fit pada titik training dengan rata-rata (3, 3) dan PC1 = (0,707; 0,707). Sebuah titik baru (4, 5) datang. Di mana rekonstruksi hanya dengan PC1 menaruhnya?
+  options:
+  - (3,5; 3,5)
+  - (4,5; 4,5)
+  - (4, 5)
+  - (5, 5)
+  answer: 1
+  explanation: Setelah dipusatkan dengan rata-rata training, titiknya (1, 2), jadi skor PC1-nya 3 × 0,707 = 2,12. Menambahkan 2,12 × (0,707; 0,707) pada rata-rata (3, 3) menghasilkan (4,5; 4,5).
+- prompt: Pada peta t-SNE, kelompok A tergambar dua kali lebih lebar daripada kelompok B, dan celah dari A ke C tampak dua kali celah dari A ke B. Apa yang aman disimpulkan?
+  options:
+  - Titik-titik di dalam setiap kelompok kebanyakan bertetangga satu sama lain
+  - Kelompok A dua kali lebih tersebar daripada kelompok B
+  - A dua kali lebih berbeda dari C daripada dari B
+  - Peta akan tampak sama dengan seed yang lain
+  answer: 0
+  explanation: t-SNE mempertahankan neighbourhood. Ukuran kelompok dan jarak antarkelompok berubah menurut pengaturan dan seed, seperti yang ditunjukkan peta penguin dengan rasio jarak 1,85 pada data melawan 2,37 dan 1,24 pada peta.
+- prompt: Mengapa koordinat t-SNE tidak boleh dipakai sebagai feature input untuk sebuah classifier?
+  options:
+  - Jumlah dimensinya selalu terlalu sedikit
+  - Hasilnya selalu kurang akurat daripada kolom aslinya
+  - Koordinat itu bergantung pada setiap baris serta pengaturan dan seed, dan t-SNE yang umum tidak punya aturan untuk menaruh baris baru
+  - Koordinat itu tidak dapat digambar dalam dua dimensi
+  answer: 2
+  explanation: Mem-fit t-SNE pada semua baris membuat baris test ikut membentuk peta, tata letaknya berubah menurut perplexity dan seed, dan baris baru tidak punya tempat yang disepakati di sana. Pakai peta untuk melihat, dan beri model kolom asli atau PCA yang di-fit pada baris training.

@@ -1,0 +1,72 @@
+- prompt: A shop tests two forecasting models on year 3 only, and model A wins. What is the main weakness of that conclusion?
+  options:
+  - Four quarters are too few to compute any MAE.
+  - A temporal split always leaks the future into training.
+  - It shows how the models do at one origin only, and another origin could rank them differently.
+  - MAE cannot be used to compare two models.
+  answer: 2
+  explanation: One window is one sample of how a forecaster behaves. The test year may be easy, hard or sit on one side of a change, so a rolling backtest repeats the test at many origins. A temporal split on its own does not leak, and MAE compares models fine.
+- prompt: Which description matches a sliding window rule for the training part of a backtest?
+  options:
+  - Training keeps a fixed length, so old rows drop out as the origin moves forward.
+  - Training always starts at the first row and grows at each origin.
+  - Test rows are shuffled into the training rows.
+  - The origin stays fixed while the horizon grows.
+  answer: 0
+  explanation: A sliding window keeps only the latest rows, such as the latest 8 quarters. The rule that starts at the first row and grows is the expanding window. The sliding rule helps when the pattern drifts, because old rows stop being typical.
+- prompt: Lag 4 + offset forecasts 150, 180, 160 and 170 for four quarters, and the actuals are 148, 183, 160 and 175. What is the MAE?
+  options:
+  - '1.5'
+  - '2'
+  - '10'
+  - '2.5'
+  answer: 3
+  explanation: The errors (actual minus forecast) are -2, +3, 0 and +5. The absolute errors are 2, 3, 0 and 5, which add up to 10, and 10 / 4 = 2.5. The value 1.5 is the mean signed error, where the misses cancel, and 10 is the total, not the average.
+- prompt: In three windows, model A has MAE 2, 3 and 9, and model B has MAE 5, 6 and 4. Which reading is the most sensible?
+  options:
+  - A is better because its mean is lower, so nothing else needs checking.
+  - A wins 2 of 3 windows and has the lower mean, but it loses the latest window by a wide margin, so look for a change before trusting the mean.
+  - B is better, because the latest window is the only one that counts.
+  - The models are equal, because their means are within one unit.
+  answer: 1
+  explanation: A has the lower mean (4.67 against 5) and wins windows 1 and 2, yet it loses the latest window, 9 against 4. A mean hides that flip. The latest window is the closest to the future, but one window alone is not proof either, so check whether the data changed.
+- prompt: The yearly totals of the training years are 300, 330 and 372 units. What offset per quarter does lag 4 + offset add to the seasonal naive copy?
+  options:
+  - '18'
+  - '36'
+  - '9'
+  - '72'
+  answer: 2
+  explanation: The total rose by 372 - 300 = 72 over 2 year gaps, which is 36 per year, and 36 / 4 = 9 per quarter. The value 72 is the whole change and 36 is the change per year.
+- prompt: Nine sorted backtest errors are -6, -2, -1, 0, 1, 2, 3, 4 and 7, and the new forecast is 50. What 80% interval does the whole-range rule give?
+  options:
+  - 44 to 57
+  - 50 to 57
+  - 46 to 54
+  - 43 to 58
+  answer: 0
+  explanation: With 9 errors there are 10 places for a new error, and the whole range covers 8 of them, which is 80%. The interval is 50 - 6 = 44 to 50 + 7 = 57.
+- prompt: An 80% interval is cut from the one-step errors of a random walk and reused 4 quarters ahead. What happens to its coverage?
+  options:
+  - It stays at 80%, because the interval did not change.
+  - It rises above 80%, because longer horizons have more data.
+  - It stays above 80%, because errors shrink as the horizon grows.
+  - It falls to about 48%, because the errors at 4 quarters have twice the spread.
+  answer: 3
+  explanation: For a random walk the spread of the error grows with the square root of the horizon, so at 4 quarters it is twice the one-step spread. The same interval then covers only about 48%. The fix is to take the errors of each horizon separately.
+- prompt: An 80% interval is checked on 20 windows and 13 actuals fall inside. How should you read that?
+  options:
+  - 20 hits were expected, so the interval failed completely.
+  - 16 hits were expected, and 13 is about 1.7 standard errors low, which is worth investigating but is not proof.
+  - 13 hits is exactly right for an 80% interval.
+  - 8 hits were expected, so the interval is too wide.
+  answer: 1
+  explanation: 80% of 20 is 16 hits. The standard error is sqrt(0.8 x 0.2 / 20), about 9 points, so 13 of 20 (65%) is about 1.7 standard errors below the target. That is a reason to look, not a verdict.
+- prompt: In the latest window a model's errors were -7, -8, -6 and -9, all negative, after mixed signs before. What does that most likely show, and what is a sensible step?
+  options:
+  - Random noise, so keep the model as it is.
+  - A bug in the backtest, so shuffle the rows and run it again.
+  - A regime change that biases the model, so try a shorter training window or refit, and recheck the intervals.
+  - A horizon that is too short, so forecast further ahead.
+  answer: 2
+  explanation: Errors of one sign are a bias, not noise, and noise would give mixed signs. A regime change makes the old rule wrong. A sliding window, a refit and recalibrated intervals respond to it, and shuffling rows would break the time order.

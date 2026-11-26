@@ -1,0 +1,31 @@
+slug: support-vector-machines
+title: "Support vector machines"
+summary: "Margins, support vectors, soft margins, kernels, C, and gamma."
+topic: Machine learning
+level: intermediate
+path: intermediate
+position: 7
+translations:
+  id:
+    title: "Support vector machine"
+    summary: "Margin, support vector, soft margin, kernel, C, dan gamma."
+modules:
+- slug: core-ideas
+  title: Core ideas
+  summary: "The concepts, in the order the lab uses them."
+  lessons:
+  - margins-and-support-vectors
+  - soft-margins-and-kernels
+  translations:
+    id:
+      title: "Ide inti"
+      summary: "Konsep-konsepnya, sesuai urutan yang dipakai lab."
+- slug: lab
+  title: Lab
+  summary: "Run the idea yourself, then check what you learned."
+  lessons:
+  - svm-lab
+  translations:
+    id:
+      title: "Lab"
+      summary: "Jalankan idenya sendiri, lalu periksa apa yang sudah kamu pelajari."

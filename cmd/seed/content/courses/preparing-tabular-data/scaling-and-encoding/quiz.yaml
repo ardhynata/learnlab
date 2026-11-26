@@ -1,0 +1,80 @@
+- prompt: Two people differ by $2,000 in income and by 25 years in age. With no scaling, which difference matters more in the usual straight-line distance between them?
+  options:
+  - Age, because 25 years is a big gap between people
+  - Income, because 2,000 squared is far larger than 25 squared
+  - They matter equally, because both are differences
+  - Neither, because the two features have different units
+  answer: 1
+  explanation: Straight-line distance squares each raw gap, so 4,000,000 swamps 625. The formula does not know the units differ, which is why you scale first.
+- prompt: Ages have mean 50 and standard deviation 10. What is the z-score of a person aged 35?
+  options:
+  - '-15'
+  - '-0.67'
+  - '-1.5'
+  - '1.5'
+  answer: 2
+  explanation: z = (35 - 50) / 10 = -1.5, so this person is one and a half standard deviations below the mean. -15 is only the gap, before dividing by the standard deviation, and 1.5 has the wrong sign.
+- prompt: After the model is trained, a new person arrives and you want a k-NN prediction. What should you do to their income and age first?
+  options:
+  - Apply the same scaler that was fitted on the training rows, unchanged
+  - Refit the scaler with this person included, so the numbers stay current
+  - Nothing, because one new row cannot be scaled
+  - Standardize the person using their own income and age as the mean
+  answer: 0
+  explanation: The model learned from data scaled with the training numbers, so a new row must be put on that same scale. Refitting or scaling a row on its own would place it on a different scale from everything the model knows.
+- prompt: Why should a scaler be fitted on the training rows only?
+  options:
+  - Test rows are too few to be scaled, so they stay raw
+  - It makes training run faster, with fewer rows to scan
+  - Min-max scaling only works on training data, not test data
+  - Test rows would shape the scaling, so test information leaks in
+  answer: 3
+  explanation: This is data leakage, and it can make the test score look better than it should. Fit on training rows, then reuse those same numbers unchanged on test rows and on new data.
+- prompt: A distance mixes an income in raw dollars with one-hot color columns. Two people differ in color (red against blue) and in income by $1,000. What does the color do to the squared distance, compared with the income?
+  options:
+  - It adds 2, which is more than the income, because 2 is bigger than 1
+  - It adds 2, but income adds 1,000,000, so color is practically ignored
+  - It adds 0, because one-hot columns never change a distance
+  - It adds the same as income, because both are differences
+  answer: 1
+  explanation: Two one-hot columns differ by 1 each, so color adds 1 + 1 = 2 to the squared distance, while the income gap adds 1,000 squared, which is 1,000,000. Scaling the numbers puts them on a footing where color can be heard.
+- prompt: All but one income in a column are between $40,000 and $60,000, and the exception earns $240,000. What does min-max scaling do to the ordinary incomes?
+  options:
+  - It spreads them evenly across the whole range 0 to 1
+  - It turns them all into negative numbers below zero
+  - It squeezes them into a narrow band, about 0 to 0.1
+  - It leaves them unchanged, because only the outlier moves
+  answer: 2
+  explanation: The largest value sets what 1 means, so $60,000 becomes (60,000 - 40,000) / 200,000 = 0.1. One outlier leaves very little room for everyone else.
+- prompt: Which model most needs its features scaled?
+  options:
+  - A decision tree, because it compares many features at once
+  - Both equally, because every model compares features
+  - Neither, because models learn the units on their own
+  - k-nearest neighbors, because it adds up feature differences
+  answer: 3
+  explanation: k-NN works from distances, so a column in large units dominates. A decision tree splits on one feature at a time against a threshold, so rescaling a column does not change its splits.
+- prompt: The scaler was fitted on training incomes from $20,000 to $120,000 with min-max. A test person earns $130,000. What does min-max give, and is it a bug?
+  options:
+  - 1.1, which is normal, as the test row lies outside training
+  - 1.0, because min-max never goes above 1, so it is capped
+  - 1.1, which is a bug, so refit the scaler on the test rows
+  - 0.13, because 130,000 is divided by a million
+  answer: 0
+  explanation: (130,000 - 20,000) / 100,000 = 1.1. Training fixed what 0 and 1 mean, so a value beyond the training maximum lands above 1. That is expected. Refitting on test rows would be leakage.
+- prompt: In the Scale it lab, Scaling is None and k is 5. You move Query age from 27 to 60. What happens to the Neighbors column?
+  options:
+  - It flips to five Group B neighbors, because the query is now old
+  - It fills with Group A neighbors, because older people are rarer
+  - It stays the same five people, because income picks the neighbors
+  - It becomes empty, because there is no room for age on the plot
+  answer: 2
+  explanation: With no scaling, age gaps of tens of years vanish next to income gaps of thousands of dollars, so the same five people closest in income vote. Under Standardize the same move flips the prediction from Group A to Group B.
+- prompt: Penguin bill length has a standard deviation of about 5.45 mm and body mass about 801 g. Two penguins differ by 10 mm in bill length and by 100 g in body mass. After standardizing, which gap is larger?
+  options:
+  - Body mass, because 100 is a bigger number than 10
+  - Bill length, about 15 times larger (1.83 against 0.12)
+  - Neither, because standardizing makes every gap equal
+  - Bill length, but only about 1.2 times larger
+  answer: 1
+  explanation: 10 / 5.45 is about 1.83 and 100 / 801 is about 0.12, so the bill gap is about 15 times larger. In raw numbers the mass gap is 10 times larger, which is why unscaled distance sides with body mass.

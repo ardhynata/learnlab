@@ -1,0 +1,80 @@
+- prompt: Sembilan residual kalibrasi yang diurutkan adalah 72, 129, 209, 268, 355, 365, 369, 418, dan 498 g. Untuk interval 80% (α = 0,2), residual mana yang menjadi q?
+  options:
+  - 355, yang ke-5
+  - 365, yang ke-6
+  - 418, yang ke-8
+  - 498, yang ke-9
+  answer: 2
+  explanation: Rank-nya ceil((n + 1)(1 - α)) = ceil(10 × 0,8) = 8, sehingga q adalah residual terkecil ke-8, yaitu 418 g.
+- prompt: Seekor penguin baru diprediksi 4.161 g dan q = 418 g. Berapa interval 80%-nya?
+  options:
+  - 3.743 g sampai 4.161 g
+  - 3.743 g sampai 4.579 g
+  - 3.663 g sampai 4.659 g
+  - 4.161 g sampai 4.579 g
+  answer: 1
+  explanation: Intervalnya ŷ - q sampai ŷ + q, yaitu 4.161 - 418 = 3.743 sampai 4.161 + 418 = 4.579. Interval 3.663 sampai 4.659 memakai q = 498, yang merupakan kasus 90%.
+- prompt: Mengapa kasus kalibrasi dijauhkan dari training set?
+  options:
+  - Residual latih menjadi terlalu kecil, sehingga intervalnya terlalu sempit
+  - Kasus kalibrasi harus bernilai lebih besar daripada kasus latih
+  - Model tidak dapat berjalan pada kasus kalibrasi jika sudah pernah melihatnya
+  - Residual hanya dapat dihitung satu kali untuk setiap kasus
+  answer: 0
+  explanation: Janjinya butuh residual yang mirip dengan residual kasus baru. Residual pada kasus latih biasanya lebih kecil, sehingga interval yang dibangun darinya mencakup lebih sedikit daripada yang dijanjikan.
+- prompt: Pada rank ceil((n + 1)(1 - α)), apa yang diwakili "+ 1"?
+  options:
+  - Intercept model, yang menggeser setiap prediksi
+  - Satu kasus kalibrasi cadangan kalau ada yang hilang
+  - Training set, yang sudah dilihat model
+  - Kasus baru itu sendiri, satu dari n + 1 rank yang sama mungkinnya
+  answer: 3
+  explanation: Residual baru jatuh ke salah satu dari n + 1 slot yang sama mungkinnya, sehingga memilih rank k mencakup k / (n + 1) kasus. Tanpa + 1 intervalnya terlalu sempit.
+- prompt: Kamu punya n = 19 residual kalibrasi dan ingin interval 90% (α = 0,1). Residual mana yang kamu pakai sebagai q?
+  options:
+  - Terkecil ke-17
+  - Terkecil ke-18
+  - Terkecil ke-19, yang terbesar
+  - Terkecil ke-20
+  answer: 1
+  explanation: (n + 1)(1 - α) = 20 × 0,9 = 18, sehingga k = 18. Rata-rata coverage-nya 18/20 = 90%. Residual ke-20 tidak ada.
+- prompt: Dengan hanya sembilan residual kalibrasi kamu meminta interval 95% (α = 0,05). Apa yang diberikan split conformal prediction?
+  options:
+  - Residual ke-9, 498 g, sebagai q
+  - Interval dengan q sama dengan rata-rata residual
+  - Seluruh garis bilangan, karena rank 10 tidak ada
+  - Interval yang lebih sempit daripada yang 90%
+  answer: 2
+  explanation: ceil(10 × 0,95) = ceil(9,5) = 10, lebih besar dari n = 9. Tidak ada residual yang cukup besar, sehingga hanya seluruh garis yang aman. Kamu butuh n ≥ 1/α - 1 = 19 kasus.
+- prompt: Pernyataan mana yang merupakan jaminan interval conformal 90%, jika kasus kalibrasi dan kasus baru exchangeable?
+  options:
+  - Berlaku hanya jika galatnya Gaussian
+  - Berlaku hanya jika modelnya akurat
+  - Berlaku untuk setiap subkelompok secara terpisah
+  - Sebagai rata-rata, setidaknya 90% nilai sebenarnya jatuh di dalam interval
+  answer: 3
+  explanation: Jaminannya bersifat marginal. Ia tidak butuh galat Gaussian dan tidak butuh model yang akurat, karena model yang buruk mendapat interval yang lebar. Ia tidak menjanjikan 90% di dalam setiap subkelompok.
+- prompt: Sebuah interval dikalibrasi untuk coverage 90%, tetapi saat deployment galatnya 1,5 kali lebih besar daripada pada kasus kalibrasi. Apa yang sebaiknya kamu harapkan?
+  options:
+  - Coverage turun menjadi sekitar 73%, karena interval terlalu sempit untuk galat yang baru
+  - Coverage tetap 90%, karena jaminannya mencakup data apa pun
+  - Coverage naik, karena galat yang lebih besar lebih mudah dicakup
+  - Interval melebar dengan sendirinya agar tetap 90%
+  answer: 0
+  explanation: Galat yang lebih besar merusak exchangeability, sehingga jaminan tidak lagi berlaku. Dengan galat Gaussian, galat 1,5 kali lebih besar menyisakan coverage sekitar 73%. Interval tidak berubah kecuali kamu mengalibrasi ulang.
+- prompt: Untuk sembilan residual, pindah dari interval 80% ke 90% mengubah q dari 418 g menjadi 498 g. Seberapa lebar interval bertambah?
+  options:
+  - 80 g
+  - 996 g
+  - 160 g
+  - Lebarnya tetap sama
+  answer: 2
+  explanation: Interval bertambah 80 g di setiap sisi, yaitu 160 g secara total. Lebarnya naik dari 836 g menjadi 996 g, sekitar 19% lebih lebar.
+- prompt: Apa yang diubah conformal prediction ternormalisasi (locally weighted) dibandingkan ±q yang tetap?
+  options:
+  - Ia membuang calibration set dan memakai residual latih sebagai gantinya
+  - Lebarnya mengikuti sebaran yang diperkirakan di setiap input; coverage tetap berupa rata-rata
+  - Ia menjanjikan coverage 90% di dalam setiap subkelompok kasus
+  - Ia membuat model dasarnya lebih akurat
+  answer: 1
+  explanation: Residual dibagi dengan sebaran yang diperkirakan σ̂(x), sehingga intervalnya ŷ ± q × σ̂(x), lebih lebar untuk input yang sulit dan lebih sempit untuk yang mudah. Ia tetap butuh calibration set, dan coverage-nya tetap rata-rata.

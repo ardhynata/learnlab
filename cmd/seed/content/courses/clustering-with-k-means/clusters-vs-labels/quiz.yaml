@@ -1,0 +1,80 @@
+- prompt: What does k-means use the class labels for when you run it in the lab "k-means, then reveal the labels"?
+  options:
+  - It uses them to place the starting centroids, one on each class
+  - It uses them in every update step to check and correct its clusters
+  - It uses them to decide the best value of k for the data
+  - It never sees them; they only judge the clusters afterwards
+  answer: 3
+  explanation: k-means groups points by position alone. The labels are hidden until you reveal them, and then they serve only as an answer key for judging how well the clusters match.
+- prompt: "Three clusters on 48 points have this crosstab (class A, class B): Cluster 1 has 8 and 4, Cluster 2 has 14 and 3, Cluster 3 has 2 and 17. What is the purity?"
+  options:
+  - 62.5%
+  - 75.0%
+  - 81.3%
+  - 89.6%
+  answer: 2
+  explanation: "Take the largest cell of each row: 8, 14 and 17. They add up to 39 points, and 39 / 48 = 0.8125, which is 81.3%."
+- prompt: With k-means++ the lab shows Cluster 1 holding 6 points of class A and 20 of class B. With Random points, Cluster 1 holds 18 of class A and 4 of class B, and Inertia is the same 110.76. What happened?
+  options:
+  - It is the same grouping with the two cluster numbers swapped
+  - k-means found a better grouping the second time
+  - The purity must have changed, because the rows differ
+  - The classes were relabelled by the lab
+  answer: 0
+  explanation: A cluster number is only a name, and it depends on the start. The rows 6 and 20, and 18 and 4, exchange places, so the groups, the Inertia and the purity are unchanged.
+- prompt: On Checkerboard with k = 4, every cluster holds 12 points of a single class, so purity is 100.0%, yet the adjusted Rand index is only 0.48. Why?
+  options:
+  - Each class is split over two clusters, which purity ignores
+  - The adjusted Rand index only works when there are exactly two clusters
+  - The clusters are not really pure, so the purity figure must be wrong
+  - k-means stopped before it converged, so the clusters are unfinished
+  answer: 0
+  explanation: Purity only asks whether each cluster is mostly one class. Here each of the two classes is cut into two clusters, so many pairs from the same class are separated, and the pair-based index scores that.
+- prompt: On Concentric rings with k = 2 the lab shows an adjusted Rand index of −0.02. What does it mean?
+  options:
+  - The clusters match the classes almost perfectly
+  - The match is about as good as random labels would give
+  - k-means failed to run, so the score is not valid
+  - The classes have been swapped, so you should read the table backwards
+  answer: 1
+  explanation: An index near 0 is what random labels give, and a small negative value is chance. Each cluster takes about half of each ring, because the border between two centroids is straight.
+- prompt: In the penguin data, the three species have 151, 68 and 123 penguins. With k = 1 all 342 penguins are in one cluster. What is the purity?
+  options:
+  - 33.3%, one third for each species
+  - 100%, because there is only one cluster
+  - 44.2%, the share of the biggest species
+  - 0%, because nothing is separated
+  answer: 2
+  explanation: "With one cluster the majority class is Adelie, and 151 / 342 = 0.4415, so purity is 44.2%. That is the floor: a useful clustering of these penguins must score above it."
+- prompt: Without standardizing, k-means with k = 3 puts 38 Adelie and 54 Chinstrap in Cluster 1 (purity 83.9%, ARI 0.64). What is the most likely cause?
+  options:
+  - Adelie and Chinstrap are in fact the same species
+  - k-means cannot cluster more than two features at a time
+  - The seed was wrong, and any other seed gives 0.89
+  - Flipper length has a larger standard deviation, so it dominates the distances
+  answer: 3
+  explanation: Flipper length has a standard deviation of 14.0 mm against 5.5 mm for bill length, and Adelie and Chinstrap have similar flippers (190.0 and 195.8 mm on average). With Random points and no standardizing, seeds 1 to 4 give ARI 0.64, 0.64, 0.54 and 0.53, so the scaling matters more than the seed.
+- prompt: "With standardizing on and Random points, seeds 1 to 7 give Inertia 157.82 on the penguins with k = 3, and seed 8 gives 206.06 (ARI 0.57). With no labels, which run do you keep?"
+  options:
+  - The Inertia 157.82 run, because at the same k a lower Inertia is better
+  - The seed 8 run, because its higher Inertia means more clusters were found
+  - Any of them, since all of them have k = 3 and so are equally good
+  - None, because clusters cannot be judged without labels
+  answer: 0
+  explanation: As in the lesson on starting positions, you compare runs on the same data and the same k by their Inertia and keep the lowest. Here that also happens to be the run that matches the species best.
+- prompt: On Overlapping clusters, going from k = 2 to k = 4 raises purity from 79.2% to 83.3% but lowers the adjusted Rand index from 0.33 to 0.21. What is the right reading?
+  options:
+  - Four clusters match the classes better, because purity is higher
+  - Purity rose only because smaller clusters are easier to make pure
+  - The index is wrong, since purity is the standard score for this
+  - k = 4 is the correct number of classes for these points
+  answer: 1
+  explanation: Purity tends to rise as k grows, even with no better match. The adjusted Rand index counts how pairs are split across clusters, so it falls when the classes are cut into pieces. The data has two classes, so k = 4 is not a count of them.
+- prompt: A clustering of customers, which you have no labels for, gives clusters that look sensible to the sales team. You then get a column of customer types that matches the clusters poorly. Which statement is the most careful?
+  options:
+  - The clusters are wrong, because they differ from the customer types the company already uses
+  - The customer types are wrong, because the clusters came from distances
+  - A poor match does not say which part failed; check the features, scaling and types
+  - The adjusted Rand index should be recomputed with a larger k to be fair
+  answer: 2
+  explanation: Classes are one way a person split the data. A low score can come from the method, the features, the scaling or the classes themselves, so you look at the plot and the inputs before you blame one of them.

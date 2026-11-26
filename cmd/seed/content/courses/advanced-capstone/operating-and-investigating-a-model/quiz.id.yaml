@@ -1,0 +1,80 @@
+- prompt: Sebuah baris monitoring plan berbunyi "cek accuracy sesekali, seseorang sebaiknya melihat kalau turun". Bagian apa dari baris plan yang hilang?
+  options:
+  - Hanya nama model, karena semua bagian lain dari baris itu sudah tersirat olehnya
+  - Seberapa sering mengecek, threshold yang memicu tindakan, dan pemilik yang disebut namanya
+  - Gambar metriknya, karena plan dibaca oleh manajer yang ingin melihat grafik lebih dulu
+  - Tidak ada yang hilang, karena accuracy adalah metrik tunggal terbaik untuk dipantau
+  answer: 1
+  explanation: Baris plan menyebut apa yang diukur, caranya, seberapa sering, pada threshold berapa sesuatu dilakukan, dan siapa pemiliknya. "Sesekali" bukan jadwal, "turun" bukan threshold, dan "seseorang" bukan pemilik, sehingga tidak ada yang dibuat bertindak.
+- prompt: Antrean berisi 71 fraud per hari sampai hari 33 dan 44 per hari mulai hari 34. Berapa hit rate rata-rata 7 hari pada hari 36, dengan 200 review per hari?
+  options:
+  - 22,0%, karena level yang baru sudah berlaku
+  - 35,5%, karena rata-rata 7 hari belum bergerak
+  - 29,7%, dari (4 × 71 + 3 × 44) / 7 = 59,4 fraud dari 200
+  - 24,0%, karena hari 36 adalah hari page berbunyi
+  answer: 2
+  explanation: Jendela hari 30 sampai 36 memuat empat hari dengan 71 dan tiga hari dengan 44, rata-ratanya 416 / 7 = 59,4 fraud, yaitu 29,7% dari 200. Itu di bawah garis warn 30%, dan garis page 24% baru dilewati pada hari 39.
+- prompt: Antrean kini berisi 44 fraud per hari. Aturan baseline menangkap 38. Net value adalah 80 per fraud dikurangi 2 per review, dengan 200 review. Apa yang sebaiknya tertulis di runbook?
+  options:
+  - Segera pindah ke aturan, karena setiap penurunan adalah keadaan darurat
+  - Matikan antrean sampai penyebabnya diketahui
+  - Latih ulang model hari ini agar aman
+  - Biarkan model berjalan dan selidiki, karena 3.120 per hari mengalahkan 2.640 milik aturan
+  answer: 3
+  explanation: 44 × 80 - 400 = 3.120 dan 38 × 80 - 400 = 2.640, sehingga model yang menurun masih bernilai 480 per hari lebih tinggi daripada aturan. Fallback dipakai untuk hit rate di bawah 38 fraud (19%). Retraining sebelum penyebabnya diketahui adalah langkah pertama yang keliru.
+- prompt: Langkah pertama analisis kegagalan adalah mereproduksi kegagalannya. Mengapa langkah ini didahulukan?
+  options:
+  - Ia memberi kasus yang dapat dijalankan ulang sesuai permintaan, dan menunjukkan apakah sistemnya reproducible
+  - Ia membuktikan orang mana yang berbuat salah hingga terjadi kegagalan
+  - Ia menggantikan langkah-langkah berikutnya bila hasil replay-nya sama
+  - Ia adalah cara termurah untuk memperbaiki kegagalan setelah ditemukan
+  answer: 0
+  explanation: Dengan snapshot, versi, dan seed yang tersimpan, hasil buruknya muncul kembali sesuai permintaan, sehingga setiap uji berikutnya dapat diulang. Jika hasilnya berbeda, itulah temuan pertama. Mereproduksi tidak memperbaiki kegagalan dan tidak menunjuk siapa yang salah.
+- prompt: Sebelum dan sesudah hari 34, antrean berisi fraud app 46 dan 19 dari 120, serta fraud web 25 dan 25 dari 80. Apa kata slice ini?
+  options:
+  - Channel web penyebab penurunan, karena porsinya di antrean lebih kecil
+  - Kedua channel menanggung penurunan secara sama
+  - "Penurunan terpusat di app, karena seluruh 27 fraud yang hilang ada di slice itu"
+  - Slice tidak dapat mengatakan apa pun, karena antrean selalu 200 pembayaran
+  answer: 2
+  explanation: Antrean kehilangan 71 - 44 = 27 fraud, dan app kehilangan 46 - 19 = 27 di antaranya, sedangkan slice web tidak berubah. Slice ini mengarahkan langkah berikutnya ke apa yang berubah pada pembayaran app di hari 34.
+- prompt: Rilis `5.2` dan sebuah kampanye pemasaran sama-sama dimulai pada hari 34. Replay hari yang sehat dengan device age dikosongkan menyisakan 45 fraud di antrean. Replay dengan tambahan 5% pembayaran menyisakan 71. Apa kesimpulannya?
+  options:
+  - Rilis `5.2` adalah penyebabnya, karena hanya replay-nya yang mereproduksi penurunan
+  - Kampanye adalah penyebabnya, karena ia menambah pembayaran
+  - Keduanya penyebab, karena keduanya dimulai pada hari 34
+  - Penyebab belum dapat disebut sampai label hari 36 tiba
+  answer: 0
+  explanation: Menguji setiap kandidat sendirian pada hari yang sehat memisahkan apa yang tidak dapat dipisahkan oleh waktu. Hanya device age yang kosong yang mereproduksi penurunan, dari 71 menjadi 45, dekat dengan 44 yang terlihat langsung. Pembayaran tambahan tidak mengubah apa pun.
+- prompt: Sebuah tim melatih ulang model pada hari 34 sampai 41 untuk "memperbaiki" penurunan. Apa yang salah?
+  options:
+  - Tidak ada yang salah, karena data baru selalu membantu model
+  - Label untuk hari-hari itu terlalu dini untuk dipakai melatih
+  - Model akan terlalu percaya diri pada channel web setelahnya
+  - Model mempelajari device age kosong sebagai hal normal, dan label datang hingga 30 hari kemudian
+  answer: 3
+  explanation: Retraining lebih dulu menanamkan kegagalan, karena model mempelajari device age yang kosong sebagai data biasa. Cara ini juga lambat, sebab label chargeback datang terlambat hingga 30 hari, dan kerugian terus berjalan 2.160 per hari selama itu.
+- prompt: Kalimat mana yang pantas ada di laporan kegagalan tanpa menyalahkan?
+  options:
+  - Analis pemilik kode feature melewatkan perubahannya
+  - Plan hanya memantau tiga dari dua belas feature model, sehingga device age yang kosong tidak memicu alert
+  - Tim seharusnya lebih berhati-hati dengan rilis
+  - Tim app menyebabkan kerugian dengan merilis versi `5.2`
+  answer: 1
+  explanation: Laporan tanpa menyalahkan menyebut kondisi sistem yang meloloskan kegagalan dan yang dapat diubah oleh sebuah tindakan. Kalimat lainnya menunjuk orang atau menyuruh mereka berusaha lebih keras, dan keduanya tidak mengubah apa yang terjadi saat orang berikutnya sedang sibuk.
+- prompt: Probabilitas dari model fraud sedikit terlalu tinggi, tetapi rankingnya baik. Bila tim merekalibrasi dengan pemetaan monoton, apa yang terjadi pada antrean berisi 200 skor tertinggi?
+  options:
+  - Antrean menjadi lebih akurat, karena probabilitasnya lebih baik
+  - Antrean menyusut, karena probabilitas yang lebih rendah meloloskan lebih sedikit pembayaran
+  - Antrean tetap 200 pembayaran yang sama, karena pemetaan itu menjaga urutan skor
+  - Antrean terbalik, karena pemetaan itu membalik skala
+  answer: 2
+  explanation: Pemetaan monoton tidak pernah mengubah pembayaran mana yang berada di atas pembayaran lain, sehingga 200 teratas adalah himpunan yang sama. Rekalibrasi penting hanya di tempat probabilitasnya sendiri dipakai, seperti aturan blokir di atas 0,9 atau angka expected loss.
+- prompt: Cek porsi kosong pada 12 feature akan berbunyi pada hari 35. Dengan tiga hari yang sama dari page hingga perbaikan, perbaikan aktif pada hari 38. Berapa biaya insidennya, dengan kerugian 2.160 per hari sejak hari 34?
+  options:
+  - 4 hari × 2.160 = 8.640, separuh dari 17.280 yang sebenarnya hilang
+  - 3 hari × 2.160 = 6.480, hanya menghitung hari-hari perbaikan
+  - 8 hari × 2.160 = 17.280, karena kerugian tidak bergantung pada alert
+  - 0, karena alert mencegah terjadinya kegagalan
+  answer: 0
+  explanation: Hari 34, 35, 36, dan 37 hilang, yaitu 4 hari dan 8.640. Alert mempersingkat waktu menuju perbaikan dan tidak mencegah kegagalan. Insiden yang sebenarnya kehilangan hari 34 sampai 41, 8 hari dan 17.280.

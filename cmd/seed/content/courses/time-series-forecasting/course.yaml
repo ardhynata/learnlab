@@ -1,0 +1,31 @@
+slug: time-series-forecasting
+title: "Time-series forecasting"
+summary: "Lags, seasonality, forecast horizons, rolling backtests, and probabilistic forecasts."
+topic: Machine learning
+level: advanced
+path: advanced
+position: 7
+translations:
+  id:
+    title: "Forecasting time series"
+    summary: "Lag, seasonality, forecast horizon, rolling backtest, dan probabilistic forecast."
+modules:
+- slug: core-ideas
+  title: Core ideas
+  summary: "The concepts, in the order the lab uses them."
+  lessons:
+  - lags-seasonality-and-horizons
+  - rolling-backtests-and-probabilistic-forecasts
+  translations:
+    id:
+      title: "Ide inti"
+      summary: "Konsep-konsepnya, sesuai urutan yang dipakai lab."
+- slug: lab
+  title: Lab
+  summary: "Run the idea yourself, then check what you learned."
+  lessons:
+  - forecast-lab
+  translations:
+    id:
+      title: "Lab"
+      summary: "Jalankan idenya sendiri, lalu periksa apa yang sudah kamu pelajari."

@@ -1,0 +1,80 @@
+- prompt: Mengapa garis lurus biasa kurang cocok sebagai model untuk jawaban 0 atau 1, seperti lulus atau gagal?
+  options:
+  - Karena sebuah garis tidak dapat memiliki kemiringan, sehingga tidak bisa mengikuti tren
+  - Karena kelas tidak dapat ditulis sebagai angka yang bisa dipakai garis
+  - Karena prediksinya dapat turun di bawah 0 atau naik di atas 1, padahal probabilitas tidak boleh begitu
+  - Karena garis selalu memprediksi tepat 0,5 untuk setiap siswa
+  answer: 2
+  explanation: Garis terus berlanjut saat x bertambah, sehingga ia keluar dari rentang 0 sampai 1 di setidaknya satu sisi. Kelas dapat dikodekan sebagai 0 dan 1, dan garis dapat memiliki kemiringan berapa pun, jadi keduanya bukan masalahnya.
+- prompt: Berapa nilai sigmoid(0)?
+  options:
+  - "0,5"
+  - "0"
+  - "1"
+  - "Tidak terdefinisi"
+  answer: 0
+  explanation: Pada skor 0, rumusnya memberi 1 / (1 + e^0) = 1 / 2 = 0,5. Kurva hanya mendekati 0 dan 1 di kedua ujungnya dan tidak pernah mencapainya.
+- prompt: Sebuah model menghasilkan skor z = -4. Probabilitas mana yang paling dekat dengan hasil sigmoid?
+  options:
+  - "0,98"
+  - "0,02"
+  - "0,50"
+  - "-4"
+  answer: 1
+  explanation: Skor negatif yang besar dipetakan ke probabilitas mendekati 0. Tabel memberi sigmoid(-4) = 0,02, sedangkan 0,98 adalah sigmoid(4), bayangan cerminnya. Probabilitas tidak pernah negatif.
+- prompt: Model ujian memiliki skor z = 1,2 × jam - 3,6. Berapa probabilitas lulus setelah belajar 5 jam?
+  options:
+  - "0,50"
+  - "0,77"
+  - "2,4"
+  - "0,92"
+  answer: 3
+  explanation: Skornya 1,2 × 5 - 3,6 = 2,4, dan sigmoid(2,4) kira-kira 0,92. Angka 2,4 adalah skor, bukan probabilitas, sedangkan 0,77 adalah probabilitas untuk 4 jam.
+- prompt: Untuk model yang sama, berapa jam belajar yang memberi probabilitas tepat 0,5?
+  options:
+  - "1,2 jam"
+  - "5 jam"
+  - "3 jam"
+  - "3,6 jam"
+  answer: 2
+  explanation: Probabilitasnya 0,5 ketika skornya 0. Menyelesaikan 1,2 × jam - 3,6 = 0 memberi jam = 3,6 / 1,2 = 3. Nilai 3,6 hanyalah besar intercept, bukan jawabannya.
+- prompt: Sebuah model menyatakan p = 0,8 bahwa sebuah email adalah spam. Berapa odds spam-nya?
+  options:
+  - "0,8 banding 1"
+  - "4 banding 1"
+  - "1 banding 4"
+  - "8 banding 1"
+  answer: 1
+  explanation: Odds-nya p / (1 - p) = 0,8 / 0,2 = 4, yaitu 4 banding 1. Nilai 1 banding 4 adalah odds untuk p = 0,2.
+- prompt: Pada model ujian, setiap tambahan satu jam menambah 1,2 pada log-odds. Apa pengaruh satu jam tambahan terhadap odds lulus?
+  options:
+  - Menambah odds sebesar 1,2, sehingga odds naik dari 1 menjadi 2,2
+  - Menambah probabilitas sebesar 1,2 setiap jam
+  - Menggandakan odds, berapa pun nilai awalnya
+  - Mengalikan odds dengan e^1,2, sekitar 3,3
+  answer: 3
+  explanation: Menambah log-odds berarti mengalikan odds. Tabel di pelajaran memperlihatkan odds tumbuh dari 1 ke 3,32 lalu ke 11,02, masing-masing dengan faktor sekitar 3,3. Baik odds maupun probabilitas tidak bertambah tetap sebesar 1,2.
+- prompt: Sebuah model memiliki skor z = jam + 0,8 × latihan - 5. Siswa mana yang berada tepat di decision boundary?
+  options:
+  - 1 jam belajar dan 5 latihan soal
+  - 2 jam dan 3 latihan soal
+  - 4 jam dan 2 latihan soal
+  - 3 jam dan 3 latihan soal
+  answer: 0
+  explanation: Di boundary, skornya 0. Untuk 1 jam dan 5 latihan, 1 + 4 - 5 = 0, sehingga p = 0,5. Siswa lainnya memiliki skor -0,6, 0,6, dan 0,4, jadi mereka berada di salah satu sisi boundary.
+- prompt: Sebuah model menyatakan p = 0,77 bahwa seorang siswa akan lulus, tetapi siswa itu gagal. Kesimpulan mana yang paling adil?
+  options:
+  - Model rusak, karena memprediksi lulus padahal siswa itu gagal
+  - Probabilitas sebenarnya 0, dan model hanya salah melaporkannya
+  - "Belum terbukti apa-apa: sekitar 23 dari 100 siswa seperti itu memang diperkirakan gagal"
+  - Siswa itu pasti salah diberi label di data
+  answer: 2
+  explanation: Probabilitas 0,77 menyisakan ruang untuk hasil yang lain, sekitar 23 kali dari 100. Satu kegagalan tidak membuktikan model salah. Hanya banyak kasus yang dapat menunjukkan apakah probabilitasnya layak dipercaya.
+- prompt: Mengapa decision boundary regresi logistik berupa garis lurus ketika ada dua feature?
+  options:
+  - Karena sigmoid adalah garis lurus terhadap feature
+  - Karena boundary berada di tempat skor bernilai 0, dan skor adalah rumus linear
+  - Karena model memakai 0,5 sebagai threshold dan 0,5 selalu menghasilkan garis
+  - Karena dua titik mana pun selalu menentukan sebuah garis, apa pun modelnya
+  answer: 1
+  explanation: Boundary berada di tempat p = 0,5, yaitu tempat skor bernilai 0. Skor linear yang disamakan dengan 0 adalah persamaan garis lurus. Sigmoid sendiri memang kurva, tetapi ia tidak mengubah di mana skor bernilai 0.

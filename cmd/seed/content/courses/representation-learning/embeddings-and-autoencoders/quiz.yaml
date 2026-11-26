@@ -1,0 +1,80 @@
+- prompt: Two rings of points are centered on the origin, one with radius 2 and one with radius 4. Which single number describing each point lets one threshold separate the rings?
+  options:
+  - The x coordinate
+  - The y coordinate
+  - The distance from the origin
+  - The sum x + y
+  answer: 2
+  explanation: The distance from the origin is 2 for every inner point and 4 for every outer point, so "above 3" separates them. The x coordinate, the y coordinate and their sum each run across both rings.
+- prompt: In the toy embedding, the cat is at (4, 3) and the dog at (3, 5). What is the Euclidean distance between them?
+  options:
+  - 2.24, the square root of 5
+  - 1.41, the square root of 2
+  - 3, the sum of the two differences
+  - 5, the sum of the squared differences
+  answer: 0
+  explanation: The differences are 1 and 2, so the squared distance is 1 + 4 = 5 and the distance is its square root, 2.24. The answer 5 forgets the square root.
+- prompt: What is an autoencoder trained to produce as its output?
+  options:
+  - A label supplied by a person
+  - The next row of the table
+  - The code in the middle
+  - A reconstruction of its own input
+  answer: 3
+  explanation: The target is the input itself, so the data supplies its own answer and no labels are needed. The code is an intermediate result, not the output.
+- prompt: The tiny linear autoencoder has w = v = (0.707, 0.707) and the means (3, 3). What code does the point (3, 4) get?
+  options:
+  - 0
+  - 0.71
+  - 1.41
+  - 3.5
+  answer: 1
+  explanation: Centered, the point is (0, 1), so z = 0.707 × 0 + 0.707 × 1 = 0.71. The value 3.5 is not the code but a coordinate of the rebuilt point.
+- prompt: With the same weights, what does the autoencoder rebuild the point (5, 5) as?
+  options:
+  - (4, 4)
+  - (4.5, 4.5)
+  - (5, 5), exactly
+  - (3, 3), the mean
+  answer: 2
+  explanation: Centered, the point is (2, 2), so z = 2.83 and the decoder gives (3 + 0.707 × 2.83, 3 + 0.707 × 2.83) = (5, 5). The point lies on the diagonal, so nothing is lost.
+- prompt: Over the five points, the weights on the diagonal give a loss of 0.4 and the weights on the first axis give 2.0. What follows?
+  options:
+  - The first-axis weights are better, because they copy one column exactly
+  - They give the same loss, because both codes have one number
+  - The loss cannot be compared without labels
+  - The diagonal weights are better, because they keep more of the spread
+  answer: 3
+  explanation: The diagonal is the direction of greatest variance, so a code along it loses the least. Both codes have one number, but a code is only as good as what it keeps.
+- prompt: An autoencoder's code is as long as its input, and the network is flexible enough. What is most likely after training?
+  options:
+  - It passes the input through almost unchanged, with near-zero loss and little worth learning
+  - It is forced to compress and finds the same code as PCA
+  - It cannot be trained, because there is no bottleneck
+  - Its loss stays at the total variance of the data
+  answer: 0
+  explanation: Without a narrow passage, copying is the easiest way to reduce the loss. The model reaches near-zero loss without learning which combinations of the inputs matter.
+- prompt: A linear autoencoder with a one-number code is trained with squared error. How does what it learns relate to PCA?
+  options:
+  - It picks a line through the middle in an arbitrary direction
+  - Its code spans the same line as PC1
+  - It always beats PCA, because it is trained
+  - It finds the line that best separates the classes
+  answer: 1
+  explanation: With a linear encoder and decoder and squared error, the best k-number code spans the first k principal directions. Training does not use labels, so it cannot look for class separation.
+- prompt: For the four standardized penguin columns, about what share of the squared spread does a linear autoencoder lose with a code of 2 numbers?
+  options:
+  - 88.2%
+  - 31.2%
+  - 11.8%
+  - 2.7%
+  answer: 2
+  explanation: Two components keep 88.2% of the spread, so 11.8% is lost. The figure 31.2% is the loss with a one-number code, and 2.7% is the loss with three.
+- prompt: Points lie along a curved arc, and the code has one number. What can a nonlinear autoencoder do that a linear one cannot?
+  options:
+  - Use fewer than one number
+  - Reconstruct the points with loss above zero
+  - Skip training, because the arc is simple
+  - Decode along the curve, so the position along it is enough
+  answer: 3
+  explanation: A decoder with nonlinear parts can follow the arc, so one number, the position along it, can in principle rebuild each point. A linear code is a straight line and loses the bend.

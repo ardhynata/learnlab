@@ -1,0 +1,31 @@
+slug: tree-ensembles
+title: "Tree ensembles"
+summary: "Bagging, random forests, gradient boosting, and early stopping."
+topic: Machine learning
+level: intermediate
+path: intermediate
+position: 8
+translations:
+  id:
+    title: "Ensemble pohon"
+    summary: "Bagging, random forest, gradient boosting, dan early stopping."
+modules:
+- slug: core-ideas
+  title: Core ideas
+  summary: "The concepts, in the order the lab uses them."
+  lessons:
+  - bagging-and-random-forests
+  - gradient-boosting
+  translations:
+    id:
+      title: "Ide inti"
+      summary: "Konsep-konsepnya, sesuai urutan yang dipakai lab."
+- slug: lab
+  title: Lab
+  summary: "Run the idea yourself, then check what you learned."
+  lessons:
+  - ensemble-lab
+  translations:
+    id:
+      title: "Lab"
+      summary: "Jalankan idenya sendiri, lalu periksa apa yang sudah kamu pelajari."

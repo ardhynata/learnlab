@@ -1,0 +1,80 @@
+- prompt: Sebuah titik kelas +1 berskor 0,4. Berapa slack-nya?
+  options:
+  - '0, karena titik itu berada di sisi yang benar'
+  - '0,4, yaitu skor itu sendiri'
+  - '0,6, yaitu 1 dikurangi 0,4'
+  - '1,4, yaitu 1 ditambah 0,4'
+  answer: 2
+  explanation: Slack adalah max(0, 1 - y x skor) = 1 - 0,4 = 0,6. Titik itu berada di sisi garis yang benar tetapi di dalam jalan, sehingga ia tetap melanggar aturan bahwa y x skor seharusnya paling sedikit 1.
+- prompt: Sebuah titik kelas +1 berskor -0,5. Pernyataan mana yang benar?
+  options:
+  - Slack-nya 1,5, dan titik itu berada di sisi garis yang salah
+  - Slack-nya 0,5, dan titik itu berada di sisi yang benar
+  - Slack-nya 0, karena slack tidak pernah positif
+  - Slack-nya 1,5, tetapi titik itu tetap diklasifikasikan dengan benar
+  answer: 0
+  explanation: Slack-nya 1 - (-0,5) = 1,5. Slack di atas 1 berarti tanda skornya salah, sehingga titik itu salah diklasifikasikan.
+- prompt: Sebuah SVM soft margin punya w dengan |w| = 4, dan jumlah slack-nya 1,5. Berapa biaya totalnya bila C = 10?
+  options:
+  - 9,5, yaitu 8 + 1,5
+  - 15, yaitu 10 x 1,5
+  - 31, yaitu 4 x 4 + 15
+  - 23, yaitu 8 + 15
+  answer: 3
+  explanation: Biayanya ½|w|² + C x (jumlah slack) = ½ x 16 + 10 x 1,5 = 8 + 15 = 23. Pilihan lain melupakan setengahnya, atau melupakan bahwa C mengalikan slack.
+- prompt: Kamu menurunkan C dari 100 menjadi 0,1 pada data yang sama. Apa yang biasanya terjadi?
+  options:
+  - Jalan menyempit dan support vector menjadi lebih sedikit
+  - Jalan melebar, lebih banyak titik berada di dalamnya, dan support vector bertambah
+  - Jalan tetap sama dan hanya accuracy training yang berubah
+  - Setiap titik dipaksa keluar dari jalan
+  answer: 1
+  explanation: C yang kecil membuat slack murah, sehingga jalan melebar dan menoleransi titik di dalamnya. Setiap titik di tepi atau di dalam jalan adalah support vector, sehingga jumlahnya bertambah. Di pelajaran ini, jalan berubah dari lebar 0,74 dengan 3 support vector menjadi 3,33 dengan 8.
+- prompt: Dengan γ = 1, berapa kemiripan RBF dua titik yang berjarak 2?
+  options:
+  - 0,37, yaitu e^(-1)
+  - 0,135, yaitu e^(-2)
+  - 0,018, yaitu e^(-4)
+  - 0,98, yaitu hampir 1
+  answer: 2
+  explanation: Kemiripannya e^(-γ x d²) = e^(-1 x 4) = e^(-4) = 0,018. Jarak dikuadratkan lebih dulu sebelum dikalikan gamma, sehingga e^(-2) adalah kekeliruan yang umum.
+- prompt: Sebuah SVM RBF mendapat 100% pada training set dan 76% pada titik baru dari sumber yang sama, dan hampir setiap titik training menjadi support vector. Apa penyebab yang paling mungkin?
+  options:
+  - Gamma terlalu besar, sehingga tiap titik hanya memengaruhi petak kecil di sekitarnya
+  - Gamma terlalu kecil, sehingga setiap titik tampak sama dengan yang lain
+  - Kernel-nya linear, sehingga tidak dapat melengkung
+  - Datanya tidak diacak
+  answer: 0
+  explanation: Gamma yang sangat besar membuat vote tiap titik bersifat lokal, sehingga model menghafal titik training dan generalisasinya buruk. Itu adalah overfitting. Gamma yang terlalu kecil akan memberi skor rendah pada kedua set.
+- prompt: Apa yang dapat dihindari SVM berkat kernel trick?
+  options:
+  - Memilih nilai untuk C
+  - Menghitung jarak antartitik
+  - Memakai support vector
+  - Menghitung koordinat tersembunyi dari ruang yang lebih kaya
+  answer: 3
+  explanation: SVM hanya memakai titik lewat kemiripan antarpasangan, sehingga ia dapat bertindak seolah-olah menggambar garis lurus di ruang berkoordinat tersembunyi, yang tampak seperti kurva pada feature asli, tanpa pernah menghitung koordinat itu.
+- prompt: Dua penguin berbeda 0,4 mm, -1,3 mm, 5 mm dan 50 g pada panjang paruh, kedalaman paruh, panjang sirip dan massa tubuh. Massa tubuh menyumbang 98,9% dari jarak kuadrat. Mengapa itu menjadi masalah bagi SVM RBF?
+  options:
+  - Massa tubuh diukur kurang akurat daripada feature lain
+  - Massa tubuh punya angka terbesar, sehingga ia menentukan setiap kemiripan sementara feature lain nyaris tidak berarti
+  - Massa tubuh tidak boleh dipakai sebagai feature
+  - Jaraknya menjadi negatif
+  answer: 1
+  explanation: Kernel RBF dan margin memakai jarak biasa, sehingga feature yang diukur dalam ribuan mendominasi. Standardisasi tiap feature lebih dulu memberi keempatnya suara yang adil.
+- prompt: Pada grid penguin dengan feature yang di-scale, C = 0,1 dengan γ = 0,01 mendapat 145 dari 267 benar, sedangkan sebagian besar sel lain mendapat 236 atau lebih. Apa yang ditunjukkan hal ini?
+  options:
+  - Modelnya overfitting, sehingga C dan gamma perlu diturunkan lagi
+  - Sel pertama adalah yang terbaik, sehingga C dan gamma sebaiknya tetap kecil
+  - Modelnya underfitting, sehingga C atau gamma perlu dinaikkan
+  - Cross-validation selalu memberi skor rendah pada sel pertama
+  answer: 2
+  explanation: 145 dari 267 adalah 54,3%, hampir sama dengan menebak. C yang kecil bersama gamma yang kecil membuat model terlalu kaku, yaitu underfitting. Memakai nilai yang lebih besar memperbaikinya.
+- prompt: Sel grid terbaik mendapat 90,6% dalam cross-validation, tetapi test set yang terkunci memberi 56 dari 66, yaitu 84,8%. Bagaimana pembacaan yang paling tepat?
+  options:
+  - Test set-nya salah dan harus diganti dengan skor cross-validation
+  - Yang terbaik dari 16 skor itu terlalu menguntungkan, dan test dengan 66 penguin itu kecil, karena satu penguin bernilai 1,5 poin
+  - Model pasti dilatih pada test set
+  - Cross-validation tidak berguna untuk SVM
+  answer: 1
+  explanation: Memilih yang tertinggi dari 16 skor yang berderau berarti ikut memilih sedikit keberuntungan selain kemampuan, dan test set yang kecil bergeser 1,5 poin per penguin. Skor test adalah angka yang jujur untuk dilaporkan, dan ia tidak dipakai untuk memilih.

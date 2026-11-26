@@ -1,0 +1,80 @@
+- prompt: On f(x) = (x - 5)² / 2, which learning rate makes the point bounce between two places forever?
+  options:
+  - 0.5
+  - 1.0
+  - 2.0
+  - 2.1
+  answer: 2
+  explanation: This bowl has curvature 1, so one step multiplies the distance to the minimum by 1 - lr. At lr 2.0 the factor is exactly -1, so the point jumps between two places forever. At 0.5 the factor is 0.5, so the point creeps in from one side. At 1.0 the factor is 0, so the point lands on the minimum and stops. At 2.1 the factor is -1.1 and the jumps grow.
+- prompt: A bowl has curvature 4. Which of these learning rates makes gradient descent diverge?
+  options:
+  - 0.1
+  - 0.3
+  - 0.45
+  - 0.6
+  answer: 3
+  explanation: The limit is 2 / 4 = 0.5, and the factor is 1 - 4 × lr. At 0.6 it is -1.4, so each jump is longer than the last. At 0.45 it is -0.8, which still bounces but shrinks, so the point settles. At 0.1 and 0.3 the factors are 0.6 and -0.2.
+- prompt: On f(x) = (x - 5)² / 2 with lr 1.9 and a start at x = 1, where is x after one step?
+  options:
+  - -6.6
+  - 8.6
+  - 5.0
+  - 1.76
+  answer: 1
+  explanation: The slope at x = 1 is 1 - 5 = -4, so x = 1 - 1.9 × (-4) = 8.6. The answer -6.6 comes from a sign slip, and 1.76 is where the point lands after the second step.
+- prompt: In the lab the loss against step falls a little on every step and is still falling when the run ends, the point moves the same way every step, and the Diagnosis reads Too slow. What is the best first change?
+  options:
+  - Raise the learning rate, for example by a factor of 3
+  - Cut the learning rate by a factor of 10
+  - Move the start to a different place
+  - Stop, because the loss is falling so the rate is right
+  answer: 0
+  explanation: A steady but slow decline, with the point moving one way, is the sign of a rate that is too small. Raise it step by step, keeping an eye out for waves or growth, which would mean you went too far. If the point were jumping from side to side, a slow-looking decline could hide a rate that is too big, so check the path first, as the Watch out in the lesson says.
+- prompt: In a straight-line fit to the penguins, flipper length in millimetres makes the sharpest bend about 40,565, so the largest safe learning rate is about 0.000049. After standardizing the columns, what is the largest safe rate for the same kind of fit?
+  options:
+  - Still about 0.000049, because scaling does not change the shape of the loss
+  - About 40,565, because the limit equals the sharpest bend of the loss
+  - About 0.5, because standardizing halves the limit instead of the bend
+  - About 2, because the bend becomes 1 and the limit is 2 divided by it
+  answer: 3
+  explanation: The limit is 2 divided by the sharpest bend. Standardized columns have mean 0 and standard deviation 1, so the bend is 1 and the limit is 2, about 40,000 times larger. Scaling changes the shape of the loss in the parameters, which is why the safe rate moves, and a number like 40,565 is a bend, not a rate.
+- prompt: What does momentum do in gradient descent?
+  options:
+  - It shrinks the learning rate a little on every step, so the steps get shorter and shorter
+  - It guarantees that the loss falls on every step, by choosing a safe direction to move in
+  - It keeps part of the last step, so steady pushes add up and zigzags partly cancel
+  - It picks a new random start whenever the point stops moving for a while, then keeps the best run
+  answer: 2
+  explanation: Momentum keeps a velocity that remembers earlier steps. That speeds up long, gentle slopes and calms zigzags, but it can overshoot, so it does not guarantee a falling loss.
+- prompt: Why can plain gradient descent stop in a shallow dip that is not the lowest point?
+  options:
+  - The learning rate is always too small once the point is inside a dip
+  - The slope is zero at the bottom of the dip, so the step is zero and the point stays
+  - The loss is exactly zero inside any dip, so there is nothing left to reduce
+  - Gradient descent cannot tell which direction is downhill near a hump
+  answer: 1
+  explanation: The step is the slope times the learning rate, so with a slope of zero the point stays put. To reach a deeper dip it would first have to climb the hump between them, and plain descent with a modest rate only moves downhill.
+- prompt: In the lab, the Two dips curve with the Just right preset from a Start position of 1 ends in the shallow dip. The hump between the two dips is near x = 4.7. Which single change is most likely to reach the lowest point?
+  options:
+  - Lower the learning rate to 0.002, so the steps are more careful
+  - Raise Steps to 200, so the run has longer to find the deep dip
+  - Set Start position to 6, to the right of the hump
+  - Turn on Log scale on the loss chart, to see the loss more clearly
+  answer: 2
+  explanation: Starting to the right of the hump puts the point on the slope that leads into the deep dip. A smaller rate or more steps changes how fast it goes, not where it ends, and the chart setting changes only the display.
+- prompt: Why search learning rates as 0.1, 0.03, 0.01, 0.003 instead of 0.1, 0.2, 0.3, 0.4?
+  options:
+  - The right size is unknown, and a factor of about 3 per step covers many orders of magnitude
+  - Smaller numbers are always safer, so the search should end up near zero and stay there
+  - Computers handle powers of ten faster than other numbers, so the search finishes sooner
+  - The loss is proportional to the learning rate, so equal ratios give equal losses on any curve
+  answer: 0
+  explanation: The rate that works depends on the curvature h, which you rarely know, and the limit 2 / h can be large or tiny. Only the product lr × h matters, so a ladder where each rate is about a third of the last covers every size. Evenly spaced guesses between 0.1 and 0.4 all sit near the top of the range; if the good rate is near 0.003, none of them gets close.
+- prompt: With momentum 0.9, the loss rose on 1 of the last 20 steps and has fallen on all the others, so it is far lower than at the start. What is the right reading?
+  options:
+  - It is a bug, because the loss must fall on every step of gradient descent, with or without momentum
+  - The rate is too big, so it should be halved before the run goes on, since a rise means overshoot
+  - The momentum is too low, so it should be raised to calm the rises that the run shows
+  - "Not a problem: one small rise among many falling steps is normal with momentum, so judge the trend"
+  answer: 3
+  explanation: Momentum can carry the point past the bottom so the loss rises for a step while the overall trend still falls, and one rise in twenty is far from waves. Nothing here calls for halving the rate, and raising the momentum would make the overshoot worse. Rises every few steps would be waves, and then lowering the momentum or the rate is the fix. A loss that rises on every step and never turns around is a different thing, and that is divergence.

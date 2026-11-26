@@ -1,0 +1,42 @@
+entity: Lesson
+context: ""
+display_field: title
+fields:
+    - name: id
+      type: string
+      auto: true
+      required: true
+    - name: course_id
+      type: string
+      required: true
+      ref: Course
+      on_delete: cascade
+    - name: module_id
+      type: string
+      ref: Module
+      on_delete: cascade
+    - name: slug
+      type: string
+      required: true
+      max_length: 80
+    - name: title
+      type: string
+      required: true
+      max_length: 140
+    - name: position
+      type: int
+    - name: minutes
+      type: int
+    - name: kind
+      type: string
+      required: true
+      enum_values: [reading, simulator]
+    - name: simulator
+      type: string
+      max_length: 60
+    - name: body
+      type: string
+      max_length: 20000
+operations: [Create, GetByID, List, Update, Delete]
+transports: [rest]
+repository: postgresql

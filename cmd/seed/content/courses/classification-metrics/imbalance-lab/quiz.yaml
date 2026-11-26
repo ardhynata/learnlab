@@ -1,0 +1,80 @@
+- prompt: In the lab's default screen the test set has 1,000 examples and 50 of them are positive. What is the accuracy of the majority-class baseline?
+  options:
+  - 5.0%
+  - 50.0%
+  - 95.0%
+  - 58.0%
+  answer: 2
+  explanation: The baseline always answers negative, so it is right on the 950 negatives, and 950 / 1,000 = 95.0%. It finds none of the 50 positives, so its recall is 0.0%. The 58.0% is the model's recall.
+- prompt: "At the defaults the model finds 29 of the 50 positives in the test set and raises 12 false alarms. What is its recall?"
+  options:
+  - 58.0%
+  - 70.7%
+  - 96.7%
+  - 2.9%
+  answer: 0
+  explanation: Recall is the share of the real positives that were found, 29 / 50 = 58.0%. The 70.7% is precision, 29 / (29 + 12), and 96.7% is accuracy.
+- prompt: "The same model has TP = 29, FP = 12 and FN = 21 on the test set. What is its F1?"
+  options:
+  - 58.0%
+  - 70.7%
+  - 96.7%
+  - 63.7%
+  answer: 3
+  explanation: F1 = 2 x 29 / (2 x 29 + 12 + 21) = 58 / 91, about 63.7%. It sits between precision (70.7%) and recall (58.0%), and it ignores the 938 true negatives that lift accuracy.
+- prompt: "You slide Share of positive examples from 50% to 5%. Baseline accuracy goes from 50.0% to 95.0%, model accuracy from 88.9% to 96.7%, and model recall from 88.0% to 58.0%. What is the best reading?"
+  options:
+  - The model improved, because its accuracy rose
+  - Accuracy rose mainly because negatives became the large majority, while the model now finds a smaller share of the positives
+  - The baseline became a good model, because its accuracy is now 95.0%
+  - Recall fell because the test set got larger
+  answer: 1
+  explanation: The baseline's accuracy is just the share of negatives, so it rises with no learning at all. The model's accuracy rises for the same reason, while its recall shows it finds fewer positives. The test set stays at 1,000 examples.
+- prompt: "At 2% positives the training set has 980 negatives and 20 positives. The lab sets the class weight so that all positives weigh about as much as all negatives. What is the weight?"
+  options:
+  - 2
+  - 20
+  - 49
+  - 98
+  answer: 2
+  explanation: The weight is the number of negatives divided by the number of positives, 980 / 20 = 49, and then 20 x 49 = 980. At 5% the same rule gives 950 / 50 = 19.
+- prompt: "At 5% positives, switching on class weight changes recall from 58.0% to 86.0% and accuracy from 96.7% to 90.1%, which is below the baseline's 95.0%. Which statement is right?"
+  options:
+  - The weighted model is worse, because its accuracy is below the baseline
+  - The weighted model finds 43 of 50 positives instead of 29, so it is more useful if a miss costs more than a false alarm
+  - Class weight lowers recall in order to raise precision
+  - Precision rose too, because recall rose
+  answer: 1
+  explanation: Accuracy fell because false alarms went from 12 to 92, and precision fell from 70.7% to 31.9%. The model catches 14 more positives, which matters when a miss is costly. The baseline's higher accuracy comes from finding nothing.
+- prompt: "At 5% positives you lower Decision threshold from 0.50 to 0.20. The model now finds 35 positives, misses 15 and raises 35 false alarms. What is its precision?"
+  options:
+  - 70.0%
+  - 58.3%
+  - 35.0%
+  - 50.0%
+  answer: 3
+  explanation: Precision is the share of positive answers that are right, 35 / (35 + 35) = 50.0%. The 70.0% is the recall, 35 / 50, and 58.3% is the F1.
+- prompt: "At 1% positives the test set has 10 positives. On four samples the model finds 3, 4, 1 and 1 of them. What should you conclude?"
+  options:
+  - Recall moves in steps of 10 points here, so one sample says little; repeat with new samples or use more positives
+  - The model is getting worse with each sample
+  - The model's true recall is exactly 30.0%, the first value
+  - The baseline would do better than the model on recall
+  answer: 0
+  explanation: With 10 positives, one more or one fewer found positive shifts recall by 10 points, so 10.0% to 40.0% can be luck. The baseline's recall is 0.0% every time, so it is not better.
+- prompt: "With class weight on, the model raises 51 false alarms among 500 negatives at 50% positives, and 92 among 950 negatives at 5%. It finds 440 positives at 50% and 43 at 5%. Why does precision fall from 89.6% to 31.9%?"
+  options:
+  - The model gets worse at telling negatives apart
+  - The alarm rate stays near 10%, but there are far fewer positives, so false alarms outnumber the real catches
+  - The class weight is too small at 5%
+  - Precision only depends on how many negatives there are
+  answer: 1
+  explanation: The false alarm rate is 51 / 500 = 10.2% and 92 / 950 = 9.7%, about the same. But precision is 43 / (43 + 92) = 31.9% at 5%, against 440 / (440 + 51) = 89.6% at 50%. The positives are what became scarce.
+- prompt: "On the real penguins at 10% positives the test set has 152 penguins, 15 of them Chinstraps. What is the baseline's accuracy?"
+  options:
+  - 10.0%
+  - 85.0%
+  - 90.1%
+  - 9.9%
+  answer: 2
+  explanation: The baseline answers not-Chinstrap for all 152 and is right on the 137 others, so 137 / 152 = 90.1%. The 9.9% is the share of Chinstraps in the test set, 15 / 152, which is close to the 10% you asked for but not equal to it.

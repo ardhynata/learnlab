@@ -1,0 +1,80 @@
+- prompt: In the lab you switch the question from Classification to Clustering, with bill length across and bill depth up. Which information does the lab use to form the groups?
+  options:
+  - Only the two columns on the axes
+  - The two columns and the species
+  - The species only
+  - The silhouette score
+  answer: 0
+  explanation: Clustering has no target. The species is hidden while the groups are formed, and it is compared with the groups only afterwards, as the agreement with species.
+- prompt: The line for the 120 birds is depth = 25.22 - 0.1805 × length. What depth does it predict for a bird with a 40 mm bill?
+  options:
+  - 7.22 mm
+  - 32.44 mm
+  - 18.00 mm
+  - 25.22 mm
+  answer: 2
+  explanation: 0.1805 × 40 = 7.22, and 25.22 - 7.22 = 18.00 mm. The 7.22 is only the first step, and 32.44 comes from adding instead of subtracting.
+- prompt: For bird #54 the line predicts a depth of 19.14 mm, and the real depth is 18.4 mm. How do you read the gap?
+  options:
+  - The line is 0.74 mm too low
+  - The line is exactly right to the millimeter
+  - The line is 18.4 mm too high
+  - The line is 0.74 mm too high
+  answer: 3
+  explanation: The prediction minus the real value is 19.14 - 18.4 = 0.74 mm, so the line overshoots this bird by 0.74 mm. A regression error is measured in the unit of the target.
+- prompt: The line for bill depth has an R² of 16%. What does that mean?
+  options:
+  - The line predicts the depth of 16% of the birds correctly
+  - The line explains 16% of the ups and downs of bill depth
+  - The average error is 16% of the depth
+  - The slope of the line is 0.16
+  answer: 1
+  explanation: R² compares the line with the lazy guess of always saying the mean. 0% means no better than the mean and 100% means no gaps. A regression does not get birds "correct", it is only near or far.
+- prompt: The line is off by 1.79 mm on average, while always guessing the mean depth is off by 2.00 mm. What does this tell you?
+  options:
+  - The line is far better than the lazy guess
+  - The line is worse than the lazy guess
+  - The line is only a little better than the lazy guess
+  - The two numbers cannot be compared because they are in millimeters
+  answer: 2
+  explanation: The line cuts the average error by only 0.21 mm, so as a predictor it is weak. Both errors are in the same unit, which is exactly why they can be compared.
+- prompt: With three equally common species, a pair of columns scores 66% in Classification. How does that compare with the baseline?
+  options:
+  - It is worse than always guessing one species
+  - It is about the same as always guessing one species
+  - It is perfect, because it is above 50%
+  - It is about twice the 33% baseline, but about a third of the birds are still wrong
+  answer: 3
+  explanation: Always naming one species is right for 40 of 120 birds, which is 33%. A score of 66% is twice that, and the remaining 34% of the birds are still labeled wrongly.
+- prompt: On the real penguins with the label Sex, a pair of columns scores 52%. What is the right conclusion?
+  options:
+  - It is good, because it is far above 33%
+  - It is almost useless, because always guessing the more common sex is already right about 50% of the time
+  - It is fair, because more than half the penguins are right
+  - It is impossible, because classification needs three classes
+  answer: 1
+  explanation: The 33% baseline belongs to three equal species. With two sexes, always guessing male is right for 168 of 333 penguins, about 50%, so 52% barely beats it.
+- prompt: Clustering the 120 birds into k = 2 groups gives an agreement with species of 67%. Why can it not be much higher?
+  options:
+  - Two groups have at most two main species, so the 40 birds of the third species always count as wrong
+  - The silhouette is too low for the agreement to rise
+  - The lab picks the groups at random
+  - Agreement can never exceed 67% for any k
+  answer: 0
+  explanation: A group's main species is the only one that counts as right. Two groups cover at most two species, so the best case is 80 of 120, which is 67%. With k = 3 the agreement reaches 96%.
+- prompt: On the 120 birds, k = 3 gives a silhouette of 0.55 and k = 4 gives 0.46. With no species column at all, which k do you pick, and why?
+  options:
+  - k = 4, because more groups always fit better
+  - Neither, because a silhouette cannot be compared between values of k
+  - k = 3, because its silhouette is higher, so the groups stand apart more clearly
+  - k = 3, because its agreement with species is higher
+  answer: 2
+  explanation: The silhouette needs no labels, and a higher value means clearer groups. Without a species column you could not compute an agreement at all, and a bigger k only makes the groups smaller.
+- prompt: On the real penguins, the line for bill depth slopes down over all 342 penguins, but slopes up inside each species. What is the best explanation?
+  options:
+  - The measurements must contain a mistake
+  - The species sit in different places, so mixing them tilts the cloud the other way
+  - Longer bills make the bill depth fall in every species
+  - R² of 6% proves that there is no trend inside any species
+  answer: 1
+  explanation: Adelie penguins have short, deep bills and Gentoo have long, shallow ones. Together they form a downward cloud, even though longer bills go with deeper bills inside each species.

@@ -1,0 +1,80 @@
+- prompt: In the lab, a degree 9 curve has training error 0.04 and validation error 3.59. What does this most likely mean?
+  options:
+  - The model is underfitting, because its training error is not exactly zero
+  - The model is excellent, because training error is the number that matters
+  - The validation set contains a mistake, since validation error cannot exceed training error
+  - The model is overfitting, because it matched the dots and their noise but not the crosses
+  answer: 3
+  explanation: A tiny training error next to a large validation error is the signature of overfitting. Validation error is usually higher than training error, and training error alone says nothing about new points.
+- prompt: As the degree goes up from 1 to 12 on one sample, how do the two errors typically behave?
+  options:
+  - Training error falls; validation error falls and then rises
+  - Both errors fall all the way to degree 12
+  - Training error rises; validation error falls
+  - Both errors fall and then rise, bottoming out at the same degree
+  answer: 0
+  explanation: A more flexible curve can always fit the training points at least as well, so training error keeps falling. Validation error is U-shaped because extra flexibility first helps and then fits noise.
+- prompt: You are choosing the polynomial degree. Which set should decide?
+  options:
+  - The training set, because the model already knows it
+  - The test set, because it is the most trustworthy
+  - The validation set, which the model was not fitted to
+  - All the data together, so nothing goes to waste
+  answer: 2
+  explanation: Training error always favors the most flexible model, and the test set must stay untouched for the final report. The validation set exists to choose settings such as the degree.
+- prompt: In the worked example the validation errors were 0.201, 0.017, 0.026 and 0.448 for degrees 1, 2, 3 and 6. Which degree do you pick?
+  options:
+  - Degree 6, because its training error is lowest
+  - Degree 1, because it is the simplest
+  - Degree 3, because it has the lowest training error of the three smaller ones
+  - Degree 2, because it has the lowest validation error
+  answer: 3
+  explanation: Choose by validation error. Degree 2 has the lowest at 0.017. Degree 3 is close, but with only three validation points the difference is not trustworthy, so the simpler degree 2 is a sensible pick.
+- prompt: In the worked example, degree 6 has training error 0.000. What explains it?
+  options:
+  - Degree 6 is the best model for this data
+  - The validation points were used for fitting
+  - It has 7 coefficients and there are 7 training points, so the curve can pass through every point
+  - Squared errors cannot be larger than 0.5
+  answer: 2
+  explanation: A degree 6 polynomial has seven coefficients, enough to pass through all seven training points, noise included. That memorizing is why its validation error is about 26 times that of degree 2.
+- prompt: You set Noise to 0 in the lab and sweep the degree. The best degree moves up to 9. Why are high degrees no longer punished?
+  options:
+  - With no noise the points sit exactly on the true curve, so a flexible fit has nothing misleading to chase
+  - Training error rises with the degree when there is no noise
+  - Validation points are ignored when noise is 0
+  - A degree above 9 is not allowed when noise is 0
+  answer: 0
+  explanation: Overfitting means chasing noise. With no noise, extra bends can only follow the true pattern, so validation error stays near 0 for flexible fits.
+- prompt: With 26 training points there are only 4 validation points. Over 20 samples the best degree ranged from 3 to 12, while with 14 training points it ranged from 3 to 7. What is the best explanation?
+  options:
+  - More training points make the model less flexible
+  - A tiny validation set gives a noisy answer, so the lowest point of the curve jumps between samples
+  - The lab picks the degree at random when there are many training points
+  - Validation error cannot be computed on 4 points
+  answer: 1
+  explanation: Four crosses can favor one degree by chance. A larger validation set, a repeated experiment or cross-validation gives a steadier answer.
+- prompt: On the penguin data the validation error at the best degree is 0.73 in plot units. Body mass is rescaled so that 3,600 g, from 2,700 g to 6,300 g, spans the 10 plot units. About how far off is a validation penguin typically?
+  options:
+  - About 0.73 g
+  - About 300 g
+  - About 2,600 g
+  - About 0.85 g
+  answer: 1
+  explanation: Mean squared error is in squared plot units. Take the square root, about 0.85 plot units, and multiply by 360 g per plot unit, which gives roughly 300 g. Multiplying 0.73 by 360, which gives 263 g, skips the square root and is the common slip; 0.85 is the right number in the wrong unit.
+- prompt: Why should the test set be used only once, at the very end?
+  options:
+  - Looking at it more than once damages the data
+  - It is much smaller than the other sets, so it wears out
+  - The model needs it for training the second time
+  - Every time you look and then change something, it stops being unseen and its score turns optimistic
+  answer: 3
+  explanation: If test results guide your choices, the test set is quietly acting as a validation set. Then nothing independent is left to tell you how the model will do on new data.
+- prompt: Which of these is data leakage?
+  options:
+  - Splitting first, then computing the scaling mean and spread from the training rows only
+  - Shuffling the rows before cutting them into sets
+  - Standardizing all rows together, then splitting into training and test sets
+  - Fitting the model on the training set and scoring it on the validation set
+  answer: 2
+  explanation: Scaling numbers computed from all rows include information from the test rows, so the test data has already influenced preparation. Compute them from the training rows only and apply them to the other sets.

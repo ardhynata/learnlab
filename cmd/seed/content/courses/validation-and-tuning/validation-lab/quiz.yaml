@@ -1,0 +1,72 @@
+- prompt: On the lab's default table, random k-fold scores 78.4% and grouped k-fold scores 64.7%. Which statement is right?
+  options:
+  - Random k-fold is the honest score, because a higher score means a better model
+  - Grouped k-fold is the honest score for new people, and the random score is inflated by about 14 points
+  - The two scores measure the same thing, so the 14-point difference is chance
+  - Grouped k-fold is too strict, so the true score is the mean of the two
+  answer: 1
+  explanation: The same model is scored on the same table. With random folds the test records belong to people the model has already seen, so it can recognize them. The grouped score is the one that describes new people. The gap is 78.4 - 64.7 = 13.7 points.
+- prompt: A random fold holds 64 records and the model gets 55 of them right. What is that fold's accuracy?
+  options:
+  - 55.0%
+  - 64.0%
+  - 89.1%
+  - 85.9%
+  answer: 3
+  explanation: 55 / 64 = 0.859, which is 85.9%, the best of the five random folds in the lab. 89.1% would be 57 right, and 55.0% mixes up the count with a percentage.
+- prompt: With random folds the lab says that 100% of the test records belong to a person who also has records in the training data. What does that explain?
+  options:
+  - The model recognizes the person from their quirks and repeats their label, so the score is inflated
+  - The model has seen every possible person, so its score on new people will be just as high
+  - The folds are too small, so the score is noisy and unstable but not biased in any direction
+  - The labels were shuffled, so the score means nothing
+  answer: 0
+  explanation: A person's records look alike, so a test record's nearest neighbors are the same person's other records. That rewards remembering people. A new person will not have such neighbors, which is what the grouped folds show.
+- prompt: You set Person quirk strength to 0. Random k-fold now scores 63.1% and grouped k-fold 64.4%, and always guessing the majority label gets 61.9%. What do you conclude?
+  options:
+  - Random k-fold is now the only honest split, and its 63.1% is the one to trust
+  - The model learned nothing, so the data must be broken
+  - With no quirks there is nothing to memorize, so the splits agree, and the skill is only a little above guessing
+  - Grouped k-fold failed, because it should always score lower than random k-fold
+  answer: 2
+  explanation: The gap is 63.1 - 64.4 = -1.3 points, inside the 2-point margin the lab treats as about the same. The leak needs a person signature to exploit. The model still has a little real signal in F1, which is why both scores sit slightly above 61.9% (by 1.2 and 2.5 points).
+- prompt: In the generated table the time-ordered split scores 76.8%, close to the random 78.4%, and 100% of its test records belong to people already in training. Why does time order not give an honest score for new people?
+  options:
+  - A time-ordered split always scores close to random k-fold, whatever the table looks like
+  - Time order uses too few folds, and having fewer folds alone raises the score
+  - Later records are always easier to predict than earlier ones, whoever the person is
+  - The same people return later, so later records still have their person's earlier records in training
+  answer: 3
+  explanation: Time order protects against peeking at the future. It does not separate people, so the model still recognizes a person from earlier records. For new people you need a grouped split.
+- prompt: With 16 evaluations the grid tried 4 values of k and 4 of the weight, and the random search tried 13 and 16. What do those counts show, and what do they not show?
+  options:
+  - Random search tries more different values of each setting, which proves that it finds the better setting
+  - Random search tries more values of each setting, but the best scores were within a point, so no clear winner
+  - The grid tried fewer values of each setting, so its best score must have been lower
+  - Both searches tried the same settings in another order, so their results are identical
+  answer: 1
+  explanation: More distinct values is the advantage of random search, but the lab's best scores were 71.9% and 70.9%, and repeated draws sometimes tied and sometimes lost by 1.6 points. Covering more values does not guarantee a better winner.
+- prompt: You set Search budget (evaluations) to 7. The grid tries 3 values of k and 2 of the weight. How many evaluations does it use?
+  options:
+  - 7, because it must spend the whole budget
+  - 5, the sum of 3 and 2
+  - 6, because a grid is a full table of 3 x 2 combinations
+  - 3, the larger of the two counts
+  answer: 2
+  explanation: A grid tries every combination, so 3 values of k and 2 of the weight need 3 x 2 = 6 evaluations. The lab picks the roughly square table that fits the budget, so one evaluation of the 7 goes unused.
+- prompt: You score the search with Random k-fold. The random-search winner shows 79.4%, but on grouped folds it reaches 69.7%. By how many points did the search flatter it?
+  options:
+  - 9.7 points
+  - 7.2 points
+  - 2.8 points
+  - 79.4 points
+  answer: 0
+  explanation: 79.4 - 69.7 = 9.7 points. A search scored with random folds rewards settings that recognize people, so the claimed score is too high for new people.
+- prompt: On the real penguins, predicting species, random folds score 99.1% and leave-one-island-out 56.5%. What explains most of the 42.6-point gap?
+  options:
+  - Records of the same bird were split across the folds, so the random score is a person leak
+  - Holding out Biscoe removes Gentoo from training, since Gentoo live only there, a shift to a new island
+  - The 11 penguins with missing values were left out, which shrank the training data
+  - The random folds used a different k from the island folds, which changes the score
+  answer: 1
+  explanation: Each row is a different bird, so there is no person to recognize. Leaving out Biscoe removes Gentoo from training, so the model cannot name it, and the Biscoe fold scores 26.3%. For species the lab keeps 342 of 344 penguins, so only 2 rows are left out, and both lanes use the same k.

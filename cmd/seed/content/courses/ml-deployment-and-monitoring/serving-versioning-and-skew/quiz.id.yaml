@@ -1,0 +1,80 @@
+- prompt: Sebuah pembayaran kartu harus disetujui atau ditolak selagi pelanggan menunggu di kasir. Cara menyajikan model mana yang sesuai?
+  options:
+  - Skoring batch setiap malam, dengan skor disimpan di sebuah tabel
+  - Inferensi online yang menjawab setiap permintaan dalam anggaran latency
+  - Skoring batch setiap jam, yang cukup segar untuk produk apa pun
+  - Salah satunya, karena latency dan freshness tidak memengaruhi pilihan
+  answer: 1
+  explanation: Ada yang menunggu dan jawabannya bergantung pada pembayaran ini sendiri, sehingga model harus memberi skor satu permintaan sekali waktu dalam anggaran latency. Skor yang tersimpan tidak dapat tahu tentang pembayaran yang belum terjadi saat job-nya berjalan.
+- prompt: Sebuah layanan rekaan punya 500.000 pelanggan dan sekitar 10.000 di antaranya membuka aplikasi pada hari tertentu. Job batch setiap malam memberi skor pada semua orang, dan waktu buka tersebar merata sepanjang hari. Seberapa banyak kerja tambahan yang dilakukan batch, dan rata-rata seberapa tua skor yang dilihat seorang pelanggan?
+  options:
+  - 5 kali lebih banyak prediksi daripada yang dipakai, dan skor berusia sekitar 6 jam
+  - 50 kali lebih banyak prediksi daripada yang dipakai, dan skor berusia sekitar 24 jam
+  - 50 kali lebih banyak prediksi daripada yang dipakai, dan skor berusia sekitar 12 jam
+  - 500 kali lebih banyak prediksi daripada yang dipakai, dan skor berusia sekitar 12 jam
+  answer: 2
+  explanation: 500.000 / 10.000 = 50. Skor diperbarui setiap 24 jam, sehingga usianya berkisar dari 0 sampai 24 jam, dan dengan waktu buka yang tersebar merata rata-ratanya 12 jam. 24 jam adalah kasus terburuk, bukan rata-rata.
+- prompt: Seorang pelanggan membeli pada hari ke-3, 8, dan 12. Model memprediksi pada hari ke-10 dari feature "pembelian bulan ini", dan tabel training dibangun di akhir bulan. Berapa nilai pada baris training dan pada permintaan live?
+  options:
+  - Training 3 dan live 2, sehingga baris training memuat pembelian dari masa depan
+  - Training 2 dan live 3, sehingga permintaan live melihat lebih banyak
+  - Keduanya 3, karena pembelian dalam sebulan sudah final
+  - Keduanya 2, karena model hanya melihat sampai hari prediksi
+  answer: 0
+  explanation: Tabel yang dibangun di akhir bulan menghitung hari ke-12, yang belum terjadi saat prediksi dibuat. Saat live, hanya hari ke-3 dan 8 yang diketahui. Ini time travel, sebuah leak pada feature, dan point-in-time join (kejadian pada atau sebelum waktu prediksi) menghilangkannya.
+- prompt: Registry mencatat v3 dengan accuracy 90,7% pada test set tahun lalu dan v4 dengan 91,4% pada test set yang lebih baru. Apa yang dapat disimpulkan?
+  options:
+  - v4 lebih baik, karena angkanya lebih tinggi
+  - v3 lebih baik, karena test set-nya lebih lama sehingga lebih dipercaya
+  - Keduanya sama, karena selisihnya kurang dari satu poin
+  - Belum ada yang pasti, karena kedua skor berasal dari evaluation set yang berbeda
+  answer: 3
+  explanation: Dua skor dapat dibandingkan hanya bila diukur pada evaluation set yang sama. Tulis nama set di samping setiap metrik, atau evaluasi kedua versi pada satu set bersama sebelum membandingkan.
+- prompt: Apa beda rilis shadow dan rilis canary?
+  options:
+  - Shadow mengirim 5% lalu lintas ke versi baru, dan canary mengirim seluruhnya
+  - Pada shadow versi baru melihat setiap permintaan tetapi jawabannya hanya dicatat, dan pada canary sebagian kecil pengguna menerima jawabannya
+  - Shadow memakai data snapshot lama, dan canary memakai yang baru
+  - Pada shadow rollback mustahil, dan pada canary rollback berjalan otomatis
+  answer: 1
+  explanation: Rilis shadow tidak merugikan pengguna mana pun, karena jawabannya tidak pernah dipakai, dan ia menunjukkan bagaimana versi baru berperilaku pada permintaan nyata. Canary membiarkan sebagian kecil pengguna nyata menerima jawaban baru, sehingga versi yang buruk hanya merugikan sedikit dari mereka.
+- prompt: Sebuah layanan menerima 40.000 permintaan sehari, dan 5% masuk ke canary. Pada versi live, 8% permintaan melewati anggaran latency. Berapa permintaan yang sampai ke canary, dan berapa permintaan lambat yang diharapkan jika ia berperilaku sama?
+  options:
+  - 200 permintaan, dengan 16 lambat
+  - 20.000 permintaan, dengan 1.600 lambat
+  - 2.000 permintaan, dengan 160 lambat
+  - 2.000 permintaan, dengan 1.600 lambat
+  answer: 2
+  explanation: 5% dari 40.000 = 2.000 permintaan, dan 8% dari 2.000 = 160 permintaan lambat. Canary yang menunjukkan 210 permintaan lambat berada 50 di atas yang diharapkan, dan selisih seperti itulah yang seharusnya tertangkap oleh pemicu tertulis.
+- prompt: Situasi mana yang paling mengancam sebuah rollback?
+  options:
+  - Versi baru membuang sebuah kolom feature, dan job yang menghitungnya untuk versi lama sudah dimatikan
+  - Versi lama masih tersimpan dan dapat dimuat tanpa masalah
+  - Pemicu rollback sudah ditulis sebelum peluncuran
+  - Kembali ke versi lama cukup satu pengaturan, dan sudah dicoba sekali dalam gladi
+  answer: 0
+  explanation: Kesiapan rollback berarti versi lama dapat langsung berfungsi lagi, dan itu membutuhkan input-nya. Tiga pilihan lain justru ciri rollback yang sudah siap.
+- prompt: Aturan "Gentoo jika panjang sirip 207 mm atau lebih" benar untuk 334 dari 342 penguin. Sekarang service menerima panjang sirip dalam sentimeter (201 mm datang sebagai 20,1). Apa yang terjadi?
+  options:
+  - Service crash, karena 20,1 berada di luar rentang yang terlihat saat training
+  - Ia menjawab "Gentoo" untuk setiap penguin dan benar untuk 123 dari 342
+  - Tidak ada yang berubah, karena aturan itu hanya membandingkan nilai dengan batas
+  - Ia menjawab "bukan Gentoo" untuk setiap penguin dan benar untuk 219 dari 342, yaitu 64,0%
+  answer: 3
+  explanation: Semua nilai dalam sentimeter berada di bawah 207, sehingga aturan itu selalu menjawab "bukan Gentoo", dan itu benar hanya untuk 219 penguin spesies lain. Tidak ada galat yang muncul, karena 20,1 adalah angka yang sah, dan accuracy turun sekitar 33,6 poin.
+- prompt: Kamu mengirim baris mentah bulan lalu lewat jalur serving live, dan feature-nya berbeda dari yang ada di tabel training untuk baris yang sama. Apa ini?
+  options:
+  - Drift, karena dunia berubah sejak training
+  - Training-serving skew, karena baris mentah yang sama menghasilkan feature yang berbeda
+  - Concept shift, karena hubungan antara feature dan label bergeser
+  - Tidak perlu dikhawatirkan, karena baris lama bukan bagian dari data live
+  answer: 1
+  explanation: Baris lama itu tetap, sehingga dunia tidak mungkin berubah untuknya. Jika jalur live menghitung feature yang lain dari yang dihitung training, penyebabnya ada pada kode feature, satuan, penanganan missing value, atau waktu, dan itu skew. Drift baru terlihat bila baris hari ini berbeda sementara feature-nya cocok.
+- prompt: 'Feature "pesanan dalam 7 hari terakhir" diperbarui oleh job malam pukul 02:00. Seorang pelanggan memesan pukul 14:00, dan sebuah permintaan masuk pukul 20:00. Apa yang dibaca model?'
+  options:
+  - Nilai berusia 6 jam yang sudah memuat pesanan itu
+  - Nilai berusia 18 jam yang sudah memuat pesanan itu
+  - Nilai berusia 18 jam yang belum memuat pesanan itu
+  - Nilai berusia 12 jam yang belum memuat pesanan itu
+  answer: 2
+  explanation: Tabel dihitung pukul 02:00, dan 20:00 - 02:00 = 18 jam kemudian ia masih menyimpan hitungan lama, karena pesanan datang pukul 14:00, setelah job berjalan. Jika training memakai hitungan tepat pada saat prediksi, service mengalami skew pada freshness.

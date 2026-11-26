@@ -1,0 +1,80 @@
+- prompt: Setiap pasien dalam sebuah dataset memiliki lima kunjungan klinik, satu baris per kunjungan. Mengapa split acak dapat menghasilkan skor yang terlalu bagus?
+  options:
+  - Split acak selalu menyisakan data latih yang terlalu sedikit
+  - Baris dari pasien yang sama selalu identik, sehingga terhitung dua kali
+  - Test set akhirnya berisi terlalu banyak pasien
+  - Kunjungan seorang pasien jatuh di kedua sisi, sehingga model dapat mengenali pasiennya, bukan mempelajari polanya
+  answer: 3
+  explanation: Sebuah kunjungan uji lalu punya kerabat dekat di training set, dan model dapat memperoleh skor bagus dengan mengenali orangnya. Barisnya mirip, bukan identik, dan masalahnya terletak pada kaitan antarbaris, bukan pada jumlah data.
+- prompt: Pada contoh enam pasien di pelajaran, 1-nearest neighbor mendapat 5 benar dari 12 baris bila satu pasien disisihkan pada tiap putaran. Menjawab "ya" terus-menerus, atau "tidak" terus-menerus, mendapat 6 dari 12. Apa kesimpulan dari perbandingan itu?
+  options:
+  - Model sedikit lebih baik daripada menebak, yaitu 41,7%
+  - Model tidak lebih baik daripada menebak, sehingga detak jantung tidak memberi tahu apa pun tentang kondisinya
+  - Grouped split rusak, karena sebuah model tidak mungkin mendapat skor di bawah 50%
+  - Model perlu diberi lebih banyak kunjungan per pasien
+  answer: 1
+  explanation: 5 / 12 adalah 41,7%, di bawah baseline 50%. Detak jantung sengaja dibuat tidak mengatakan apa pun tentang kondisinya, dan hanya grouped split yang memperlihatkan hal itu. Skor 100% pada split acak berasal dari mengenali pasien.
+- prompt: Sebuah model akan dipakai di rumah sakit yang tidak ada dalam data latih. Split mana yang memberi uji paling jujur?
+  options:
+  - Split acak pada semua baris
+  - Split acak pada pasien, dengan setiap rumah sakit berada di kedua set
+  - Sisihkan seluruh rumah sakit
+  - Split acak, lalu buang kolom rumah sakit
+  answer: 2
+  explanation: Uji harus baru dengan cara yang sama seperti pemakaian nyata, dan di sini yang baru adalah rumah sakitnya. Menyisihkan seluruh rumah sakit membuat kekhasan tiap rumah sakit tidak ikut masuk training. Split per pasien masih meninggalkannya di sana.
+- prompt: Kolom id pasien dibuang dari feature, lalu baris dibagi secara acak. Apakah itu menghilangkan leakage lewat identitas?
+  options:
+  - Tidak, karena feature lain seperti detak jantung tetap berfungsi sebagai tanda pengenal pasien
+  - Ya, karena model tidak lagi dapat melihat siapa pasiennya
+  - Ya, tetapi hanya untuk model yang memakai jarak
+  - Tidak, karena kolom id diperlukan untuk menghitung label
+  answer: 0
+  explanation: Kebocoran itu berasal dari baris milik satu orang yang berada di kedua sisi, dan feature-nya saling mirip. Kelompokkan baris menurut id saat membagi data, meskipun id itu bukan feature.
+- prompt: Pada contoh penjualan, model merata-ratakan dua bulan latih terdekat. Latih pada bulan 1 sampai 9 (penjualan 162 pada bulan 9 dan 153 pada bulan 8) lalu uji pada bulan 10 (nilai sebenarnya 170). Berapa galatnya?
+  options:
+  - 0,5
+  - 8
+  - 12,5
+  - 21,5
+  answer: 2
+  explanation: Prediksinya (162 + 153) / 2 = 157,5 dan nilai sebenarnya 170, sehingga galatnya 12,5. Angka 21,5 adalah galat rata-rata untuk bulan 10 sampai 12.
+- prompt: Mengapa split acak membuat model peramalan tampak lebih baik pada data bulanan?
+  options:
+  - Bulan uji berada di antara bulan latih, sehingga model dapat memakai bulan-bulan sesudahnya, yang merupakan masa depan
+  - Split acak menaruh terlalu sedikit bulan di training set
+  - Split acak selalu memilih bulan dengan nilai terkecil untuk pengujian
+  - Split acak menghilangkan tren dari data
+  answer: 0
+  explanation: Bulan-bulan yang bersebelahan saling mirip, sehingga mengisi celah di antara dua bulan yang diketahui itu mudah. Pada hari model dipakai, bulan-bulan sesudahnya belum diketahui. Hanya split yang melatih pada masa lalu dan menguji pada baris yang lebih akhir yang mengukur kemampuan meramal.
+- prompt: Apa yang dilakukan rolling origin?
+  options:
+  - Mengacak baris kembali sebelum tiap pengujian
+  - Menggeser akhir data latih ke depan, lalu menguji pada baris sesudahnya, beberapa kali
+  - Melatih hanya pada baris terbaru
+  - Menguji pada bulan-bulan akhir yang sama di setiap putaran
+  answer: 1
+  explanation: Origin adalah titik tempat data latih berakhir. Tiap putaran melatih pada semua data sebelum titik itu dan menguji pada data berikutnya, lalu origin bergeser ke depan. Hasilnya beberapa skor dari rentang waktu yang berbeda, tanpa ada putaran yang melihat baris yang lebih akhir.
+- prompt: Label tiap baris adalah "pelanggan berhenti berlangganan dalam 30 hari". Baris latih berakhir pada 1 Juni dan pengujian mulai pada 2 Juni. Apa risikonya?
+  options:
+  - Tidak ada, karena barisnya berasal dari hari yang berbeda
+  - Test set akan terlalu kecil
+  - Model tidak dapat memakai tanggal sebagai feature
+  - Label pada baris latih terakhir bergantung pada kejadian di bulan Juni, yang tumpang tindih dengan periode uji, sehingga sebaiknya sisakan gap sekitar 30 hari
+  answer: 3
+  explanation: Label yang baru diketahui 30 hari kemudian ditentukan oleh kejadian dalam 30 hari berikutnya. Baris latih yang terakhir lalu membawa informasi dari periode uji. Gap sepanjang itu antara data latih dan data uji menghilangkan tumpang tindih tersebut.
+- prompt: Dua rumah sakit disisihkan bergantian. Yang satu punya 300 baris dengan accuracy 80%, yang lain 100 baris dengan accuracy 60%. Berapa accuracy gabungan pada seluruh 400 baris, dan apa lagi yang sebaiknya kamu laporkan?
+  options:
+  - 75%, ditambah kedua skornya, karena rumah sakit baru dapat menyerupai yang mana saja
+  - 70%, dan tidak ada yang lain, karena sama dengan rata-ratanya
+  - 75%, dan tidak ada yang lain, karena penggabungan selalu menjadi ringkasan terbaik
+  - 70%, ditambah kedua skornya
+  answer: 0
+  explanation: Baris yang benar adalah 240 dan 60, sehingga accuracy gabungannya 300 / 400 = 75%. Rata-rata biasa dari kedua skor adalah 70%. Rumah sakit baru adalah satu kelompok lagi, bukan setumpuk baris, sehingga skor masing-masing memperlihatkan sebaran yang dapat kamu harapkan.
+- prompt: Untuk data yang mana split acak biasa masih merupakan pilihan yang masuk akal?
+  options:
+  - Pembacaan harian dari sensor yang sama
+  - Beberapa hasil scan untuk setiap pasien
+  - Penguin, di mana setiap baris adalah burung yang berbeda dan independen
+  - Baris pelanggan yang akan dipakai untuk memprediksi kuartal depan
+  answer: 2
+  explanation: Split acak jujur bila setiap baris adalah kasus yang independen dan baris di masa depan akan serupa dengan baris uji. Pembacaan sensor dan prediksi pelanggan saling berkaitan dalam waktu, sedangkan hasil scan berkaitan lewat pasien.

@@ -1,0 +1,80 @@
+- prompt: Pada dua cincin di lab, k-means mendapat silhouette 0,36 dan kecocokan dengan kelompok sebenarnya -0,01, sedangkan DBSCAN mendapat 0,01 dan 1,00. Apa yang ditunjukkan hal ini?
+  options:
+  - DBSCAN menghasilkan clustering yang buruk, karena silhouette-nya paling rendah
+  - Silhouette mengurutkan metode dengan keliru, karena ia menyukai cluster yang padat dan bulat
+  - Kecocokan tidak dapat diandalkan, karena nilai di bawah 0 mustahil
+  - k-means adalah metode yang lebih baik di sini, karena silhouette-nya lebih tinggi
+  answer: 1
+  explanation: Kecocokan 1,00 berarti DBSCAN memulihkan kedua cincin dengan tepat, dan -0,01 berarti k-means tidak lebih baik daripada kebetulan. Silhouette menyukai cluster yang padat dan bulat, sehingga ia memberi skor lebih tinggi pada potongan yang salah daripada pada pengelompokan yang benar.
+- prompt: Mengapa k-means dan linkage Ward memotong lurus melewati kedua cincin?
+  options:
+  - Keduanya menyukai kelompok yang padat, dan kedua cincin memiliki satu pusat yang sama, sehingga pembagian apa pun menjadi dua bagian yang padat akan memotong kedua cincin
+  - Keduanya menganggap titik-titik cincin luar sebagai noise
+  - eps keduanya diatur terlalu kecil untuk cincin luar
+  - Lab memberi keduanya jumlah cluster yang salah
+  answer: 0
+  explanation: k-means menarik batas lurus di antara dua centroid, dan Ward menggabungkan ke arah kelompok yang padat. Tidak satu pun dapat mengikuti sebuah cincin. Jumlah clusternya sudah benar (2), dan eps milik DBSCAN, bukan milik kedua metode ini.
+- prompt: Pada dua cincin kamu mengatur eps ke 0,30. DBSCAN menemukan 5 cluster, 125 dari 150 titik adalah noise, dan silhouette-nya 0,86. Berapa titik yang digambarkan oleh angka 0,86 itu?
+  options:
+  - 150, karena silhouette merata-ratakan setiap titik
+  - 125, karena itulah titik noise
+  - 25, karena lab tidak menyertakan noise dalam skor
+  - 5, satu untuk setiap cluster
+  answer: 2
+  explanation: 150 - 125 = 25 titik berada di dalam cluster, dan hanya itu yang dinilai. Skornya tinggi karena ke-25 titik itu berada dalam busur yang rapat, sedangkan kecocokannya dengan cincin sebenarnya hanya 0,05.
+- prompt: Pada Kepadatan tak seimbang, linkage Single yang dipotong pada k = 2 menghasilkan satu cluster berisi 149 titik dan satu cluster berisi 1 titik, dengan kecocokan 0,01. Apa yang terjadi?
+  options:
+  - Linkage Single dengan benar menemukan satu cluster dan satu outlier, jadi kelompok sebenarnya adalah 149 dan 1
+  - Linkage Single selalu memisahkan tepat satu titik, apa pun datanya
+  - Linkage Single merayap melewati titik-titik terdekat, sehingga penggabungan terakhir hanya memisahkan satu titik terpencil
+  - Ward dan linkage Single selalu menghasilkan potongan yang sama pada data ini
+  answer: 2
+  explanation: Linkage Single menggabungkan pasangan titik terdekat, sehingga kedua cluster sebenarnya menyatu lebih awal dan pemisahan terakhir hanya melepaskan titik yang paling jauh dari semuanya. Memotong pada k = 3 memberi kecocokan 0,82. Kelompok sebenarnya adalah cluster rapat dan cluster renggang, bukan 149 dan 1.
+- prompt: Pada Tiga gumpalan, k-means dengan k = 2, 3, 4, dan 5 memiliki silhouette 0,56, 0,80, 0,66, dan 0,50. DBSCAN memiliki silhouette 0,81 dan k-means pada k = 3 memiliki 0,80. Apakah 0,81 berarti DBSCAN mengelompokkan gumpalan itu dengan lebih baik?
+  options:
+  - Ya, silhouette yang lebih tinggi berarti clustering yang lebih baik
+  - Ya, karena DBSCAN menemukan 3 cluster dan k-means menemukan 2
+  - Tidak, karena skor silhouette hanya dapat dibandingkan antarpercobaan dengan metode yang sama
+  - Tidak, selisih 0,01 itu berasal dari 2 titik noise yang tidak dihitung dalam skor, dan kecocokan DBSCAN 0,98 dibanding 1,00
+  answer: 3
+  explanation: Keduanya menemukan 3 cluster. Skor DBSCAN mencakup 148 titik, karena ia tidak menyertakan 2 titik noise, dan kecocokannya dengan kelompok sebenarnya sedikit lebih rendah daripada 1,00 milik k-means. Selisih 0,01 bukan sebuah peringkat.
+- prompt: Kamu menaikkan eps pada dua cincin dari 1,35 ke 1,40, dan panel DBSCAN menampilkan tanda strip sebagai ganti skor silhouette. Mengapa?
+  options:
+  - Kedua cincin menyatu menjadi 1 cluster, dan silhouette membutuhkan paling sedikit dua cluster
+  - eps 1,40 berada di luar rentang slider
+  - Ke-150 titik menjadi noise
+  - Kecocokan 1,00 menyembunyikan silhouette
+  answer: 0
+  explanation: Sampai 1,35 DBSCAN menemukan 2 cluster, dan pada 1,40 radiusnya menjembatani celah di antara kedua cincin. Dengan satu cluster tidak ada cluster lain sebagai pembanding, jadi lab menampilkan tanda strip dan menjelaskannya di bawah panel.
+- prompt: Pada Kepadatan tak seimbang, DBSCAN memiliki 14 titik noise pada eps 0,80 dan 38 pada eps 0,50. Mengapa radius yang lebih kecil menandai lebih banyak titik sebagai noise?
+  options:
+  - Radius yang lebih kecil membuat DBSCAN menggabungkan cluster
+  - Titik pada cluster yang renggang membutuhkan radius yang lebih besar untuk menemukan minPts tetangga, sehingga mereka gagal dalam uji itu dan menjadi noise
+  - minPts bertambah otomatis ketika eps mengecil
+  - Cluster yang rapat memiliki terlalu sedikit titik pada radius yang lebih kecil
+  answer: 1
+  explanation: DBSCAN hanya punya satu radius untuk seluruh plot. Cluster yang rapat masih lolos pada eps kecil, tetapi titik di cluster yang renggang hanya punya sedikit tetangga dalam jarak 0,50, sehingga banyak yang ditandai noise. Tidak ada satu eps pun yang cocok untuk kedua kepadatan.
+- prompt: Pada empat sampel penguin, kecocokan dengan spesies adalah 0,81, 0,96, 0,88, dan 0,76 untuk k-means dan 0,52, 0,41, 0,36, dan 0,52 untuk DBSCAN pada eps 0,50. Kesimpulan mana yang paling didukung oleh angka-angka ini?
+  options:
+  - DBSCAN adalah metode yang lebih buruk daripada k-means untuk setiap dataset
+  - Empat sampel membuktikan bahwa k-means selalu lebih cocok dengan spesies
+  - DBSCAN dengan eps 0,50 lebih buruk daripada k-means dalam mencocokkan spesies pada keempat sampel, tetapi eps belum disetel dan empat sampel itu sedikit
+  - Kedua metode sama baiknya, karena silhouette-nya mirip
+  answer: 2
+  explanation: Polanya jelas pada sampel-sampel ini, tetapi klaimnya tetap kecil, karena bertumpu pada satu nilai eps, satu pasang pengukuran, dan empat sampel. Pada cincin urutannya terbalik, jadi hasil ini bergantung pada datanya.
+- prompt: Pada sampel penguin keempat, DBSCAN memiliki silhouette 0,59 dan kecocokan 0,52, sedangkan k-means memiliki 0,54 dan 0,76. Sebanyak 41 dari 150 titik adalah noise DBSCAN. Bagaimana pembacaan yang masuk akal?
+  options:
+  - DBSCAN lebih baik, karena silhouette adalah satu-satunya skor yang tidak membutuhkan label
+  - k-means lebih baik, karena lebih cocok dengan spesiesnya; skor DBSCAN hanya mencakup 109 dari 150 titik
+  - Keduanya seri, karena skornya berbeda kurang dari 0,1
+  - Lab memiliki bug, karena skor dan kecocokan seharusnya selalu sejalan
+  answer: 1
+  explanation: 150 - 41 = 109 titik dinilai untuk DBSCAN, dan silhouette tidak melihat spesiesnya. Kecocokan menunjukkan bahwa k-means lebih dekat ke spesies itu. Skor dapat berbeda pendapat, dan itulah inti lab ini.
+- prompt: Dalam proyek nyata kamu tidak punya kelompok sebenarnya. Sebuah clustering memiliki silhouette 0,7. Apa yang sebaiknya kamu lakukan?
+  options:
+  - Menerimanya, karena di atas 0,5 sebuah clustering selalu benar
+  - Menghitung adjusted Rand index terhadap cluster-nya, karena ia tidak membutuhkan label
+  - Menaikkan k sampai skornya mencapai 1,0
+  - Menganggap 0,7 sebagai pendapat kedua, dan juga melihat gambarnya, jumlah noise, dan apakah kelompoknya bermakna
+  answer: 3
+  explanation: Silhouette yang tinggi berarti cluster-nya padat dan terpisah, bukan benar. Skor itu dapat tinggi ketika sebagian besar titik adalah noise, atau ketika cluster bulat memotong sebuah cincin. Adjusted Rand index membutuhkan kelompok sebenarnya, yang tidak kamu punya, dan k = 1 tidak punya silhouette sama sekali.

@@ -1,0 +1,80 @@
+- prompt: Kamu melatih classifier angka. Augmentation mana yang TIDAK mempertahankan label?
+  options:
+  - Menggeser angka 2 piksel ke kanan
+  - Menambah jitter kecerahan acak yang kecil
+  - Memutar angka sebesar 12 derajat
+  - Memutar angka sebesar 180 derajat
+  answer: 3
+  explanation: Setelah diputar 180 derajat, angka 6 tampak seperti 9, sehingga labelnya menjadi salah. Geseran kecil, putaran kecil, dan perubahan kecerahan yang wajar masih menampilkan angka yang sama.
+- prompt: Gambar mana yang boleh diberi augmentation acak?
+  options:
+  - Hanya gambar latih
+  - Hanya gambar uji, supaya skornya lebih sulit
+  - Gambar latih dan gambar uji sama-sama
+  - Gambar validasi dan uji, tetapi bukan gambar latih
+  answer: 0
+  explanation: Augmentation membantu model belajar, jadi tempatnya di pelatihan. Gambar validasi dan uji dibiarkan apa adanya agar skornya menggambarkan foto yang nyata. Melakukan augmentation sebelum pembagian juga menaruh salinan satu foto di kedua sisi.
+- prompt: Sebuah model benar pada 188 dari 200 gambar uji yang bersih, tetapi hanya 150 dari 200 setelah gambar yang sama dibuat lebih redup. Apa yang ditunjukkan ini?
+  options:
+  - Gambar yang lebih redup salah dilabeli
+  - Accuracy bersih 94% adalah perkiraan terbaik untuk kinerjanya dalam cahaya redup
+  - Accuracy bersih 94% melebih-lebihkan ketahanannya, karena turun menjadi 75% dalam cahaya redup
+  - Model mengalami underfitting pada gambar yang bersih
+  answer: 2
+  explanation: 188 / 200 = 94% dan 150 / 200 = 75%. Skor bersih hanya menggambarkan gambar yang mirip data latih, jadi stress test pada perubahan yang realistis diperlukan untuk melihat penurunannya.
+- prompt: Model yang dilatih dengan augmentation mendapat 92% pada gambar uji bersih, sedangkan model yang sama tanpa augmentation mendapat 94%, tetapi pada gambar yang lebih redup skornya 88% berbanding 75%. Bagaimana kamu membacanya?
+  options:
+  - Model dengan augmentation lebih buruk, karena skor bersihnya lebih rendah
+  - Ia melepas 2 poin pada gambar bersih dan mendapat 13 pada gambar redup, pertukaran yang baik bila foto redup akan muncul
+  - Kedua model setara, karena 92 dan 94 berdekatan
+  - Skor gambar redup tidak penting karena test set-nya bersih
+  answer: 1
+  explanation: Skor bersih turun 2 poin dan skor redup naik 88 - 75 = 13 poin. Model mana yang lebih baik bergantung pada kondisi yang akan dihadapinya, itulah sebabnya kedua skor dilaporkan.
+- prompt: Apa yang diringkas oleh average precision (AP) untuk sebuah detector?
+  options:
+  - Rata-rata semua nilai IoU dari kotak prediksi
+  - Top-1 accuracy pada gambar bersih
+  - Porsi gambar yang kelas sebenarnya termasuk lima skor tertinggi
+  - Luas di bawah kurva precision-recall untuk satu kelas, yang didapat dengan menurunkan batas keyakinan
+  answer: 3
+  explanation: AP mengurutkan kotak berdasarkan keyakinan, mencatat precision dan recall ketika semakin banyak kotak diterima, lalu mengambil luas di bawah kurva itu pada IoU threshold yang tetap. Mean AP kemudian merata-ratakannya di semua kelas.
+- prompt: Layer yang frozen memberi 64 feature dan head yang baru menilai 3 kelas, dengan satu bias per kelas. Berapa angka yang dilatih oleh head?
+  options:
+  - 195
+  - 192
+  - 67
+  - 64
+  answer: 0
+  explanation: Setiap dari 3 kelas punya 64 bobot dan 1 bias, sehingga 64 x 3 + 3 = 195. Tanpa bias hasilnya 192, dan 67 menjumlahkan alih-alih mengalikan.
+- prompt: Pada confusion matrix dari 300 gambar ada 60 anjing; 36 disebut anjing, 20 kucing, dan 4 burung. Berapa recall untuk anjing?
+  options:
+  - 75%
+  - 60%
+  - 86,7%
+  - 12%
+  answer: 1
+  explanation: Recall adalah porsi anjing sebenarnya yang berhasil ditemukan, 36 / 60 = 60%. Top-1 accuracy keseluruhan adalah 260 / 300 = 86,7%, dan angka itu menyembunyikan kelas yang lemah ini.
+- prompt: Sebuah kotak sebenarnya berluas 24 dan sebuah kotak prediksi berluas 24. Keduanya beririsan seluas 12. Berapa IoU-nya?
+  options:
+  - 0,5
+  - 0,25
+  - 0,33
+  - 0,67
+  answer: 2
+  explanation: Gabungannya 24 + 24 - 12 = 36, sehingga IoU = 12 / 36 = 0,33. Membagi dengan 24 memberi 0,5, yang lupa bahwa irisan hanya dihitung sekali dalam gabungan.
+- prompt: Sebuah kotak prediksi selebar 6 dan setinggi 8 memuat seluruhnya sebuah kotak sebenarnya berukuran 6 kali 4. Berapa IoU-nya?
+  options:
+  - 1, karena kotak sebenarnya berada sepenuhnya di dalam
+  - 0,5
+  - 0,75
+  - 0, karena ukuran kedua kotak berbeda
+  answer: 1
+  explanation: Irisannya adalah seluruh kotak sebenarnya, 24, dan gabungannya adalah kotak yang lebih besar, 48, sehingga IoU = 24 / 48 = 0,5. Kotak yang terlalu besar juga dihukum.
+- prompt: Pada contoh pelajaran dengan 5 kotak sebenarnya dan 6 kotak prediksi, 3 prediksi menjadi true positive pada IoU threshold 0,5. Mengapa precision dan recall sama-sama turun pada 0,75?
+  options:
+  - Detector menghasilkan lebih sedikit kotak prediksi pada 0,75
+  - Kotak yang cukup baik pada 0,5 kini dihitung luput, sehingga TP turun dari 3 menjadi 1
+  - Recall selalu lebih rendah pada threshold yang lebih ketat, tetapi precision tetap sama
+  - Kotak sebenarnya menjadi lebih kecil pada 0,75
+  answer: 1
+  explanation: Prediksi yang sama diperiksa dengan batas yang lebih ketat. TP turun dari 3 menjadi 1, sehingga precision berubah dari 3 / 6 = 0,5 menjadi 1 / 6 = 0,17 dan recall dari 3 / 5 = 0,6 menjadi 1 / 5 = 0,2.

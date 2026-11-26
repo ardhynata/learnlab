@@ -1,0 +1,72 @@
+- prompt: Sebuah tim hanya dapat meninjau 200 pembayaran per hari. Metrik mana yang paling dekat dengan apa yang diperoleh perusahaan dari model?
+  options:
+  - AUC atas semua pembayaran hari itu, sebagai satu angka untuk seluruh peringkat
+  - Accuracy atas semua pembayaran hari itu, menghitung setiap label yang benar
+  - Fraud yang tertangkap di antara 200 pembayaran dalam antrean, diubah menjadi net value
+  - Log loss pada training set, dirata-ratakan atas setiap baris latih
+  answer: 2
+  explanation: Keputusan hanya memakai 200 teratas dari peringkat, jadi metriknya harus mengukur 200 teratas itu dan mengubahnya menjadi uang. AUC, accuracy, dan log loss mengukur seluruh daftar atau data latih, yang tidak pernah dipakai reviewer untuk bertindak.
+- prompt: Satu fraud bernilai 80 dan satu review berbiaya 2. Sebuah model menangkap 71 fraud di antara 200 pembayaran dalam antrean. Berapa net value per hari?
+  options:
+  - 5.680
+  - 5.280
+  - 5.480
+  - 71
+  answer: 1
+  explanation: 71 × 80 = 5.680 adalah nilai fraud-nya, dan 200 review berbiaya 200 × 2 = 400, sehingga net value-nya 5.680 - 400 = 5.280. Angka 5.680 lupa memperhitungkan biaya review.
+- prompt: Model A punya AUC 0,95 dan menangkap 62 fraud di 200 teratas. Model B punya AUC 0,92 dan menangkap 71. Pernyataan mana yang benar?
+  options:
+  - A lebih baik, karena AUC yang lebih tinggi selalu berarti antrean 200 yang lebih baik
+  - Keduanya sama, karena kedua AUC di atas 0,9 sehingga keduanya sudah baik
+  - Keduanya tidak dapat dibandingkan sebelum accuracy masing-masing diketahui
+  - B lebih baik untuk keputusan ini, karena AUC menghitung seluruh peringkat sedangkan antrean hanya memakai bagian atas
+  answer: 3
+  explanation: AUC merata-ratakan setiap pasangan pembayaran, termasuk fraud yang berada jauh di bawah dan tidak pernah ditinjau. B menghasilkan 720 per hari lebih banyak daripada A, jadi B pilihan yang lebih baik di sini meskipun AUC-nya lebih rendah.
+- prompt: Chargeback tiba sampai 30 hari setelah pembayaran. Sistem dibangun pada hari ke-150. Hari latih mana yang sudah punya label final?
+  options:
+  - Hari 1 sampai 120
+  - Hari 1 sampai 150
+  - Hari 121 sampai 150
+  - Semua 180 hari
+  answer: 0
+  explanation: Pembayaran dalam 30 hari terakhir mungkin masih punya fraud yang belum dilaporkan, sehingga tampak seperti pembayaran biasa. Hanya hari 1 sampai 120 yang cukup lama untuk punya label final. File riwayat memuat label final untuk hari-hari setelahnya juga, tetapi sistem tidak memilikinya pada hari ke-150.
+- prompt: Baseline "masukkan 200 jumlah terbesar ke antrean" punya net value 2.640 per hari. Model A punya 4.560. Berapa lebih banyak yang dihasilkan A setiap hari dibanding baseline?
+  options:
+  - 4.560
+  - 2.640
+  - 1.920
+  - 24
+  answer: 2
+  explanation: 4.560 - 2.640 = 1.920 per hari. Itu berarti 24 fraud lebih banyak tertangkap, 24 × 80 = 1.920, dengan 200 review yang sama. Angka 24 menghitung fraud, bukan uang.
+- prompt: Seorang rekan membagi 180 hari secara acak, 80% ke training dan 20% ke test. Apa yang salah dengan cara ini untuk sistem fraud?
+  options:
+  - Tidak ada, karena split acak selalu yang paling adil
+  - Test set terlalu kecil untuk memuat fraud apa pun
+  - Model dilatih pada hari-hari setelah hari yang diujinya, dengan label yang belum akan ada
+  - Training set tidak akan memuat fraud
+  answer: 2
+  explanation: Saat deployment, model menilai hari-hari yang belum pernah dilihatnya, dengan label yang tersedia pada saat itu. Potongan acak memasukkan hari-hari yang lebih baru dan label yang terlambat ke dalam pelatihan, sehingga skornya bukan skor yang akan kamu dapat.
+- prompt: Kamu menjalankan ulang pipeline rekanmu dari file mentah dengan satu perintahnya, dan mendapat tabel hasil yang berbeda. Apa penyebab yang paling mungkin?
+  options:
+  - Tabel tidak pernah sama dua kali
+  - Ada seed, versi data, atau langkah manual yang belum tercatat
+  - Baris baseline harus dihapus
+  - Model membutuhkan AUC yang lebih tinggi
+  answer: 1
+  explanation: Tabel yang tidak dapat dibuat ulang berarti ada sesuatu di luar catatan, seperti seed yang belum ditetapkan, file data atau versi library yang berbeda, atau langkah yang dilakukan dengan tangan. Menemukannya adalah tujuan uji menjalankan ulang.
+- prompt: Reviewer mulai bekerja setiap pagi pada pembayaran kemarin. Cara serving mana yang sesuai?
+  options:
+  - Job batch malam hari yang menilai pembayaran hari itu sebelum antrean dibutuhkan
+  - Scoring online yang harus menjawab dalam satu detik untuk setiap pembayaran
+  - Scoring sekali saja, lalu tidak pernah lagi
+  - Scoring hanya pembayaran yang sudah ditinjau
+  answer: 0
+  explanation: Skor dibutuhkan sebelum langkah terjadwal, bukan saat pelanggan menunggu, jadi batch sudah cukup dan lebih mudah diulang. Scoring online akan menambah batas latensi dan aturan cadangan yang tidak dibutuhkan keputusan ini.
+- prompt: Label tiba sampai 30 hari setelah scoring. Apa yang harus disimpan log agar kamu dapat mengukur fraud nyata yang tertangkap pada hari ke-40?
+  options:
+  - Hanya skor rata-rata hari ke-40
+  - Hanya metrik pelatihan model
+  - Jumlah permintaan pada hari ke-40
+  - Untuk setiap pembayaran hari ke-40, id-nya, versi model, skor dan peringkat, serta tindakan yang dilakukan
+  answer: 3
+  explanation: Ketika label tiba, kamu menggabungkannya ke log lewat id lalu menghitung ulang metrik operasional pada pembayaran yang benar-benar masuk antrean. Rata-rata, metrik pelatihan, atau jumlah permintaan tidak dapat digabungkan dengan label.

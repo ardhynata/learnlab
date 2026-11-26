@@ -1,0 +1,80 @@
+- prompt: Pembacaan berat penguin 6.440 g mendapat skor yang sangat yakin dari aturan 4.700 g. Mengapa abstain band pada skor tidak dapat menangkap kasus ini?
+  options:
+  - Band hanya bekerja untuk berat di bawah 4.700 g
+  - Skor tidak pernah menunjukkan apakah kasusnya mirip data latih, sehingga diperlukan uji rentang tersendiri
+  - Skor yang yakin selalu benar
+  - Penguin yang berat selalu dikirim ke manusia juga
+  answer: 1
+  explanation: Skornya besar karena berat itu jauh dari 4.700 g, bukan karena model pernah melihat kasus seperti ini. Input out-of-distribution butuh pemeriksaan sendiri, misalnya uji rentang, dan skor yang yakin dapat menyembunyikannya.
+- prompt: Pada tabel penguin, sebuah band mengirim ke manusia setiap penguin yang jaraknya kurang dari 200 g dari 4.700 g. Berapa penguin itu?
+  options:
+  - 21
+  - 36
+  - 38
+  - 74
+  answer: 2
+  explanation: Band berisi dua baris pertama, 21 + 17 = 38 penguin. Angka 36 hanya baris ketiga (200 sampai 399 g), dan 74 adalah jumlah untuk band 400 g.
+- prompt: Dengan band 200 g, berapa accuracy pada kasus yang masih diputuskan model?
+  options:
+  - 0,95, yaitu 279 / 295
+  - 0,89, yaitu 295 / 333
+  - 0,91, yaitu 303 / 333
+  - 0,97, yaitu 252 / 259
+  answer: 0
+  explanation: Model memutuskan 295 penguin dan benar pada 303 - (13 + 11) = 279 di antaranya, sehingga 279 / 295 = 0,95. Angka 0,89 adalah coverage, 0,91 adalah accuracy tanpa band, dan 0,97 milik band 400 g.
+- prompt: Mengapa accuracy pada kasus yang diputuskan naik ketika band makin lebar?
+  options:
+  - Model dilatih ulang pada kasus di dalam band
+  - Reviewer memperbaiki kesalahan, dan perbaikan mereka dihitung sebagai accuracy model
+  - Memutuskan lebih sedikit kasus selalu menaikkan accuracy, apa pun skornya
+  - Kasus yang disingkirkan adalah kasus yang paling sering salah oleh aturan itu
+  answer: 3
+  explanation: Dekat 4.700 g aturan itu salah pada 8 dari 21 penguin, di tempat yang jauh hanya pada 7 dari 259. Menyingkirkan kasus yang meragukan meninggalkan himpunan yang lebih mudah. Ini hanya berhasil kalau skornya mengikuti kebenaran.
+- prompt: Satu tinjauan memakan 3 menit dan satu keputusan otomatis yang salah menelan 50 menit pengerjaan ulang. Di atas peluang salah berapa tinjauan menjadi sepadan?
+  options:
+  - 0,03
+  - 0,06
+  - 0,17
+  - 0,94
+  answer: 1
+  explanation: Tinjauan sepadan kalau peluang salah dikali 50 lebih besar daripada 3, yaitu ketika peluangnya di atas 3 / 50 = 0,06. Pada tabel, tiga baris terdekat punya porsi salah 0,38, 0,35, dan 0,25, di atas garis itu, sedangkan baris terjauh 0,03, di bawahnya.
+- prompt: Seorang reviewer punya 2 jam per hari dan tiap tinjauan memakan 3 menit. Band terlebar pada tabel yang masih muat adalah?
+  options:
+  - Tanpa band
+  - 100 g
+  - 200 g
+  - 400 g
+  answer: 2
+  explanation: Dua jam adalah 120 menit, yaitu 40 tinjauan. Band 200 g mengirim 38 penguin (114 menit) dan muat. Band 400 g mengirim 74 penguin, sekitar 222 menit, dan tidak muat.
+- prompt: Dengan band 400 g, seorang reviewer menerima setiap saran begitu saja. Pada berapa dari 333 penguin sistem itu benar?
+  options:
+  - 303
+  - 322
+  - 252
+  - 312
+  answer: 0
+  explanation: Model benar pada 252 penguin yang diputuskan dan pada 51 dari 74 yang ditinjau, karena menerima semua saran sama dengan menyalin model. Itu 303 dari 333, persis accuracy tanpa tinjauan sama sekali. Angka 322 untuk reviewer yang memutuskan sendiri dan benar pada 70 dari 74.
+- prompt: Aturan itu salah pada 23 dari 74 penguin yang ditinjau, tetapi log menunjukkan reviewer hanya mengubah jawaban model 2 kali, override rate 0,03. Apa yang diisyaratkan ini?
+  options:
+  - Reviewer hampir selalu benar
+  - Model hampir sempurna di dalam band
+  - Band terlalu sempit
+  - Reviewer kemungkinan menerima saran tanpa memeriksa, yaitu automation bias
+  answer: 3
+  explanation: Kalau reviewer menangkap kesalahan aturan itu, mereka akan mengubah jawaban model sekitar 23 kali. Angka mendekati nol di band yang modelnya salah 31% mengisyaratkan automation bias, dan langkah berikutnya adalah memeriksa cara kerja reviewer.
+- prompt: Accuracy keseluruhan aturan itu 0,91. Mengapa model card tetap mencantumkan metrik per kelompok?
+  options:
+  - Setiap card butuh tabel yang lebih panjang
+  - Satu angka keseluruhan dapat menyembunyikan kelompok yang jauh lebih buruk, seperti 0,84 untuk betina dibandingkan 0,98 untuk jantan
+  - Metrik kelompok selalu lebih tinggi daripada angka keseluruhan
+  - Angka per kelompok menggantikan kebutuhan akan aturan review
+  answer: 1
+  explanation: Angka keseluruhan adalah rata-rata. Menurut jenis kelamin, aturan itu benar pada 139 dari 165 betina dan 164 dari 168 jantan. Card yang hanya menulis 0,91 tidak akan memperingatkan pengguna tentang selisih itu.
+- prompt: 'Pernyataan mana yang mengikuti empat bagian pemberitahuan "jangan dipakai" yang baik: apa yang tidak boleh dilakukan, buktinya, apa yang dilakukan sebagai gantinya, dan apa yang akan mengubah jawabannya?'
+  options:
+  - '"Model ini tidak dapat diandalkan, karena itu hindari."'
+  - '"Pakai aturan ini di mana saja, tetapi minta pengguna berhati-hati."'
+  - '"Jangan pakai aturan ini di bawah 2.700 g atau di atas 6.300 g. Aturan ini dibangun dari 333 penguin dalam rentang itu, sehingga kirim kasus-kasus tersebut ke biolog, dan kami akan menimbang ulang ketika ada data berlabel baru."'
+  - '"Jangan pernah memakai model apa pun pada penguin."'
+  answer: 2
+  explanation: Pernyataan ketiga menyebut batasnya, memberi bukti, mengatakan ke mana kasusnya dikirim, dan menyatakan apa yang akan membuka pertanyaan itu kembali. Yang lain adalah peringatan samar yang tidak dapat ditindaklanjuti atau diperiksa.

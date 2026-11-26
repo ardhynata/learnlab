@@ -1,0 +1,72 @@
+- prompt: In the Attention lab, with Head 1, the row of "cat" reads 8%, 61%, 8%, 8%, 9% and 6%. What does this row mean?
+  options:
+  - The word "cat" is 61% likely to be a noun and 39% likely to be something else
+  - Six tokens each vote, and "cat" wins the vote with 61% of the votes cast
+  - The new vector for "cat" is a mix of the six tokens' vectors, 61% of it from "cat" itself
+  - 39% of the tokens in the sentence are not related to "cat" at all
+  answer: 2
+  explanation: A row is a softmax, so its weights add up to 100% and are the shares in which the value vectors are mixed. The new vector for "cat" is 61% its own value plus 8%, 8%, 9%, 8% and 6% of the others. Nothing here is a vote or a probability that a word has a class.
+- prompt: Head 1 scores "cat" with q = (2.0, 0.0, 0.1) against a "the" with k = (0.3, 0.3, 0.3), using 3 numbers per vector. What is the scaled score?
+  options:
+  - '0.63'
+  - '0.36'
+  - '1.09'
+  - '2.00'
+  answer: 1
+  explanation: The dot product is 2.0 × 0.3 + 0.0 × 0.3 + 0.1 × 0.3 = 0.63. The scale divides by the square root of 3, 1.73, so the scaled score is 0.63 / 1.73 = 0.36. The unscaled 0.63 skips that step.
+- prompt: Take the row of "cat" in "the cat sat", with 0.11 on "the", 0.79 on "cat" and 0.10 on "sat". With the causal mask on, "sat" is hidden. What weight does "cat" get on itself?
+  options:
+  - 0.79, because hiding a token does not change the weights of the others
+  - 0.89, because the 0.10 of the hidden "sat" is added to "cat"
+  - 1.00, because the mask leaves "cat" as the only token it can see
+  - 0.88, because the two weights left, 0.79 and 0.11, are rescaled to add up to 1
+  answer: 3
+  explanation: 'The mask sets the hidden cell to 0 and the softmax runs over the tokens left, so 0.79 and 0.11 are scaled to add up to 1: 0.79 / 0.90 = 0.88 and 0.11 / 0.90 = 0.12. The first token of a sentence has no earlier token and keeps 100% on itself.'
+- prompt: In the lab, Head 2 (nearby words) shows 17% in every cell when Add position codes is off. Why?
+  options:
+  - The head compares only position codes, so with none every score is equal and each of the 6 tokens gets 1/6
+  - The head has not been trained, so every time it looks it picks the token to look at at random
+  - Head 2 hides the future whenever the positions are off, which gives every row the same shape
+  - 17% is the share of function words in the sentence, and Head 2 gives that share to every cell
+  answer: 0
+  explanation: Head 2 is set to use only the position code. Without it every score is equal, so the softmax gives each of the 6 tokens 1/6, about 17%. Attention does not see order by itself. Head 4 is the random head, and it shows an uneven pattern.
+- prompt: In the lab you type "cat sat". As Characters it has 7 tokens, and with 0 BPE merges it has 8. Where does the extra token come from?
+  options:
+  - The slider adds a start-of-text token to the front of every text it splits
+  - BPE ends each word with a · mark (3 + 1 + 3 + 1 = 8), where Characters has one space (3 + 1 + 3 = 7)
+  - BPE splits every word into two pieces, so each word adds one token to the count
+  - The unknown token is added once, because the lab has not seen this text before
+  answer: 1
+  explanation: The text has 3 + 3 = 6 letters. BPE puts an end-of-word mark after each of the 2 words, so 6 + 2 = 8. The Characters tokenizer instead keeps the single space between the words, so 6 + 1 = 7.
+- prompt: At 8 labelled messages the first draw gives bag of words 67.2% and frozen vectors 82.8%, on 180 test messages. About how many more messages does the frozen model classify correctly?
+  options:
+  - '15'
+  - '28'
+  - '56'
+  - '83'
+  answer: 1
+  explanation: 67.2% of 180 is about 121 messages and 82.8% is about 149, a difference of 28. The 15.6-point gap is not 15 messages, because each message is 1/180, about 0.56 points.
+- prompt: At 8 labelled messages, five draws give frozen minus bag of words of +15.6, +8.9, +12.2, +0.6 and -6.1 points. Which conclusion is fairest?
+  options:
+  - Bag of words is better, because it won the last of the five draws
+  - The pretrained vectors always win at 8 messages, because 4 of the 5 draws are positive
+  - The draws disagree, so the pretrained vectors are ahead on average but one draw can say the opposite
+  - Nothing can be said, because the draws do not use the same test messages
+  answer: 2
+  explanation: Four draws favour the pretrained vectors (one only by 0.6) and one favours bag of words, so the result moves with the draw. All draws use the same 180 test messages, which is what makes them comparable. Over twelve draws the lab showed the pretrained vectors clearly ahead in 9.
+- prompt: At 360 labelled messages the lab shows bag of words 94.4%, frozen vectors 91.1% and fine-tuned vectors 94.4%. What explains the frozen result?
+  options:
+  - The frozen head can only use 8 fixed numbers per word, so with many labels the baseline, which learns every word, passes it
+  - The frozen model saw too many labelled messages and started to memorize them instead of learning
+  - Pretraining makes the vectors worse as the amount of labelled data grows, so more labels hurt
+  - The test messages changed between the sizes, so the frozen model met words it had never seen
+  answer: 0
+  explanation: The frozen vectors cannot change, so the labels can only fit a small head on top of them. Bag of words learns each word separately and gains from more labels. Fine-tuning lets the labels move the vectors, and it catches up (94.4%). The test messages are the same at every size.
+- prompt: In the lab, Head 3 gives "cat" and "mat" their largest weight on "sat". A learner concludes that every trained model has a head that finds the action word. What is the fairest reply?
+  options:
+  - Correct, because Head 3 shows the pattern that every attention head learns during training
+  - Wrong, because trained heads all look only at the token just before them and nothing else
+  - Not shown here, because the lab sets this head by hand, and a trained model learns whichever relations help its task
+  - Wrong, because a head cannot relate two different words, only a word and its own position
+  answer: 2
+  explanation: The four heads of the lab are set by hand to show four typical patterns. A trained model starts from random heads like Head 4, and training shapes them into whatever relations help the task. Which relation a head finds is learned, not chosen.

@@ -1,0 +1,80 @@
+- prompt: A line leaves four residuals whose squares have the areas 0.09, 0.01, 1.21 and 0.49. What is the mean squared error?
+  options:
+  - "1.8"
+  - "0.9"
+  - "0.5"
+  - "0.45"
+  answer: 3
+  explanation: The areas add up to 1.8, and the MSE is the average area, 1.8 / 4 = 0.45. The value 1.8 is the total before averaging, and 0.9 comes from dividing by 2 instead of by the 4 points.
+- prompt: For some points, mean x = 2.5, mean y = 3.5, and the least squares slope is 0.8. What is the intercept?
+  options:
+  - "3.5"
+  - "2.7"
+  - "1.5"
+  - "2.0"
+  answer: 2
+  explanation: The intercept is mean y minus slope times mean x, 3.5 - 0.8 × 2.5 = 3.5 - 2 = 1.5. The value 2.7 comes from subtracting only the slope, 3.5 - 0.8, and forgetting to multiply by mean x.
+- prompt: Which point does the least squares line always pass through?
+  options:
+  - The first data point
+  - The point (mean x, mean y)
+  - The point with the biggest residual
+  - The point (0, 0)
+  answer: 1
+  explanation: The intercept formula, mean y - slope × mean x, says exactly that the line reaches mean y at mean x. For the four-point example the line y = 0.8x + 1.5 gives 0.8 × 2.5 + 1.5 = 3.5 at x = 2.5.
+- prompt: Hold the intercept fixed and slide only the slope. What shape does each loss draw as the slope changes?
+  options:
+  - MSE is a smooth bowl, MAE is a V of straight pieces
+  - Both are smooth bowls, since both average the residuals
+  - MSE is a V of straight pieces, MAE is a smooth bowl
+  - Both are straight lines, since both use the same points
+  answer: 0
+  explanation: Squaring the residuals gives a smooth curve with one lowest spot, a bowl. Absolute values give straight pieces that bend where the line passes through a point, so the curve looks like a V.
+- prompt: In the lab the intercept is stuck at 4.00. Sliding only the slope lowers the MSE to 1.885 at best, while the best line has an MSE of 0.236. What does this show?
+  options:
+  - The Slope slider is not working, so the MSE barely changes
+  - The slope does not matter for the loss, so any value gives the same MSE
+  - No line can have an MSE below 1.885
+  - The slope cannot repair a badly placed intercept, so both dials must move
+  answer: 3
+  explanation: The best slope depends on the intercept. With the intercept at 4.00 the line sits far above the points whatever the slope, so the loss stays high. Moving the intercept to about 1.5 lets the slope reach 0.57 and an MSE of 0.237.
+- prompt: The least squares line for four points has an MAE of 0.55, while the line y = x + 1 has an MAE of 0.5. What does that show?
+  options:
+  - Each loss can have a different best line
+  - The line y = x + 1 is also the least squares line
+  - MAE is always larger than MSE on the same line
+  - Least squares gives a wrong answer on small data
+  answer: 0
+  explanation: Each loss has its own best line. The least squares line is the lowest-MSE line (0.45), but by MAE the line y = x + 1 does better (0.5 against 0.55).
+- prompt: Seven points near a line are fit by both losses. After one far-off point is added, the MSE line's slope drops from 0.89 to 0.30, but the MAE line stays at slope 0.83. Why does the MSE line move so much more?
+  options:
+  - MAE ignores the far point completely, so its line cannot move at all
+  - The least squares formula looks only at the last point that was added
+  - Squaring makes a big miss weigh far more, so the line is pulled toward it
+  - MSE divides by fewer points than MAE, so each point weighs more
+  answer: 2
+  explanation: The far point misses the MAE line by about 6.8. That adds 6.8 to the absolute total but about 47 to the squared total, so the squared loss cannot ignore it. MAE does count the point, but only by its size, which is not enough to change the best line here.
+- prompt: In the lab, with the outlier on and the line at the best MAE line, the outlier carries 48% of the total absolute error but 88% of the total squared error. Why the difference?
+  options:
+  - Absolute error ignores half of every miss, so its share is smaller
+  - Squaring grows a big miss far faster than small ones, so its share is bigger
+  - The lab draws the squared share wrongly, adding the squares twice
+  - The outlier moves to a different spot when you change the loss
+  answer: 1
+  explanation: The outlier's miss is 5.91 and 19 of the other 20 misses are under 1. Squared, 5.91 becomes about 35, while the small misses become tiny numbers. The point and the line are the same; only the way the loss adds up the misses changed.
+- prompt: On the 20 generated points one outlier moved the best MSE line by 0.55 plot units. On the 342 penguins it moved it by only 0.05. What is the most likely reason?
+  options:
+  - The penguin data has no noise, so nothing can pull the line
+  - The lab switches the outlier off when it loads real data
+  - One point is a smaller part of 343 points than of 21, so it pulls less
+  - The MAE line moved instead, so the MSE line stayed put
+  answer: 2
+  explanation: The loss is an average over all points, so a single far-off point counts for 1 in 343 on the penguins but 1 in 21 on the generated data. The same outlier is still there, but it is outvoted.
+- prompt: The lab's generated points are drawn around y = 0.6x + 1.5. With Loss on Mean squared error, Snap gives slope 0.57 and intercept 1.47. Why is it not exactly 0.6 and 1.5?
+  options:
+  - Noise in these 20 points pushes the best line a little off the rule
+  - Snap rounds the slope down, so it never reaches 0.60
+  - The slider cannot show 0.60, so Snap uses the nearest step
+  - Least squares is only approximately correct, so it misses a little
+  answer: 0
+  explanation: The best line is the best for the points you have, not for the rule that made them. Another sample of noise would give a slightly different best line, which is why a low loss alone does not prove the line is the truth.

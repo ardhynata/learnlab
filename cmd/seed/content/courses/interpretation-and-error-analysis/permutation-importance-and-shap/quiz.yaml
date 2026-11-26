@@ -1,0 +1,80 @@
+- prompt: A model gets 61 of 67 validation penguins right. After shuffling body mass and scoring again, it averages 44.2 right over 30 shuffles. What is the permutation importance of body mass?
+  options:
+  - 44.2 penguins, the score after shuffling
+  - 16.8 penguins, a drop of about 25 points
+  - 105.2 penguins, the sum of the two scores
+  - 0, because shuffling keeps the same values
+  answer: 1
+  explanation: The importance is the drop, 61 - 44.2 = 16.8 penguins, which is 16.8 / 67, about 25 points. Shuffling keeps the values but moves them to the wrong penguins, so the score can fall.
+- prompt: Why does the lesson average the drop over 30 shuffles instead of using one?
+  options:
+  - One shuffle changes the model itself, so the model has to be refitted each time
+  - A shuffle can only lower the score, so a single one overstates the drop
+  - One shuffle is a random draw; single shuffles of body mass cost anywhere from 10 to 25 penguins
+  - The score of an unshuffled model is itself random
+  answer: 2
+  explanation: Which penguin receives which value is chance, so one shuffle can land well above or below the typical drop. The model is not refitted, and the unshuffled score is fixed; averaging many shuffles steadies the estimate.
+- prompt: With body mass in the model, shuffling flipper length costs 1.0 of 67 penguins. With body mass removed, it costs 13.6. What is the best reading?
+  options:
+  - With body mass present the model gets size from it, so flipper length looks unimportant to this model, though it is related to sex
+  - Flipper length is useless, and the second result is noise
+  - The second model must have a bug, because the same feature should always give the same importance
+  - Importance only works for features that are not correlated with the label
+  answer: 0
+  explanation: Flipper length and body mass move together (r = 0.87), so they share the credit. Importance describes a feature inside one model; change the other features and it changes. A low value means the model does not need the feature given the others.
+- prompt: Using the lesson's table for penguin 16, the order is depth, flipper, mass. The values are v(none) = 0.505, v(depth) = 0.705, v(flipper and depth) = 0.718 and v(all three) = 0.535. What does body mass contribute in this order?
+  options:
+  - 0.535
+  - -0.183
+  - 0.183
+  - -0.219
+  answer: 1
+  explanation: Mass joins last, so its contribution is v(all three) - v(flipper and depth) = 0.535 - 0.718 = -0.183. The value -0.219 is its Shapley value, the average over all six orders.
+- prompt: For one penguin the baseline is 0.505 and the Shapley values are -0.014, 0.138 and -0.505. What probability of male does the model predict?
+  options:
+  - 0.505
+  - -0.381
+  - 0.619
+  - 0.124
+  answer: 3
+  explanation: Baseline plus the values equals the prediction, so 0.505 - 0.014 + 0.138 - 0.505 = 0.124. The values alone sum to -0.381, which is the prediction minus the baseline, not the prediction.
+- prompt: Why does a Shapley value average a feature's contributions over all orders, rather than use one order?
+  options:
+  - To make the values add up to more than the prediction
+  - A feature's contribution depends on which features joined before it, for example flipper length moved the prediction by 0.013 in one order and 0.070 in another
+  - Because the model has to be retrained once for each order
+  - Because only the last feature to join has a real contribution
+  answer: 1
+  explanation: No single order is fair, since whoever joins first collects the shared credit and the sigmoid bends the scale. The average over orders gives each feature a fair share, and the shares still add up to the prediction minus the baseline.
+- prompt: Which of these is a local explanation?
+  options:
+  - Bill depth has the largest average Shapley value size over the 67 validation penguins
+  - Shuffling body mass costs 16.8 of 67 penguins
+  - The model gets 61 of 67 validation penguins right
+  - For this female Gentoo, bill depth lowered the predicted probability of male by 0.505
+  answer: 3
+  explanation: A local explanation is about one prediction, here one penguin. The other three statements summarize many penguins or the whole model, so they are global.
+- prompt: Body mass has a large importance in the model that predicts sex. Which conclusion is justified?
+  options:
+  - Feeding a penguin more would make it male
+  - Body mass causes sex in penguins
+  - The model relies on body mass; the data link size and sex, but the importance does not show a cause
+  - Body mass is a fair feature to use for any group of penguins
+  answer: 2
+  explanation: Importance describes what this model uses. Sex affects size, not the reverse, and the importance says nothing about what would happen if you changed a penguin, or about whether the feature is fair.
+- prompt: In the shuffle example, a Gentoo penguin received a bill depth of 18.8 mm, and no Gentoo in the data is deeper than 17.3 mm. What does this show?
+  options:
+  - The model is overfitted
+  - Shuffling can build penguins that do not exist, so the model is scored on inputs it rarely sees
+  - Bill depth is not a useful feature
+  - The shuffle was done on the training penguins
+  answer: 1
+  explanation: A shuffle keeps each value but breaks its link to the other features, which can give impossible combinations. That matters most when features are correlated, and it is one more reason to read importance with care.
+- prompt: A model has 4 features and you want exact Shapley values for one prediction by averaging over orders. How many orders are there?
+  options:
+  - 4
+  - 16
+  - 24
+  - 8
+  answer: 2
+  explanation: The orders are the ways to line up 4 features, 4 x 3 x 2 x 1 = 24. With 3 features it is 6. The 16 is the number of sets of known features, 2^4, not the number of orders.

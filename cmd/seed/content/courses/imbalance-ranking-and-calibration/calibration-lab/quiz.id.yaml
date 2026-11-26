@@ -1,0 +1,80 @@
+- prompt: Di lab kalibrasi, ketiga predictor punya AUC yang sama, 0,892. Pada threshold 0,5 mereka semua menandai 138 kasus yang sama. Mengapa?
+  options:
+  - Probabilitas ketiganya sama-sama jujur
+  - Meregangkan atau menekan skor di sekitar 0,5 membuat setiap skor tetap berada di sisi 0,5 yang sama
+  - Biaya sebuah false positive sama untuk ketiganya
+  - Threshold 0,5 selalu memilih kasus yang sama untuk dua predictor mana pun
+  answer: 1
+  explanation: Predictor overconfident dan underconfident adalah regangan monoton dari skor yang sama dan membiarkan 0,5 tetap di tempatnya, sehingga kasus di atas 0,5 tetap di atasnya. Itu khusus untuk 0,5; pada 0,17 mereka menandai 367, 229, dan 786 kasus. Probabilitas mereka tidak sama-sama jujur, seperti ditunjukkan Brier score 0,098, 0,106, dan 0,122.
+- prompt: Pada threshold 0,5 tiap predictor punya 38 false positive dan 98 false negative dari 1.000 kasus. Sebuah false positive berbiaya 1 dan sebuah false negative berbiaya 5. Berapa biaya per kasusnya?
+  options:
+  - 0,136
+  - 0,490
+  - 0,528
+  - 0,038
+  answer: 2
+  explanation: Total biayanya 38 × 1 + 98 × 5 = 38 + 490 = 528, dan 528 / 1.000 = 0,528. Menghitung kesalahan tanpa biayanya memberi 0,136, dan menghitung false negative saja memberi 0,490.
+- prompt: Di lab, kamu mengatur biaya false positive ke 1 dan biaya false negative ke 19. Berapa threshold berbasis biayanya?
+  options:
+  - 0,50
+  - 0,95
+  - 0,19
+  - 0,05
+  answer: 3
+  explanation: Threshold-nya adalah biaya sebuah false positive dibagi jumlah kedua biaya, 1 / (1 + 19) = 0,05. False negative yang 19 kali lebih mahal sebaiknya dihindari, sehingga batas untuk menandai sebuah kasus turun.
+- prompt: Pada threshold berbasis biaya 0,17, predictor overconfident menandai 229 kasus dan predictor underconfident menandai 786. Apa penjelasan terbaiknya?
+  options:
+  - Predictor overconfident mengurutkan kasus dengan lebih buruk, sehingga menandai lebih sedikit
+  - Predictor underconfident punya AUC yang lebih tinggi, sehingga menandai lebih banyak kasus
+  - Skor overconfident dekat 0 dan skor underconfident dekat tengah, sehingga jauh lebih banyak yang terakhir melewati 0,17
+  - Lab menandai lebih banyak kasus untuk predictor yang Brier score-nya lebih tinggi, apa pun skornya
+  answer: 2
+  explanation: Ranking dan AUC sama untuk ketiganya. Predictor overconfident mendorong banyak kasus ke arah 0, di bawah 0,17, sedangkan predictor underconfident menekan skornya ke tengah, sehingga sebagian besar kasus jatuh di atas 0,17. Hanya predictor terkalibrasi baik, dengan 367 kasus ditandai, yang punya probabilitas seperti yang diandaikan aturan 0,17.
+- prompt: Pada reliability diagram, predictor overconfident menaruh 741 dari 1.000 kasus di bin terendah, dengan rata-rata prediksi 0,008. Sekitar 7 persen di antaranya positif. Apa yang ditunjukkan ini?
+  options:
+  - Prediksi mendekati nol miliknya terlalu ekstrem, karena peluang sebenarnya di sana sekitar 7 persen
+  - Prediksinya terkalibrasi baik, karena 7 persen itu kecil
+  - Rankingnya buruk, karena sebagian besar kasus mendapat skor rendah
+  - Bin itu terlalu kecil untuk menyimpulkan apa pun
+  answer: 0
+  explanation: Prediksi 0,008 yang terkalibrasi akan terjadi sekitar 0,8 persen dari waktu, sedangkan di sini terjadi sekitar 7 persen. Itulah arti overconfident, yaitu probabilitas yang lebih ekstrem daripada yang terjadi. Bin itu berisi 741 kasus, jadi angka 7 persen bukan sekadar noise, dan AUC tidak mengatakan apa pun tentangnya.
+- prompt: Tiap predictor mencapai biaya per kasus terendah yang sama, 0,333, pada threshold terbaiknya masing-masing, yaitu 0,19, 0,03, dan 0,36. Apa yang ditunjukkan ini?
+  options:
+  - Ketiga predictor punya kalibrasi yang sama, karena biayanya sama
+  - Ketiganya berbagi satu ranking, sehingga dapat mencapai potongan yang sama darinya, dan kalibrasi hanya menentukan threshold mana yang membawa ke sana
+  - Predictor overconfident adalah yang terbaik, karena threshold terbaiknya paling rendah dari ketiganya
+  - Biaya terendah hanya bergantung pada biayanya dan bukan pada data atau rankingnya
+  answer: 1
+  explanation: Dengan satu ranking, potongan teratas yang termurah sama untuk ketiga predictor. Kalibrasi hanya menggeser nilai threshold yang menghasilkan potongan itu. Brier score mereka tetap berbeda, jadi kalibrasinya tidak sama.
+- prompt: Kamu menyalakan Rekalibrasi (Platt scaling) di lab. Brier score ketiga predictor menjadi sama, 0,098, dan AUC tetap 0,892. Mengapa AUC tidak berubah?
+  options:
+  - AUC dihitung ulang pada data yang dipakai untuk mencocokkan
+  - Platt scaling mengubah angkanya tetapi petanya selalu naik, sehingga urutan kasus tetap
+  - Platt scaling tidak mengubah probabilitas apa pun
+  - AUC mengukur kalibrasi, yang sebelumnya sudah baik
+  answer: 1
+  explanation: Platt scaling adalah peta yang naik dari skor lama ke probabilitas baru, sehingga tidak ada kasus yang berpindah ke atas atau ke bawah kasus lain dan AUC tidak berubah. Probabilitasnya memang berubah, itulah sebabnya Brier score bergerak. AUC sama sekali tidak mengukur kalibrasi.
+- prompt: Kamu mengatur persentase kasus positif ke 5 persen, sehingga 52 dari 1.000 kasus positif. Pada threshold 0,5 ketiga predictor menandai 8 kasus, dengan 5 false positive dan 49 false negative, pada biaya 1 dan 5. Berapa biaya per kasusnya, dan bagaimana perbandingannya dengan tidak menandai apa pun?
+  options:
+  - 0,049, jauh lebih baik daripada tidak menandai apa pun
+  - 0,005, karena hanya sedikit kasus yang ditandai
+  - 0,250, hanya sedikit lebih baik daripada 0,260 dari tidak menandai apa pun
+  - 0,260, persis sama dengan tidak menandai apa pun
+  answer: 2
+  explanation: Biayanya (5 × 1 + 49 × 5) / 1.000 = 250 / 1.000 = 0,250. Tidak menandai apa pun melewatkan seluruh 52 kasus positif dan berbiaya 52 × 5 / 1.000 = 0,260. Dengan kasus positif yang jarang, 0,5 menandai hampir tidak ada, sehingga nyaris tidak mengalahkan tidak berbuat apa-apa, sementara threshold terbaiknya berbiaya 0,151.
+- prompt: Pada tiga sampel, threshold terbaik predictor terkalibrasi baik adalah 0,19, 0,16, dan 0,30, sedangkan aturan biaya memberi 0,17. Bagaimana cara yang tepat memakai hal ini?
+  options:
+  - Percaya pada sampel pertama, karena lab selalu mulai dari sana dan hasilnya 0,19
+  - Selalu pakai 0,30, nilai tertingginya, supaya aman
+  - Abaikan aturan biaya, karena aturan itu meleset pada sampel ketiga
+  - Anggap tiap threshold terbaik mengandung noise, dan pilih pada data validasi
+  answer: 3
+  explanation: Sampel berisi 1.000 kasus hanya punya sedikit kasus positif di dekat batas, sehingga threshold terbaiknya berubah-ubah, dari 0,16 sampai 0,30 di sini. Aturan biaya pada 0,17 tetap berada dalam 0,04 dari biaya per kasus terbaik pada ketiga sampel. Pilih threshold pada data validasi dan laporkan hasilnya pada data yang ditahan.
+- prompt: Mengapa lab mencocokkan Platt scaling pada sampel terpisah berisi 3.000 kasus, bukan pada 1.000 kasus yang ditampilkannya?
+  options:
+  - Angka hasil rekalibrasi akan tampak lebih bagus daripada pada data baru
+  - Pencocokan butuh sedikitnya 3.000 kasus agar urutan kasus tetap terjaga
+  - Sampel terpisah membuat ketiga predictor mengurutkan kasus dengan cara yang berbeda
+  - Ke-1.000 kasus yang ditampilkan tidak punya kasus positif untuk dicocokkan
+  answer: 0
+  explanation: Peta yang dicocokkan pada kasus yang kemudian dinilainya sudah melihat jawabannya, dan itu membuat hasilnya tampak lebih bagus. Sampel terpisah menunjukkan bagaimana peta bekerja pada kasus yang tidak dipelajarinya. Peta menjaga urutan pada sampel mana pun ia dicocokkan, dan ke-1.000 kasus itu punya 198 kasus positif.

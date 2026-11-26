@@ -1,0 +1,54 @@
+-- +goose Up
+-- +goose StatementBegin
+--
+-- Baseline migration — DOCUMENTATION ONLY, no DDL.
+--
+-- Hexago's generated outbound adapters (every
+-- internal/adapter/outbound/<entity>/repository.go produced by
+-- `hexago make entity --store mysql` / `--store postgresql` / etc.)
+-- run `CREATE TABLE IF NOT EXISTS` inside their `NewRepository(...)`
+-- call, which executes on every app boot. That mechanism creates the
+-- schema on a fresh database and no-ops on an existing one.
+--
+-- This baseline records that fact in the goose ledger so:
+--   1. `make migrate-status` shows a clean baseline state.
+--   2. Real migrations (column adds, renames, type changes, indexes,
+--      constraints) start at version 1+ and apply on top of a known shape.
+--   3. A reviewer reading `db/migrations/` can see the coexistence
+--      contract from day-zero without spelunking through generated Go
+--      code.
+--
+-- Coexistence contract going forward:
+--
+--   - First boot of a fresh DB:    auto-init creates the per-entity
+--                                  tables. NO migration needed.
+--   - First `make migrate-up`:     records this baseline in goose's
+--                                  `goose_db_version` ledger.
+--   - Any subsequent schema change: lives in this directory as a new
+--                                  goose file. NEVER hand-edit the
+--                                  generated repository.go to alter
+--                                  columns — `hexago gen` regenerates
+--                                  those files and your edits will be
+--                                  silently overwritten. Migrations
+--                                  own column state after first boot.
+--
+-- Why version 00001 and not 00000: goose rejects version 0. The baseline
+-- starts at 1; real migrations land at 2+ (or — more commonly — at the
+-- timestamp `make migrate-create` produces). Either numbering scheme
+-- works; goose orders strictly by integer version.
+--
+-- The Up body is a no-op (`SELECT 1`) so goose has something valid
+-- to execute and record. The version is registered; subsequent runs
+-- of `make migrate-up` see it as already applied and skip it.
+SELECT 1;
+-- +goose StatementEnd
+
+-- +goose Down
+-- +goose StatementBegin
+-- Down for the baseline is also a no-op. We do not DROP the tables on
+-- rollback — the auto-init path would just recreate them on the next
+-- app boot, and dropping data is never the right answer for "undo
+-- baseline". Rolling back the baseline simply removes the version row
+-- from `goose_db_version`; the schema continues to exist.
+SELECT 1;
+-- +goose StatementEnd

@@ -1,0 +1,80 @@
+- prompt: Pada sampel bawaan lab, log loss validation boosting adalah 0,21 pada 8 tree dan 1,02 pada 100 tree, sementara log loss training-nya turun ke 0,00. Apa yang ditunjukkan hal ini?
+  options:
+  - Boosting underfitting, karena log loss training-nya terlalu rendah
+  - Boosting overfitting setelah sekitar 8 tree, karena tree berikutnya mencocokkan titik training tetapi tidak titik baru
+  - Titik validasinya terlalu sedikit untuk menunjukkan apa pun
+  - Lebih banyak tree selalu membantu boosting, seperti halnya bagging
+  answer: 1
+  explanation: Log loss training hanya turun saat tree ditambah, tetapi log loss validation berbalik naik setelah 8 tree. Balikan itu adalah overfitting, dan nilai validation terendah menandai tempat early stopping akan berhenti. Bagging berperilaku lain, karena merata-ratakan lebih banyak tree tidak membuatnya mencocokkan titik training lebih ketat.
+- prompt: Sebuah titik validasi kelas 1 mendapat probabilitas 0,4 dari model boosting, dan 0,02 setelah jauh lebih banyak tree. Dengan -ln p, berapa lebih mahal titik itu dalam log loss pada kali kedua?
+  options:
+  - Sekitar 0,4 lebih mahal
+  - Tidak ada selisih, karena titik itu salah pada kedua kali
+  - Sekitar 0,02 lebih mahal
+  - Sekitar 3,0 lebih mahal
+  answer: 3
+  explanation: -ln(0,4) = 0,92 dan -ln(0,02) = 3,91, sehingga titik itu berbiaya sekitar 2,99 lebih besar. Error rate menghitung satu kesalahan pada kedua kali, itulah sebabnya log loss dapat naik sementara error rate nyaris tidak bergerak.
+- prompt: Satu tree bagging salah pada 23 dari 100 titik validasi, error rate 23,0%, tetapi log loss validation-nya 4,96. Mengapa log loss jauh lebih buruk daripada yang ditunjukkan error rate?
+  options:
+  - Log loss dihitung pada titik training, sehingga selalu lebih besar
+  - Log loss menghitung setiap titik yang benar sebagai kesalahan juga
+  - 14 kesalahan jatuh di leaf yang memberi kelas benar probabilitas 0, dan masing-masing berbiaya 34,54
+  - Tree-nya terlalu dangkal untuk memberi probabilitas
+  answer: 2
+  explanation: Leaf yang hanya berisi satu kelas memberi kelas lain probabilitas 0, yang dipotong log loss ke 1e-15, dan -ln(1e-15) = 34,54. 14 × 34,54 / 100 = 4,84, hampir seluruh dari 4,96. Perata-rataan tree menaruh probabilitas di antara 0 dan 1, sehingga pada 3 tree log loss validation-nya 0,63.
+- prompt: Pada 100 tree, log loss training bagging adalah 0,08 dan log loss validation-nya 0,54, sedangkan log loss validation-nya 0,63 pada 3 tree. Bagaimana kamu membacanya?
+  options:
+  - Ada jarak, tetapi jarak itu tidak melebar saat tree bertambah, sehingga lebih banyak tree tidak merugikan bagging
+  - Bagging makin overfitting dengan setiap tree yang ditambahkan
+  - Jarak itu menandakan bug, karena nilai training dan validation seharusnya sama
+  - Bagging berhenti belajar, sehingga tree tambahan hanya membuang waktu
+  answer: 0
+  explanation: Model mana pun mencocokkan titik training lebih baik daripada titik baru, maka adanya jarak itu wajar. Tanda overfitting akibat penambahan tree adalah kurva validation yang berbalik naik, dan kurva bagging turun dari 0,63 ke 0,54. Tree tambahan terutama menstabilkan rata-rata dan memakan waktu, bukan akurasi.
+- prompt: Apa yang ditandai lingkaran pada grafik lab?
+  options:
+  - Jumlah tree tempat error training pertama kali mencapai nol
+  - Jumlah tree dengan nilai validation terendah milik boosting untuk metrik yang sedang ditampilkan grafik
+  - Jumlah tree tempat bagging dan boosting punya error yang sama
+  - Jumlah tree yang kamu pilih dengan slider
+  answer: 1
+  explanation: Lingkaran menandai early stopping, yaitu jumlah tree dengan nilai validation terendah. Ia mengikuti Grafik menampilkan, sehingga pada sampel bawaan ia berada di 8 tree untuk log loss dan 3 tree untuk error rate. Sebelum kamu memeriksa prediksimu, ia hanya melihat tree yang sudah kamu tambahkan.
+- prompt: Error rate validation boosting naik dari 6,0% pada 3 tree ke 9,0% pada 100, sementara log loss validation-nya naik dari 0,21 ke 1,02. Pernyataan mana yang sesuai?
+  options:
+  - Error rate itu keliru, karena hanya log loss yang metrik sah
+  - Boosting membuat kesalahan 5 kali lebih banyak pada 100 tree
+  - Kedua ukuran naik dengan faktor yang sama, sekitar 1,5
+  - Log loss juga menagih seberapa yakin model itu, sehingga titik yang salah makin mahal begitu model makin yakin
+  answer: 3
+  explanation: Error rate naik 3 poin, tiga kesalahan lebih banyak di antara 100 titik, atau faktor 1,5. Log loss naik sekitar 5 kali karena tree tambahan membuat model boosting lebih yakin, dan kesalahan yang diambil dengan yakin jauh lebih mahal daripada yang ragu-ragu.
+- prompt: Pada sampel bawaan kamu menurunkan Learning rate boosting dari 0,50 ke 0,10. Apa yang terjadi pada lingkaran dan pada log loss validation terendah?
+  options:
+  - Lingkaran bergeser ke kiri, dari 8 tree ke 2, dan nilai terendahnya jauh membaik
+  - Lingkaran tetap di 8 tree dan nilai terendahnya berlipat dua
+  - Lingkaran bergeser ke kanan, dari 8 tree ke 40, dan nilai terendahnya hampir sama
+  - Lingkaran bergeser ke kanan, dari 8 tree ke 40, dan nilai terendahnya jauh memburuk
+  answer: 2
+  explanation: Learning rate yang lebih kecil mengambil langkah lebih kecil, sehingga boosting butuh lebih banyak tree untuk mencapai titik terbaiknya. Nilai terendahnya 0,22 dibanding 0,21, hampir sama. Rate 1,00 menggeser lingkaran ke kiri ke 2 tree dan nilai terendahnya lebih buruk, yaitu 0,32.
+- prompt: Dengan learning rate kecil, lab menyatakan bahwa tidak ada kurva yang naik lagi dalam 100 tree. Apa yang dapat kamu simpulkan?
+  options:
+  - Boosting tidak dapat lagi overfitting dengan learning rate kecil
+  - Boosting lambat dengan rate kecil dan mungkin butuh lebih dari 100 tree sebelum kurvanya berbalik naik
+  - Bagging dan boosting sudah menjadi model yang sama
+  - Titik validasi tidak ikut dihitung dalam skor
+  answer: 1
+  explanation: Rate kecil mengambil langkah kecil, sehingga balikannya datang lebih lambat dan mungkin berada di luar 100 tree yang dibangun lab. Hasil itu hanya menyatakan apa yang terjadi dalam 100 tree. Ia tidak menyatakan bahwa boosting aman dari overfitting.
+- prompt: Pada lima sampel penguin, lingkaran boosting berada di 4, 10, 4, 10, dan 3 tree, dan log loss validation-nya berbalik naik pada setiap sampel. Apa yang sebaiknya kamu ambil dari sini?
+  options:
+  - Polanya bertahan, tetapi jumlah tree terbaik berubah menurut sampel, karena itu pilihlah dengan validation pada datamu sendiri
+  - Hasilnya adalah sifat penguin, karena itu pakai jumlah tree yang sama setiap kali
+  - Lingkaran itu acak dan tidak memberi tahu apa pun
+  - Boosting hanya overfitting pada data nyata, bukan pada data buatan
+  answer: 0
+  explanation: Boosting berbalik naik pada kelima sampel, maka bentuk hasilnya bertahan. Lingkaran bergeser antara 3 dan 10 tree, sehingga jumlah terbaik yang ditemukan pada satu sampel bukan konstanta. Data buatan menunjukkan balikan yang sama.
+- prompt: Pada sampel penguin pertama, 109 penguin disisihkan untuk validation dan error rate validation boosting pada 100 tree adalah 5,5%, dibanding 4,6% untuk bagging. Apa artinya ini?
+  options:
+  - Boosting salah pada 55 penguin dan bagging 46, maka bagging jelas lebih baik
+  - Boosting salah pada 6 penguin dan bagging 5, maka bagging jelas lebih baik
+  - Boosting salah pada 6 penguin dan bagging 5, selisih satu penguin yang terlalu kecil untuk menentukan pemenang
+  - Persentase dengan 109 penguin tidak dapat diubah menjadi hitungan
+  answer: 2
+  explanation: 5,5% dari 109 adalah 5,995, yaitu 6 penguin, dan 4,6% dari 109 adalah 5,01, yaitu 5 penguin. Satu penguin sekitar 0,9 poin error rate, dan pembagian penguin yang lain dapat membalik selisih itu.

@@ -1,0 +1,7 @@
+module: example.com/learnlab
+transports:
+  - rest
+database: postgresql
+config_format: env
+generated_at: 1e1d22a80a27ef5ca5cb83dd7122f896efdf00d5
+generated_on: 2026-11-18T12:20:37Z

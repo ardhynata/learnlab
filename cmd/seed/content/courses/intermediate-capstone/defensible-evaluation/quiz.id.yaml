@@ -1,0 +1,80 @@
+- prompt: Model sebuah rumah sakit akan menilai discharge pasien yang belum pernah ia lihat, dan setiap pasien punya empat discharge dalam data. Potongan mana yang membuat test set jujur?
+  options:
+  - Mengacak semua discharge lalu menahan 20% secara acak
+  - Menahan hanya bulan-bulan terbaru
+  - Menahan pasien secara utuh, dengan keempat discharge-nya berada di sisi yang sama
+  - Menahan satu discharge per pasien
+  answer: 2
+  explanation: Baris uji harus baru dengan cara yang sama seperti pemakaian nyata, dan di sini artinya pasien baru. Memotong per pasien menjaga setiap pasien di satu sisi. Potongan acak atau satu discharge yang ditahan per pasien membuat setiap baris uji punya saudara di data latih.
+- prompt: Setiap dari 500 pasien punya empat discharge, dan kamu menahan 20% dari 2.000 baris secara acak. Untuk sebuah discharge uji, masing-masing dari tiga discharge lain milik pasien itu berada di data latih dengan probabilitas 0,8. Seberapa sering sebuah discharge uji punya paling sedikit satu saudara di data latih?
+  options:
+  - 20%
+  - 51,2%
+  - 80%
+  - 99,2%
+  answer: 3
+  explanation: Peluang tidak ada satu pun dari tiga saudara di data latih adalah 0,2 × 0,2 × 0,2 = 0,008, sehingga peluang paling sedikit satu ada di sana adalah 0,992. Angka 51,2% adalah peluang ketiganya ada di sana.
+- prompt: Dari 1.000 discharge, 100 adalah readmission. Sebuah model melewatkan 30 di antaranya dan memberi 120 alarm palsu. Satu kasus terlewat berbiaya 500 dan satu alarm palsu berbiaya 100. Berapa biayanya per discharge?
+  options:
+  - 15,0
+  - 27,0
+  - 50,0
+  - 150,0
+  answer: 1
+  explanation: 30 × 500 = 15.000 dan 120 × 100 = 12.000, sehingga totalnya 27.000, yaitu 27,0 per discharge. Angka 50,0 adalah biaya bila tidak pernah menelepon siapa pun (100 × 500 / 1.000), baseline yang harus dikalahkan model.
+- prompt: Pada prediksi out-of-fold, sebuah model punya accuracy 86,6% dan biaya 23,9 per discharge. Selalu menjawab "tidak" punya accuracy 91,0% dan biaya 45,0. Kesimpulan mana yang benar?
+  options:
+  - Model lebih baik, karena biaya adalah metrik yang penting di sini
+  - Model lebih buruk, karena accuracy-nya lebih rendah daripada baseline
+  - Keduanya setara, karena accuracy dan biaya selalu mengurutkan aturan dengan cara yang sama
+  - Belum ada yang dapat disimpulkan, karena hanya test set yang dapat membandingkan kedua aturan
+  answer: 0
+  explanation: Accuracy memperlakukan kasus terlewat dan alarm palsu sama, padahal di sini kasus terlewat berbiaya 500 dan alarm palsu 100. Dari sisi biaya, model ini kira-kira separuh semahal aturan tanpa model yang lebih baik. Prediksi out-of-fold sudah cukup untuk perbandingan ini, tanpa test set.
+- prompt: Kamu menyetel sepuluh kandidat yang sama baiknya, dan masing-masing dinilai dengan standard error 4 poin. Kira-kira seberapa lebih baik yang terbaik tampak dibandingkan kenyataannya? (Nilai terbesar yang diharapkan dari sepuluh pengambilan normal baku sekitar 1,54.)
+  options:
+  - Sekitar 0 poin, karena semuanya sama baiknya
+  - Sekitar 2 poin
+  - Sekitar 6 poin
+  - Sekitar 12 poin
+  answer: 2
+  explanation: Pemenang dari sepuluh skor yang berisik adalah yang paling beruntung, yang berada sekitar 1,54 standard error di atas nilai sebenarnya. 1,54 × 4 = 6,2 poin. Karena itulah test set tidak boleh dipakai untuk memilih di antara kandidat.
+- prompt: Langkah mana yang merusak test set?
+  options:
+  - Melatih scaler hanya pada baris tuning
+  - Memilih threshold yang memberi biaya terendah pada baris test
+  - Menilai baris test satu kali, setelah semua pilihan dibuat
+  - Melatih ulang pengaturan pemenang pada semua baris tuning
+  answer: 1
+  explanation: Threshold yang dipilih pada baris test disetel untuk baris itu, sehingga biaya yang dilaporkan terlalu bagus dan tidak ada data bersih yang tersisa. Ketiga langkah lainnya adalah prosedur normal. Threshold seharusnya berasal dari prediksi out-of-fold pada data tuning.
+- prompt: Skor sebuah model adalah probabilitas yang terkalibrasi. Satu kasus terlewat berbiaya 300 dan satu alarm palsu berbiaya 50. Cutoff mana yang meminimalkan biaya yang diharapkan? Jawab dengan dua desimal.
+  options:
+  - 0,50
+  - 0,86
+  - 0,17
+  - 0,14
+  answer: 3
+  explanation: Menelepon lebih murah bila (1 - p) × 50 < p × 300, yang memberi p > 50 / 350 = 0,143. Angka 0,86 adalah 300 / 350, dengan kedua biaya tertukar, dan 0,17 adalah 50 / 300, yang lupa menjumlahkan kedua biaya.
+- prompt: Test set berisi 400 discharge dari 100 pasien, masing-masing empat. Mengapa kamu mengambil sampel ulang pasien, bukan discharge, dalam bootstrap?
+  options:
+  - Discharge seorang pasien saling berkaitan, sehingga mengambil sampel ulang baris membuat interval terlalu sempit
+  - Mengambil sampel ulang pasien membuat interval lebih kecil, karena jumlah pasien lebih sedikit daripada baris
+  - Pasien lebih mudah dihitung daripada discharge, sehingga interval lebih mudah dilaporkan
+  - Mengambil sampel ulang discharge tidak mungkin dilakukan dengan pengembalian, karena satu baris tidak boleh terambil dua kali
+  answer: 0
+  explanation: Discharge milik satu pasien cenderung mirip, sehingga 400 baris membawa informasi lebih sedikit daripada 400 kasus independen. Dalam pelajaran, sampel ulang baris memberi 20,8 sampai 41,5 dan sampel ulang pasien memberi 19,0 sampai 43,3, kira-kira 17% lebih lebar.
+- prompt: Perkiraan tuning adalah 23,9 per discharge. Biaya test adalah 30,25 dengan interval 95% dari 19,0 sampai 43,3. Bagaimana pembacaan yang paling adil?
+  options:
+  - Test set pasti bocor, karena biaya test lebih tinggi daripada perkiraan tuning
+  - Perkiraan tuning salah, karena berbeda dari biaya test
+  - Model menjadi lebih buruk, karena biaya test lebih tinggi
+  - Keduanya sejalan, karena 23,9 berada di dalam interval
+  answer: 3
+  explanation: Satu test set hanyalah satu pengambilan, dan 100 pasiennya kebetulan memuat lebih banyak readmission (11,0% dari discharge dibandingkan 9,0%). Dengan interval selebar ini, selisih 6,4 masih dalam batas fluktuasi sampling dan tidak menunjukkan ada yang salah. Kedua angka itu layak masuk laporan.
+- prompt: Sebuah tim ingin meramalkan jumlah discharge bulan depan dari bulan-bulan sebelumnya. Evaluasi mana yang dapat mereka pertahankan?
+  options:
+  - Mengacak bulan-bulan itu lalu menahan seperlima secara acak
+  - Melatih pada bulan-bulan sebelumnya dan menguji pada bulan-bulan sesudahnya, diulang dengan rolling origin
+  - Melatih pada bulan-bulan terbaru dan menguji pada bulan-bulan paling awal
+  - Menguji pada bulan-bulan yang sama dengan yang dipakai untuk berlatih
+  answer: 1
+  explanation: Pada hari pemakaian, masa depan adalah satu-satunya hal yang tidak dimiliki model. Temporal split, dan rolling origin untuk mengulanginya, menguji tepat hal itu. Split yang diacak membiarkan model mengisi celah di antara bulan-bulan yang diketahui, yang merupakan tugas berbeda dan lebih mudah.

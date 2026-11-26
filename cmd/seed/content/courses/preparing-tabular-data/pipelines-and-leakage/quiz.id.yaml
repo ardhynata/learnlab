@@ -1,0 +1,80 @@
+- prompt: Mengapa sebuah pipeline mengisi kekosongan sebelum men-scale kolom?
+  options:
+  - Scaling membutuhkan label, dan langkah mengisi yang menyediakannya
+  - Sel kosong tidak dapat di-scale, dan rata-rata dihitung dari data yang sudah terisi
+  - Mengisi mengubah baris uji, sehingga harus dilakukan lebih dulu
+  - Urutannya hanya kebiasaan, dan urutan apa pun memberi hasil yang sama
+  answer: 1
+  explanation: Sel kosong bukan angka, sehingga tidak ada yang dapat di-scale, dan resep ini menghitung rata-rata setelah kekosongan terisi, sehingga langkah pengisi harus berjalan lebih dulu. Setiap langkah juga belajar dari keluaran langkah sebelumnya, karena itu urutan adalah bagian dari resep.
+- prompt: Kamu men-fit sebuah pipeline pada baris latih. Apa yang dipelajari scaler-nya, dan dari baris mana?
+  options:
+  - Sebuah rata-rata dan simpangan baku untuk tiap kolom, hanya dari baris latih
+  - Sebuah rata-rata dan simpangan baku untuk tiap kolom, dari baris latih dan baris uji bersama-sama
+  - Bobot untuk tiap kolom, hanya dari baris latih
+  - Belum ada apa pun, karena scaler belajar ketika melihat baris uji
+  answer: 0
+  explanation: Angka yang dipelajari scaler adalah sebuah rata-rata dan simpangan baku per kolom, diambil dari baris tempat ia di-fit, yaitu baris latih. Bobot adalah milik model. Baris uji hanya ditransformasi dengan angka yang sudah dipelajari.
+- prompt: Sebuah scaler yang di-fit pada empat massa latih memiliki rata-rata 4.131,25 g dan simpangan baku 909,56 g. Seekor penguin uji beratnya 4.500 g. Berapa z-score yang didapatnya?
+  options:
+  - '0,41'
+  - '-0,41'
+  - '0,48'
+  - '368,75'
+  answer: 0
+  explanation: z = (4.500 - 4.131,25) / 909,56 = 368,75 / 909,56, sekitar 0,41. Nilai 368,75 adalah selisih mentah sebelum dibagi. Nilai 0,48 berasal dari fit yang bocor pada kelima massa (rata-rata 4.105, simpangan baku 815,23).
+- prompt: Rencana mana yang membocorkan informasi dari baris uji?
+  options:
+  - Bagi lebih dulu, lalu fit imputer pada baris latih dan terapkan mediannya ke baris uji
+  - Bagi lebih dulu, lalu fit scaler pada baris latih dan terapkan rata-ratanya ke baris uji
+  - Bagi lebih dulu, lalu pilih 10 kolom terbaik hanya dengan label latih
+  - Hitung rata-rata dan simpangan baku dari semua 344 baris, standardisasi, lalu bagi
+  answer: 3
+  explanation: Men-fit sebuah statistik pada semua baris sebelum pembagian membuat baris uji ikut membentuk angka yang dipakai untuk menyiapkannya. Tiga rencana lainnya membagi lebih dulu dan hanya belajar dari baris latih.
+- prompt: Sebuah kolom acak berisi hasil lemparan koin di masing-masing dari 10 baris. Kolom itu sesuai dengan label pada sedikitnya 9 dari 10 baris, atau berlawanan pada sedikitnya 9 dari 10, dengan peluang 22 dari 1.024. Kira-kira berapa dari 500 kolom acak yang tampak sebagus ini karena kebetulan?
+  options:
+  - Sekitar 1
+  - Sekitar 5
+  - Sekitar 11
+  - Sekitar 22
+  answer: 2
+  explanation: 500 × 22 / 1.024 adalah sekitar 10,7, sehingga sekitar 11. Sekitar 5 hanya menghitung satu arah (11 dari 1.024). Memilih di antara begitu banyak kolom itulah sebabnya seleksi yang bocor menemukan beberapa kolom yang tampak memprediksi lemparan koin.
+- prompt: Pada label acak, pipeline yang benar di lab rata-rata 47,5% pada 50 pembagian dan pipeline yang bocor 78,7%. Apa yang menjelaskan keunggulan pipeline yang bocor?
+  options:
+  - Ia model yang lebih baik, sehingga belajar lebih banyak dari baris latih
+  - Ia memilih kolomnya dengan melihat label uji, sehingga kolom-kolom itu kebetulan sesuai dengan jawaban uji
+  - Ia memiliki lebih banyak baris latih daripada pipeline yang benar
+  - Baris uji lebih mudah baginya
+  answer: 1
+  explanation: Kedua pipeline men-fit model yang sama pada baris latih yang sama dan dinilai pada baris uji yang sama. Hanya pemilihan kolom yang berbeda, dan pipeline yang bocor melakukannya sambil melihat label uji. Akurasi latihnya bahkan lebih rendah, 90,0% berbanding 100,0% pada pembagian pertama.
+- prompt: Dengan 30 baris uji, setiap baris menggeser akurasi uji sebesar 3,3 poin. Mengapa lab mengulang perbandingan pada 50 pembagian?
+  options:
+  - Karena model membutuhkan 50 putaran pelatihan untuk konvergen
+  - Karena leak baru muncul setelah banyak pembagian
+  - Karena satu pembagian adalah saksi yang berisik, dan rata-rata dari banyak pembagian lebih stabil
+  - Karena pipeline yang benar butuh 50 percobaan untuk mencapai 50%
+  answer: 2
+  explanation: Pada satu pembagian, pipeline yang benar dapat mendapat skor dari 33,3% sampai 66,7%, sehingga satu batang sebagian besar adalah keberuntungan. Leak muncul pada setiap pembagian, dan rata-rata dari 50 pembagian menunjukkan ukurannya.
+- prompt: Pada penguin yang asli, men-fit median dan standardisasi pada semua baris atau pada baris latih memberi akurasi uji yang sama, 98,1%, padahal rata-ratanya berbeda (4.200,87 g berbanding 4.171,98 g). Apa kesimpulan yang tepat?
+  options:
+  - Leakage tidak berbahaya untuk scaling, sehingga kamu boleh men-fit scaler pada semua baris
+  - Rata-rata dari banyak baris bergeser sedikit dan model nyaris tidak menyadarinya, tetapi itu tetap leak, karena itu fit pada baris latih
+  - Lab-nya rusak, karena rata-rata yang berbeda pasti memberi skor yang berbeda
+  - Kedua pipeline memakai label uji, sehingga skornya sama
+  answer: 1
+  explanation: Satu angka per kolom tidak dapat melengkung banyak ke arah baris uji, sehingga skornya nyaris tidak berubah. Itu tidak membuat leak-nya aman. Kamu tidak dapat mengetahui sebelumnya seberapa besar leak itu, dan men-fit pada baris latih tidak menambah biaya apa pun.
+- prompt: Sebuah tabel memiliki 100 pasang baris duplikat. Kamu membagi secara acak, 30% baris uji. Kira-kira berapa pasang yang berakhir dengan satu salinan di training set dan salinan lainnya di test set?
+  options:
+  - Sekitar 21
+  - Sekitar 30
+  - Sekitar 70
+  - Sekitar 42
+  answer: 3
+  explanation: Untuk satu pasang, peluangnya 2 × 0,3 × 0,7 = 0,42, sehingga sekitar 42 pasang. Sekitar 21 hanya menghitung satu urutan. Pada pasangan itu, model yang menghafal baris latih-nya melihat kembaran dari baris uji.
+- prompt: Langkah mana di bawah ini yang paling berbahaya jika di-fit pada semua baris sebelum pembagian?
+  options:
+  - Mengisi kekosongan dengan median
+  - Menstandardisasi empat kolom
+  - Memilih 10 kolom dari 500 yang paling berkorelasi dengan label
+  - Menulis kolom one-hot untuk pulau
+  answer: 2
+  explanation: Memilih kolom dengan label membaca jawaban uji dan dapat memilih di antara 500 kandidat, sehingga ia melengkung kuat ke arah baris uji. Median atau rata-rata adalah satu angka per kolom, dan one-hot encoding untuk kategori yang sudah diketahui nyaris tidak mempelajari apa pun dari label.

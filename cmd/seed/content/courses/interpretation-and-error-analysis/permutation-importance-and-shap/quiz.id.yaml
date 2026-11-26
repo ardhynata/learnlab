@@ -1,0 +1,80 @@
+- prompt: Sebuah model benar pada 61 dari 67 penguin validation. Setelah body mass diacak dan dinilai ulang, rata-ratanya 44,2 yang benar pada 30 pengacakan. Berapa permutation importance body mass?
+  options:
+  - 44,2 penguin, yaitu skor setelah pengacakan
+  - 16,8 penguin, penurunan sekitar 25 poin
+  - 105,2 penguin, yaitu jumlah kedua skor
+  - 0, karena pengacakan mempertahankan nilai yang sama
+  answer: 1
+  explanation: Importance adalah penurunannya, 61 - 44,2 = 16,8 penguin, yaitu 16,8 / 67, sekitar 25 poin. Pengacakan mempertahankan nilainya tetapi memindahkannya ke penguin yang salah, sehingga skor dapat turun.
+- prompt: Mengapa pelajaran ini merata-ratakan penurunan dari 30 pengacakan, bukan memakai satu pengacakan?
+  options:
+  - Satu pengacakan mengubah modelnya sendiri, sehingga model harus dilatih ulang setiap kali
+  - Pengacakan hanya dapat menurunkan skor, sehingga satu pengacakan melebih-lebihkan penurunan
+  - Satu pengacakan adalah satu undian acak; satu kali mengacak body mass dapat menurunkan antara 10 dan 25 penguin
+  - Skor model yang tidak diacak pun bersifat acak
+  answer: 2
+  explanation: Penguin mana yang menerima nilai mana ditentukan oleh peluang, sehingga satu pengacakan dapat jauh di atas atau di bawah penurunan yang lazim. Model tidak dilatih ulang, dan skor sebelum pengacakan tetap; rata-rata dari banyak pengacakan membuat estimasinya lebih stabil.
+- prompt: Dengan body mass di dalam model, mengacak flipper length menurunkan 1,0 dari 67 penguin. Tanpa body mass, penurunannya 13,6. Bagaimana pembacaan yang paling tepat?
+  options:
+  - Ketika body mass ada, model mengambil informasi ukuran darinya, sehingga flipper length tampak tidak penting bagi model ini, padahal ia berhubungan dengan jenis kelamin
+  - Flipper length tidak berguna, dan hasil kedua hanyalah noise
+  - Model kedua pasti memiliki bug, karena feature yang sama seharusnya selalu memberi importance yang sama
+  - Importance hanya bekerja untuk feature yang tidak berkorelasi dengan label
+  answer: 0
+  explanation: Flipper length dan body mass bergerak bersama (r = 0,87), sehingga keduanya berbagi nilai. Importance menggambarkan sebuah feature di dalam satu model; ubah feature lainnya dan nilainya ikut berubah. Nilai yang rendah berarti model tidak memerlukan feature itu, mengingat feature lainnya.
+- prompt: Dengan tabel pelajaran untuk penguin 16, urutannya adalah depth, flipper, mass. Nilainya v(tidak ada) = 0,505, v(depth) = 0,705, v(flipper dan depth) = 0,718 dan v(ketiganya) = 0,535. Berapa kontribusi body mass pada urutan ini?
+  options:
+  - 0,535
+  - -0,183
+  - 0,183
+  - -0,219
+  answer: 1
+  explanation: Mass masuk terakhir, sehingga kontribusinya v(ketiganya) - v(flipper dan depth) = 0,535 - 0,718 = -0,183. Nilai -0,219 adalah nilai Shapley-nya, yaitu rata-rata dari keenam urutan.
+- prompt: Untuk satu penguin, baseline-nya 0,505 dan nilai Shapley-nya -0,014, 0,138 dan -0,505. Berapa probabilitas jantan yang diprediksi model?
+  options:
+  - 0,505
+  - -0,381
+  - 0,619
+  - 0,124
+  answer: 3
+  explanation: Baseline ditambah nilai-nilainya sama dengan prediksi, sehingga 0,505 - 0,014 + 0,138 - 0,505 = 0,124. Jumlah nilainya saja -0,381, yaitu prediksi dikurangi baseline, bukan prediksinya.
+- prompt: Mengapa nilai Shapley merata-ratakan kontribusi sebuah feature pada semua urutan, bukan memakai satu urutan saja?
+  options:
+  - Agar jumlah nilainya melebihi prediksi
+  - Kontribusi sebuah feature bergantung pada feature mana yang masuk sebelumnya, misalnya flipper length menggeser prediksi 0,013 pada satu urutan dan 0,070 pada urutan lain
+  - Karena model harus dilatih ulang untuk setiap urutan
+  - Karena hanya feature yang masuk terakhir yang punya kontribusi nyata
+  answer: 1
+  explanation: Tidak ada satu urutan pun yang adil, sebab siapa yang masuk pertama mengambil jasa bersama dan sigmoid membengkokkan skalanya. Rata-rata pada semua urutan memberi setiap feature bagian yang adil, dan bagian-bagian itu tetap berjumlah prediksi dikurangi baseline.
+- prompt: Manakah yang merupakan penjelasan lokal?
+  options:
+  - Bill depth memiliki besar rata-rata nilai Shapley terbesar pada 67 penguin validation
+  - Mengacak body mass menurunkan 16,8 dari 67 penguin
+  - Model benar pada 61 dari 67 penguin validation
+  - Untuk Gentoo betina ini, bill depth menurunkan probabilitas jantan yang diprediksi sebesar 0,505
+  answer: 3
+  explanation: Penjelasan lokal menyangkut satu prediksi, di sini satu penguin. Ketiga pernyataan lain merangkum banyak penguin atau seluruh model, sehingga bersifat global.
+- prompt: Body mass memiliki importance yang besar pada model yang memprediksi jenis kelamin. Kesimpulan mana yang dapat dibenarkan?
+  options:
+  - Memberi makan lebih banyak pada seekor penguin akan membuatnya jantan
+  - Body mass menyebabkan jenis kelamin pada penguin
+  - Model mengandalkan body mass; data menghubungkan ukuran dan jenis kelamin, tetapi importance tidak menunjukkan sebab
+  - Body mass adalah feature yang adil untuk kelompok penguin mana pun
+  answer: 2
+  explanation: Importance menggambarkan apa yang dipakai model ini. Jenis kelamin memengaruhi ukuran, bukan sebaliknya, dan importance tidak berkata apa-apa tentang apa yang terjadi bila seekor penguin diubah, atau tentang adil tidaknya feature itu.
+- prompt: Pada contoh pengacakan, seekor Gentoo menerima bill depth 18,8 mm, padahal tidak ada Gentoo dalam data yang lebih dalam dari 17,3 mm. Apa yang ditunjukkan hal ini?
+  options:
+  - Model mengalami overfitting
+  - Pengacakan dapat membentuk penguin yang tidak ada, sehingga model dinilai pada input yang jarang dilihatnya
+  - Bill depth bukan feature yang berguna
+  - Pengacakan dilakukan pada penguin training
+  answer: 1
+  explanation: Pengacakan mempertahankan setiap nilai tetapi memutus hubungannya dengan feature lain, sehingga dapat muncul kombinasi yang mustahil. Hal ini paling berpengaruh bila feature saling berkorelasi, dan menjadi satu alasan lagi untuk membaca importance dengan hati-hati.
+- prompt: Sebuah model memiliki 4 feature dan kamu ingin nilai Shapley eksak untuk satu prediksi dengan merata-ratakan semua urutan. Ada berapa urutan?
+  options:
+  - 4
+  - 16
+  - 24
+  - 8
+  answer: 2
+  explanation: Urutannya adalah cara menyusun 4 feature dalam satu baris, 4 x 3 x 2 x 1 = 24. Dengan 3 feature hasilnya 6. Angka 16 adalah jumlah himpunan feature yang diketahui, 2^4, bukan jumlah urutan.

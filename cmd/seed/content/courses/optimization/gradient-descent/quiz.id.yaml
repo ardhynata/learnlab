@@ -1,0 +1,80 @@
+- prompt: Pada nilai sebuah parameter saat ini, gradient dari loss adalah +3. Ke arah mana satu langkah gradient descent menggerakkan parameter itu?
+  options:
+  - Naik, ke nilai yang lebih besar, karena gradient-nya positif
+  - Turun, ke nilai yang lebih kecil, karena loss naik ketika parameter membesar
+  - Naik, ke nilai yang lebih besar, karena loss turun ketika parameter membesar
+  - Tidak ke mana-mana, karena gradient positif berarti loss sudah serendah mungkin
+  answer: 1
+  explanation: Gradient positif berarti loss naik ketika parameter membesar, sehingga arah turun adalah ke nilai yang lebih kecil. Gradient descent mengurangkan gradient (dikali learning rate), sehingga parameter bergerak turun. Langkah searah gradient justru akan mendaki.
+- prompt: Dua titik pada kurva yang sama punya gradient -6 dan -1. Dengan learning rate 0,5 di keduanya, bagaimana perbandingan langkahnya?
+  options:
+  - Titik pertama bergerak 3 ke kanan dan titik kedua bergerak 0,5 ke kanan
+  - Titik pertama bergerak 3 ke kiri dan titik kedua bergerak 0,5 ke kiri
+  - Kedua titik bergerak 0,5 ke kanan, karena learning rate-nya sama
+  - Titik pertama bergerak 0,5 dan titik kedua bergerak 3, karena tempat yang lebih landai butuh dorongan lebih besar
+  answer: 0
+  explanation: Tiap gerakan adalah -0,5 × gradient, sehingga yang pertama -0,5 × (-6) = +3 dan yang kedua -0,5 × (-1) = +0,5. Gradient negatif berarti kurva menurun ke kanan, sehingga kedua langkah menuju kanan. Lereng yang lebih curam memberi langkah yang lebih panjang.
+- prompt: Pada contoh penguin (model massa = w × sirip), baris kedua tabel punya w = 1,9495 dan gradient -2,630. Dengan learning rate 0,1, berapa w yang baru?
+  options:
+  - '1,6865'
+  - '0,263'
+  - '2,2125'
+  - '2,630'
+  answer: 2
+  explanation: w baru = 1,9495 - 0,1 × (-2,630) = 1,9495 + 0,263 = 2,2125. Jika 0,263 dikurangkan, bukan ditambahkan, hasilnya 1,6865 dan langkahnya justru menanjak (loss naik). Nilai 0,263 hanyalah besar langkahnya, dan 2,630 melupakan learning rate dan w yang lama.
+- prompt: Loss-nya f(x, y) = (x - 5)² + (y - 5)², dengan gradient (2(x - 5), 2(y - 5)). Mulai dari (2; 9) dengan learning rate 0,25, di mana titiknya setelah satu pembaruan?
+  options:
+  - (1,5; -2)
+  - (0,5; 11)
+  - (2,75; 8)
+  - (3,5; 7)
+  answer: 3
+  explanation: Gradient-nya (-6; 8), sehingga geraknya -0,25 × (-6; 8) = (1,5; -2). Menambahkan gerakan itu ke titik awal memberi (3,5; 7). Pilihan pertama hanyalah geraknya, yang kedua menuju arah naik, dan yang ketiga melupakan faktor 2 pada gradient.
+- prompt: Pada jurang sempit dengan learning rate yang cukup besar, jalur gradient descent zigzag. Mengapa?
+  options:
+  - Learning rate-nya terlalu kecil, sehingga langkahnya goyah ketika merayap di sepanjang dasar
+  - Arah turun yang paling curam kebanyakan menunjuk melintang jurang, sehingga tiap langkah melewati dasar dan mendarat di dinding seberang
+  - Gradient menunjuk ke arah naik, sehingga tiap langkah mendaki kembali ke dinding asalnya
+  - Bentuk permukaan berubah setelah setiap langkah, sehingga arahnya terus berbalik
+  answer: 1
+  explanation: Di jurang, arah paling curam hampir melintang, bukan memanjang. Satu langkah menyeberang ke dinding seberang, langkah berikutnya menyeberang kembali, dan kemajuan di sepanjang dasar menjadi lambat. Gradient memang menunjuk ke arah naik, tetapi langkahnya berlawanan dengan itu. Learning rate yang lebih kecil menghentikan zigzag.
+- prompt: Dengan f(x) = (x - 5)² / 2 dan gradient x - 5, kamu mencoba learning rate 2,5 dan mulai dari x = 9. Apa yang terjadi pada dua pembaruan pertama?
+  options:
+  - x menjadi -1, lalu 14, makin jauh dari 5 tiap kali, karena langkahnya melampaui sasaran makin jauh
+  - x menjadi 5 pada pembaruan pertama dan tetap di sana
+  - x menjadi 7, lalu 6, jaraknya dari 5 separuh tiap kali
+  - x menjadi 19, lalu 54, karena langkah pertamanya menuju arah naik
+  answer: 0
+  explanation: Gradient pada x = 9 adalah 4, sehingga x menjadi 9 - 2,5 × 4 = -1. Gradient di sana -6, sehingga x menjadi -1 + 15 = 14. Tiap langkah mendarat di seberang 5 dan makin jauh (jarak 4, lalu 6, lalu 9), karena itu learning rate-nya terlalu besar dan run-nya divergen. Jarak yang separuh tiap kali adalah hasil learning rate 0,5, sedangkan 19 lalu 54 muncul dari menambahkan langkah, bukan mengurangkannya.
+- prompt: Pada peta kontur yang digambar dengan selisih loss yang sama antargaris, beberapa garis berdekatan sekali. Apa artinya?
+  options:
+  - Permukaannya datar di sana, sehingga gradient-nya kecil
+  - Titiknya dekat dengan titik terendah permukaan
+  - Permukaannya curam di sana, sehingga loss berubah dengan cepat
+  - Loss-nya sama di seluruh daerah itu
+  answer: 2
+  explanation: Selisih loss yang sama yang terhimpit dalam jarak kecil berarti loss berubah cepat, sehingga permukaannya curam dan gradient-nya besar. Titik terendah ada di pusat cincin, tempat gradient-nya mendekati nol.
+- prompt: Aturan berhenti mana yang masuk akal untuk gradient descent?
+  options:
+  - Berhenti begitu loss tepat nol
+  - Berhenti setelah tepat satu langkah untuk tiap parameter
+  - Berhenti begitu loss lebih rendah daripada di awal
+  - Berhenti ketika gradient sangat kecil, atau setelah batas jumlah langkah
+  answer: 3
+  explanation: Gradient yang sangat kecil berarti langkahnya sudah mengecil sampai hampir tidak ada, sehingga run-nya sudah konvergen. Batas jumlah langkah menjaga dari run yang tidak pernah stabil, seperti yang divergen atau yang melompat di antara dua tempat. Menunggu gradient atau loss yang persis nol mungkin tidak akan pernah selesai, dan loss yang lebih rendah daripada di awal hanya menunjukkan bahwa perjalanan sudah dimulai.
+- prompt: Sebuah run pada permukaan dengan dua lembah berakhir dengan gradient yang mendekati nol. Apa yang dapat kamu simpulkan?
+  options:
+  - Run itu pasti sudah menemukan titik terendah dari seluruh permukaan
+  - Learning rate-nya terlalu kecil, sehingga run seharusnya dilanjutkan
+  - Permukaan di sana datar, tetapi lembah yang lebih dalam mungkin ada di tempat lain
+  - Loss di titik itu pasti tepat nol
+  answer: 2
+  explanation: Gradient yang kecil berarti permukaan datar, dan itu juga terjadi di dasar lembah yang dangkal. Gradient descent hanya merasakan kemiringan di tempatnya berdiri, sehingga ia tidak dapat membedakan lembah dangkal dari yang terdalam. Memulai dari sisi lain punggungan dapat berakhir di lembah yang lain.
+- prompt: Kamu melakukan fitting tiga penguin yang sama dengan slope dan intercept. Mula-mula sirip dalam satuan 100 mm, lalu dalam mm. Apa yang terjadi pada learning rate terbesar yang masih konvergen?
+  options:
+  - Tetap sama, karena data dan modelnya sama
+  - Menjadi jauh lebih kecil, karena permukaan loss berubah menjadi jurang yang ekstrem
+  - Menjadi jauh lebih besar, karena angka-angka pada data lebih besar
+  - Tidak lagi berpengaruh, karena gradient descent menyesuaikannya sendiri
+  answer: 1
+  explanation: Dengan sirip dalam mm, parameter slope jauh lebih sensitif daripada intercept, sehingga permukaannya menjadi jurang yang ekstrem. Untuk ketiga penguin ini, batasnya turun dari sekitar 0,19 menjadi sekitar 0,000023. Angka yang lebih besar membuat langkah lebih panjang, bukan lebih aman, dan gradient descent tidak pernah menyesuaikan learning rate-nya sendiri.

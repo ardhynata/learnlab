@@ -1,0 +1,80 @@
+- prompt: In the calibration lab, the three predictors have the same AUC of 0.892. At a threshold of 0.5 they all flag the same 138 cases. Why?
+  options:
+  - Their probabilities are all equally honest
+  - Stretching or squeezing the scores around 0.5 keeps every score on the same side of 0.5
+  - The cost of a false positive is the same for all three
+  - A threshold of 0.5 always picks the same cases for any two predictors
+  answer: 1
+  explanation: The overconfident and underconfident predictors are monotone stretches of the same scores that leave 0.5 where it is, so the cases above 0.5 stay above it. That is special to 0.5; at 0.17 they flag 367, 229 and 786 cases. Their probabilities are not equally honest, as the Brier scores 0.098, 0.106 and 0.122 show.
+- prompt: At the 0.5 threshold each predictor has 38 false positives and 98 false negatives among 1,000 cases. A false positive costs 1 and a false negative costs 5. What is the cost per case?
+  options:
+  - 0.136
+  - 0.490
+  - 0.528
+  - 0.038
+  answer: 2
+  explanation: The total cost is 38 × 1 + 98 × 5 = 38 + 490 = 528, and 528 / 1,000 = 0.528. Counting the mistakes without their costs gives 0.136, and counting only the false negatives gives 0.490.
+- prompt: In the lab you set the cost of a false positive to 1 and the cost of a false negative to 19. What is the cost-based threshold?
+  options:
+  - 0.50
+  - 0.95
+  - 0.19
+  - 0.05
+  answer: 3
+  explanation: The threshold is the cost of a false positive divided by the sum of both costs, 1 / (1 + 19) = 0.05. A false negative that costs 19 times more should be avoided, so the bar for flagging a case drops.
+- prompt: At the cost-based threshold 0.17, the overconfident predictor flags 229 cases and the underconfident one flags 786. What is the best explanation?
+  options:
+  - The overconfident predictor ranks the cases worse, so it flags fewer of them
+  - The underconfident predictor has a higher AUC, so it flags more cases
+  - Overconfident scores sit near 0 and underconfident ones near the middle, so far more of the latter clear 0.17
+  - The lab flags more cases for predictors whose Brier score is higher, whatever their scores
+  answer: 2
+  explanation: The ranking and the AUC are the same for all three. The overconfident predictor pushes many cases toward 0, below 0.17, while the underconfident one squeezes its scores toward the middle, so most cases land above 0.17. Only the well calibrated predictor, with 367 cases flagged, has probabilities the 0.17 rule was built for.
+- prompt: In the reliability diagram, the overconfident predictor puts 741 of 1,000 cases in the lowest bin, with an average prediction of 0.008. About 7 percent of them are positive. What does this show?
+  options:
+  - Its near-zero predictions are too extreme, since the real chance there is about 7 percent
+  - Its predictions are well calibrated, because 7 percent is small
+  - Its ranking is poor, because most cases get a low score
+  - The bin is too small to say anything
+  answer: 0
+  explanation: A calibrated 0.008 would come true about 0.8 percent of the time, and here it happens about 7 percent of the time. That is what overconfident means, probabilities more extreme than what happens. The bin holds 741 cases, so the 7 percent is not just noise, and the AUC says nothing about it.
+- prompt: Each predictor reaches the same lowest cost per case, 0.333, at its own best threshold of 0.19, 0.03 and 0.36. What does this tell you?
+  options:
+  - The three predictors have the same calibration, since the costs match
+  - All three share one ranking, so they can reach the same slices of it, and calibration only decides which threshold gets there
+  - The overconfident predictor is the best one, because its best threshold is the lowest of the three
+  - The lowest cost depends only on the costs and not on the data or the ranking
+  answer: 1
+  explanation: With one ranking, the cheapest top slice of the list is the same for all three predictors. Calibration only moves the threshold value that produces that slice. Their Brier scores still differ, so the calibration is not the same.
+- prompt: You switch on Recalibrate (Platt scaling) in the lab. The Brier scores of the three predictors become equal at 0.098, and the AUC stays at 0.892. Why does the AUC not change?
+  options:
+  - The AUC is recomputed on the data used for fitting
+  - Platt scaling changes the numbers but the map always goes up, so the order of the cases stays
+  - Platt scaling does not change any of the probabilities
+  - The AUC measures calibration, which was already good
+  answer: 1
+  explanation: Platt scaling is an increasing map from the old score to a new probability, so no case moves above or below another and the AUC is unchanged. The probabilities do change, which is why the Brier scores move. The AUC does not measure calibration at all.
+- prompt: You set the share of positive cases to 5 percent, so 52 of 1,000 cases are positive. At the 0.5 threshold the three predictors flag 8 cases, with 5 false positives and 49 false negatives, at costs 1 and 5. What is the cost per case, and how does it compare with flagging nothing?
+  options:
+  - 0.049, far better than flagging nothing
+  - 0.005, because few cases are flagged
+  - 0.250, only slightly better than the 0.260 of flagging nothing
+  - 0.260, exactly the same as flagging nothing
+  answer: 2
+  explanation: The cost is (5 × 1 + 49 × 5) / 1,000 = 250 / 1,000 = 0.250. Flagging nothing misses all 52 positives and costs 52 × 5 / 1,000 = 0.260. With rare positives, 0.5 flags almost nothing, so it barely beats doing nothing, while the best cut costs 0.151.
+- prompt: On three samples the best threshold of the well calibrated predictor is 0.19, 0.16 and 0.30, while the cost rule gives 0.17. What is the right way to use this?
+  options:
+  - Trust the first sample, because the lab always starts there and it gave 0.19
+  - Always use 0.30, the highest value, to be on the safe side
+  - Ignore the cost rule, because it was wrong on the third sample
+  - Treat each best threshold as noisy and pick it on validation data
+  answer: 3
+  explanation: A sample of 1,000 cases has few positives near the cut, so the best threshold wobbles, from 0.16 to 0.30 here. The cost rule at 0.17 stayed within 0.04 of the best cost per case on all three samples. Choose thresholds on validation data and report the result on held-out data.
+- prompt: Why does the lab fit Platt scaling on a separate sample of 3,000 cases instead of on the 1,000 cases it shows?
+  options:
+  - The recalibrated numbers would look better than they are on new data
+  - A fit needs at least 3,000 cases to keep the order of the cases
+  - The separate sample makes the three predictors rank the cases differently
+  - The 1,000 cases shown contain no positive cases to fit on
+  answer: 0
+  explanation: A map fitted on the cases it is then scored on has already seen their answers, which flatters the result. A separate sample shows how the map behaves on cases it did not learn from. The map keeps the order whatever sample it was fitted on, and the 1,000 cases have 198 positives.

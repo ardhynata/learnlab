@@ -1,0 +1,80 @@
+- prompt: Berapa rata-rata dari nilai 2, 4, dan 9?
+  options:
+  - 4
+  - 5
+  - 6
+  - 15
+  answer: 1
+  explanation: Jumlahnya 2 + 4 + 9 = 15 dan ada 3 nilai, sehingga rata-ratanya 15 / 3 = 5. Nilai 4 adalah median, dan 15 hanyalah jumlahnya.
+- prompt: Berapa median dari 9, 3, 10, dan 4?
+  options:
+  - 6
+  - 7,5
+  - 6,5
+  - 9
+  answer: 2
+  explanation: Setelah diurutkan, nilainya 3, 4, 9, 10. Karena banyaknya nilai genap, dua nilai tengah dirata-ratakan, (4 + 9) / 2 = 6,5. Rata-rata keempat nilai itu juga 6,5, tetapi itu hanya kebetulan di sini.
+- prompt: Nilai terbesar dalam sebuah kolom diganti dengan angka sepuluh kali lebih besar. Ringkasan mana yang sama sekali tidak berubah?
+  options:
+  - Rata-rata
+  - Simpangan baku
+  - Median
+  - Varians
+  answer: 2
+  explanation: Median hanya memakai urutan nilai, dan nilai terbesar tetap yang terbesar. Rata-rata, varians, dan SD semuanya memakai besar setiap nilai, sehingga semuanya ikut membesar.
+- prompt: Penguin keenam dengan flipper yang jauh lebih panjang bergabung dengan lima penguin yang mirip. Mengapa rata-rata bergeser lebih jauh daripada median?
+  options:
+  - Median selalu dibulatkan
+  - Rata-rata menghitung seberapa jauh nilai baru itu, sedangkan median hanya mencatat bahwa nilai itu yang terbesar
+  - Rata-rata mengabaikan lima nilai lainnya
+  - Median adalah nilai pertama setelah diurutkan
+  answer: 1
+  explanation: Rata-rata menjumlahkan besar semua nilai, sehingga nilai yang jauh ikut menariknya. Median hanya bergantung pada nilai mana yang berada di tengah.
+- prompt: Mengapa setiap selisih dari rata-rata dikuadratkan sebelum dirata-ratakan untuk mendapatkan varians?
+  options:
+  - Pengkuadratan membuat setiap nilai lebih kecil
+  - Selisih kuadrat selalu berada dalam satuan milimeter
+  - Rata-rata harus berupa bilangan bulat
+  - Tanpa itu, selisih di atas dan di bawah rata-rata akan saling meniadakan menjadi 0
+  answer: 3
+  explanation: Selisih mentah dari rata-rata selalu berjumlah 0. Pengkuadratan membuat semuanya positif, dan selisih besar mendapat bobot lebih daripada selisih kecil.
+- prompt: Berapa varians dari 1, 3, 5, dan 7, jika dibagi dengan banyaknya nilai?
+  options:
+  - 4
+  - 5
+  - 20
+  - 2,24
+  answer: 1
+  explanation: Rata-ratanya 4, selisihnya -3, -1, 1, dan 3, dan kuadratnya 9, 1, 1, dan 9. Jumlahnya 20 dan 20 / 4 = 5. Nilai 20 adalah jumlah sebelum dibagi, dan 2,24 adalah SD, yaitu akar kuadrat dari 5.
+- prompt: Panjang flipper diukur dalam milimeter. Dalam satuan apa varians dari panjang-panjang itu?
+  options:
+  - Milimeter kuadrat
+  - Milimeter
+  - Tanpa satuan
+  - Persen
+  answer: 0
+  explanation: Varians merata-ratakan selisih kuadrat, sehingga satuannya ikut dikuadratkan (mm²). Simpangan baku mengambil akar kuadrat dan kembali ke milimeter.
+- prompt: Daftar 8, 10, 12 dan 2, 10, 18 sama-sama punya rata-rata 10. Manakah pernyataan yang benar?
+  options:
+  - Tidak ada perbedaan antara kedua daftar itu
+  - Daftar pertama lebih tersebar daripada daftar kedua
+  - Daftar kedua punya simpangan baku yang lebih besar
+  - Kedua daftar punya simpangan baku yang sama
+  answer: 2
+  explanation: Daftar kedua menyebar jauh lebih lebar dari 10 (SD sekitar 6,5 dibandingkan sekitar 1,6), sehingga sebarannya lebih besar. Rata-rata saja tidak mengatakan apa pun tentang sebaran.
+- prompt: Histogram panjang flipper punya dua punuk yang terpisah. Apa kesimpulan yang paling masuk akal?
+  options:
+  - Datanya pasti mengandung kesalahan
+  - Rata-rata adalah ringkasan terbaik untuk kolom itu
+  - Simpangan baku pasti nol
+  - Baris-barisnya kemungkinan berasal dari kelompok dengan nilai tipikal yang berbeda
+  answer: 3
+  explanation: Dua punuk biasanya berarti campuran beberapa kelompok, seperti penguin berflipper pendek dan berflipper panjang. Rata-rata dapat jatuh di lembah di antara keduanya, tempat yang hanya sedikit nilainya.
+- prompt: Massa tubuh punya ekor panjang di sisi kanan. Kamu ingin satu angka untuk penguin yang tipikal. Apa saran pelajaran ini?
+  options:
+  - Laporkan median, dan sebutkan bahwa itu median
+  - Laporkan nilai terbesar
+  - Laporkan rata-rata, karena memakai setiap nilai
+  - Laporkan varians
+  answer: 0
+  explanation: Pada kolom yang menceng, ekor panjang menarik rata-rata ke atas, sehingga median lebih baik menggambarkan nilai yang tipikal. Pada tabel penguin, rata-ratanya sekitar 4.202 g dan mediannya 4.050 g.

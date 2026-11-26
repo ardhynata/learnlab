@@ -1,0 +1,80 @@
+- prompt: Garis y = 2x + 3 dipakai untuk memprediksi titik di (4, 9). Berapa residual-nya?
+  options:
+  - "+2"
+  - "-2"
+  - "11"
+  - "4"
+  answer: 1
+  explanation: Garis memprediksi 2 x 4 + 3 = 11. Residual adalah nilai sebenarnya dikurangi prediksi, 9 - 11 = -2, negatif karena titik berada di bawah garis. Nilai 11 adalah prediksi, bukan residual.
+- prompt: Empat residual adalah +1, -3, +2, dan 0. Berapa mean absolute error-nya?
+  options:
+  - "1,5"
+  - "0"
+  - "3,5"
+  - "6"
+  answer: 0
+  explanation: Nilai mutlaknya 1, 3, 2, dan 0, yang berjumlah 6, dan 6 / 4 = 1,5. Residual mentahnya berjumlah 0, itulah sebabnya tanda harus dibuang lebih dulu. Nilai 3,5 adalah mean squared error dari residual yang sama.
+- prompt: Empat residual yang sama, +1, -3, +2, dan 0, menghasilkan mean squared error berapa?
+  options:
+  - "1,5"
+  - "0"
+  - "3,5"
+  - "14"
+  answer: 2
+  explanation: Kuadratnya 1, 9, 4, dan 0, yang berjumlah 14, dan 14 / 4 = 3,5. Nilai 14 adalah total sebelum dirata-ratakan, dan 1,5 adalah mean absolute error.
+- prompt: Mengapa sebuah loss tidak boleh sekadar menjumlahkan residual mentah?
+  options:
+  - Karena residual selalu lebih besar daripada loss
+  - Karena hasilnya akan berada dalam satuan kuadrat
+  - Karena garis yang sempurna akan mendapat skor 1
+  - Karena kesalahan di atas dan di bawah garis saling meniadakan, sehingga garis yang buruk bisa mendapat skor 0
+  answer: 3
+  explanation: Kesalahan +3 dan -3 berjumlah 0, sehingga garis yang meleset parah ke kedua arah akan tampak sempurna. Mengambil nilai mutlak atau kuadrat lebih dulu menghilangkan tanda, sehingga setiap kesalahan terhitung.
+- prompt: Satu residual bernilai 6 dan residual lain bernilai 2. Dibandingkan dengan kesalahan 2, berapa kali lebih besar sumbangan kesalahan 6 pada masing-masing total?
+  options:
+  - 3 kali lipat pada MAE maupun MSE
+  - 9 kali lipat pada MAE dan 3 kali lipat pada MSE
+  - 3 kali lipat pada MAE dan 9 kali lipat pada MSE
+  - Sama pada keduanya, karena keduanya adalah kesalahan
+  answer: 2
+  explanation: Kesalahan mutlaknya 6 dan 2, rasio 3. Kesalahan kuadratnya 36 dan 4, rasio 9. Pengkuadratan membuat kesalahan yang lebih besar dihitung jauh lebih berat daripada proporsinya.
+- prompt: Dua garis sama-sama memiliki MAE 0,5 pada empat titik yang sama, tetapi MSE-nya 0,5 dan 0,625. Apa yang menjelaskan selisih itu?
+  options:
+  - Garis kedua melewati lebih banyak titik
+  - Garis kedua memiliki satu kesalahan yang lebih besar, dan pengkuadratan membuatnya lebih berat
+  - MSE selalu lebih besar daripada MAE
+  - Kedua loss dihitung pada titik yang berbeda
+  answer: 1
+  explanation: Garis kedua meleset 0,5 pada satu titik dan 1,5 pada titik lain, yang dikuadratkan menjadi 0,25 dan 2,25. Garis pertama memiliki dua kesalahan sebesar 1. Kedua garis melewati dua dari empat titik, dan kedua loss memakai titik yang sama.
+- prompt: Sebuah garis memiliki residual +1, -1, +1, -1, dan +4. Berapa bagian total MSE yang berasal dari +4?
+  options:
+  - 20 persen
+  - 50 persen
+  - 100 persen
+  - 80 persen
+  answer: 3
+  explanation: Kuadratnya 1, 1, 1, 1, dan 16, yang berjumlah 20, dan 16 / 20 adalah 80 persen. Pada total MAE, titik yang sama hanya menyumbang 4 dari 8, yaitu 50 persen.
+- prompt: Target y adalah harga dalam euro. MSE diukur dalam satuan apa?
+  options:
+  - Euro kuadrat
+  - Euro
+  - Persen
+  - Tidak memiliki satuan
+  answer: 0
+  explanation: Setiap residual dalam euro, dan mengkuadratkannya menghasilkan euro kuadrat, yang sulit dibayangkan. MAE tetap dalam euro. Akar kuadrat dari MSE mengembalikan angkanya ke euro.
+- prompt: Datamu memiliki beberapa salah ketik yang menempatkan sejumlah titik jauh dari pola sebenarnya. Loss mana yang lebih kecil kemungkinannya membiarkan titik-titik itu mengarahkan garis?
+  options:
+  - Mean squared error, karena mengkuadratkan kesalahan
+  - Tidak ada, karena keduanya memakai setiap titik
+  - Mean absolute error, karena menghitung kesalahan hanya menurut ukurannya
+  - Mana pun yang memberi angka lebih besar
+  answer: 2
+  explanation: MSE mengkuadratkan setiap kesalahan, sehingga titik yang jauh menyumbang sebagian besar total dan garis miring ke arahnya. MAE menghitung titik itu hanya sebanding dengan ukurannya, sehingga pengaruhnya pada garis lebih kecil. Besar angkanya tidak menentukan, karena kedua loss berada pada skala yang berbeda.
+- prompt: Garis A memiliki MAE 1,4 dan MSE 5,4 pada data yang sama. Apakah itu berarti MSE menilai garis A lebih buruk daripada MAE?
+  options:
+  - Ya, 5,4 lebih besar daripada 1,4, sehingga MSE menemukan lebih banyak kekurangan
+  - Tidak, kedua angka berada pada skala yang berbeda; bandingkan loss yang sama antar garis
+  - Ya, karena MSE tidak pernah bisa lebih kecil daripada MAE
+  - Tidak, karena salah satu dari kedua angka itu pasti keliru
+  answer: 1
+  explanation: MAE dalam satuan y dan MSE dalam satuan kuadrat, sehingga kedua angka tidak dapat diurutkan satu terhadap yang lain. Untuk menilai garis, bandingkan MSE garis A dengan MSE garis B, atau MAE-nya dengan MAE garis B.

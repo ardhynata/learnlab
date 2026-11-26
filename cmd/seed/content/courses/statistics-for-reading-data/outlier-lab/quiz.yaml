@@ -1,0 +1,72 @@
+- prompt: In the lab's default cloud you add one outlier at x 5, y 9.3. The mean of y goes from 5.18 to 5.43 and the median of y from 5.02 to 5.13. What does this show?
+  options:
+  - The median is not affected by an outlier at all
+  - The mean moved about twice as far as the median, because it uses the size of the outlier
+  - The median moved more, because it sits in the middle of the cloud
+  - The mean and the median moved the same distance
+  answer: 1
+  explanation: The mean moved +0.26 and the median +0.12. The mean adds the outlier's full size to a sum, while the median only counts that one more value lies above it. The median is not frozen, but it ignores how far away the outlier is.
+- prompt: The 15 values of y have a mean of 5.18. You add one value, 9.3. Using (new value - old mean) / (number of values after adding), how far does the mean move?
+  options:
+  - About 0.04
+  - About 0.59
+  - About 0.26
+  - About 4.12
+  answer: 2
+  explanation: (9.3 - 5.18) / 16 = 4.12 / 16, which is about 0.26. The gap is 4.12, but it is shared among 16 values. Dividing by 7 instead of 16 would give 0.59.
+- prompt: With one outlier in the cloud at y 9.3, you drag it down to about y 8, still above every other point. What happens to the mean and the median of y?
+  options:
+  - The mean falls from 5.43 to about 5.35 and the median stays at about 5.13
+  - Both stay where they were, because the outlier is still above the cloud
+  - The median falls along with the mean, because both react to the outlier's position
+  - The mean stays where it was and the median falls to about 5.05
+  answer: 0
+  explanation: The mean uses the outlier's size, so it shifts by about (8 - 9.3) / 16 = -0.08. The median is the average of the 8th and 9th sorted values, and the outlier is still the largest, so the order and the median do not change.
+- prompt: Adding a point at x 9.5, y 9.5 makes r go from 0.87 to 0.93. Why did r rise?
+  options:
+  - Outliers always raise r, because they widen the range of x and y
+  - A point far from the cloud must lower r, so the lab has a bug in how it computes r
+  - r only changes when the median of x or y changes, and the median moved here
+  - It is far from the middle but near the trend line, so the points hug a line more closely
+  answer: 3
+  explanation: r measures how closely points follow a straight line. A point far out along the existing trend strengthens that pattern. A point far off the trend, such as x 5, y 9.3, lowers r to 0.61.
+- prompt: You drag the added point into the middle of the cloud, at about x 5 and y 5. What do you expect to see?
+  options:
+  - r falls sharply, because any added point is an outlier
+  - r stays near 0.87 and the means barely move
+  - The median of y moves by more than 1
+  - The trend line turns downward
+  answer: 1
+  explanation: A point inside the cloud follows the pattern the other points already show. The lab gives r of 0.87 and means that change by 0.02 or less, so an outlier is defined by where it sits, not by being added.
+- prompt: The same outlier at x 5, y 9.3 lowers r from 0.87 to 0.61 with 15 points, but only from 0.86 to 0.83 with 200 points. What explains the smaller effect?
+  options:
+  - With more points, the outlier moves closer to the trend
+  - With more points, the median takes over from the mean
+  - One point among 201 has a small share in the sums that the mean and r are built from
+  - r ignores outliers once there are more than 100 points
+  answer: 2
+  explanation: The mean shifts by about (9.3 - 5.11) / 201 = 0.02. The same share argument applies to r. Outliers matter most when data is scarce.
+- prompt: With the three default outliers, r goes 0.87, then 0.61, 0.07 and -0.18. What does this show?
+  options:
+  - A few well-placed points can turn a strong upward trend into a weak downward one
+  - r is not a reliable number for any data
+  - Outliers only change r when there are more than three
+  - The trend line is not affected by outliers, only r is
+  answer: 0
+  explanation: Three points added to 15 changed the sign of r, and the pink trend line tilted downward as well. The lesson is not that r is useless, but that you check the scatterplot and compare r with and without the suspect points.
+- prompt: On the penguins, the same outlier lowers r from 0.65 to 0.51 on one sample of 15 and from 0.94 to 0.76 on another. Which conclusion do the numbers support best?
+  options:
+  - The true r of all penguins is 0.65, because it is the first sample you drew
+  - The second sample must be wrong, because r should not differ so much between two samples of the same penguins
+  - The outlier is the reason the two samples have different values of r, because it was added to both
+  - The outlier lowered r in both, but r varies a lot between small samples, so compare on the same sample
+  answer: 3
+  explanation: The outlier is not the cause of the gap between 0.65 and 0.94. That gap exists before it is added, because small samples vary. On all 342 penguins r is about 0.87. The fair comparison is before and after on the same sample.
+- prompt: You predicted that the median would move more, but the lab shows that the mean moved more. What is the most useful next step?
+  options:
+  - Ignore it, because the verdict only applies to the mean
+  - Press Reset and pick the answer the lab gave
+  - Read the Change column, explain why the mean uses the outlier's size, then predict again for a new position
+  - Add three more outliers until the median catches up
+  answer: 2
+  explanation: A wrong prediction shows where your picture of the statistic was off. Comparing the two changes in the table and explaining them is the learning step, and a fresh prediction for a different position tests the new picture.

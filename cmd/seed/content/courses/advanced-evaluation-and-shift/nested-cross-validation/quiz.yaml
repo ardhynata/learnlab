@@ -1,0 +1,80 @@
+- prompt: A search tries 30 values of k and reports its best 5-fold cross-validation score, 91.3%. The same winner is right on 88.7% of penguins it never saw. What explains the gap?
+  options:
+  - The model overfits its training rows, so every score it reports runs high
+  - The winner is the highest of many noisy scores, graded on the same folds
+  - k-NN has no training step, so it cannot be cross-validated
+  - The unseen penguins come from a different species than the pool
+  answer: 1
+  explanation: Each of the 30 scores is the true quality plus some luck, and the search keeps the highest, so it tends to keep the luckiest. The same folds chose and graded the winner, which is why the report is too high.
+- prompt: In nested cross-validation, which loop chooses the setting and which loop grades it?
+  options:
+  - The outer loop chooses on the whole pool, and the inner loop grades the pick
+  - Both loops choose and grade together on every row of the pool
+  - The inner loop chooses on the training rows, the outer loop grades on the held-out fold
+  - The inner loop chooses, and the inner folds grade the pick as well
+  answer: 2
+  explanation: The inner loop runs the whole search on the outer training rows only. The pick is then scored once on the outer test fold, which played no part in the choice.
+- prompt: The five outer folds of 20 penguins give 16, 18, 17, 15 and 19 right for one recipe. What is its nested score?
+  options:
+  - 85%
+  - 17%
+  - 83.5%
+  - 90%
+  answer: 0
+  explanation: Add the outer scores, 16 + 18 + 17 + 15 + 19 = 85, and divide by the 100 penguins graded. The mean of the five fold scores, 17 of 20, is the same 85%. The common slip is to report the fold average as 17%.
+- prompt: In round 3 of the fold table the inner scores for k = 1, 5 and 15 are 74, 76 and 69. What happens next in that round?
+  options:
+  - k = 1 is refitted and scored on the 20 penguins of its inner folds
+  - k = 15 is refitted on the whole pool and scored there
+  - k = 5 is scored on the inner folds again, and its 76 is reported
+  - k = 5 is refitted on 80 penguins, then scored on outer fold 3
+  answer: 3
+  explanation: The inner scores only choose. The winner, k = 5, is refitted on all 80 outer training penguins and graded on the 20 penguins of outer fold 3, which the search never saw. That grade, 17 of 20, is what counts.
+- prompt: A nested run has 5 outer folds, 4 inner folds and 10 settings, and each outer round ends with one refit of the winner. How many fits does it need?
+  options:
+  - 50
+  - 205
+  - 200
+  - 45
+  answer: 1
+  explanation: Each outer round fits 4 x 10 = 40 models in its inner loop and 1 refit, which is 41. Five rounds give 5 x 41 = 205, against 50 for the plain search.
+- prompt: Why compare two models fold by fold instead of comparing two means?
+  options:
+  - Fold scores are always independent of each other
+  - A fold-by-fold comparison needs no test data
+  - A hard fold is hard for both models, so the difference inside a fold cancels that difficulty
+  - The model with the higher mean always wins every fold
+  answer: 2
+  explanation: Both recipes are scored on the same 20 penguins in each fold, so the fold's difficulty hits both. In the lesson the spread of the differences, 2.7 points, was smaller than the spread of either model's scores, 4.2 and 6.5.
+- prompt: Of 100 penguins, 79 are right for both models, 10 only for k-NN, 2 only for the tree and 9 for neither. What is the mean difference, k-NN minus tree, in points?
+  options:
+  - 8
+  - 10
+  - 12
+  - 88
+  answer: 0
+  explanation: Only the penguins where the models disagree count. The mean is (10 - 2) / 100 = 0.08, or 8 points. The 88 penguins where they agree add zero.
+- prompt: A bootstrap interval for the mean difference between two models runs from -3 to +19 points. What do you conclude?
+  options:
+  - The first model is better, since the middle of the interval is above zero
+  - The models are equal, since the interval holds zero
+  - The interval is wrong, since it must be centered on zero
+  - Zero is still plausible, so no winner is shown yet
+  answer: 3
+  explanation: Zero lies inside the interval, so these penguins are consistent with no difference. That is not proof of equality either. More data, or more repeats, would narrow the interval.
+- prompt: A team has 50,000 labeled rows, 10,000 of them locked as a test set, and a model that takes hours to fit. Which plan fits?
+  options:
+  - Nested cross-validation on the 40,000 other rows, with 10 outer and 10 inner folds
+  - Tune on a validation split, then score the locked test set once
+  - Tune on the test set, since 10,000 rows make a reliable guide
+  - Repeat the search on the test set until its score stops rising
+  answer: 1
+  explanation: 10,000 test rows give a standard error of about 0.3 points near 89%, so one clean look is enough, and nesting would multiply the hours of fitting. Choosing on the test set flatters its score again.
+- prompt: Nested cross-validation on one pool of penguins gives 89%. What does it not tell you?
+  options:
+  - How much the plain search flattered its score
+  - Which k the inner loop picked in each round
+  - How it does on penguins from another island or decade
+  - How the whole recipe, search included, does on pool penguins that took no part in choosing k
+  answer: 2
+  explanation: Nesting removes the flattery of tuning. It cannot see data that moves, because every fold is cut from the same pool. That is the subject of the next lesson.

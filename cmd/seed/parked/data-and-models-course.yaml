@@ -1,0 +1,33 @@
+slug: data-and-models
+title: Data and models
+summary: "Features, distance, scaling, and how to judge a model honestly before you trust it."
+topic: Machine learning
+level: beginner
+path: foundations
+position: 1
+translations:
+  id:
+    title: "Data dan model"
+    summary: "Feature, jarak, scaling, dan cara menilai model secara jujur sebelum kamu percaya padanya."
+modules:
+- slug: data-and-distance
+  title: Data and distance
+  summary: What a dataset is, how closeness is measured, and why scale matters.
+  lessons:
+  - data-features-labels
+  - distance-and-similarity
+  - scaling-and-encoding
+  translations:
+    id:
+      title: "Data dan jarak"
+      summary: "Apa itu dataset, bagaimana kedekatan diukur, dan mengapa skala itu penting."
+- slug: learning-from-data
+  title: Learning from data
+  summary: Judge a model on data it has not seen, and measure a classifier properly.
+  lessons:
+  - train-validation-test
+  - measuring-a-classifier
+  translations:
+    id:
+      title: "Belajar dari data"
+      summary: "Uji model pada data yang belum pernah dilihatnya, dan ukur performa classifier dengan benar."

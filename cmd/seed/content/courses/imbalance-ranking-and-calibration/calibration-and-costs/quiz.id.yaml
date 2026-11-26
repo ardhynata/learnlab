@@ -1,0 +1,72 @@
+- prompt: Sebuah model yang terkalibrasi memprediksi 0,8 untuk 200 kasus uji. Kira-kira berapa kasus di antaranya yang seharusnya positif?
+  options:
+  - Sekitar 80
+  - Sekitar 120
+  - Sekitar 160
+  - Semuanya 200, karena 0,8 di atas 0,5
+  answer: 2
+  explanation: Terkalibrasi berarti prediksi 0,8 terbukti benar sekitar 80 persen dari waktu, dan 0,8 × 200 = 160. Berada di atas 0,5 hanya menentukan sisi kasus itu terhadap threshold bawaan, bukan berapa banyak yang positif.
+- prompt: Pada reliability diagram, kelompok dengan probabilitas prediksi 0,85 berada pada proporsi teramati 0,60. Apa artinya bagi model itu?
+  options:
+  - Ia kurang yakin di sana, karena titiknya berada rendah pada diagram
+  - Ia terlalu yakin di sana, karena kasus positifnya lebih sedikit daripada prediksi
+  - Ia mengurutkan kasus-kasus itu dengan buruk, sehingga AUC seluruh model pasti rendah
+  - Ia terkalibrasi sempurna di sana, karena proporsi teramatinya di atas 0,5
+  answer: 1
+  explanation: Model mengklaim 85 persen dan hanya 60 persen yang terjadi, sehingga titiknya di bawah diagonal dan model terlalu yakin pada rentang itu. Reliability diagram tidak mengatakan apa-apa tentang urutan kasus.
+- prompt: "Sebuah model memberi prediksi berikut, dengan kejadian sebenarnya dalam kurung (1 berarti positif): 0,7 (1), 0,2 (0), 0,5 (0). Berapa Brier score-nya?"
+  options:
+  - "0,38"
+  - "0,253"
+  - "0,090"
+  - "0,127"
+  answer: 3
+  explanation: Selisih kuadratnya adalah (1 − 0,7)² = 0,09, (0 − 0,2)² = 0,04 dan (0 − 0,5)² = 0,25. Jumlahnya 0,38, dan rata-rata untuk tiga kasus adalah 0,38 / 3 = 0,127. Nilai 0,38 adalah jumlah sebelum dibagi banyaknya kasus.
+- prompt: Probabilitas Model B adalah probabilitas Model A yang didorong ke arah 0 dan 1, dengan urutan kasus tidak berubah. Pernyataan mana yang benar?
+  options:
+  - Keduanya memiliki AUC yang sama tetapi dapat berbeda kalibrasi
+  - B memiliki AUC lebih tinggi, karena angkanya tampak lebih yakin
+  - Keduanya memiliki kalibrasi yang sama, karena urutannya sama
+  - B memiliki AUC lebih rendah, karena angkanya lebih jauh dari kebenaran
+  answer: 0
+  explanation: AUC hanya memakai urutan skor, dan urutannya tidak berubah. Kalibrasi bergantung pada angkanya sendiri, sehingga mendorongnya ke arah 0 dan 1 dapat membuat model terlalu yakin.
+- prompt: Sebuah false positive berbiaya 5 unit dan sebuah false negative berbiaya 45. Jika probabilitasnya terkalibrasi, pada threshold berapa kamu mulai menandai kasus?
+  options:
+  - "0,50"
+  - "0,10"
+  - "0,90"
+  - "0,05"
+  answer: 1
+  explanation: Threshold adalah biaya false positive dibagi jumlah kedua biaya, 5 / (5 + 45) = 0,10. Nilai 0,90 muncul dari menukar posisi kedua biaya.
+- prompt: Sebuah kasus memiliki probabilitas terkalibrasi 0,4. Sebuah false positive berbiaya 10 dan sebuah false negative berbiaya 30. Apa yang harus kamu lakukan?
+  options:
+  - Jangan tandai, karena 0,4 di bawah 0,5 yang lazim
+  - Tandai, karena menandai berbiaya 0,4 × 10 = 4 dan itu murah
+  - Tandai, karena menandai berbiaya 6 dan tidak menandai berbiaya 12
+  - Jangan tandai, karena false negative itu jarang pada kebanyakan data
+  answer: 2
+  explanation: Menandai hanya menjadi kesalahan jika kasusnya baik, yang berprobabilitas 0,6, sehingga biaya harapannya 6. Tidak menandai menjadi kesalahan jika kasusnya positif, dengan biaya harapan 12. Aturan biaya sejalan dengan threshold 10 / 40 = 0,25, dan 0,4 berada di atasnya.
+- prompt: Biaya false negative naik dari 30 menjadi 90, sedangkan false positive tetap berbiaya 10. Apa yang terjadi pada threshold berbasis biaya?
+  options:
+  - Turun dari 0,25 menjadi 0,10, sehingga lebih banyak kasus yang ditandai
+  - Naik dari 0,25 menjadi 0,90, sehingga lebih sedikit kasus yang ditandai
+  - Tetap 0,25, karena yang berpengaruh hanya rasio probabilitas
+  - Turun menjadi 0,03, karena 10 / 90 adalah aturan barunya
+  answer: 0
+  explanation: Threshold-nya 10 / (10 + 90) = 0,10. False negative yang lebih mahal membuatmu bersedia menandai kasus dengan probabilitas yang lebih rendah. Rasio 10 / 90 bukan aturannya, karena penyebutnya adalah jumlah kedua biaya.
+- prompt: Apa yang diubah oleh rekalibrasi dengan Platt scaling atau isotonic regression?
+  options:
+  - Pelatihan model, yang harus diulang dari awal
+  - Urutan kasus, sehingga AUC biasanya membaik
+  - Biaya tiap jenis kesalahan, agar sesuai dengan data
+  - Angka yang dikeluarkannya, dipetakan ke frekuensi teramati
+  answer: 3
+  explanation: Rekalibrasi mempelajari peta dari skor ke proporsi positif yang teramati. Platt scaling dengan kemiringan positif menjaga urutan persis, dan isotonic regression hanya dapat menimbulkan nilai yang sama, sehingga AUC tidak membaik. Rekalibrasi harus dicocokkan pada data yang tidak dipakai melatih model.
+- prompt: Pada test set di pelajaran ini, threshold biaya 0,25 memberi Model A total biaya 3360 tetapi Model B 3900. Mengapa?
+  options:
+  - B mengurutkan kasus dengan urutan berbeda dari A, sehingga lebih banyak penipuan terlewat
+  - Angka B tidak terkalibrasi, sehingga barisnya yang 0,20 jatuh di bawah threshold
+  - Biaya false negative ditetapkan berbeda untuk B dibandingkan A
+  - Threshold dari biaya hanya berlaku untuk model dengan Brier score tinggi
+  answer: 1
+  explanation: Rankingnya sama, tetapi B melaporkan 0,20 untuk baris yang sebenarnya 34 persen positif, sehingga aturan itu melewatkan baris tersebut dan kasus positifnya. Rumus itu mengandaikan probabilitas yang terkalibrasi.

@@ -1,0 +1,80 @@
+- prompt: Apa yang terjadi selama "training" pada k-NN?
+  options:
+  - Ia menarik sebuah garis lurus yang paling sesuai dengan titik-titik berlabel
+  - Ia memilih nilai k terbaik secara otomatis
+  - Ia menyimpan contoh berlabel dan nyaris tidak melakukan hal lain
+  - Ia menghitung pusat dari setiap kelas
+  answer: 2
+  explanation: Tidak ada tahap fitting. Data berlabel yang tersimpan adalah modelnya, dan semua pekerjaan baru dilakukan saat query datang.
+- prompt: Sebuah query berjarak 0,9 mm ke samping dan 0,5 mm ke atas dari seekor penguin yang tersimpan. Berapa jarak Euclidean di antara keduanya, dengan dua desimal?
+  options:
+  - 1,03
+  - 1,06
+  - 1,40
+  - 0,45
+  answer: 0
+  explanation: Akar dari (0,9² + 0,5²) = akar dari 1,06 = 1,03. Jarak 1,06 berarti lupa menarik akar, dan 1,40 berarti selisihnya dijumlahkan, bukan dikuadratkan.
+- prompt: Pada contoh hitungan, jawaban apa yang diberikan k = 3 untuk penguin yang disisihkan?
+  options:
+  - Adelie, 2 suara lawan 1
+  - Chinstrap, 2 suara lawan 1
+  - Adelie, 3 suara lawan 0
+  - Seri
+  answer: 1
+  explanation: Tiga yang terdekat adalah Chinstrap (peringkat 1), Adelie (peringkat 2), dan Chinstrap (peringkat 3), sehingga Chinstrap menang 2 banding 1.
+- prompt: Berapa k terkecil yang membuat penguin yang disisihkan diberi label Adelie?
+  options:
+  - 1
+  - 3
+  - 4
+  - 5
+  answer: 3
+  explanation: Pada k = 4 hasil voting seri 2 banding 2 dan neighbor terdekat, seekor Chinstrap, yang menentukan. Pada k = 5 suaranya Adelie 3, Chinstrap 2.
+- prompt: Pada k = 4 hasil voting untuk penguin yang disisihkan adalah Adelie 2, Chinstrap 2. Bagaimana pelajaran ini menangani suara yang seri?
+  options:
+  - Neighbor terdekat yang menentukan
+  - Menambah satu neighbor lagi lalu voting ulang
+  - Memilih kelas secara acak
+  - Menolak memberi jawaban
+  answer: 0
+  explanation: Neighbor terdekat, yaitu Chinstrap di peringkat 1, yang memutuskan hasil seri. Library lain memakai aturan lain, jadi penting mengetahui aturan mana yang dipakai library-mu.
+- prompt: Penguin yang disisihkan adalah seekor Adelie, dan k = 5 menjawab benar sedangkan k = 1 salah. Apa yang dapat kamu simpulkan?
+  options:
+  - k = 5 selalu lebih baik daripada k = 1, karena bertanya ke lebih banyak neighbor
+  - k yang lebih besar selalu membantu k-NN, jadi k sebaiknya dibuat sebesar mungkin
+  - Tidak ada yang bersifat umum, karena satu penguin tidak menunjukkan k mana yang lebih baik
+  - k = 1 rusak, karena satu-satunya neighbor-nya seekor Chinstrap
+  answer: 2
+  explanation: Satu contoh tidak membuktikan apa pun tentang k mana yang paling baik. Untuk penguin yang sama, jawabannya bahkan berbalik lagi ke Chinstrap pada k = 15, sehingga k harus dinilai pada banyak contoh yang disisihkan.
+- prompt: Massa tubuh dalam gram ditambahkan sebagai feature ketiga di samping dua ukuran paruh dalam milimeter. Mengapa massa itu akhirnya menentukan siapa neighbor terdekat?
+  options:
+  - Penguin yang lebih berat selalu lebih mirip dengan query, apa pun feature lainnya
+  - Selisihnya mencapai ratusan, sehingga melampaui selisih paruh yang sekitar satu milimeter
+  - Jarak hanya memakai feature yang terakhir ditambahkan ke tabel
+  - k-NN otomatis memberi bobot ekstra pada feature dengan angka terbanyak
+  answer: 1
+  explanation: Selisih dalam gram ratusan kali lebih besar daripada selisih dalam milimeter, sehingga mendominasi jarak. Scaling pada feature mengatasi masalah ini.
+- prompt: Mengapa k-NN dapat lambat saat membuat prediksi?
+  options:
+  - Ia harus melatih ulang model untuk setiap query
+  - Ia harus mengoptimalkan nilai k setiap kali
+  - Ia membandingkan query dengan setiap contoh yang tersimpan
+  - Ia hanya dapat menangani satu feature dalam satu waktu
+  answer: 2
+  explanation: Tidak ada yang disiapkan sebelumnya, sehingga setiap query diukur terhadap semua contoh yang tersimpan sebelum k yang terdekat dapat dipilih.
+- prompt: Bagaimana perbandingan decision boundary k = 1 dengan k = 9 pada data yang sama?
+  options:
+  - Boundary k = 1 bergerigi dan mengikuti titik tunggal, sedangkan boundary k = 9 lebih mulus
+  - Boundary k = 1 selalu berupa garis lurus, sedangkan boundary k = 9 melengkung
+  - Keduanya identik, karena k hanya mengubah jumlah suara dan bukan bentuk wilayah
+  - Boundary k = 9 lebih bergerigi, karena ia mengikuti lebih banyak titik
+  answer: 0
+  explanation: Pada k = 1 setiap titik tersimpan menguasai area yang paling dekat dengannya, termasuk titik yang janggal. Pada k = 9 satu titik janggal tidak dapat menang sendirian, sehingga batasnya menghalus.
+- prompt: Apa yang terjadi pada k-NN ketika feature terus ditambahkan (curse of dimensionality)?
+  options:
+  - Titik-titik menyebar sampai hampir semuanya berjarak sama jauh, sehingga "terdekat" kehilangan maknanya
+  - Hasilnya selalu makin akurat, karena setiap feature menambah informasi
+  - Prediksi menjadi lebih cepat, karena ada lebih banyak hal untuk dibandingkan
+  - Decision boundary otomatis berubah menjadi garis lurus
+  answer: 0
+  explanation: Dengan banyak feature, jarak antar titik menjadi hampir sama, sehingga neighbor terdekat tidak lagi bermakna. Feature yang tidak berguna juga menambah noise pada setiap jarak.

@@ -1,0 +1,10 @@
+slug: intermediate
+title: "Level 2: Intermediate"
+summary: "Design a validation strategy that matches the prediction task, tune models reproducibly, and justify a model and threshold using measured trade-offs."
+level: intermediate
+position: 2
+requires: [beginner]
+translations:
+  id:
+    title: "Level 2: Menengah"
+    summary: "Rancang strategi validasi yang sesuai dengan tugas prediksinya, tuning model secara reproducible, dan justifikasi pilihan model serta threshold dengan trade-off yang terukur."

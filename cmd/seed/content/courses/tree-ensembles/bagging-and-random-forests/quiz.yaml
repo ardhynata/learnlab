@@ -1,0 +1,80 @@
+- prompt: How is one bootstrap sample of 200 training penguins built for bagging?
+  options:
+  - Pick 100 penguins and leave out the other 100
+  - Pick 200 penguins without replacement, in a new order
+  - Pick 200 penguins with replacement, so some are drawn twice and some not at all
+  - Keep all 200 penguins and add random noise to the measurements
+  answer: 2
+  explanation: A bootstrap sample has as many rows as the training set and is drawn with replacement. That is why a sample holds only about 63% of the distinct penguins, and why each tree sees a different part of the data.
+- prompt: Five trees vote on one penguin. Three say female and two say male. What does the forest answer, and what share of the trees say male?
+  options:
+  - Female, and 0.4 of the trees say male
+  - Male, and 0.4 of the trees say male
+  - Female, and 0.6 of the trees say male
+  - Male, and 0.6 of the trees say male
+  answer: 0
+  explanation: The majority says female, 3 of 5. The share of trees saying male is 2 / 5 = 0.4. A share this close to one half marks a penguin near the border.
+- prompt: In the lesson, 353 of 400 bagged trees asked about body mass first. What does a random forest change to make the trees less alike?
+  options:
+  - It grows each tree on fewer penguins than the training set holds
+  - It stops each tree after one question
+  - It trains each tree on a different test set
+  - At every split, each tree may look at only a random subset of the features
+  answer: 3
+  explanation: Bagging alone lets every split use all the features, so the strongest feature wins almost everywhere. A random subset at every split makes body mass unavailable at some splits, so other features get a turn and the trees differ more.
+- prompt: Why does a vote of many trees often score better than one fully grown tree?
+  options:
+  - Each tree is less accurate, and the vote hides that
+  - The trees make mistakes in different places, and the vote cancels the mistakes that only some trees make
+  - Averaging removes the mistakes that every tree makes
+  - Each tree sees the validation penguins, so the vote is trained on them
+  answer: 1
+  explanation: A single full tree has high variance, and trees fitted to different bootstrap samples err in different places. Averaging cancels those differences. It cannot cancel a mistake that all the trees share, and no tree is trained on the validation penguins.
+- prompt: A forest has 40 trees, and each bootstrap sample leaves out a given penguin with probability 0.367. About how many of the 40 trees have never seen that penguin?
+  options:
+  - About 40, because every tree skips it
+  - About 25
+  - About 15
+  - About 4
+  answer: 2
+  explanation: 40 x 0.367 = 14.7, so about 15 trees did not see the penguin. Those are the trees whose vote counts for that penguin's out-of-bag score.
+- prompt: A forest scores 200 of 200 right on its own training penguins, but its out-of-bag error is 9.0%. Which number is the better guess of its error on new penguins?
+  options:
+  - 9.0%, because each vote comes from trees that never saw the penguin
+  - 0%, because the forest knows the training penguins
+  - They are equally good, because both use the same 200 penguins
+  - Neither, because only a validation set can ever be used
+  answer: 0
+  explanation: The training score is flattering, because the trees were fitted to those very penguins. An out-of-bag vote uses only trees that did not see the penguin, so it works like held-out data. It is still an estimate, with a standard error of about 2 points here.
+- prompt: In a forest of 100 trees, shuffling bill depth lowers the validation score by 20.53 penguins right of 67, and shuffling flipper length lowers it by 0.27. What is the fair conclusion?
+  options:
+  - Flipper length has no link with sex in penguins
+  - Bill depth causes the sex of a penguin
+  - The forest should be retrained with 20.53 more trees
+  - This forest leans on bill depth far more than on flipper length
+  answer: 3
+  explanation: Permutation importance describes what this model uses. Flipper length tracks body mass (r = 0.87), so the trees can use body mass in its place. A near-zero drop does not mean the feature is unrelated to the label, and importance does not show a cause.
+- prompt: The lesson's table shows the standard deviation of the validation score falling from 2.10 with 1 tree to 0.57 with 100 trees, while the mean levels off near 58 right. What does this show?
+  options:
+  - More trees make the score wobble less from one forest to the next
+  - More trees keep raising the mean score without limit
+  - Every extra tree makes the forest memorize more
+  - The 100-tree forest scored 0.57 on every validation penguin
+  answer: 0
+  explanation: The spread across seeds shrinks as trees are added, which is the sense in which variance falls. The mean stops rising after a few dozen trees, so more trees buy steadiness, not unlimited accuracy.
+- prompt: Over 30 cuts, 25 random-forest trees got 60.1 of 67 validation penguins right on average and 25 bagged trees got 59.5. How should you read the difference?
+  options:
+  - The forest is better by 0.6 of a penguin, a clear win
+  - It is about a tie, since 0.6 of a penguin is well under one penguin
+  - Bagging is better, because single forest trees score lower
+  - It proves a forest always beats bagging
+  answer: 1
+  explanation: Earlier lessons taught that a difference of a penguin or two on a small validation set is a tie. The forest's real advantage here is steadier scores across seeds, not the mean.
+- prompt: Every tree in a forest is far too shallow to capture the pattern in the data. What does averaging many of them do?
+  options:
+  - It removes the problem, because errors always cancel
+  - It makes the problem worse, because the trees become correlated
+  - It leaves the shared mistake in place, because the trees all make it
+  - It turns the shallow trees into deep trees
+  answer: 2
+  explanation: Averaging cancels mistakes that differ between trees. A mistake that every tree makes, such as a missing question, survives the vote. Fixing that kind of error is where boosting, in the next lesson, comes in.

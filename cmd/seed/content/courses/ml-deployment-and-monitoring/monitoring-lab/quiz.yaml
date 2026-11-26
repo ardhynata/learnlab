@@ -1,0 +1,80 @@
+- prompt: In the default run, a release serves spend multiplied by 100 from day 25. The input monitor fires on day 26 and the accuracy monitor on day 36. What best explains the 10 days between them?
+  options:
+  - The accuracy monitor has a higher threshold than the PSI monitor
+  - Labels arrive 7 days late, and the accuracy window mixes old and broken days
+  - PSI can look ahead at tomorrow's rows, and accuracy cannot
+  - The model only became less accurate on day 36
+  answer: 1
+  explanation: The predictions of day 25 are labelled on day 32, and on day 36 only 5 of the 7 days in the window are broken. The reading is 73.9% against a limit of 76.2%, and it needs two days in a row. The model was already wrong on the new rows from day 25.
+- prompt: On day 26 of the default run, rolling back leaves 1,693 wrong predictions. A rollback has a fixed cost of 1 and every wrong prediction costs 0.05. What is its total cost?
+  options:
+  - 84.65, because the fixed cost applies only to retraining
+  - 1,694, one unit for every wrong prediction plus the fixed cost
+  - 85.65, which is 1 + 0.05 x 1,693 and shows as 85.7
+  - 33,860, the wrong predictions divided by 0.05
+  answer: 2
+  explanation: The total is the fixed cost plus the error cost, so 1 + 0.05 x 1,693 = 1 + 84.65 = 85.65. A rollback has a fixed cost of 1, and 84.65 leaves it out.
+- prompt: Under Concept shift, the Alert log shows no input alert and no score alert, and only the accuracy monitor fires, on day 34. Why are the input monitors silent?
+  options:
+  - The inputs keep their distribution and only the rule linking them to labels changed, so only labels can show it
+  - The PSI monitors are switched off in this scenario
+  - The labels arrive 21 days late in this scenario, so the inputs have not moved yet
+  - The model is too accurate for the input monitor to notice
+  answer: 0
+  explanation: Concept shift turns the labelling rule and leaves the inputs exactly as they were, so no PSI moves (the highest input PSI in the run is 0.16 and the highest score PSI 0.19, both under 0.25). Accuracy is the only layer that sees it. The 21-day delay belongs to the Delayed labels scenario.
+- prompt: Under Covariate drift, the input monitor fires on day 26 with a PSI of 2.50 and the accuracy monitor never fires. Keeping watching costs 38.4 at 89.0% accuracy, and rolling back costs 53.2. What does this suggest?
+  options:
+  - Roll back at once, because any PSI above 0.25 means the model is broken
+  - Retrain at once, because the inputs are far from the training data
+  - Raise the PSI threshold until the alert stops, because the alert is only noise
+  - Keep watching and check labels, because the model is still right on the moved inputs
+  answer: 3
+  explanation: The inputs moved, and the model is right on them (89.0% against 84.2% at launch). An alert is a reason to investigate, not to repair. Raising the threshold until it goes quiet would hide the shift without learning anything about the damage.
+- prompt: On day 40 of the Label shift run, the Score calibration view shows a mean score of 38% while only 25% of the labelled rows are positive. Which repair fits best?
+  options:
+  - Roll back, because a release must have broken something in the model
+  - Recalibrate, because the scores are too high and it costs 20.1 against 31.2
+  - Retrain, because a changed class balance always means the whole model must be rebuilt
+  - Keep watching, because the mean score and the positive rate need not agree
+  answer: 1
+  explanation: The class balance moved, so the model's probabilities are too high while its ranking can still be fine. Recalibrating rescales the scores to the new share of positives, and it costs 2 units against 10 for retraining.
+- prompt: On day 28 of the Label shift run, recalibrating costs 63.9 and keeping watching costs 56.7. On day 40 recalibrating costs 20.1 and keeping watching 36.6. What changed between the two days?
+  options:
+  - The fixed cost of recalibrating dropped from day to day
+  - Label shift stopped on day 40, so there was nothing left to repair
+  - The labels that had arrived by day 40 came from after the shift, so recalibrating had something to learn from
+  - The accuracy monitor fired on day 40 and made the repair cheaper
+  answer: 2
+  explanation: Recalibrating fits on the most recent labels that have arrived. On day 28 they were from before the shift on day 25, so it learned the old world and still paid 2 units. By day 40 they came from the new world.
+- prompt: On a Clean stream, a PSI alert threshold of 0.05 and an input window of 1 day put the input monitor in alert on 48 of 60 days. A window of 7 days brings it to 0. Why?
+  options:
+  - A day of 200 rows is a noisy sample, and a 7-day window averages the noise out
+  - A 7-day window skips the most recent days, where the alerts were
+  - A longer window raises the threshold in effect from 0.05 to 0.35
+  - A longer window makes the PSI of every feature exactly 0
+  answer: 0
+  explanation: The PSI of one day of 200 rows against 10 bins jumps around even when nothing changes, and a threshold of 0.05 sits inside that noise. Seven days of rows give a steadier sample. The price is time, because on the default skew run the first alert moves from day 26 to day 27.
+- prompt: The launch accuracy is 84.2%. You set Accuracy drop that alerts (points) to 5. At which accuracy does the accuracy monitor start to alert?
+  options:
+  - Below 89.2%
+  - Below 77.2%
+  - Below 80.0%, which is 5% of 84.2% taken off
+  - Below 79.2%
+  answer: 3
+  explanation: The drop is in points, so the limit is 84.2 - 5 = 79.2%. Taking 5% of 84.2 off would give 80.0%, a different rule. At the default of 8 points, the limit is 76.2%.
+- prompt: On day 36 of the default skew run, retraining costs 58.2 and rolling back costs 61.3. Why might a team still roll back?
+  options:
+  - Retraining has the lower accuracy, so the cost table must have a mistake in it
+  - Rolling back removes the bug, while retraining only learned to discount the broken feature
+  - Retraining is live at once, and rolling back takes 3 days to go live
+  - The cost table only compares options on days when the accuracy monitor is silent
+  answer: 1
+  explanation: The labels that had arrived already include days with the broken input, so the retrained model learned to rely less on spend. Its accuracy is 80.7% against 75.9%, which is why it costs less. The bug is still there, and retraining takes 3 days to go live while a rollback is instant.
+- prompt: In Delayed labels with drift, the event is on day 25 and labels arrive 21 days late instead of 7. On which day does the first label of an event day arrive?
+  options:
+  - Day 32
+  - Day 21
+  - Day 46
+  - Day 25
+  answer: 2
+  explanation: A label arrives on the day of the prediction plus the delay, so 25 + 21 = 46. The accuracy monitor then needs two days in a row, which puts its alert on day 47 instead of day 36. With the normal 7-day delay it would have been day 32.

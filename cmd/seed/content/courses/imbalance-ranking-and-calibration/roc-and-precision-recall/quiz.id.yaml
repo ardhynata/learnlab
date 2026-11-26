@@ -1,0 +1,80 @@
+- prompt: Kamu menelusuri enam kasus yang diurutkan menurut skor (A 0,9 positif, B 0,8 negatif, C 0,7 positif, D 0,6 positif, E 0,4 negatif, F 0,2 negatif). Di mana titik ROC setelah kasus C?
+  options:
+  - (0, 1/3)
+  - (1/3, 1/3)
+  - (1/3, 2/3)
+  - (2/3, 1/3)
+  answer: 2
+  explanation: Setelah A, B, dan C ada 2 true positive dari 3 (true-positive rate 2/3) dan 1 false positive dari 3 (false-positive rate 1/3). Titiknya (1/3, 2/3), dengan koordinat kedua sebagai sumbu vertikal.
+- prompt: Pada enam kasus yang sama, positif D punya skor 0,6. Terhadap tiga negatif (B 0,8, E 0,4, F 0,2), berapa pasangan yang dimenangkan D?
+  options:
+  - 1
+  - 2
+  - 3
+  - 0
+  answer: 1
+  explanation: Sebuah pasangan menang jika positifnya punya skor lebih tinggi. D mengalahkan E (0,4) dan F (0,2) tetapi kalah dari B (0,8), sehingga ia memenangkan 2 dari 3 pasangannya.
+- prompt: Ketika penelusuran pada daftar yang sudah diurutkan sampai pada sebuah negatif asli, bagaimana titik pada kurva ROC bergerak?
+  options:
+  - Naik, karena threshold menjadi lebih rendah
+  - Naik dan ke kanan sekaligus
+  - Tetap di tempatnya, karena kasusnya negatif
+  - Ke kanan, karena false-positive rate naik dan true-positive rate tidak
+  answer: 3
+  explanation: Negatif yang kini berada di atas threshold adalah false positive baru. Itu menaikkan false-positive rate (horizontal) dan membiarkan true-positive rate (vertikal), sehingga titik bergerak ke kanan.
+- prompt: Setelah kasus B (dua kasus teratas adalah A, sebuah positif, dan B, sebuah negatif), berapa precision-nya?
+  options:
+  - 1/2
+  - 1/3
+  - 2/3
+  - 1
+  answer: 0
+  explanation: Dua kasus ditandai dan salah satunya positif asli, sehingga precision = 1 / 2. Recall pada titik itu 1/3, angka yang berbeda.
+- prompt: Perhitungan mana yang menghasilkan average precision (AP) dari enam kasus, dengan memakai precision pada setiap positif asli?
+  options:
+  - 7/9, jumlah pasangan yang menang dari 9
+  - (1 + 1/2 + 2/3 + 3/4 + 3/5 + 1/2) / 6, rata-rata atas keenam kasus
+  - (1 + 2/3 + 3/4) / 3
+  - 3/6, yaitu positive rate
+  answer: 2
+  explanation: AP merata-ratakan precision pada saat recall naik, yaitu ketiga positif asli A (precision 1), C (2/3), dan D (3/4). Hasilnya 0,81. Nilai 7/9 adalah AUC, dan 3/6 adalah tingkat tanpa kemampuan.
+- prompt: Sebuah ranker punya titik ROC (0,05; 0,80). Pada 10.000 pembayaran dengan 5.000 penipuan, berapa precision-nya pada cut itu?
+  options:
+  - 0,05
+  - 0,80
+  - 0,14
+  - 0,94
+  answer: 3
+  explanation: Ia menandai 0,80 x 5.000 = 4.000 penipuan dan 0,05 x 5.000 = 250 pembayaran sah, sehingga precision = 4.000 / 4.250 = 0,94. Dengan hanya 100 penipuan dalam 10.000 pembayaran, cut yang sama memberi 0,14.
+- prompt: Kasus positif adalah 1 persen dari seluruh kasus. Di mana garis tanpa kemampuan pada plot precision-recall?
+  options:
+  - Pada diagonal dari (0, 0) ke (1, 1)
+  - Pada precision 0,01, yaitu positive rate
+  - Pada precision 0,50
+  - Pada precision 0,99
+  answer: 1
+  explanation: Menandai kasus secara acak menghasilkan precision yang sama dengan porsi positif, di sini 0,01. Diagonal adalah garis tanpa kemampuan pada plot ROC, bukan pada plot precision-recall.
+- prompt: Sejenis pembayaran sebenarnya punya peluang penipuan 1 persen (odds 1 banding 99). Sebuah model dilatih dengan setiap penipuan diberi bobot 99 kali. Kira-kira skor berapa yang diberikannya pada pembayaran seperti itu?
+  options:
+  - Sekitar 0,50
+  - Sekitar 0,99
+  - Sekitar 0,01
+  - Sekitar 0,10
+  answer: 0
+  explanation: Memberi setiap positif bobot w mengalikan odds yang diprediksi model dengan sekitar w. Odds 1 banding 99 dikali 99 menjadi 99 banding 99, yaitu skor 0,50. Rankingnya terjaga, tetapi skornya tidak lagi sama dengan peluang penipuan yang sebenarnya.
+- prompt: Sebuah tim melakukan oversampling pada kelas langka lalu membagi data menjadi bagian training dan validation. Mengapa skor validation tidak dapat dipercaya?
+  options:
+  - Oversampling selalu menurunkan recall
+  - Validation set menjadi terlalu kecil untuk memberi skor yang stabil
+  - Salinan kasus langka yang sama dapat berada di kedua bagian, sehingga model diuji pada kasus yang sudah pernah dilihatnya
+  - Bobot dan resampling tidak dapat digabung dengan pemisahan data
+  answer: 2
+  explanation: Kasus yang diulang membuat validation set berbagi kasus dengan training set, sehingga skornya tampak lebih baik daripada seharusnya. Lakukan resampling hanya pada bagian training, sesudah pemisahan, dan biarkan data validation pada positive rate yang sebenarnya.
+- prompt: Sebuah tim fraud melaporkan AUC 0,96 pada data dengan 1 persen penipuan. Angka tambahan mana yang paling banyak memberi tahu tentang peringatan yang akan ditindaklanjuti tim itu?
+  options:
+  - Accuracy pada threshold 0,5
+  - Average precision, atau precision pada recall yang dibutuhkan, diukur pada rate 1 persen yang sebenarnya
+  - AUC pada resample yang separuhnya penipuan
+  - Jumlah feature dalam model
+  answer: 1
+  explanation: AUC mengabaikan positive rate, sehingga ia tidak dapat menunjukkan berapa banyak kasus yang ditandai ternyata nyata. Angka precision-recall yang diukur pada rate yang sebenarnya dapat menunjukkannya. Accuracy pada 0,5 didominasi kasus sah, dan resample seimbang menyembunyikan masalahnya.

@@ -1,0 +1,144 @@
+Title: Machine Learning Syllabus
+This 36-module curriculum starts with supervised learning, introduces clustering, and progresses to advanced evaluation, deep learning, and production ML. Each level ends with a capstone.
+Heading2: Prerequisites
+Basic Python and the ability to read charts. An optional prep module covers arrays, tables, plotting, and functions. Math is introduced alongside the models that use it.
+Heading1: Level 1 Beginner
+Train a baseline, evaluate regression and classification models on unseen data, and explain what a clustering algorithm found.
+Module
+Topics
+Interactive lab or capstone
+1. Data and learning tasks
+Observations, features, targets, numeric and categorical data, supervised and unsupervised learning
+Use one dataset to pose a regression question, a classification question, and a clustering question.
+2. Statistics for reading data
+Mean, median, variance, distributions, outliers, scatterplots, correlation
+Add an outlier and watch the mean, median, and correlation change.
+3. Linear regression
+Slope, intercept, predictions, residuals, MAE and MSE
+Drag a line through noisy points and see how each residual contributes to the loss.
+4. Training and generalization
+Baselines, train/validation/test splits, underfitting, overfitting
+Increase polynomial degree and predict when validation error will start rising.
+5. Classification with k-nearest neighbors
+Distance, feature scaling, decision boundaries, choosing k
+Change k and rescale one feature. Compare the boundaries on the same test points.
+6. Logistic regression
+Sigmoid, predicted probabilities, log loss, classification thresholds
+Move the threshold and track which examples become false positives or false negatives.
+7. Classification metrics
+Confusion matrix, precision, recall, F1, class imbalance
+Vary the fraction of positive examples and compare a majority-class baseline with a trained model.
+8. Decision trees
+Recursive splits, impurity, depth, minimum leaf size
+Make the first split, then grow a tree and compare training and validation performance.
+9. Preparing tabular data
+Missing values, encoding, scaling, preprocessing pipelines, leakage
+Compare fitting preprocessing on the training data with fitting it before splitting.
+10. Clustering with k-means
+Centroids, assignment and update steps, initialization, choosing k
+Hide the labels from the k-NN dataset, run k-means, then reveal the labels and compare them with the clusters.
+11. Cluster shapes and evaluation
+Hierarchical clustering, DBSCAN, noise points, silhouette score
+Compare methods on blobs, rings, and clusters of unequal density. Explain where each struggles.
+12. Beginner capstone
+Problem framing, baselines, model comparison, error inspection
+Build a classifier on a public tabular dataset. Compare two models with a baseline and explain three representative errors.
+Heading1: Level 2 Intermediate
+Design a validation strategy that matches the prediction task, tune models reproducibly, and justify a model and threshold using measured trade-offs.
+Module
+Topics
+Interactive lab or capstone
+1. Probability and statistical uncertainty
+Conditional probability, Bayes’ rule, sampling variability, bootstrap confidence intervals
+Repeatedly sample from the same population and see how much a reported metric varies.
+2. Optimization
+Gradients, gradient descent, learning rates, stochastic and mini-batch updates
+Step through optimization on a loss surface and compare convergence at different learning rates.
+3. Regularization
+L1, L2, bias–variance trade-off, coefficient shrinkage, learning curves
+Increase regularization and track coefficients, training error, and validation error.
+4. Validation and hyperparameter tuning
+Cross-validation, stratification, grouped and temporal splits, grid and random search
+Compare random and grouped splits on a dataset with multiple records per person.
+5. Feature engineering
+Interactions, transformations, high-cardinality categories, leakage-safe target encoding, ablation
+Add features one at a time and check which improvements survive cross-validation.
+6. Naive Bayes and text classification
+Bag of words, TF-IDF, smoothing, conditional independence
+Train a text classifier and inspect which words drive its predictions and mistakes.
+7. Support vector machines
+Margins, support vectors, soft margins, kernels, C, gamma
+Move a support vector and see how the margin changes. Compare linear and RBF boundaries.
+8. Tree ensembles
+Bagging, random forests, gradient boosting, early stopping
+Add trees in stages and compare how bagging and boosting change validation performance.
+9. Dimensionality reduction
+PCA, explained variance, reconstruction error, t-SNE and UMAP for exploration
+Rotate a point cloud, project it onto fewer axes, and measure the information lost.
+10. Imbalance, ranking, and calibration
+ROC and precision–recall curves, class weighting, reliability diagrams, cost-based thresholds
+Compare similarly ranked predictions and see how calibration affects probability-based decisions.
+11. Interpretation and error analysis
+Subgroup metrics, permutation importance, SHAP, correlated features, fairness trade-offs
+Audit errors by subgroup and see how correlated features affect importance estimates.
+12. Intermediate capstone
+Reproducible pipelines, tuning, uncertainty, threshold selection
+Build a cost-sensitive classifier with repeated entities or timestamps. Defend the split, compare models, and report held-out uncertainty.
+Heading1: Level 3 Advanced
+Design, evaluate, and operate an ML system. Explain its performance, failure modes, and behavior after deployment.
+Module
+Topics
+Interactive lab or capstone
+1. Advanced evaluation and shift
+Nested cross-validation, model comparison, covariate and concept shift, out-of-distribution tests
+Introduce one type of shift at a time and measure which validation setups anticipated the performance drop.
+2. Uncertainty and probabilistic prediction
+Aleatoric and epistemic uncertainty, ensembles, quantile regression, conformal prediction
+Construct prediction intervals and measure empirical coverage as the data distribution changes.
+3. Neural network fundamentals
+Multilayer perceptrons, backpropagation, activations, initialization, optimizers, regularization
+Train a small network on a nonlinear dataset and inspect activations and gradients.
+4. Representation learning
+Embeddings, autoencoders, self-supervised objectives, transfer learning
+Compare a frozen pretrained representation with features learned from a small labeled dataset.
+5. Computer vision
+Convolutions, CNNs, augmentation, transfer learning, classification and detection metrics
+Train with augmentation, then test on realistic changes in lighting and orientation.
+6. NLP and transformers
+Tokenization, attention, positional information, pretrained models, fine-tuning and evaluation
+Trace attention in a small model, then compare a pretrained text model with the intermediate baseline.
+7. Time-series forecasting
+Lags, seasonality, forecast horizons, rolling backtests, probabilistic forecasts
+Compare a seasonal baseline and a learned model across multiple forecast windows.
+8. Recommender systems
+Collaborative filtering, matrix factorization, retrieval and ranking, cold start, ranking metrics
+Remove interaction history for some users and compare how recommenders handle cold start.
+9. Experimentation and causal inference
+Randomized experiments, power, confounding, treatment effects, observational assumptions
+Generate confounded data and compare an observational estimate with a simulated randomized experiment.
+10. ML deployment and monitoring
+Batch and online inference, model versioning, training-serving skew, drift, delayed labels, rollback
+Replay an inference stream, investigate a performance alert, and decide whether to roll back, recalibrate, or retrain.
+11. Reliability and responsible ML
+Robustness tests, fairness under shift, privacy-aware data handling, human review, model documentation
+Stress-test a model across subgroups and data conditions, then document where human review is needed.
+12. Advanced capstone
+End-to-end design, reproducibility, deployment, monitoring, failure analysis
+Ship a batch or online model with reproducible evaluation, an operational metric, a monitoring plan, and a documented failure investigation.
+Heading1: Advanced Electives
+Heading2: Generative AI
+Language-model evaluation, retrieval, and generative models.
+Heading2: Reinforcement Learning
+Bandits, Markov decision processes, and policy learning.
+Heading2: Probabilistic ML
+Hierarchical models and approximate inference.
+Each elective can be developed into a full track with its own capstone.
+Heading1: Interactive Lesson Design
+Pair each generated-data simulation with a real-data lab. Use the simulation to isolate one effect, then have learners investigate how it appears in a dataset where multiple factors vary.
+ListNumber: Predict what will happen before changing a setting.
+ListNumber: Manipulate the data or model and observe the result.
+ListNumber: Explain the result using the module’s concepts.
+ListNumber: Transfer the idea to a real dataset, then assess it with a fresh dataset or random seed.
+In k-means, learners predict what happens when one feature is rescaled, verify it in the simulation, explain how the distances changed, and choose a scaling strategy for a real dataset.
+Heading2: First Simulations to Build
+Build linear regression, k-NN, and k-means first. They share a 2D plot and a seeded dataset generator. Reuse the same points in the k-NN and k-means labs to show how classification uses labels and clustering groups observations by their features.

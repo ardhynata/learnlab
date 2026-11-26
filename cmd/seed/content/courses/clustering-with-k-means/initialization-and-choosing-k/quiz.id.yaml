@@ -1,0 +1,80 @@
+- prompt: Dua kelompok, {1, 5} dan {10, 14}, memiliki centroid 3 dan 12. Berapa inertia-nya?
+  options:
+  - 8
+  - 4
+  - 16
+  - 32
+  answer: 2
+  explanation: Setiap titik berjarak 2 dari centroid-nya, sehingga masing-masing menyumbang 2 kuadrat, yaitu 4. Empat titik memberi 4 + 4 + 4 + 4 = 16. Menjumlahkan jarak biasa menghasilkan 8, yang bukan inertia karena inertia memakai kuadrat.
+- prompt: Dua run k-means pada data dan k yang sama berakhir dengan kelompok yang berbeda. Apa penyebab yang paling umum?
+  options:
+  - Salah satu run memiliki bug
+  - Keduanya mulai dari centroid yang berbeda dan berhenti pada jawaban stabil yang berbeda
+  - Datanya berubah di antara kedua run
+  - k-means memilih k secara acak setiap kali
+  answer: 1
+  explanation: k-means berhenti pada pengelompokan stabil pertama yang dicapainya, dan itu bergantung pada posisi awal centroid. Kedua run dapat sama-sama merupakan jalannya algoritma yang benar.
+- prompt: Pada contoh enam titik, posisi awal 0, 1, 10 berhenti pada inertia 101, padahal jawaban terbaiknya 1,5. Mengapa putarannya tidak memperbaiki hal ini sendiri?
+  options:
+  - Ia berhenti setelah tepat tiga putaran
+  - Ia tidak dapat memindahkan centroid ke atas sebuah titik data
+  - Inertia sudah nol pada saat itu
+  - Baik langkah assign maupun langkah update tidak dapat menurunkan inertia dari kondisi itu
+  answer: 3
+  explanation: Setiap titik sudah mendapat centroid terdekatnya, dan setiap centroid sudah berada di rata-rata titiknya. Untuk mencapai 1,5, sebuah centroid harus melompati celah, dan tidak ada langkah yang melakukannya.
+- prompt: Kamu menjalankan k-means dengan k = 3 dari lima posisi awal acak. Inertia-nya adalah 1,5; 101; 1,5; 57; dan 101. Run mana yang kamu simpan?
+  options:
+  - Salah satu run dengan inertia 1,5
+  - Run dengan inertia 57, yang di tengah
+  - Run dengan inertia 101, yang tertinggi
+  - Rata-ratakan kelima run
+  answer: 0
+  explanation: Pada data dan k yang sama, inertia yang lebih rendah berarti kelompok yang lebih rapat, maka simpan run dengan 1,5. Menjalankan k-means itu murah, itulah sebabnya mencoba beberapa kali menjadi perlindungan standar.
+- prompt: Centroid pertama k-means++ adalah titik 0. Pernyataan mana tentang pilihan kedua yang benar?
+  options:
+  - Semua titik yang tersisa sama besar peluangnya
+  - Titik terdekat yang paling mungkin terpilih
+  - Titik yang jauh dari 0 yang paling mungkin terpilih
+  - Titik terjauh selalu terpilih
+  answer: 2
+  explanation: Setiap titik diberi bobot sebesar kuadrat jaraknya ke centroid terdekat yang sudah terpilih, sehingga titik yang jauh besar peluangnya. Pemilihannya tetap acak, sehingga titik terjauh kemungkinan besar terpilih, tetapi tidak pasti.
+- prompt: Dengan centroid pertama di 0, titik 20 berbobot 400 dan titik 1 berbobot 1. Berapa kali lebih mungkin k-means++ memilih 20 dibandingkan 1?
+  options:
+  - 20 kali
+  - 400 kali
+  - 21 kali
+  - Peluang keduanya sama
+  answer: 1
+  explanation: Peluangnya sebanding dengan kuadrat jarak, sehingga perbandingannya 400 banding 1. Pemilihan acak biasa akan memberi keduanya peluang 20%.
+- prompt: Mengapa kamu tidak dapat memilih k dengan mengambil k yang inertia-nya paling rendah?
+  options:
+  - Inertia hanya berlaku untuk k = 2
+  - Inertia dapat bernilai negatif untuk k yang besar
+  - Inertia sama untuk setiap k
+  - Inertia terus turun ketika k naik dan mencapai 0 ketika setiap titik menjadi cluster-nya sendiri
+  answer: 3
+  explanation: Semakin banyak centroid, semakin dekat titik ke salah satunya. Ketika k sama dengan jumlah titik, inertia bernilai 0, yang tidak menggambarkan apa pun yang berguna.
+- prompt: Inertia terbaik untuk k = 1 sampai 6 adalah 401,5; 101,5; 1,5; 1; 0,5; 0. Di mana elbow-nya?
+  options:
+  - k = 3
+  - k = 2
+  - k = 6
+  - k = 1
+  answer: 0
+  explanation: Penurunan besar berhenti di k = 3. Pindah ke 4 hanya menghemat 0,5 lagi. Memilih k = 6 demi angka terendah akan memecah data menjadi titik-titik tunggal.
+- prompt: Kurva inertia untuk datamu turun mulus tanpa tekukan yang jelas. Apa langkah berikutnya yang masuk akal?
+  options:
+  - Pilih k terbesar yang sudah kamu coba
+  - Pilih k = 1, yang paling sederhana
+  - Pilih k berdasarkan kegunaan kelompok, lalu periksa apakah kelompoknya berguna
+  - Jalankan ulang sampai tekukan muncul
+  answer: 2
+  explanation: Elbow hanyalah petunjuk. Ketika tidak ada, kebutuhan bidangnya dan pemeriksaan kelompok yang menentukan, dan skor lanjutan seperti silhouette dapat membantu.
+- prompt: Apakah k-means++ menjamin k-means menemukan inertia terendah yang mungkin?
+  options:
+  - Ya, ia selalu menemukan yang terbaik secara global
+  - Tidak, ia membuat posisi awal yang buruk lebih jarang terjadi, tetapi posisi awalnya tetap acak
+  - Ya, tetapi hanya ketika k = 2
+  - Tidak, dan ia membuat posisi awal yang buruk lebih sering terjadi
+  answer: 1
+  explanation: k-means++ menyebarkan centroid awal, dan itu membantu, tetapi prosesnya tetap acak dan masih dapat berakhir di local optimum. Karena itu ia dipadukan dengan beberapa posisi awal.

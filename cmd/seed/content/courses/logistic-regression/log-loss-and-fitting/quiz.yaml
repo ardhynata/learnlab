@@ -1,0 +1,72 @@
+- prompt: An email really is spam (label 1) and the model gives it p = 0.5. What is the log loss of this example?
+  options:
+  - 0
+  - 0.5
+  - 0.693
+  - 1
+  answer: 2
+  explanation: The loss is -ln(0.5) = 0.693. It is the same for either label when the model says 0.5, and it is 0 only when the model gives the truth probability 1.
+- prompt: A real, non-spam email (label 0) is called spam by two models. One gave it p = 0.6, the other p = 0.99. How do their losses compare?
+  options:
+  - The 0.99 model pays much more, 4.605 against 0.916
+  - They pay the same, because both are wrong
+  - The 0.6 model pays more, because it is closer to 0.5
+  - They pay the same, because both are above 0.5
+  answer: 0
+  explanation: For a true label of 0 the loss is -ln(1 - p), which is -ln(0.4) = 0.916 and -ln(0.01) = 4.605. Log loss punishes the sure mistake far harder than the hesitant one.
+- prompt: A model gave the true label probability 0.1, a loss of 2.303. If it had given the truth 0.01 instead, what would the loss be?
+  options:
+  - About 0.230
+  - About 2.303, the same
+  - About 3.000
+  - About 4.605
+  answer: 3
+  explanation: -ln(0.01) = 4.605. Each time the probability for the truth shrinks by a factor of ten, the loss rises by about 2.3.
+- prompt: Two models both have an accuracy of 3 out of 4 on the same data. Model A has a mean log loss of 0.463 and model B has 1.385. What is the most likely explanation?
+  options:
+  - B got more examples wrong than A
+  - B made one confident mistake that cost a lot
+  - B gave about 0.5 for every example
+  - A and B were scored on different data
+  answer: 1
+  explanation: Equal accuracy means the same number of wrong answers, so the gap comes from how sure each model was. One sure mistake, such as p = 0.99 on a label 0 (loss 4.605), can lift a mean that much.
+- prompt: A model that says 0.5 for every example has a mean log loss of 0.693. Another model has a mean log loss of 1.385. What does that tell you?
+  options:
+  - The second model is better, because its loss is larger
+  - The two models cannot be compared
+  - The second model is worse than one that always says 0.5
+  - The second model is twice as accurate
+  answer: 2
+  explanation: Lower log loss is better, and always saying 0.5 is a baseline to beat. A mean of 1.385 means the model's confident mistakes cost more than they gain.
+- prompt: For a true label of 1, a model says p = 0.01. Squared error gives (1 - 0.01)² = 0.980 while log loss gives 4.605. Why does log loss punish this mistake so much more?
+  options:
+  - Squared error is capped near 1 for a probability, while log loss has no ceiling
+  - Log loss squares the miss twice
+  - Squared error ignores the true label
+  - Log loss counts only the examples the model got right
+  answer: 0
+  explanation: The squared miss of a probability can never exceed 1, so a 99-percent-sure mistake costs about as much as a 90-percent-sure one. -ln(p) grows without limit as p goes to 0.
+- prompt: The gradient of the log loss for a weight is the average of (p - y) × x. One example has x = 2, true label 0 and p = 0.9. What does it add before averaging?
+  options:
+  - 0.2
+  - -1.8
+  - 0.9
+  - 1.8
+  answer: 3
+  explanation: (0.9 - 0) × 2 = 1.8. The positive gradient says that raising w raises the loss, so a step against it lowers w, which makes the model say less than 0.9 for this x.
+- prompt: In the lesson's example the gradient for w at the start is -1 and the learning rate is 0.5. Starting from w = 0, what is w after one step?
+  options:
+  - -0.5
+  - 0.5
+  - -1
+  - 1
+  answer: 1
+  explanation: The update is w = 0 - 0.5 × (-1) = 0.5. A negative gradient means that raising w lowers the loss, so the weight goes up.
+- prompt: During gradient descent the mean log loss goes 0.693, 0.338, 0.249. What is the right reading?
+  options:
+  - The model is getting worse
+  - Steps should grow as the loss falls
+  - Each step lowers the loss, but by less, because the gradient shrinks
+  - Learning is finished after the first step
+  answer: 2
+  explanation: The drops are about 0.36 and then about 0.09. The gradients get smaller (-1, -0.462), so each step moves w less. The loss is still falling, so the fit is not finished.

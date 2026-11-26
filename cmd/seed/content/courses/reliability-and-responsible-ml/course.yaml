@@ -1,0 +1,31 @@
+slug: reliability-and-responsible-ml
+title: "Reliability and responsible ML"
+summary: "Robustness tests, fairness under shift, privacy-aware data handling, human review, and model documentation."
+topic: Machine learning
+level: advanced
+path: advanced
+position: 11
+translations:
+  id:
+    title: "ML yang andal dan bertanggung jawab"
+    summary: "Uji robustness, fairness saat terjadi shift, penanganan data yang menjaga privasi, human review, dan dokumentasi model."
+modules:
+- slug: core-ideas
+  title: Core ideas
+  summary: "The concepts, in the order the lab uses them."
+  lessons:
+  - robustness-fairness-and-privacy
+  - human-review-and-model-documentation
+  translations:
+    id:
+      title: "Ide inti"
+      summary: "Konsep-konsepnya, sesuai urutan yang dipakai lab."
+- slug: lab
+  title: Lab
+  summary: "Run the idea yourself, then check what you learned."
+  lessons:
+  - reliability-lab
+  translations:
+    id:
+      title: "Lab"
+      summary: "Jalankan idenya sendiri, lalu periksa apa yang sudah kamu pelajari."

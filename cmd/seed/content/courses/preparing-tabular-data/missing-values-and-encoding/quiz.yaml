@@ -1,0 +1,80 @@
+- prompt: The penguin file has 344 rows. Rows #4 and #272 are empty in all four size columns and in sex, and nine more rows lack only the sex. How many rows are left if you drop every row that has a gap?
+  options:
+  - '344'
+  - '342'
+  - '333'
+  - '322'
+  answer: 2
+  explanation: 2 + 9 = 11 rows have a gap, and 344 - 11 = 333 remain. 342 would keep the nine rows that lack the sex.
+- prompt: Why is "drop every row with a gap" not a complete plan for a model you will use on new data?
+  options:
+  - A new row can arrive with a gap, and you still owe it a prediction
+  - Dropped rows can never be recovered from the file, so the loss is permanent
+  - Models need at least 1,000 rows to train, so you cannot drop any
+  - Dropping rows makes the remaining columns non-numeric for the model
+  answer: 0
+  explanation: You can drop gaps from the training table, but you cannot refuse to predict for a new row. You need a rule that fills a gap in any row, so the fill rule is needed anyway.
+- prompt: Four training masses are 3,650, 3,475, 3,700 and 5,700 g. What is their median?
+  options:
+  - 3,650 g
+  - 3,700 g
+  - 4,131.25 g
+  - 3,675 g
+  answer: 3
+  explanation: Sorted, they read 3,475, 3,650, 3,700, 5,700. With four values the median is the average of the middle two, (3,650 + 3,700) / 2 = 3,675 g. The mean is 4,131.25 g.
+- prompt: For those four masses the mean is 4,131.25 g and the median is 3,675 g. What mostly explains the difference?
+  options:
+  - The median ignores the smaller values
+  - The 5,700 g penguin pulls the mean up, while the median barely moves
+  - A mean is always larger than a median
+  - Four values are too few to compute a median
+  answer: 1
+  explanation: One heavy value adds a lot to the sum, so the mean rises. The median only looks at the middle of the sorted list. A mean is not always larger; it only moves toward a long tail.
+- prompt: The sex column splits 168 male and 165 female. What is the problem with filling its 11 gaps with the most frequent value?
+  options:
+  - It labels 11 penguins "male" with confidence, though the column is nearly a coin flip
+  - The most frequent value cannot be computed for a category column
+  - It would remove the 11 rows, so the table gets shorter
+  - It turns the column into numbers, which the model cannot read
+  answer: 0
+  explanation: Male wins by 3 penguins, so the rule is close to a coin toss and each filled value is a weak guess presented as fact. An "unknown" category or a missing flag is more honest.
+- prompt: What does a missing indicator column add to a filled column?
+  options:
+  - A better guess for each filled value
+  - A way to remove the filled rows later
+  - A copy of the column, scaled between 0 and 1
+  - A record of which values were real and which were filled
+  answer: 3
+  explanation: The flag is 1 where the value was missing and 0 where it was present. It does not improve the guess, but it lets a model tell a measurement from a fill, and learn from the fact that a value was missing.
+- prompt: Islands are coded Biscoe 0, Dream 1, Torgersen 2. What does a distance formula conclude from these codes?
+  options:
+  - Torgersen is twice as far from Biscoe as Dream is
+  - All three islands are the same distance apart
+  - Dream and Torgersen are the farthest apart
+  - Nothing, because words cannot be compared
+  answer: 0
+  explanation: The gap Biscoe to Torgersen is 2 and Biscoe to Dream is 1, so the codes invent an order and a spacing. The islands have no such order, and a different numbering would give different distances.
+- prompt: A Dream penguin is (0, 1, 0) and a Torgersen penguin is (0, 0, 1) in one-hot columns (Biscoe, Dream, Torgersen). How far apart are they?
+  options:
+  - 1
+  - About 1.41
+  - 2
+  - 0
+  answer: 1
+  explanation: The columns Dream and Torgersen each differ by 1, so the distance is the square root of 1 + 1 = 1.41. Any two different islands are the same distance apart.
+- prompt: The imputer was fitted on four training rows and learned a mean mass of 4,131.25 g. A test penguin has no mass recorded. What do you fill it with?
+  options:
+  - 0, so the row stays valid and the model can run
+  - 4,105, the mean of all known masses including the test rows
+  - The mean of the test rows alone, since those are the rows being filled
+  - 4,131.25, the number learned from the training rows
+  answer: 3
+  explanation: The fill value is fitted on the training rows only and then applied unchanged to every other row. Refitting with test rows included lets test data shape the inputs, which is leakage.
+- prompt: Which column is a good candidate for ordinal codes (0, 1, 2) instead of one-hot columns?
+  options:
+  - 'Island: Biscoe, Dream, Torgersen'
+  - 'Species: Adelie, Chinstrap, Gentoo'
+  - 'Shirt size: small, medium, large'
+  - 'Color: red, green, blue'
+  answer: 2
+  explanation: Sizes have a real order, so codes that increase with size say something true. Islands, species and colors have no order, so one-hot columns are the safer choice.

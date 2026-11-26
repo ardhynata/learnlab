@@ -1,0 +1,72 @@
+- prompt: A model has a training error of 0.05 and a validation error of 4.80. What does this most likely mean?
+  options:
+  - It is underfitting, because both errors are not zero
+  - It is overfitting, because it matches the training data far better than new data
+  - It is about right, because the training error is tiny
+  - The validation set must be broken, because validation error cannot exceed training error
+  answer: 1
+  explanation: A tiny training error with a much larger validation error is the signature of overfitting. Validation error is usually somewhat higher than training error, and training error alone says nothing about new data.
+- prompt: A degree 1 line has a training error of 1.02 and a validation error of 1.06, while degree 3 reaches 0.27 and 0.46. Which change is most likely to help the line?
+  options:
+  - Collect many more training points of the same kind
+  - Hold back more validation points
+  - Use a more flexible model, such as a higher degree
+  - Stop looking at the validation error
+  answer: 2
+  explanation: Both errors are high and close together, which is underfitting. The line cannot bend, so it needs more flexibility. More data of the same kind would not change what a straight line can do.
+- prompt: Why does a degree 9 polynomial fitted to 10 training points have a training error of exactly 0.00?
+  options:
+  - It has 10 coefficients, one for each point
+  - The 10 points happen to contain no noise at all
+  - Degree 9 is always the best choice for 10 points
+  - It also used the validation points while fitting
+  answer: 0
+  explanation: A degree d polynomial has d + 1 coefficients, so degree 9 can be solved to hit every one of 10 points. That includes the noise in each point, which is why it fails on new data.
+- prompt: In the lesson's example the baseline, which always predicts the training mean, has a validation error of 2.72. The degree 9 curve has 17.74. What does that tell you?
+  options:
+  - Degree 9 is a little worse than the baseline, which is acceptable for a flexible model
+  - The validation error is too large to be compared with any other number
+  - A lower training error always leads to a lower validation error on new data
+  - "Degree 9 does much worse than knowing nothing: it learned mostly noise"
+  answer: 3
+  explanation: The baseline is the score of a model that has learned nothing. A model that does about 6.5 times worse on new data has learned details that mislead it. That is overfitting.
+- prompt: A baseline always predicts the mean of the training answers. The training answers are 2, 4 and 9. What is its training error, as mean squared error?
+  options:
+  - About 8.67
+  - 26
+  - 5
+  - About 2.89
+  answer: 0
+  explanation: The mean is (2 + 4 + 9) / 3 = 5. The squared gaps are 9, 1 and 16, which add up to 26. Dividing by 3 gives 8.67. The value 26 is the sum, not the mean, and 5 is the prediction itself.
+- prompt: A degree 1 model is trained on 10 points and then on 120 points. Its validation error goes from about 1.40 to about 1.21, and its training error from 0.95 to 1.16. What does this show?
+  options:
+  - Validation error is heading for the noise floor of 0.25 as data grows
+  - Training error will keep falling until it reaches zero
+  - The errors come together but stay far above the noise floor
+  - The model started to overfit once it saw more data
+  answer: 2
+  explanation: More data closed the gap between the two errors, but a straight line cannot follow the curve, so both settle near 1.2, far above the 0.25 that noise alone leaves. More data cannot fix underfitting.
+- prompt: Which change makes overfitting more likely?
+  options:
+  - Training on 120 points instead of only 20 points
+  - Fitting degree 9 to 10 points instead of degree 3
+  - Choosing a less flexible model with fewer bends
+  - Collecting data with less noise around the pattern
+  answer: 1
+  explanation: A very flexible model with few points can twist to hit every point, noise included. More data, a less flexible model and less noise all give the model less to chase.
+- prompt: Why do we compare the errors with a baseline?
+  options:
+  - The baseline is always the most accurate model available
+  - A baseline removes the need for a separate validation set
+  - Training error means nothing unless a baseline is computed
+  - A number like 1.06 is high or low only next to a reference
+  answer: 3
+  explanation: An error of 1.06 is good if the baseline scores 50 and poor if the baseline scores 1.2. The baseline gives the scale. It does not replace the validation set.
+- prompt: A model overfits. Which of these is most likely to help?
+  options:
+  - Add a higher degree so it can fit even more closely
+  - Train it for longer on exactly the same points as before
+  - Collect more training data or choose a simpler model
+  - Judge it on the training error instead of the validation error
+  answer: 2
+  explanation: Overfitting means too much flexibility for the amount of data. More data, a simpler model or fewer features all reduce it. A higher degree makes it worse, and training error hides the problem.

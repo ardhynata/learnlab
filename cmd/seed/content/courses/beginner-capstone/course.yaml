@@ -1,0 +1,31 @@
+slug: beginner-capstone
+title: "Beginner capstone"
+summary: "Frame a problem, set a baseline, compare two models, and explain three errors."
+topic: Machine learning
+level: beginner
+path: beginner
+position: 12
+translations:
+  id:
+    title: "Capstone pemula"
+    summary: "Rumuskan masalah, tentukan baseline, bandingkan dua model, dan jelaskan tiga kesalahan."
+modules:
+- slug: core-ideas
+  title: Core ideas
+  summary: "The concepts, in the order the lab uses them."
+  lessons:
+  - framing-and-baselines
+  - comparing-models-and-errors
+  translations:
+    id:
+      title: "Ide inti"
+      summary: "Konsep-konsepnya, sesuai urutan yang dipakai lab."
+- slug: project
+  title: Project
+  summary: "Build it yourself, step by step, then rate your own work."
+  lessons:
+  - beginner-capstone-project
+  translations:
+    id:
+      title: "Proyek"
+      summary: "Kerjakan sendiri, langkah demi langkah, lalu nilai hasil kerjamu."

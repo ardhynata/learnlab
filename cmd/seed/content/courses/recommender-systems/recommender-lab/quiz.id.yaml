@@ -1,0 +1,80 @@
+- prompt: Pada data awal lab, 96 pengguna punya interaksi yang disisihkan sehingga dinilai. Kamu mengatur "Proporsi pengguna dinilai dengan riwayat dihapus" ke 30%. Berapa pengguna cold-start yang dibuat lab?
+  options:
+  - 29, karena 0,3 × 96 = 28,8, yang dibulatkan menjadi 29
+  - 45, karena 30% dari 150 pengguna adalah 45
+  - 67, yaitu pengguna yang menyimpan riwayatnya
+  - 96, karena setiap pengguna yang dinilai kehilangan sebagian riwayat
+  answer: 0
+  explanation: Proporsi itu berlaku untuk pengguna yang dinilai, bukan seluruh 150, sehingga 0,3 × 96 = 28,8 dan lab memakai 29. Sisanya, 96 - 29 = 67, adalah pengguna warm.
+- prompt: Dengan 30% pengguna yang dinilai bersifat cold dan tidak ada riwayat mereka yang disimpan, User k-NN, Item k-NN, dan Matrix factorization sama-sama mendapat NDCG@10 sebesar 0,07 untuk pengguna cold. Mengapa tiga model yang berbeda mendapat skor yang sama?
+  options:
+  - Ketiganya menemukan neighbor yang sama di daftar popularitas
+  - Tanpa riwayat, semua item mendapat skor yang sama, sehingga ketiganya menampilkan daftar yang sama, yaitu item 0, 1, 2, dan seterusnya
+  - Ketiganya beralih ke fitur content dari item
+  - Pengguna cold-start tidak punya interaksi yang disisihkan, sehingga model mana pun mendapat skor yang sama
+  answer: 1
+  explanation: Ketiga model ini menilai sebuah item lewat riwayat pengguna itu sendiri. Tanpa riwayat, semua skor seri dan lab mengurutkan item yang seri menurut nomor item, sehingga ketiga daftar identik dan hanya mendapat hit secara kebetulan. Pengguna cold memang punya interaksi yang disisihkan, dan tidak satu pun dari ketiga model melihat content.
+- prompt: Pada percobaan yang sama, Popularity mendapat 0,25 untuk pengguna warm dan 0,24 untuk pengguna cold, penurunan hanya 0,01. Apa yang ditunjukkan oleh penurunan sekecil itu?
+  options:
+  - Popularity menangani cold start dengan baik, karena setara dengan model personal
+  - Popularity dilatih pada pengguna cold, sehingga ia mengenal mereka
+  - Popularity tidak pernah memakai riwayat pengguna, sehingga menghapusnya nyaris tidak mengubah apa pun; skornya memang sudah rendah
+  - Pengguna cold lebih menyukai item populer daripada pengguna warm
+  answer: 2
+  explanation: Popularity memberi setiap pengguna peringkat bersama yang sama, sehingga menghapus riwayat seorang pengguna tidak dapat merugikannya. Skornya tetap sekitar 0,24 sementara model kolaboratif mendapat 0,39 sampai 0,42 untuk pengguna warm, sehingga penurunan kecil tidak berarti kinerjanya baik.
+- prompt: Tanpa riwayat yang disimpan, Content-based mendapat tepat 0,24 untuk pengguna cold, sama dengan Popularity. Apa yang ditunjukkan hal itu?
+  options:
+  - Genre dari item yang disukai pengguna membentuk profil yang sempurna
+  - Tanpa riwayat, profil genrenya kosong, sehingga hanya porsi kecil popularitas yang mengurutkan item
+  - Content-based dan Popularity adalah model yang sama
+  - Content-based tidak pernah memakai popularitas
+  answer: 1
+  explanation: Skor content-based membandingkan profil genre pengguna dengan genre tiap item. Riwayat yang kosong menghasilkan profil yang kosong, sehingga porsi kecil popularitas itulah yang menentukan urutan. Modelnya bukan model yang berbeda, tetapi tanpa profil ia kembali ke popularity.
+- prompt: Seorang pengguna cold-start menyimpan 3 interaksi, dan hybrid mengarahkan menurut jumlah interaksi (nol, 1 sampai 4, 5 atau lebih). Model mana yang dipakai hybrid untuk pengguna ini?
+  options:
+  - Content-based
+  - Popularity
+  - Matrix factorization
+  - User k-NN
+  answer: 0
+  explanation: Hybrid memakai popularity bila tidak ada interaksi, content-based untuk 1 sampai 4, dan matrix factorization mulai 5. Tiga interaksi jatuh di rentang tengah. Di lab, baris Hybrid berbunyi "memakai Content-based".
+- prompt: Untuk satu pengguna cold-start, item yang disisihkan berada di peringkat ke-7 dalam daftar top 10. Berapa NDCG@10 pengguna itu?
+  options:
+  - 0,14, yaitu 1 / 7
+  - 0,33, yaitu 1 / log2(8)
+  - 0,50, yaitu 1 / log2(4)
+  - 0,70, yaitu 7 / 10
+  answer: 1
+  explanation: Dengan satu item yang disisihkan, daftar ideal menaruhnya di peringkat 1, bernilai 1. Hit di peringkat 7 bernilai 1 / log2(7 + 1) = 1 / 3 = 0,33. Membagi dengan peringkat itu sendiri, 1 / 7, akan memberi diskon yang terlalu tajam.
+- prompt: Setiap pengguna punya tepat satu interaksi yang disisihkan, dan Recall@10 milik Hybrid adalah 0,78. Berapa Precision@10-nya, sampai tiga desimal?
+  options:
+  - 0,078, karena daftar berisi 10 item paling banyak memuat satu hit
+  - 0,780, sama dengan recall
+  - 0,156, karena dua daftar dirata-ratakan
+  - 0,780 dibagi 78 pengguna
+  answer: 0
+  explanation: Precision@10 tiap pengguna adalah jumlah hit dibagi 10, dan dengan satu item yang disisihkan jumlah hit-nya 1 atau 0, sehingga precision@10 sama dengan recall@10 dibagi 10, yaitu 0,78 / 10 = 0,078. Lab menampilkan 0,08.
+- prompt: Pada data awal, Popularity memberi setiap pengguna peringkat yang sama, namun cakupannya 0,45 dari 80 item. Berapa item berbeda yang muncul di daftar-daftar itu?
+  options:
+  - 10, panjang satu daftar
+  - 80, setiap item
+  - 45, karena cakupan adalah persentase
+  - 36, karena 0,45 × 80 = 36
+  answer: 3
+  explanation: Cakupan adalah proporsi item yang ditampilkan kepada siapa pun, dan 36 dari 80 = 0,45. Angkanya lebih dari 10 karena tiap daftar melewati item yang sudah dilihat pengguna itu, sehingga daftarnya sedikit berbeda.
+- prompt: Kamu mengatur Faktor MF ke 16 dan Lambda MF ke 0,1. Kurva pelatihan berakhir dengan galat training 0,20 dan galat validasi 0,55, dan NDCG@10 turun dari 0,43 ke 0,28. Apa yang ditunjukkan kurva itu?
+  options:
+  - Model underfit, karena galat training-nya rendah
+  - Model sudah di-tuning dengan baik, karena galat training-nya yang terendah di antara semua pengaturan
+  - Model overfit, karena ia cocok dengan interaksi training tetapi galat validasinya 0,35 lebih tinggi
+  - Galat validasinya salah, karena seharusnya sama dengan galat training
+  answer: 2
+  explanation: Galat training 0,20 terhadap galat validasi 0,55 adalah selisih 0,35, yang merupakan tanda overfitting. Pengaturan awal (6 faktor, lambda 2) punya selisih 0,07 dan NDCG@10 yang lebih baik.
+- prompt: Pada sampel 6 (seed 6), dengan 30% pengguna yang dinilai bersifat cold dan tidak ada riwayat mereka yang disimpan, Kuis Cepat menyebut Content-based, bukan model kolaboratif. Apa pelajarannya?
+  options:
+  - Content-based adalah recommender yang paling buruk
+  - Lab punya bug pada sampel 6
+  - Model kolaboratif tidak lagi terdampak cold start
+  - Satu sampel dapat menyebut pihak yang kalah dengan berbeda, sehingga ulangi uji pada sampel baru sebelum mempercayai hasilnya
+  answer: 3
+  explanation: Pada sampel 6, Popularity sendiri hanya mendapat 0,09 untuk 41 pengguna cold, sehingga semua yang berpegang padanya ikut turun. Pada sampel 1 sampai 5, kelompok kolaboratif kehilangan paling banyak. Satu kali percobaan adalah satu sampel, jadi ulangi sebelum mempercayai hasilnya.

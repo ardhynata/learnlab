@@ -1,0 +1,80 @@
+- prompt: Pada run bawaan, sebuah rilis mengirim pengeluaran dikali 100 mulai hari ke-25. Monitor input berbunyi pada hari ke-26 dan monitor accuracy pada hari ke-36. Apa penjelasan terbaik untuk selisih 10 hari itu?
+  options:
+  - Monitor accuracy memiliki threshold yang lebih tinggi daripada monitor PSI
+  - Label tiba terlambat 7 hari, dan window accuracy mencampur hari lama dengan hari yang rusak
+  - PSI dapat melihat baris besok, sedangkan accuracy tidak
+  - Model baru menjadi kurang akurat pada hari ke-36
+  answer: 1
+  explanation: Prediksi hari ke-25 diberi label pada hari ke-32, dan pada hari ke-36 baru 5 dari 7 hari dalam window yang rusak. Angkanya 73,9% terhadap batas 76,2%, dan ia membutuhkan dua hari berturut-turut. Model sudah salah pada baris baru sejak hari ke-25.
+- prompt: Pada hari ke-26 run bawaan, rollback menyisakan 1.693 prediksi salah. Rollback memiliki biaya tetap 1 dan setiap prediksi yang salah berbiaya 0,05. Berapa biaya totalnya?
+  options:
+  - 84,65, karena biaya tetap hanya berlaku untuk retraining
+  - 1.694, satu unit untuk setiap prediksi yang salah ditambah biaya tetap
+  - 85,65, yaitu 1 + 0,05 x 1.693 dan tampil sebagai 85,7
+  - 33.860, prediksi yang salah dibagi 0,05
+  answer: 2
+  explanation: Totalnya adalah biaya tetap ditambah biaya kesalahan, maka 1 + 0,05 x 1.693 = 1 + 84,65 = 85,65. Rollback memiliki biaya tetap 1, dan 84,65 melewatkannya.
+- prompt: Pada Concept shift, Log alert tidak menampilkan alert input maupun alert skor, dan hanya monitor accuracy yang berbunyi, pada hari ke-34. Mengapa monitor input diam?
+  options:
+  - Input mempertahankan distribusinya dan hanya aturan yang menghubungkannya dengan label yang berubah, sehingga hanya label yang dapat menunjukkannya
+  - Monitor PSI dimatikan pada skenario ini
+  - Label tiba terlambat 21 hari pada skenario ini, sehingga input belum bergeser
+  - Model terlalu akurat untuk disadari oleh monitor input
+  answer: 0
+  explanation: Concept shift memutar aturan pelabelan dan membiarkan input persis seperti semula, sehingga tidak ada PSI yang bergerak (PSI input tertinggi dalam run ini 0,16 dan PSI skor tertinggi 0,19, keduanya di bawah 0,25). Accuracy adalah satu-satunya lapisan yang melihatnya. Keterlambatan 21 hari milik skenario Label terlambat dengan drift.
+- prompt: Pada Covariate drift, monitor input berbunyi pada hari ke-26 dengan PSI 2,50 dan monitor accuracy tidak pernah berbunyi. Terus memantau berbiaya 38,4 dengan accuracy 89,0%, dan rollback berbiaya 53,2. Apa yang ditunjukkan hal ini?
+  options:
+  - Lakukan rollback segera, karena PSI di atas 0,25 berarti model rusak
+  - Lakukan retraining segera, karena input jauh dari data training
+  - Naikkan threshold PSI sampai alert berhenti, karena alert itu hanya noise
+  - Terus pantau dan periksa label, karena model masih benar pada input yang bergeser
+  answer: 3
+  explanation: Input bergeser, dan model masih benar pada input itu (89,0% dibanding 84,2% saat peluncuran). Alert adalah alasan untuk menyelidiki, bukan untuk memperbaiki. Menaikkan threshold sampai alert diam hanya akan menyembunyikan pergeseran tanpa mempelajari apa pun tentang kerusakannya.
+- prompt: Pada hari ke-40 run Label shift, tampilan Kalibrasi skor menunjukkan skor rata-rata 38% sementara hanya 25% baris berlabel yang positif. Perbaikan mana yang paling sesuai?
+  options:
+  - Rollback, karena pasti ada rilis yang merusak sesuatu pada model
+  - Kalibrasi ulang, karena skornya terlalu tinggi dan biayanya 20,1 dibanding 31,2
+  - Retraining, karena keseimbangan kelas yang berubah selalu berarti seluruh model harus dibangun ulang
+  - Terus pantau, karena skor rata-rata dan porsi positif tidak harus sama
+  answer: 1
+  explanation: Keseimbangan kelas bergeser, sehingga probabilitas model terlalu tinggi sementara peringkatnya masih bisa baik. Kalibrasi ulang menskalakan ulang skor ke porsi positif yang baru, dan biayanya 2 unit dibanding 10 untuk retraining.
+- prompt: Pada hari ke-28 run Label shift, kalibrasi ulang berbiaya 63,9 dan terus memantau berbiaya 56,7. Pada hari ke-40 kalibrasi ulang berbiaya 20,1 dan terus memantau 36,6. Apa yang berubah di antara kedua hari itu?
+  options:
+  - Biaya tetap kalibrasi ulang turun dari hari ke hari
+  - Label shift berhenti pada hari ke-40, sehingga tidak ada lagi yang perlu diperbaiki
+  - Label yang sudah tiba pada hari ke-40 berasal dari setelah pergeseran, sehingga kalibrasi ulang memiliki sesuatu untuk dipelajari
+  - Monitor accuracy berbunyi pada hari ke-40 dan membuat perbaikannya lebih murah
+  answer: 2
+  explanation: Kalibrasi ulang menyesuaikan diri pada label terbaru yang sudah tiba. Pada hari ke-28 label itu berasal dari sebelum pergeseran pada hari ke-25, sehingga ia mempelajari dunia yang lama dan tetap membayar 2 unit. Pada hari ke-40 label itu berasal dari dunia yang baru.
+- prompt: Pada stream Bersih, ambang alert PSI 0,05 dan window input 1 hari membuat monitor input berstatus alert pada 48 dari 60 hari. Window 7 hari menurunkannya menjadi 0. Mengapa?
+  options:
+  - Satu hari berisi 200 baris adalah sampel yang berisik, dan window 7 hari merata-ratakan noise itu
+  - Window 7 hari melewati hari-hari terbaru, tempat alert berada
+  - Window yang lebih panjang menaikkan threshold efektif dari 0,05 menjadi 0,35
+  - Window yang lebih panjang membuat PSI setiap fitur tepat 0
+  answer: 0
+  explanation: PSI dari satu hari berisi 200 baris terhadap 10 bin melonjak-lonjak walaupun tidak ada yang berubah, dan threshold 0,05 berada di dalam noise itu. Tujuh hari baris memberi sampel yang lebih stabil. Harganya adalah waktu, karena pada run skew bawaan alert pertama pindah dari hari ke-26 ke hari ke-27.
+- prompt: Accuracy saat peluncuran adalah 84,2%. Kamu mengatur Penurunan akurasi yang memicu alert (poin) ke 5. Pada accuracy berapa monitor accuracy mulai berbunyi?
+  options:
+  - Di bawah 89,2%
+  - Di bawah 77,2%
+  - Di bawah 80,0%, yaitu 84,2 dikurangi 5%-nya
+  - Di bawah 79,2%
+  answer: 3
+  explanation: Penurunannya dalam poin, sehingga batasnya adalah 84,2 - 5 = 79,2%. Mengurangi 5% dari 84,2 akan menghasilkan 80,0%, yaitu aturan yang berbeda. Pada nilai bawaan 8 poin, batasnya 76,2%.
+- prompt: Pada hari ke-36 run skew bawaan, retraining berbiaya 58,2 dan rollback berbiaya 61,3. Mengapa sebuah tim mungkin tetap memilih rollback?
+  options:
+  - Retraining memiliki accuracy yang lebih rendah, sehingga tabel biaya pasti keliru
+  - Rollback menghapus bug, sedangkan retraining hanya belajar mengabaikan fitur yang rusak
+  - Retraining aktif seketika, sedangkan rollback baru aktif 3 hari kemudian
+  - Tabel biaya hanya membandingkan opsi pada hari ketika monitor accuracy diam
+  answer: 1
+  explanation: Label yang sudah tiba sudah memuat hari-hari dengan input rusak, sehingga model hasil retraining belajar bergantung lebih sedikit pada pengeluaran. Accuracy-nya 80,7% dibanding 75,9%, dan itulah sebabnya biayanya lebih rendah. Bugnya masih ada, dan retraining butuh 3 hari untuk aktif sedangkan rollback seketika.
+- prompt: Pada Label terlambat dengan drift, kejadiannya pada hari ke-25 dan label tiba terlambat 21 hari, bukan 7. Pada hari keberapa label pertama dari hari kejadian tiba?
+  options:
+  - Hari ke-32
+  - Hari ke-21
+  - Hari ke-46
+  - Hari ke-25
+  answer: 2
+  explanation: Label tiba pada hari prediksi ditambah keterlambatan, maka 25 + 21 = 46. Monitor accuracy kemudian butuh dua hari berturut-turut, sehingga alert-nya jatuh pada hari ke-47, bukan hari ke-36. Dengan keterlambatan normal 7 hari, harinya akan jatuh pada hari ke-32.

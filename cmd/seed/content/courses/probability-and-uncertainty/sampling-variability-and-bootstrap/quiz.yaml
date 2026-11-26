@@ -1,0 +1,80 @@
+- prompt: Two teammates test the same model, each on a different set of 20 fresh cases. One gets 80% and the other 90%. What is the most likely explanation?
+  options:
+  - One of them made a mistake when counting
+  - The model changed between the two tests
+  - "Sampling variability: each test set is one draw, and small sets wobble"
+  - The model must be exactly 85% accurate
+  answer: 2
+  explanation: A test set is a sample, so its score is a draw. With only 20 cases the standard error is about 8 points, so scores of 80% and 90% are ordinary. Nobody has to be wrong.
+- prompt: A model scores 85% on 100 independent test cases. What is the standard error of that accuracy, sqrt(0.85 × 0.15 / 100)?
+  options:
+  - About 0.4 points
+  - About 3.6 points
+  - About 8.5 points
+  - About 14 points
+  answer: 1
+  explanation: 0.85 × 0.15 = 0.1275, divided by 100 is 0.001275, and its square root is 0.0357, about 3.6 points.
+- prompt: A test set of 100 cases gives a standard error of 3.6 points. Roughly how many cases would bring it down to about 1.8 points?
+  options:
+  - 150
+  - 200
+  - 300
+  - 400
+  answer: 3
+  explanation: The standard error falls with the square root of n, so halving it takes four times the cases, 400. Doubling the cases (200) only shrinks it by a factor of about 1.4.
+- prompt: A model gets 85 of 100 test cases right, with a standard error of 0.0357. What is the 95% confidence interval for its accuracy (score ± 1.96 SE)?
+  options:
+  - 78% to 92%
+  - 82% to 88%
+  - 75% to 95%
+  - 85% to 92%
+  answer: 0
+  explanation: 1.96 × 0.0357 = 0.070, so the interval is 85% plus and minus 7 points, 78% to 92%. An interval is centered on the score, not stacked on one side of it.
+- prompt: A report says "accuracy 85%, 95% confidence interval 78% to 92%". Which reading is correct?
+  options:
+  - 95% of the test cases lie between 78% and 92%
+  - The model will score between 78% and 92% on every future test set
+  - Over many repeats, about 95% of intervals built this way contain the true accuracy
+  - The true accuracy is inside this interval with exactly 95% probability
+  answer: 2
+  explanation: The 95% describes the method that builds the intervals. The true accuracy is one fixed number, which this interval either contains or does not. Future test sets will wobble around it as well.
+- prompt: Why would you use the bootstrap instead of the accuracy formula?
+  options:
+  - The bootstrap always gives a narrower interval
+  - The metric, such as F1 or AUC, has no simple formula
+  - The bootstrap needs no test set
+  - The bootstrap removes leakage from the test set
+  answer: 1
+  explanation: The bootstrap works for any metric you can compute from a list of cases. It does not shrink intervals, it still needs a test set, and it cannot fix leakage.
+- prompt: A test set has ten cases, and the model misses cases 4 and 9. A bootstrap resample draws the cases 8, 4, 3, 6, 9, 7, 5, 4, 8, 2. What accuracy does this resample give?
+  options:
+  - 60%
+  - 80%
+  - 90%
+  - 70%
+  answer: 3
+  explanation: Case 4 is drawn twice and case 9 once, so the resample has 3 misses and 7 right answers out of 10, which is 70%. The original accuracy was 80%, but a resample can differ from it.
+- prompt: You run 20 bootstrap resamples and sort their accuracies. They are 55, 65, 65, 70, 70, 70, 75, 75, 75, 80, 80, 80, 80, 85, 85, 85, 90, 90, 90 and 100 (in percent). Cutting 5% off each end gives which 90% percentile interval?
+  options:
+  - 65% to 90%
+  - 55% to 100%
+  - 70% to 85%
+  - 65% to 100%
+  answer: 0
+  explanation: 5% of 20 results is one result. Drop the lowest (55) and the highest (100), and the remaining values run from 65 to 90.
+- prompt: A model gets 5 of 5 test cases right. What does a bootstrap interval for its accuracy look like, and what does that show?
+  options:
+  - 80% to 100%, which is a sensible range
+  - 50% to 100%, because half the resamples miss
+  - 100% to 100%, which wrongly says there is no uncertainty
+  - It cannot be computed because there are no mistakes
+  answer: 2
+  explanation: Every resample can only contain right answers, so every resample scores 100%. The bootstrap cannot invent a mistake it has not seen, so it fails on tiny samples like this one.
+- prompt: A test set has 100 rows from 20 patients, 5 rows each. A bootstrap resamples the 100 rows one at a time. Why is the interval probably too narrow?
+  options:
+  - Rows of one patient are alike, so there are far fewer than 100 independent cases
+  - Resampling with replacement always shrinks the spread of the metric
+  - Twenty patients is too many for the bootstrap to work well
+  - The bootstrap cannot handle more than one row per patient by design
+  answer: 0
+  explanation: The bootstrap treats each row as an independent draw. Rows from the same patient are related, so the real sample is closer to 20 cases than 100. Resample whole patients instead.

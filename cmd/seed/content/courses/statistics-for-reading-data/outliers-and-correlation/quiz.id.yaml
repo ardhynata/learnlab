@@ -1,0 +1,80 @@
+- prompt: Enam nilai adalah 22, 23, 24, 25, 26, dan 27. Lalu nilai 95 ditambahkan. Ringkasan mana yang berubah paling besar?
+  options:
+  - Median, dari 24,5 menjadi 25
+  - Rata-rata, dari 24,5 menjadi sekitar 34,6
+  - Tidak ada yang berubah
+  - Keduanya berubah sama besar
+  answer: 1
+  explanation: Rata-rata menjumlahkan semua nilai, sehingga 95 menariknya naik sekitar 10. Median hanya berpindah dari dua nilai tengah ke nilai keempat dari tujuh, perubahan sebesar 0,5.
+- prompt: Seorang analis menemukan waktu pengantaran 95 menit di antara nilai-nilai yang berkisar di sekitar 25. Apa yang harus dilakukan pertama kali?
+  options:
+  - Menghapusnya, karena setiap outlier adalah kesalahan
+  - Mempertahankannya, karena menghapus data tidak pernah diperbolehkan
+  - Mencari tahu asalnya, baru memutuskan
+  - Menggantinya dengan rata-rata
+  answer: 2
+  explanation: Outlier dapat berupa kesalahan, kasus nyata yang langka, atau kelompok yang berbeda. Angkanya saja tidak dapat menunjukkan yang mana, jadi periksa sumbernya sebelum membuang apa pun.
+- prompt: Untuk nilai 22, 23, 24, 25, 26, 27, dan 95, Q1 adalah 23 dan Q3 adalah 27. Nilai mana yang ditandai oleh aturan 1,5 x IQR?
+  options:
+  - Tidak ada
+  - Hanya 22
+  - 22 dan 95
+  - Hanya 95
+  answer: 3
+  explanation: IQR-nya 4, sehingga batasnya 23 - 6 = 17 dan 27 + 6 = 33. Hanya 95 yang berada di luar batas; 22 masih di atas 17.
+- prompt: Mana yang bersifat robust, artinya satu nilai ekstrem nyaris tidak mengubahnya?
+  options:
+  - Rata-rata
+  - Median
+  - Rentang
+  - Jumlah semua nilai
+  answer: 1
+  explanation: Median bergantung pada urutan nilai, bukan besarnya. Rata-rata, rentang, dan jumlah semuanya memakai nilai ekstrem secara langsung.
+- prompt: Pada sebuah scatterplot, titik-titik turun dari kiri atas ke kanan bawah dan rapat mengikuti garis lurus. Berapa nilai r yang paling mendekati?
+  options:
+  - 1
+  - 0
+  - -1
+  - 0,5
+  answer: 2
+  explanation: Pola yang turun berarti hubungan negatif, dan rapat mengikuti garis berarti hubungannya kuat, sehingga r mendekati -1.
+- prompt: Pada contoh di pelajaran, jam belajar adalah 1 sampai 5 dan nilainya 50, 55, 65, 60, dan 70. Apa yang dikatakan r = 0,90?
+  options:
+  - Siswa memperoleh 0,90 poin untuk setiap jam belajar
+  - 90 persen siswa lulus
+  - Belajar menyebabkan 90 persen dari nilai
+  - Titik-titik mengikuti tren garis lurus naik yang kuat
+  answer: 3
+  explanation: r memberi arah dan kerapatan tren linear, bukan kemiringan dan bukan hubungan sebab-akibat. Di sini r menunjukkan titik-titik naik cukup rapat sepanjang sebuah garis.
+- prompt: Siswa keenam belajar 6 jam dan mendapat nilai 30, lalu r turun dari 0,90 menjadi -0,23. Apa penjelasan terbaiknya?
+  options:
+  - Satu titik yang jauh dari tren dapat mendominasi perhitungan
+  - Enam siswa terlalu sedikit sehingga r tidak ada
+  - r selalu mengecil ketika sebuah titik ditambahkan
+  - Belajar lebih banyak jam menurunkan nilai
+  answer: 0
+  explanation: Titik itu jauh dari kedua rata-rata, sehingga hasil kali dan jarak kuadratnya besar dan ia mengalahkan kelima titik lainnya.
+- prompt: Sepuluh titik tidak menunjukkan pola dan memiliki r sekitar -0,08. Satu titik baru yang jauh di kanan atas menaikkan r menjadi 0,82. Apa artinya?
+  options:
+  - Kesepuluh titik itu sebenarnya berkorelasi secara tersembunyi
+  - Bukti kuat adanya tren yang nyata
+  - r yang pertama dihitung dengan salah
+  - r yang tinggi berasal dari satu titik, bukan dari sebuah pola
+  answer: 3
+  explanation: Satu titik yang jauh dapat menciptakan korelasi. Periksa scatterplot, lalu bandingkan r dengan dan tanpa titik tersebut.
+- prompt: Sebuah scatterplot jelas menunjukkan kurva berbentuk U, tetapi r mendekati 0. Mengapa?
+  options:
+  - r hanya mengukur tren garis lurus
+  - Data pasti mengandung kesalahan
+  - r mendekati 0 selalu berarti kolom-kolomnya tidak berhubungan
+  - Kurvanya terlalu kecil untuk diperhitungkan
+  answer: 0
+  explanation: Bentuk U turun lalu naik, sehingga garis lurus tidak sesuai dengan kedua separuhnya. r tidak menangkap kurva itu, karena itulah kamu perlu menggambar plotnya.
+- prompt: Penjualan es krim dan kasus sunburn berkorelasi kuat sepanjang tahun. Apa yang dapat disimpulkan?
+  options:
+  - Es krim menyebabkan sunburn
+  - Keduanya bergerak bersama, tetapi r saja tidak menunjukkan sebabnya
+  - Sunburn membuat orang membeli es krim
+  - Korelasi itu pasti akibat sebuah outlier
+  answer: 1
+  explanation: Keduanya bisa digerakkan oleh faktor ketiga, seperti cuaca panas dan cerah. Korelasi hanya menunjukkan bahwa kolom-kolom bergerak bersama, bukan bahwa yang satu menyebabkan yang lain.

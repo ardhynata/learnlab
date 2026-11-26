@@ -1,0 +1,80 @@
+- prompt: Why does unrolling a 28 × 28 image into one row of 784 columns hurt a model that treats each column on its own?
+  options:
+  - The numbers become too large for the model to read
+  - The model is no longer told which pixels are neighbours
+  - The brightness values are lost
+  - The image ends up with fewer pixels
+  answer: 1
+  explanation: All 784 values are still there, but the grid position is gone, and in an image the information sits in how neighbouring pixels differ. A table model that treats columns independently cannot use that.
+- prompt: A 3 × 3 filter slides one pixel at a time, with no padding, over a 5 × 5 patch. How big is the feature map?
+  options:
+  - 5 × 5
+  - 4 × 4
+  - 3 × 3
+  - 2 × 2
+  answer: 2
+  explanation: The filter fits in 5 - 3 + 1 = 3 positions across and 3 down, so the map is 3 × 3. It would stay 5 × 5 only if a frame of zeros were added first (padding).
+- prompt: The edge filter has -1 in its left column, 0 in the middle and 1 in its right column, in every row. A window holds the rows (2, 2, 8), (1, 1, 9) and (0, 2, 8). What number does the filter give?
+  options:
+  - 22
+  - 25
+  - 28
+  - 3
+  answer: 0
+  explanation: The right column adds up to 8 + 9 + 8 = 25 and the left column to 2 + 1 + 0 = 3, so the result is 25 - 3 = 22. The window is much brighter on the right, which is what this filter looks for.
+- prompt: The same filter is placed over a window where every pixel is 5. What does it give?
+  options:
+  - 45
+  - 15
+  - 5
+  - 0
+  answer: 3
+  explanation: In each row the result is -5 + 0 + 5 = 0, so the sum is 0. A filter that compares the two sides gives nothing where there is no difference, which is why flat areas stay quiet in the feature map.
+- prompt: A 2 × 2 block of a feature map holds 0, 9, 4 and 1, so max pooling gives 9. The strong response moves one pixel to the neighbouring cell of the same block. What does the block give now?
+  options:
+  - 4
+  - 9
+  - 0
+  - 14
+  answer: 1
+  explanation: The largest number in the block is still 9, only in another cell, so the pooled value does not change. That is how pooling forgives small shifts. The 14 would come from adding, which pooling does not do.
+- prompt: A convolution layer has 16 filters of 3 × 3 and reads an input with 8 feature maps. With one bias per filter, how many parameters does it have?
+  options:
+  - 1,168
+  - 1,152
+  - 144
+  - 4,010
+  answer: 0
+  explanation: Each filter is 3 × 3 × 8 = 72 weights plus 1 bias, so 16 × 73 = 1,168. The answer 1,152 forgets the biases, and 144 forgets that each filter reads all 8 maps.
+- prompt: What makes weight sharing cut the number of weights so much?
+  options:
+  - Pooling removes half of the weights
+  - Each filter is applied to a single pixel only
+  - The weights are rounded to whole numbers
+  - One filter's weights are reused at every window position
+  answer: 3
+  explanation: The 9 weights of a 3 × 3 filter are used at all 676 windows of a 28 × 28 image, so a pattern is learned once and found anywhere. A dense layer would need separate weights for each position.
+- prompt: Two 3 × 3 convolutions are stacked, with stride 1 and no pooling. How large is the receptive field of one number in the second feature map?
+  options:
+  - 3 × 3
+  - 6 × 6
+  - 5 × 5
+  - 9 × 9
+  answer: 2
+  explanation: Each number of the second map reads 3 × 3 numbers of the first map, which together cover 5 × 5 pixels. Each stacked 3 × 3 layer widens the field by 2, not by 3.
+- prompt: A grey 28 × 28 image goes through a convolution with 8 filters of 3 × 3, with no padding. What is the shape of the output?
+  options:
+  - 28 × 28 × 8
+  - 26 × 26 × 8
+  - 26 × 26 × 1
+  - 13 × 13 × 8
+  answer: 1
+  explanation: Each filter gives a 26 × 26 map, and 8 filters give 8 maps, so 26 × 26 × 8. The 13 × 13 shape appears only after the following pooling layer.
+- prompt: In a trained CNN, where do the nine numbers inside a 3 × 3 filter come from?
+  options:
+  - The programmer writes one edge detector for each filter
+  - The pooling layer sets them after each image
+  - They start random and training updates them with gradient steps
+  - They are copied from a table of standard filters
+  answer: 2
+  explanation: Filter weights are ordinary weights. Training adjusts them by backpropagation, so the filters become whatever patterns help lower the loss. The hand-made edge filter in this lesson was only for teaching.

@@ -1,0 +1,80 @@
+- prompt: On the two-rings data, k-means and single-linkage hierarchical clustering are each asked for 2 clusters. What does the lesson's figure show?
+  options:
+  - Both methods find the two rings
+  - k-means cuts across both rings, while single linkage finds them
+  - Single linkage cuts across both rings, while k-means finds them
+  - Neither method can separate them
+  answer: 1
+  explanation: k-means builds round regions around centers, so it cuts the rings in halves. Single linkage joins nearest neighbors and follows each ring around, so it recovers both.
+- prompt: You must put every customer into a segment and describe each segment by a typical customer. Which method fits that need best as a first try?
+  options:
+  - DBSCAN, because it sets stray customers aside
+  - Hierarchical clustering with single linkage, because it follows chains
+  - k-means, because every point gets a group and each group has a center
+  - None of them, because clustering cannot describe groups
+  answer: 2
+  explanation: k-means assigns every point and gives each group a center, the average point of the group, which you can describe. DBSCAN may leave some customers as noise.
+- prompt: On two rings, k-means scores a silhouette of 0.36 and the correct grouping scores 0.01. What does this show?
+  options:
+  - The silhouette favors compact groups, so the wrong grouping can score higher
+  - The correct grouping is badly made, because its score is close to zero
+  - k-means is the better method for rings, because its score is higher
+  - The silhouette is broken and should never be used for any clustering
+  answer: 0
+  explanation: The silhouette rewards points that are close to their own group and far from the next, which compact groups do best. Use it to compare settings on one kind of data, and plot the result before you trust it.
+- prompt: Hierarchical clustering starts from the distances between all pairs of points. How many pairs are there for 10,000 points, using n x (n - 1) / 2?
+  options:
+  - 10,000
+  - About 100 thousand
+  - About 100 million
+  - About 50 million
+  answer: 3
+  explanation: 10,000 x 9,999 / 2 = 49,995,000, about 50 million. Using n x n gives 100 million, which counts every pair twice and every point with itself.
+- prompt: Two penguins differ by 0.4 mm, 1.3 mm, 5 mm and 50 g in their four measurements. The squared gaps are 0.16, 1.69, 25 and 2,500. About what share of the squared distance comes from body mass?
+  options:
+  - About 1 percent
+  - About 25 percent
+  - About 99 percent
+  - About 50 percent
+  answer: 2
+  explanation: The sum is 2,526.85 and 2,500 / 2,526.85 is about 0.989. The column with the biggest numbers takes over the distance unless you scale the features first.
+- prompt: DBSCAN with MinPts 4 on the unequal-density data gives 2 clusters and 11 noise points at eps 1.0, but 4 clusters and 29 noise points at eps 0.5. What is the best reading?
+  options:
+  - eps 0.5 is correct, because it finds more clusters and more detail
+  - It is sensitive to eps, so check stability and plot before trusting either
+  - The data has 4 clusters, because a smaller eps looks closer at the data
+  - DBSCAN is random, so its results cannot be repeated from run to run
+  answer: 1
+  explanation: A small change in one setting changed the story, which is a warning. A tight group and a loose group need different radii, so one eps struggles with both.
+- prompt: You have 400 points and do not know how many groups there are. Which method lets you study the structure first and choose k afterward?
+  options:
+  - k-means, which needs k before it starts
+  - DBSCAN, which always finds the true number of groups
+  - Any method, because k is only a label
+  - Hierarchical clustering, by cutting the dendrogram at different heights
+  answer: 3
+  explanation: Hierarchical clustering builds the whole merge tree once. You then cut it to get 2, 3 or 4 clusters. k-means needs k up front, and DBSCAN needs eps and MinPts instead.
+- prompt: On penguins, standardizing the columns lowered the silhouette from 0.58 to 0.45, but raised the share of penguins grouped with their own species from 68 to 92 percent. What is the best reading?
+  options:
+  - Raw clusters followed body mass alone, so the lower score is not worse
+  - Standardizing damaged the data, because the silhouette score went down
+  - The silhouette is always right, so the raw clusters are the better ones
+  - The species check is wrong, because species were not used to cluster
+  answer: 0
+  explanation: Raw distances were dominated by body mass (for the two penguins above, about 99 percent), so the clusters were compact in one column and meant little. The species check uses information the clustering never saw, which is why it can be trusted here.
+- prompt: A few far-away stray points sit beside three blobs. What happens with k-means and with DBSCAN?
+  options:
+  - Both set the strays aside as noise, so the blobs are left untouched
+  - k-means groups each stray and it pulls a center; DBSCAN can label it noise
+  - DBSCAN forces strays into a group, while k-means can label them noise
+  - Neither method notices strays, so they have no effect on either
+  answer: 1
+  explanation: k-means gives every point a group, and a far-away point drags the mean of its group toward it. DBSCAN labels points in sparse space as noise.
+- prompt: You are unsure which method suits new data. Which plan matches the lesson?
+  options:
+  - Run every method and keep the one with the highest silhouette score
+  - Run k-means with many seeds and trust the lowest inertia
+  - Plot the data, scale the features, run two different methods and compare
+  - Choose DBSCAN, because it does not need k
+  answer: 2
+  explanation: Agreement between two methods that see shapes differently, such as k-means and DBSCAN, is evidence the structure is real; k-means and ward are near twins, so their agreement says little. Disagreement is a question to investigate. A single score cannot referee between methods that see different shapes.

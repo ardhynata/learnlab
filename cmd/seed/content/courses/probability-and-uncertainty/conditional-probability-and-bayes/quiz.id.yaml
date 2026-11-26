@@ -1,0 +1,72 @@
+- prompt: Dari 344 penguin, 168 hidup di pulau Biscoe, dan 124 di antaranya Gentoo. Berapa P(Gentoo | Biscoe)?
+  options:
+  - 0,36, karena 124 dari 344 penguin adalah Gentoo
+  - 0,74, karena 124 dari 168 penguin Biscoe adalah Gentoo
+  - 1,00, karena setiap penguin Gentoo hidup di Biscoe
+  - 0,49, karena 168 dari 344 penguin hidup di Biscoe
+  answer: 1
+  explanation: Probabilitas bersyarat hanya menghitung di antara kasus yang memenuhi syarat, sehingga kelompoknya adalah 168 penguin Biscoe. Angka 1,00 menjawab pertanyaan yang dibalik, P(Biscoe | Gentoo), dan 0,36 mengabaikan syaratnya.
+- prompt: Sebuah tes skrining menjaring 90 persen orang sakit, dan hasil tesmu positif. Temanmu berkata "jadi kemungkinan kamu sakit 90 persen". Apa yang keliru dari pernyataan itu?
+  options:
+  - Tidak ada yang keliru, sensitivity adalah probabilitas sakit setelah hasil positif
+  - Tes harus 100 persen sensitif dulu sebelum hasil positif ada artinya
+  - Pernyataan itu menukar P(positif | sakit) dengan P(sakit | positif), padahal yang kedua juga bergantung pada seberapa umum kondisinya
+  - Seharusnya yang dipakai tingkat alarm palsu, bukan sensitivity
+  answer: 2
+  explanation: Sensitivity adalah P(positif | sakit). Yang kamu cari adalah P(sakit | positif), dan aturan Bayes memerlukan base rate serta tingkat alarm palsu untuk memperolehnya. Dengan base rate 2 persen, hasilnya hanya 0,27.
+- prompt: Sebuah tes punya sensitivity 0,90 dan tingkat alarm palsu 0,05. Di kelompok yang 10 dari 100 orangnya sakit, kamu menguji 1.000 orang. Berapa porsi hasil positif yang benar-benar orang sakit?
+  options:
+  - Sekitar 0,67, karena 90 dari 135 hasil positif adalah orang sakit
+  - Sekitar 0,90, karena tes menjaring 90 persen orang sakit
+  - Sekitar 0,10, karena 10 persen kelompok itu sakit
+  - Sekitar 0,33, karena 45 dari 135 hasil positif adalah orang sakit
+  answer: 0
+  explanation: Ada 100 orang sakit dan 90 di antaranya hasilnya positif. Dari 900 orang sehat, 5 persen (45) juga positif. Maka 90 / (90 + 45) = 0,67. Angka 0,33 adalah porsi hasil positif yang justru orang sehat.
+- prompt: Tes yang sama (sensitivity 0,90, tingkat alarm palsu 0,05) dipakai pada dua kelompok. Pernyataan mana tentang hasil positif yang benar?
+  options:
+  - Maknanya sama di kedua kelompok, karena tesnya sama
+  - Maknanya lebih besar di kelompok dengan lebih sedikit orang sakit, karena kondisi yang langka lebih mudah dikenali
+  - Maknanya sama di kedua kelompok selama ukuran kelompoknya sama
+  - Maknanya lebih besar di kelompok yang kondisinya lebih umum, karena alarm palsu per true positive lebih sedikit
+  answer: 3
+  explanation: Dengan 2 persen sakit, hasil positif bermakna 0,27. Dengan 20 persen sakit, maknanya 0,82. Alarm palsu berasal dari kelompok sehat, yang mengecil ketika kondisi makin umum, sementara true positive bertambah.
+- prompt: Dalam sudut pandang aturan Bayes pada alarm sebuah classifier, probabilitas mana yang merupakan precision?
+  options:
+  - Prior, P(fraud)
+  - Likelihood, P(alarm | fraud)
+  - Posterior, P(fraud | alarm)
+  - Evidence, P(alarm)
+  answer: 2
+  explanation: Precision adalah porsi alarm yang benar-benar fraud, yaitu P(fraud | alarm), sebuah posterior. Likelihood P(alarm | fraud) adalah recall, dan prior adalah rasio kelas positif.
+- prompt: Dari 1.000 pembayaran, sebuah model fraud memberi alarm pada 6 dari 10 fraud dan pada 14 dari 990 pembayaran wajar. Apa arti 6 / 20 = 0,30 bagi analis yang membuka sebuah alarm?
+  options:
+  - Model menemukan 30 persen dari semua fraud
+  - Sekitar 3 dari 10 alarm adalah fraud sungguhan, sehingga sekitar 7 dari 10 adalah alarm palsu
+  - 30 persen dari semua pembayaran adalah fraud
+  - Model salah pada 30 persen dari semua pembayaran
+  answer: 1
+  explanation: Ada 20 pembayaran yang memicu alarm dan 6 di antaranya fraud, sehingga 6 / 20 = 0,30 adalah precision. Menemukan 60 persen fraud adalah recall, yaitu 6 / 10.
+- prompt: Pada tabel 1.000 pembayaran yang sama, model yang lebih baik tetap menangkap 6 fraud, tetapi alarm palsunya turun dari 14 menjadi 7. Berapa precision-nya?
+  options:
+  - Sekitar 0,46, karena 6 / 13 alarm adalah fraud
+  - Sekitar 0,60, karena recall tidak berubah
+  - Sekitar 0,30, karena rasio fraud tidak berubah
+  - Sekitar 0,86, karena 6 / 7 alarm adalah fraud
+  answer: 0
+  explanation: Alarm sekarang 6 + 7 = 13, sehingga precision-nya 6 / 13 = 0,46. Opsi 6 / 7 membagi dengan alarm palsu saja, bukan dengan semua alarm.
+- prompt: P(Gentoo) adalah 0,36, tetapi P(Gentoo | Biscoe) adalah 0,74. Apa yang ditunjukkan hal ini tentang spesies dan pulau?
+  options:
+  - Keduanya independen, karena kedua angka adalah probabilitas dari kejadian yang sama
+  - Keduanya independen, karena probabilitas bersyarat tidak pernah bisa sama dengan P(Gentoo)
+  - Belum ada kesimpulan, karena P(Gentoo | Biscoe) harus sama dengan P(Biscoe | Gentoo)
+  - Keduanya dependen, karena mengetahui pulau mengubah probabilitas spesies
+  answer: 3
+  explanation: Independensi berarti P(A | B) = P(A). Di sini mengetahui pulau membuat peluang Gentoo naik lebih dari dua kali lipat, sehingga keduanya dependen. Spesies dan jenis kelamin berbeda, karena P(jantan) tetap sekitar 0,50 di setiap spesies.
+- prompt: Sebuah lab mengulang tes positif dengan menjalankan metode cacat yang sama pada sampel yang sama. Mengapa hasil positif kedua menjadi evidence yang lemah?
+  options:
+  - Tes kedua tidak pernah bisa mengubah sebuah probabilitas
+  - Probabilitas tidak dapat dikalikan
+  - Kedua hasil berbagi galat yang sama, sehingga tidak independen dan evidence-nya terhitung dua kali
+  - Base rate turun setelah tes pertama
+  answer: 2
+  explanation: Mengalikan likelihood dua hasil hanya sah jika galat keduanya independen, bila kenyataan sebenarnya (sakit atau tidak) diketahui. Jika keduanya berasal dari cacat yang sama, hasil kedua hampir tidak menambah apa-apa, dan peluangnya bisa tetap dekat 0,27 alih-alih naik menjadi 0,87.

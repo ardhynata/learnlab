@@ -1,0 +1,41 @@
+slug: cluster-shapes-and-evaluation
+title: "Cluster shapes and evaluation"
+summary: "Hierarchical clustering, DBSCAN, noise points, and the silhouette score."
+topic: Machine learning
+level: beginner
+path: beginner
+position: 11
+translations:
+  id:
+    title: "Bentuk cluster dan evaluasi"
+    summary: "Hierarchical clustering, DBSCAN, noise point, dan silhouette score."
+modules:
+- slug: core-ideas
+  title: Core ideas
+  summary: "The concepts, in the order the lab uses them."
+  lessons:
+  - hierarchical-clustering
+  - silhouette-score
+  translations:
+    id:
+      title: "Ide inti"
+      summary: "Konsep-konsepnya, sesuai urutan yang dipakai lab."
+- slug: lab
+  title: Lab
+  summary: "Run the idea yourself, then check what you learned."
+  lessons:
+  - dbscan
+  - cluster-methods-lab
+  translations:
+    id:
+      title: "Lab"
+      summary: "Jalankan idenya sendiri, lalu periksa apa yang sudah kamu pelajari."
+- slug: wrap-up
+  title: Choosing a method
+  summary: "Put the methods side by side and pick one for a problem."
+  lessons:
+  - choosing-an-algorithm
+  translations:
+    id:
+      title: "Memilih metode"
+      summary: "Bandingkan metode-metodenya dan pilih satu untuk sebuah masalah."

@@ -1,0 +1,72 @@
+- prompt: Sebuah detektor penipuan menganggap penipuan sebagai kelas positif. Sebuah pembayaran penipuan lolos dan detektor menjawab bahwa pembayaran itu aman. Kasus ini dihitung di sel mana pada confusion matrix?
+  options:
+  - True positive
+  - False positive
+  - False negative
+  - True negative
+  answer: 2
+  explanation: Detektor menjawab tidak (negatif) dan salah, karena pembayaran itu penipuan. Jawaban tidak yang salah pada positif sebenarnya adalah false negative, yaitu kasus yang terlewat.
+- prompt: "Sebuah tes pada 200 kasus menghasilkan TP = 30, FP = 10, FN = 20, dan TN = 140. Berapa precision-nya?"
+  options:
+  - 0,60
+  - 0,75
+  - 0,85
+  - 0,15
+  answer: 1
+  explanation: Precision adalah TP / (TP + FP) = 30 / 40 = 0,75. Recall-nya 30 / 50 = 0,60, dan 0,85 adalah accuracy, yaitu (30 + 140) / 200.
+- prompt: "Dengan hitungan yang sama (TP = 30, FP = 10, FN = 20, TN = 140), berapa recall-nya?"
+  options:
+  - 0,75
+  - 0,85
+  - 0,67
+  - 0,60
+  answer: 3
+  explanation: Recall adalah TP / (TP + FN) = 30 / 50 = 0,60, jadi tes itu menemukan 30 dari 50 positif sebenarnya. Angka 0,75 adalah precision, yang membagi dengan 40 jawaban ya.
+- prompt: Precision dan recall sama-sama memiliki TP sebagai pembilang. Apa yang berbeda pada pembaginya?
+  options:
+  - Precision membagi dengan banyaknya positif sebenarnya, dan recall membagi dengan semua kasus
+  - Precision membagi dengan kasus yang dijawab ya oleh classifier, dan recall membagi dengan positif sebenarnya
+  - Precision membagi dengan negatif sebenarnya, dan recall membagi dengan kasus yang dijawab tidak
+  - Tidak ada bedanya; keduanya dua nama untuk rasio yang sama
+  answer: 1
+  explanation: Precision membagi dengan TP + FP, yaitu kolom ya pada matrix. Recall membagi dengan TP + FN, yaitu baris yang sebenarnya ya. Pembilangnya sama, totalnya berbeda, sehingga keduanya menjawab pertanyaan yang berbeda.
+- prompt: Sebuah kumpulan data berisi 500 kasus, dan 25 di antaranya positif. Sebuah classifier malas menjawab tidak untuk semua kasus. Berapa accuracy dan recall-nya?
+  options:
+  - Accuracy 95 persen, recall 0 persen
+  - Accuracy 95 persen, recall 95 persen
+  - Accuracy 5 persen, recall 100 persen
+  - Accuracy 50 persen, recall 0 persen
+  answer: 0
+  explanation: Ia benar pada seluruh 475 negatif, sehingga accuracy-nya 475 / 500 = 0,95, tetapi tidak menemukan satu pun dari 25 positif, sehingga recall-nya 0. Accuracy tinggi bersama recall nol adalah jebakan accuracy.
+- prompt: Sebuah classifier memiliki precision 0,9 dan recall 0,1. Mana yang paling mendekati F1-nya?
+  options:
+  - 0,50
+  - 0,90
+  - 0,18
+  - 0,10
+  answer: 2
+  explanation: F1 = 2 x 0,9 x 0,1 / (0,9 + 0,1) = 0,18. Rata-rata biasa, 0,50, menyembunyikan bahwa classifier itu hanya menemukan satu dari sepuluh positif. F1 tertarik ke angka yang lebih kecil.
+- prompt: Tes klinik dalam pelajaran ini (TP = 15, FP = 9, FN = 5, TN = 171) dibuat lebih agresif, sehingga menjawab ya untuk 39 orang dan sekarang menangkap 18 dari 20 orang sakit. Apa yang terjadi?
+  options:
+  - Recall dan precision sama-sama naik
+  - Recall turun dan precision naik
+  - Recall naik dan precision turun
+  - Recall naik dan precision tetap sama
+  answer: 2
+  explanation: Recall naik dari 15 / 20 = 0,75 menjadi 18 / 20 = 0,90. Ke-21 alarm palsu membuat precision turun dari 0,625 menjadi 18 / 39 = 0,46. Menangkap lebih banyak biasanya berarti lebih banyak alarm palsu.
+- prompt: Sebuah bank menutup rekening secara otomatis setiap kali classifier menandainya sebagai penipuan, tanpa pemeriksaan manusia. Metrik mana yang paling penting?
+  options:
+  - Precision, karena alarm palsu menutup rekening nasabah yang jujur
+  - Recall, karena setiap kasus penipuan harus ditemukan
+  - Accuracy, karena ia menghitung semua kasus
+  - F1, karena hanya metrik itu yang memakai semua sel
+  answer: 0
+  explanation: Di sini kesalahan yang mahal adalah false positive, sehingga kamu ingin sebagian besar jawaban ya itu benar, yaitu precision tinggi. Recall akan menjadi pilihan ketika kasus yang terlewat adalah kesalahan yang mahal.
+- prompt: Dua classifier sama-sama mencapai accuracy 90 persen pada 100 kasus yang sama. Pernyataan mana yang pasti benar?
+  options:
+  - Keduanya membuat jenis kesalahan yang sama
+  - Keduanya memiliki precision yang sama
+  - Keduanya memiliki recall yang sama
+  - Keduanya membuat 10 kesalahan, meski jenisnya bisa berbeda
+  answer: 3
+  explanation: 90 persen dari 100 kasus berarti 90 jawaban benar, jadi ada 10 yang salah. Satu classifier mungkin punya 10 alarm palsu dan yang lain 10 kasus terlewat, sehingga precision dan recall dapat berbeda jauh. Itulah mengapa matrix diperlukan.

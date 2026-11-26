@@ -1,0 +1,72 @@
+- prompt: Sebuah titik memiliki a = 2 dan b = 8. Berapa silhouette-nya?
+  options:
+  - 0,25
+  - 0,75
+  - 6
+  - -0,75
+  answer: 1
+  explanation: s = (b - a) / max(a, b) = (8 - 2) / 8 = 0,75. Pembagian dengan 6 tidak memakai yang lebih besar dari keduanya, dan nilai negatif membutuhkan a yang lebih besar daripada b.
+- prompt: Sebuah titik memiliki a = 5 dan b = 3. Apa yang ditunjukkan silhouette-nya?
+  options:
+  - s = 0,4, jadi ia berada di dalam cluster-nya dengan baik
+  - s = 0, jadi ia tepat di perbatasan
+  - s = 1,67, jadi ia ditempatkan dengan sangat baik
+  - s = -0,4, jadi kemungkinan besar ia berada di cluster yang salah
+  answer: 3
+  explanation: s = (3 - 5) / max(5, 3) = -2/5 = -0,4. Nilai negatif berarti rata-rata titik itu lebih dekat ke cluster lain daripada ke cluster-nya sendiri. Nilai s tidak pernah melebihi 1.
+- prompt: Sebuah titik memiliki silhouette mendekati 0. Di mana kemungkinan besar titik itu berada?
+  options:
+  - Di perbatasan antara dua cluster
+  - Tepat di pusat cluster-nya
+  - Jauh dari semua cluster, sebagai noise
+  - Di dalam cluster yang rapat, dengan cluster lain terdekat berada jauh
+  answer: 0
+  explanation: s mendekati 0 ketika a dan b hampir sama, sehingga titik itu sama dekatnya ke cluster-nya sendiri dan ke cluster berikutnya. Itulah titik perbatasan.
+- prompt: Pada contoh enam titik, titik 5 memiliki silhouette terendah (0,25). Mengapa?
+  options:
+  - Ia adalah bilangan terbesar dalam data, sehingga jarak-jaraknya paling besar
+  - Cluster B lebih besar daripada cluster A, sehingga jarak ke B menjadi lebih besar
+  - Ia adalah titik di A yang paling dekat ke B, sehingga a = 3 tidak jauh lebih kecil daripada b = 4
+  - Ia berada di cluster yang salah, karena silhouette-nya di bawah nol
+  answer: 2
+  explanation: Titik 5 berada di tepi A. Jarak rata-ratanya ke teman satu cluster (3) hanya sedikit di bawah jarak rata-ratanya ke B (4), sehingga hasilnya (4 - 3) / 4 = 0,25. Nilainya masih positif, jadi rata-rata ia lebih dekat ke A.
+- prompt: Enam titik {1, 3, 5, 8, 9, 10} memiliki rata-rata silhouette sekitar 0,64 dengan dua cluster dan sekitar 0,31 dengan tiga cluster {1, 3}, {5, 8}, {9, 10}. Mana yang dipilih oleh skor ini?
+  options:
+  - k = 3, karena cluster yang lebih banyak selalu berarti jarak yang lebih kecil di dalam tiap cluster
+  - k = 2, karena rata-rata silhouette-nya, 0,64, lebih tinggi daripada 0,31
+  - Tidak keduanya, karena skor seperti ini tidak dapat membandingkan nilai k yang berbeda
+  - k = 3, karena cluster tambahan menunjukkan lebih banyak detail dalam data
+  answer: 1
+  explanation: Rata-rata silhouette yang lebih tinggi berarti kelompoknya lebih rapat dan lebih berjauhan. Pembagian tiga cluster bahkan menempatkan titik 8 pada s = -0,5, dengan teman yang lebih jauh daripada cluster di sebelahnya.
+- prompt: Mengapa rata-rata silhouette dapat membantu memilih k padahal inertia tidak dapat?
+  options:
+  - Inertia tidak dihitung dari jarak, sehingga tidak dapat membandingkan nilai k
+  - Silhouette selalu tertinggi pada k = 2, sehingga tidak perlu dibandingkan
+  - Silhouette membutuhkan label yang sebenarnya, yang memberi tahu jumlah cluster yang tepat
+  - Inertia hanya turun ketika k bertambah, tetapi rata-rata silhouette dapat turun lagi ketika k terlalu besar
+  answer: 3
+  explanation: Inertia mencapai nilai terendahnya ketika setiap titik menjadi cluster sendiri, sehingga ia tidak pernah menyuruh berhenti. Rata-rata silhouette turun ketika cluster dipecah tanpa alasan, sehingga ia punya puncak.
+- prompt: Dua cincin yang sebenarnya dalam sebuah dataset mendapat skor silhouette 0,01, sedangkan pembagian k-means yang memotong melintang kedua cincin mendapat 0,36. Apa yang ditunjukkan hal ini?
+  options:
+  - Pembagian k-means adalah pengelompokan yang lebih baik, karena skornya jauh lebih tinggi
+  - Silhouette memihak cluster bulat, sehingga dapat menilai pembagian yang salah lebih tinggi
+  - Cincin-cincin itu sebenarnya bukan dua cluster, karena skornya hampir nol
+  - Silhouette dihitung dengan k yang salah, sehingga angka 0,01 tidak dapat dipercaya
+  answer: 1
+  explanation: Pada cincin, ada titik yang jauh dari teman-temannya sendiri, sehingga a besar walaupun pengelompokannya benar. Skor tinggi berarti kelompok yang rapat dan terpisah dengan baik, dan itu tidak selalu sama dengan kelompok yang benar.
+- prompt: Mengapa silhouette tidak terdefinisi ketika sebuah metode hanya menemukan satu cluster?
+  options:
+  - Tidak ada cluster lain, sehingga b tidak ada
+  - Tidak ada titik yang tersisa untuk diukur
+  - a menjadi nol untuk setiap titik
+  - Setiap titik memiliki s = 1
+  answer: 0
+  explanation: b adalah jarak rata-rata ke cluster lain yang terdekat. Dengan satu cluster saja, cluster lain itu tidak ada, sehingga s tidak dapat dihitung. Itu juga berarti skor ini tidak dapat memberi tahu bahwa data tidak memiliki cluster.
+- prompt: Kamu mengukur titik-titik yang sama dalam sentimeter, bukan meter, sehingga setiap jarak menjadi 100 kali lebih besar. Apa yang terjadi pada silhouette setiap titik?
+  options:
+  - Menjadi 100 kali lebih besar
+  - Menjadi 100 kali lebih kecil
+  - Tetap sama
+  - Menjadi negatif
+  answer: 2
+  explanation: a dan b sama-sama dikalikan 100, begitu juga max(a, b), sehingga angka 100 saling meniadakan dalam (b - a) / max(a, b). Itulah sebabnya skor ini tidak punya satuan. Yang memang mengubah skor adalah penskalaan ulang satu feature, karena jarak berubah secara tidak merata.

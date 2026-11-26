@@ -1,0 +1,72 @@
+- prompt: Which list holds the five things to decide when you frame a problem?
+  options:
+  - Learning rate, number of epochs, batch size, optimizer and seed
+  - Prediction, user, cost of a mistake, metric and data allowed at prediction time
+  - Training set, validation set, test set, baseline and model
+  - Mean, median, variance, correlation and outliers
+  answer: 1
+  explanation: Framing is about the question, not the algorithm. The other lists hold settings, splits and statistics, which come later.
+- prompt: A ranger counts Chinstrap penguins in a mixed colony, and a missed Chinstrap makes the count too low. Which metric should she watch most closely?
+  options:
+  - Accuracy
+  - The majority-class share
+  - The number of features
+  - Recall
+  answer: 3
+  explanation: Recall is the share of real Chinstrap penguins that were found, so it measures exactly the mistake that hurts her count. Accuracy mixes both kinds of mistake together.
+- prompt: In question A there are 151 Adelie and 68 Chinstrap penguins. What does a rule that always answers "Adelie" score on all 219 rows?
+  options:
+  - About 31%
+  - About 50%
+  - About 69%
+  - 100%
+  answer: 2
+  explanation: 151 / 219 = 68.9%. The 31% is the Chinstrap share, which is what this rule gets wrong.
+- prompt: A model scores 70% accuracy on question A, where the baseline scores 68.2% on validation. What is the fairest reading?
+  options:
+  - The model is barely better than answering "Adelie" every time
+  - The model is excellent, because 70% is a high score
+  - The baseline must be wrong, because a model should score higher
+  - The model is worse, because 70% is below 100%
+  answer: 0
+  explanation: A score means something only next to its baseline. A gap of about 2 points on 44 validation rows is within the noise of one cut.
+- prompt: Why does a model have more room to improve on question B, whose baseline is 50.7%, than on question A, whose baseline is 68.2%?
+  options:
+  - A baseline is only meaningful for question A, where the classes are unbalanced
+  - Question B has fewer features, so its baseline happens to be lower
+  - Question B has two nearly equal classes, so there is more room above its baseline
+  - Question B needs no baseline, because males and females are balanced in the table
+  answer: 2
+  explanation: With 168 males and 165 females, answering the majority class is close to a coin flip, so even a modest 76% is a big gain. On question A the lazy answer already gets about two thirds right.
+- prompt: A table has a column "tag colour", which was added after the penguin's sex was identified (blue for male, red for female). What happens if you use it to predict sex?
+  options:
+  - The score looks excellent, but the model would be useless on a new penguin
+  - The model becomes more honest, because the column is simple
+  - Nothing, because categorical columns are ignored
+  - The model underfits
+  answer: 0
+  explanation: The column is the answer in disguise and would not exist when you need the prediction. This is leakage, and the high score hides it.
+- prompt: A one-feature rule for question A scores 12 true positives, 2 false negatives, 1 false positive and 29 true negatives on the validation rows. What is its precision for Chinstrap?
+  options:
+  - 12 / 14 = 85.7%
+  - 41 / 44 = 93.2%
+  - 29 / 30 = 96.7%
+  - 12 / 13 = 92.3%
+  answer: 3
+  explanation: Precision is true positives divided by everything the rule called positive, 12 / (12 + 1). The 85.7% is the recall and the 93.2% is the accuracy.
+- prompt: Where should the cut-off of a one-feature rule be chosen?
+  options:
+  - On the test rows, so that the final score comes out as high as possible
+  - On all the rows before splitting, so that it uses every penguin
+  - On the training rows only, then scored on validation rows
+  - On the validation rows, because that is where it will be judged later
+  answer: 2
+  explanation: Anything learned from data counts as fitting. If held-out rows help choose the cut-off, the score is no longer an honest estimate for new penguins.
+- prompt: A model beats the rule by one penguin out of 44 on one validation cut. What should you conclude?
+  options:
+  - The model is clearly better and should replace the simple rule
+  - The rule must have been wrong
+  - The model is worse, because a gap under 5% always counts against it
+  - Nothing yet, because one penguin is about 2.3 points, less than the spread between cuts
+  answer: 3
+  explanation: Across seeds 1 to 10 the rule's validation accuracy on question A moved between 90.9% and 95.5%. A one-penguin lead is well inside that spread.

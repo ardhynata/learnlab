@@ -1,0 +1,72 @@
+- prompt: Di lab PCA, sumbu berada di 0° dan baris status mengatakan sumbu menyimpan 3,15 dari 4,90 varians total. Kira-kira berapa informasi yang hilang?
+  options:
+  - Sekitar 0,4
+  - Sekitar 1,7
+  - Sekitar 3,2
+  - Sekitar 4,9
+  answer: 1
+  explanation: Varians yang dipertahankan ditambah informasi yang hilang sama dengan totalnya, 4,90, sehingga kehilangannya 4,90 - 3,15 = 1,75, dan lab menampilkan 1,74 karena pembulatan. Jawabannya bukan 3,15, karena itu adalah bagian yang dipertahankan.
+- prompt: Untuk awan di lab, c11 = 3,15, c22 = 1,74, dan c12 = 1,97. Pada 45°, varians yang dipertahankan adalah (c11 + c22) / 2 + c12. Berapa nilainya, dan berapa informasi yang hilang?
+  options:
+  - Dipertahankan 6,9, hilang -2,0
+  - Dipertahankan 2,4, hilang 2,5
+  - Dipertahankan 4,4, hilang 0,5
+  - Dipertahankan 3,2, hilang 1,7
+  answer: 2
+  explanation: (3,15 + 1,74) / 2 + 1,97 kira-kira 4,41, dan totalnya 3,15 + 1,74 = 4,89, sehingga kehilangannya sekitar 0,48. Kehilangan tidak pernah negatif, dan bagian yang dipertahankan tidak pernah melebihi total.
+- prompt: Kamu menekan Pas ke komponen utama pertama lalu Putar sumbu 90°. Baris status berubah dari "menyimpan 4,54, kehilangan 0,36" menjadi apa?
+  options:
+  - Menyimpan 0,36, kehilangan 4,54
+  - Menyimpan 4,54, kehilangan 0,36, karena sumbunya garis yang sama
+  - Menyimpan 2,45, kehilangan 2,45
+  - Menyimpan 0,36, kehilangan 0,36
+  answer: 0
+  explanation: Sumbu yang tegak lurus dengan sumbu terbaik adalah PC2. Sumbu itu menyimpan eigenvalue kedua, 0,36, dan sisa dari total 4,90 hilang. Jumlah yang dipertahankan dan yang hilang tetap harus sama dengan total.
+- prompt: Di lab kamu memilih Bulat (tanpa korelasi) lalu menekan Pas ke komponen utama pertama. Apa yang ditampilkan lab untuk varians yang dipertahankan pada berbagai sudut?
+  options:
+  - Sumbu terbaik menyimpan 100% dan sumbu lain tidak menyimpan apa-apa
+  - Sumbu terbaik menyimpan sekitar 92% varians, seperti pada awan yang kuat
+  - Tidak ada yang tersimpan di sudut mana pun, karena titiknya acak
+  - Setiap sudut menyimpan 50,0% yang sama, sehingga tidak ada sumbu yang lebih baik
+  answer: 3
+  explanation: Awan yang bulat punya sebaran yang sama di setiap arah, sehingga setiap sumbu menyimpan separuh dari total di 2-D. PCA hanya menemukan komponen pertama yang baik ketika feature-nya berbagi informasi.
+- prompt: Scree plot tabel 8 feature menjelaskan 65,4% dan 25,1% untuk dua komponen pertama, lalu 2,0%, 1,8%, 1,7%, 1,6%, 1,3%, dan 1,1%. Kamu mempertahankan 3 komponen. Berapa varians yang hilang?
+  options:
+  - Sekitar 2,0%
+  - Sekitar 7,5%
+  - Sekitar 9,5%
+  - Sekitar 92,5%
+  answer: 1
+  explanation: Tiga komponen menyimpan 65,4 + 25,1 + 2,0 = 92,5%, sehingga kehilanganmu 100 - 92,5 = 7,5%. Angka 92,5% adalah yang kamu simpan, dan 9,5% adalah kehilangan untuk dua komponen saja.
+- prompt: Sebuah scree plot turun curam untuk dua komponen lalu mendatar. Pilihan mana yang sesuai dengan saran kursus ini dari pelajaran-pelajaran sebelumnya dan yang ini?
+  options:
+  - Pertahankan semua komponen, karena masing-masing menambah sesuatu
+  - Pertahankan hanya satu, karena batangnya selalu mengecil
+  - Pertahankan sekitar dua, lalu periksa berapa varians yang disimpan di tikungan itu dan apakah tugasnya masih berjalan
+  - Pertahankan yang datar, karena memuat noise yang ingin kamu pelajari
+  answer: 2
+  explanation: Bagian yang curam adalah tempat sebagian besar informasi berada, dan ekornya menambah sedikit. Tidak ada satu k yang benar. Lihat tikungannya dan porsi yang tersimpan (di sini 90,5% untuk dua komponen), lalu pastikan tugasnya masih berjalan.
+- prompt: Di lab kamu mengatur Data ke Penguin (data nyata) dan mematikan Standarkan pengukurannya. PC1 menjelaskan sekitar 100% varians. Apa penjelasan terbaiknya?
+  options:
+  - Massa tubuh dalam gram, sehingga angkanya yang sangat besar memuat hampir seluruh varians
+  - Penguin memang hanya bervariasi ke satu arah
+  - PCA selalu menaruh semuanya di PC1 ketika ada empat kolom
+  - Mematikan standardisasi menghapus spesies dari data
+  answer: 0
+  explanation: Varians bergantung pada satuan. Massa tubuh punya varians sekitar 641.000 dibandingkan sekitar 197 untuk panjang sirip, sehingga PC1 hampir hanya sumbu massa. Dengan standardisasi menyala, PC1 menjelaskan 68,8%.
+- prompt: Sumbu terbaik menyimpan 92,7%, 93,7%, 93,3%, 92,5%, 93,8%, dan 93,0% varians pada enam sampel awan yang kuat. Apa kesimpulanmu?
+  options:
+  - Hasilnya salah, karena angkanya tidak identik
+  - Enam sampel membuktikan bahwa setiap awan menyimpan sekitar 93%
+  - Sampel pertama yang benar dan sisanya noise
+  - Polanya bertahan, karena sumbu terbaik menyimpan sekitar 93% setiap kali, dan angka persisnya bergeser sedikit
+  answer: 3
+  explanation: Angkanya sedikit berbeda dari sampel ke sampel, yang wajar, dan tetap berada dalam rentang sempit. Enam sampel dari satu awan adalah pemeriksaan kecil, dan tidak mengatakan apa-apa tentang awan yang noisy, yang menyimpan 63,7% sampai 69,0%.
+- prompt: Di 3-D, sumbu tunggal terbaik pada awan kuat di lab menyimpan 81,0%, dan komponen kedua menambah 14,4%. Berapa yang disimpan kedua komponen bersama?
+  options:
+  - 81,0%, karena sumbu kedua hanya mengulang yang pertama
+  - Sekitar 95,4%
+  - 100%, karena dua komponen selalu menyimpan segalanya
+  - Sekitar 66,6%
+  answer: 1
+  explanation: Komponen-komponen itu saling tegak lurus, sehingga explained variance-nya dijumlahkan, 81,0 + 14,4 = 95,4%. Sisa 4,6% berada di komponen ketiga.

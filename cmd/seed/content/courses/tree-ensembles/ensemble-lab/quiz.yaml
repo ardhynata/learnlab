@@ -1,0 +1,80 @@
+- prompt: In the lab's default sample, boosting's validation log loss is 0.21 at 8 trees and 1.02 at 100 trees, while its training log loss falls to 0.00. What does this show?
+  options:
+  - Boosting underfits, because its training log loss is too low
+  - Boosting overfits after about 8 trees, because later trees fit the training points but not new points
+  - The validation points are too few to show anything
+  - More trees always help boosting, just as they help bagging
+  answer: 1
+  explanation: Training log loss only falls as trees are added, but validation log loss turned up after 8 trees. That turn is overfitting, and the lowest validation value marks where early stopping would stop. Bagging behaves differently, because averaging more trees does not make it fit the training points more closely.
+- prompt: A validation point of class 1 gets probability 0.4 from a boosted model, and probability 0.02 after many more trees. Using -ln p, how much more does that point cost in log loss the second time?
+  options:
+  - About 0.4 more
+  - Nothing, because the point is wrong both times
+  - About 0.02 more
+  - About 3.0 more
+  answer: 3
+  explanation: -ln(0.4) = 0.92 and -ln(0.02) = 3.91, so the point costs about 2.99 more. The error rate counts one mistake both times, which is why log loss can climb while the error rate barely moves.
+- prompt: One bagged tree gets 23 of the 100 validation points wrong, an error rate of 23.0%, yet its validation log loss is 4.96. Why is log loss so much worse than the error rate suggests?
+  options:
+  - Log loss is computed on the training points, so it is always larger
+  - Log loss counts every correct point as a mistake as well
+  - 14 of the mistakes fall in leaves that gave the true class probability 0, and each costs 34.54
+  - The tree is too shallow to give probabilities
+  answer: 2
+  explanation: A leaf holding only one class gives the other class probability 0, which log loss clips to 1e-15, and -ln(1e-15) = 34.54. 14 × 34.54 / 100 = 4.84, nearly all of 4.96. Averaging trees puts probabilities between 0 and 1, so at 3 trees the validation log loss is 0.63.
+- prompt: At 100 trees, bagging's training log loss is 0.08 and its validation log loss is 0.54, and its validation log loss was 0.63 at 3 trees. How do you read this?
+  options:
+  - There is a gap, but it does not widen as trees are added, so more trees do not hurt bagging
+  - Bagging overfits more with every tree added
+  - The gap shows a bug, since training and validation values should match
+  - Bagging has stopped learning, so the extra trees were wasted time
+  answer: 0
+  explanation: Any model fits its training points better than new points, so a gap is normal. What marks overfitting by adding trees is a validation curve that turns up, and bagging's fell from 0.63 to 0.54. The extra trees mostly steady the average and cost time, not accuracy.
+- prompt: What does the ring on the lab's chart mark?
+  options:
+  - The number of trees where training error first reaches zero
+  - The number of trees with boosting's lowest validation value for the metric the chart shows
+  - The number of trees where bagging and boosting have the same error
+  - The number of trees you picked with the slider
+  answer: 1
+  explanation: The ring marks early stopping, the number of trees with the lowest validation value. It follows Chart shows, so on the default sample it is at 8 trees for log loss and 3 trees for the error rate. Until you check your prediction it only looks at the trees you have added.
+- prompt: Boosting's validation error rate goes from 6.0% at 3 trees to 9.0% at 100, while its validation log loss goes from 0.21 to 1.02. Which statement fits?
+  options:
+  - The error rate is wrong, because only log loss is a valid metric
+  - Boosting makes 5 times as many mistakes at 100 trees
+  - Both measures rose by the same factor, about 1.5
+  - Log loss also charges how sure the model was, so wrong points cost more once the model is surer
+  answer: 3
+  explanation: The error rate rose by 3 points, three more mistakes among 100 points, a factor of 1.5. Log loss rose about 5 times because extra trees make the boosted model more confident, and a confident mistake costs far more than an unsure one.
+- prompt: On the default sample you lower Boosting learning rate from 0.50 to 0.10. What happens to the ring and to the lowest validation log loss?
+  options:
+  - The ring moves left, from 8 trees to 2, and the lowest value gets much better
+  - The ring stays at 8 trees and the lowest value doubles
+  - The ring moves right, from 8 trees to 40, and the lowest value stays about the same
+  - The ring moves right, from 8 trees to 40, and the lowest value gets much worse
+  answer: 2
+  explanation: A smaller learning rate takes smaller steps, so boosting needs more trees to reach its best point. The lowest value is 0.22 against 0.21, about the same. A rate of 1.00 moves the ring left to 2 trees and its lowest value is worse, 0.32.
+- prompt: With a small learning rate the lab says that neither curve climbs back up within 100 trees. What can you conclude?
+  options:
+  - Boosting can no longer overfit with a small learning rate
+  - Boosting is slow with a small rate and may need more than 100 trees before its curve turns up
+  - Bagging and boosting have become the same model
+  - The validation points were left out of the score
+  answer: 1
+  explanation: A small rate takes small steps, so the turn comes later and may lie past the 100 trees the lab builds. The verdict says only what happens within 100 trees. It does not say boosting is safe from overfitting.
+- prompt: On five penguin samples boosting's ring was at 4, 10, 4, 10 and 3 trees, and its validation log loss turned up on every sample. What should you take from this?
+  options:
+  - The pattern held, but the best number of trees changed with the sample, so choose it by validation on your own data
+  - The result is a property of the penguins, so use the same number of trees every time
+  - The ring is random and tells you nothing
+  - Boosting only overfits on real data, not on generated data
+  answer: 0
+  explanation: Boosting turned up on all five samples, so the shape of the result held. The ring moved between 3 and 10 trees, so a best number found on one sample is not a constant. The generated data showed the same turn.
+- prompt: On the first penguin sample, 109 penguins are held back for validation and boosting's validation error rate at 100 trees is 5.5%, against 4.6% for bagging. What does this tell you?
+  options:
+  - Boosting got 55 penguins wrong and bagging 46, so bagging is clearly better
+  - Boosting got 6 penguins wrong and bagging 5, so bagging is clearly better
+  - Boosting got 6 penguins wrong and bagging 5, a gap of one penguin that is too small to call a winner
+  - Percentages with 109 penguins cannot be turned into counts
+  answer: 2
+  explanation: 5.5% of 109 is 5.995, so 6 penguins, and 4.6% of 109 is 5.01, so 5 penguins. One penguin is about 0.9 points of error rate, and another split of the penguins can reverse that gap.

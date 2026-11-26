@@ -1,0 +1,80 @@
+- prompt: On the lab's two rings, k-means scores a silhouette of 0.36 and a match with the true groups of -0.01, while DBSCAN scores 0.01 and 1.00. What does this show?
+  options:
+  - DBSCAN found a poor clustering, because its silhouette is the lowest
+  - The silhouette ranked the methods in the wrong order, because it favors compact, round clusters
+  - The match is unreliable, because a value below 0 is impossible
+  - k-means is the better method here, because it has the higher silhouette
+  answer: 1
+  explanation: A match of 1.00 means DBSCAN recovered both rings exactly, and -0.01 means k-means is no better than chance. The silhouette prefers compact, round clusters, so it scores the wrong cut higher than the right grouping.
+- prompt: Why do k-means and Ward linkage cut straight through both rings?
+  options:
+  - They prefer compact groups, and the two rings share one center, so any split into two compact halves cuts both rings
+  - They treat the points of the outer ring as noise
+  - Their eps is set too small for the outer ring
+  - The lab gives them the wrong number of clusters
+  answer: 0
+  explanation: k-means draws a straight border between two centroids, and Ward merges toward compact groups. Neither can follow a ring. The number of clusters is right (2) and eps belongs to DBSCAN, not to these methods.
+- prompt: On the two rings you set eps to 0.30. DBSCAN finds 5 clusters, 125 of the 150 points are noise, and the silhouette is 0.86. How many points does that 0.86 describe?
+  options:
+  - 150, because the silhouette averages every point
+  - 125, because those are the noise points
+  - 25, because the lab leaves noise out of the score
+  - 5, one for each cluster
+  answer: 2
+  explanation: 150 - 125 = 25 points are in clusters, and only those are scored. The score is high because those 25 points sit in tight arcs, while its match with the true rings is only 0.05.
+- prompt: On Unequal density, Single linkage cut at k = 2 gives a cluster of 149 points and a cluster of 1, with a match of 0.01. What happened?
+  options:
+  - Single linkage correctly found one cluster and one outlier, so the true groups are 149 and 1
+  - Single linkage always cuts off exactly one point, whatever the data
+  - Single linkage chains through the nearest points, so the last merge only splits off one stray point
+  - Ward and Single linkage always give the same cut on this data
+  answer: 2
+  explanation: Single linkage joins the nearest pair of points, so the two true clusters merge early and the last split removes the point farthest from everything. Cutting at k = 3 gives a match of 0.82. The true groups are the tight and the loose cluster, not 149 and 1.
+- prompt: On Three blobs, k-means with k = 2, 3, 4 and 5 has silhouettes of 0.56, 0.80, 0.66 and 0.50. DBSCAN has a silhouette of 0.81 and k-means at k = 3 has 0.80. Does the 0.81 mean DBSCAN clustered the blobs better?
+  options:
+  - Yes, any higher silhouette means a better clustering
+  - Yes, because DBSCAN found 3 clusters and k-means found 2
+  - No, because silhouette scores can only be compared between runs of the same method
+  - No, the 0.01 gap comes from 2 noise points left out of the score, and DBSCAN's match is 0.98 against 1.00
+  answer: 3
+  explanation: Both find 3 clusters. DBSCAN's score covers 148 points, since it leaves the 2 noise points out, and its match with the true groups is a little lower than the 1.00 of k-means. A gap of 0.01 is not a ranking.
+- prompt: You raise eps on the two rings from 1.35 to 1.40, and the DBSCAN panel shows a dash instead of a silhouette score. Why?
+  options:
+  - The rings merged into 1 cluster, and the silhouette needs at least two clusters
+  - eps 1.40 is outside the slider's range
+  - All 150 points became noise
+  - A match of 1.00 hides the silhouette
+  answer: 0
+  explanation: Up to 1.35 DBSCAN finds 2 clusters, and at 1.40 the radius bridges the gap between the rings. With one cluster there is no other cluster to compare with, so the lab shows a dash and says so under the panel.
+- prompt: On Unequal density, DBSCAN has 14 noise points at eps 0.80 and 38 at eps 0.50. Why does a smaller radius label more points as noise?
+  options:
+  - A smaller radius makes DBSCAN merge the clusters
+  - The loose cluster's points need a bigger radius to find minPts neighbors, so they fail the test and become noise
+  - minPts grows automatically when eps shrinks
+  - The tight cluster has too few points at a smaller radius
+  answer: 1
+  explanation: DBSCAN has one radius for the whole plot. The tight cluster still passes at a small eps, but points in the loose one have few neighbors within 0.50, so many are labeled noise. No single eps suits both densities well.
+- prompt: On four penguin samples, the match with the species is 0.81, 0.96, 0.88 and 0.76 for k-means and 0.52, 0.41, 0.36 and 0.52 for DBSCAN at eps 0.50. Which conclusion do the numbers support best?
+  options:
+  - DBSCAN is a worse method than k-means for every dataset
+  - Four samples prove that k-means always matches the species better
+  - DBSCAN with eps 0.50 matched the species worse than k-means on all four samples, but eps was not tuned and four samples are few
+  - Both methods are equally good, because their silhouettes are similar
+  answer: 2
+  explanation: The pattern is clear on these samples, but the claim stays small, because it rests on one setting of eps, one pair of measurements and four samples. On the rings the order reverses, so the result belongs to the data.
+- prompt: On the fourth penguin sample, DBSCAN has a silhouette of 0.59 and a match of 0.52, and k-means has 0.54 and 0.76. 41 of the 150 points are DBSCAN noise. What is the sensible reading?
+  options:
+  - DBSCAN is better, because the silhouette is the only score that needs no labels
+  - k-means is better, because it matched the species more closely; DBSCAN's score covers only 109 of the 150 points
+  - The two methods are tied, because the scores differ by less than 0.1
+  - The lab has a bug, because a score and a match should always agree
+  answer: 1
+  explanation: 150 - 41 = 109 points are scored for DBSCAN, and the silhouette does not see the species. The match shows k-means is closer to them. Scores can disagree, which is the point of the lab.
+- prompt: In a real project you have no true groups. A clustering has a silhouette of 0.7. What should you do?
+  options:
+  - Accept it, because above 0.5 a clustering is always right
+  - Compute the adjusted Rand index against the clusters, since it needs no labels
+  - Raise k until the score reaches 1.0
+  - Treat 0.7 as a second opinion, and also look at the picture, the noise count and whether the groups mean something
+  answer: 3
+  explanation: A high silhouette means compact, separated clusters, not correct ones. It can be high while most points are noise, or while round clusters cut a ring. The adjusted Rand index needs true groups, which you do not have, and k = 1 has no silhouette at all.

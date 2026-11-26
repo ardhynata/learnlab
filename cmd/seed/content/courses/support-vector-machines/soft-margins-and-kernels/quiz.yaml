@@ -1,0 +1,80 @@
+- prompt: A point of class +1 has a score of 0.4. What is its slack?
+  options:
+  - '0, because it is on the correct side'
+  - '0.4, the score itself'
+  - '0.6, which is 1 minus 0.4'
+  - '1.4, which is 1 plus 0.4'
+  answer: 2
+  explanation: Slack is max(0, 1 - y x score) = 1 - 0.4 = 0.6. The point is on its own side of the line but inside the street, so it still breaks the rule that y x score should be at least 1.
+- prompt: A point of class +1 has a score of -0.5. Which statement is right?
+  options:
+  - Its slack is 1.5, and it is on the wrong side of the line
+  - Its slack is 0.5, and it is on the correct side
+  - Its slack is 0, because slack is never positive
+  - Its slack is 1.5, but the point is still classified correctly
+  answer: 0
+  explanation: The slack is 1 - (-0.5) = 1.5. A slack above 1 means the score has the wrong sign, so the point is misclassified.
+- prompt: A soft-margin SVM has w with |w| = 4, and its slacks add up to 1.5. What does it cost when C = 10?
+  options:
+  - 9.5, which is 8 + 1.5
+  - 15, which is 10 x 1.5
+  - 31, which is 4 x 4 + 15
+  - 23, which is 8 + 15
+  answer: 3
+  explanation: The cost is ½|w|² + C x (sum of slacks) = ½ x 16 + 10 x 1.5 = 8 + 15 = 23. The other options forget the half, or forget that C multiplies the slack.
+- prompt: You lower C from 100 to 0.1 on the same data. What usually happens?
+  options:
+  - The street gets narrower and fewer points are support vectors
+  - The street gets wider, more points sit inside it, and there are more support vectors
+  - The street stays the same and only the training accuracy changes
+  - Every point is forced outside the street
+  answer: 1
+  explanation: A small C makes slack cheap, so the street widens and tolerates points inside it. Every point on or inside the street is a support vector, so there are more of them. In the lesson, the street went from 0.74 wide with 3 support vectors to 3.33 with 8.
+- prompt: With γ = 1, what is the RBF similarity of two points that are 2 apart?
+  options:
+  - 0.37, which is e^(-1)
+  - 0.135, which is e^(-2)
+  - 0.018, which is e^(-4)
+  - 0.98, which is nearly 1
+  answer: 2
+  explanation: The similarity is e^(-γ x d²) = e^(-1 x 4) = e^(-4) = 0.018. The distance is squared before it is multiplied by gamma, so e^(-2) is the common slip.
+- prompt: An RBF SVM scores 100% on its training set and 76% on fresh points from the same source, and almost every training point is a support vector. What is the likely cause?
+  options:
+  - Gamma is too large, so each point only influences a tiny patch around itself
+  - Gamma is too small, so every point looks like every other one
+  - The kernel is linear, so it cannot curve
+  - The data was not shuffled
+  answer: 0
+  explanation: A very large gamma makes each point's vote local, so the model memorizes the training points and generalizes badly. That is overfitting. A too-small gamma would give a low score on both sets.
+- prompt: What does the kernel trick let an SVM avoid?
+  options:
+  - Choosing a value for C
+  - Computing distances between points
+  - Using support vectors
+  - Computing the hidden coordinates of the richer space
+  answer: 3
+  explanation: The SVM only uses points through pairwise similarities, so it can act as if it drew a straight line in a space of hidden coordinates, which looks like a curve in the original features, without ever computing those coordinates.
+- prompt: Two penguins differ by 0.4 mm, -1.3 mm, 5 mm and 50 g in bill length, bill depth, flipper length and body mass. Body mass makes up 98.9% of the squared distance. Why is that a problem for an RBF SVM?
+  options:
+  - Body mass is measured less accurately than the other features
+  - Body mass has the biggest numbers, so it decides every similarity while the other features hardly count
+  - Body mass cannot be used as a feature
+  - The distance becomes negative
+  answer: 1
+  explanation: The RBF kernel and the margin use plain distance, so a feature measured in the thousands dominates. Standardizing each feature first gives all four a fair say.
+- prompt: In the penguin grid with scaled features, C = 0.1 with γ = 0.01 gets 145 of 267 right, while most other cells get 236 or more. What does this tell you?
+  options:
+  - The model is overfitting, so lower C and gamma further
+  - The first cell is the best, so keep C and gamma small
+  - The model is underfitting, so raise C or gamma
+  - Cross-validation always gives low scores in the first cell
+  answer: 2
+  explanation: 145 of 267 is 54.3%, barely above guessing. A tiny C and a tiny gamma together make the model too rigid, which is underfitting. Moving to larger values fixes it.
+- prompt: The best grid cell scored 90.6% in cross-validation, but the locked test set gave 56 of 66, 84.8%. What is the best reading?
+  options:
+  - The test set is wrong and should be replaced by the cross-validation score
+  - The best of 16 scores is flattered, and a 66-penguin test is small, since one penguin is 1.5 points
+  - The model must have trained on the test set
+  - Cross-validation is useless for SVMs
+  answer: 1
+  explanation: Choosing the highest of 16 noisy scores picks some luck along with the skill, and a small test set moves by 1.5 points per penguin. The test score is the honest figure to report, and it was not used for choosing.

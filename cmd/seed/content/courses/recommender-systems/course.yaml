@@ -1,0 +1,31 @@
+slug: recommender-systems
+title: "Recommender systems"
+summary: "Collaborative filtering, matrix factorization, retrieval and ranking, cold start, and ranking metrics."
+topic: Machine learning
+level: advanced
+path: advanced
+position: 8
+translations:
+  id:
+    title: "Recommender system"
+    summary: "Collaborative filtering, matrix factorization, retrieval dan ranking, cold start, serta metrik ranking."
+modules:
+- slug: core-ideas
+  title: Core ideas
+  summary: "The concepts, in the order the lab uses them."
+  lessons:
+  - collaborative-filtering-and-matrix-factorization
+  - retrieval-ranking-and-cold-start
+  translations:
+    id:
+      title: "Ide inti"
+      summary: "Konsep-konsepnya, sesuai urutan yang dipakai lab."
+- slug: lab
+  title: Lab
+  summary: "Run the idea yourself, then check what you learned."
+  lessons:
+  - recommender-lab
+  translations:
+    id:
+      title: "Lab"
+      summary: "Jalankan idenya sendiri, lalu periksa apa yang sudah kamu pelajari."

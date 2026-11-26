@@ -1,0 +1,72 @@
+- prompt: Sebuah tree diizinkan memiliki maximum depth 3. Berapa jumlah leaf terbanyak yang dapat dimilikinya?
+  options:
+  - 3
+  - 6
+  - 8
+  - 9
+  answer: 2
+  explanation: Setiap level dapat menggandakan jumlah leaf, sehingga kedalaman 3 mengizinkan paling banyak 2 x 2 x 2 = 8. Tree dapat memiliki lebih sedikit, misalnya ketika leaf-nya sudah murni lebih awal.
+- prompt: Apa arti minimum leaf size 5?
+  options:
+  - Tree memiliki tepat 5 leaf
+  - Sebuah split hanya diizinkan jika kedua kelompoknya tetap berisi paling sedikit 5 baris training
+  - Tree boleh mengajukan paling banyak 5 pertanyaan berurutan
+  - Sebuah leaf harus berisi 5 kelas yang berbeda
+  answer: 1
+  explanation: Minimum leaf size menyangkut berapa banyak baris training yang boleh ada di sebuah leaf. Ia tidak menentukan jumlah leaf, kedalaman, maupun kelas.
+- prompt: Sebuah tree mendapat 200 dari 200 benar pada penguin training, tetapi hanya 54 dari 67 pada penguin validation. Apa yang ditunjukkan pasangan skor ini?
+  options:
+  - Tree mengalami underfitting, karena terlalu sederhana
+  - Validation set rusak dan sebaiknya dibuang
+  - Tree sudah sebaik mungkin, karena training accuracy-nya sempurna
+  - Tree mengalami overfitting, karena menghafal baris training yang tidak berlaku pada data baru
+  answer: 3
+  explanation: 100% pada training dan 80,6% pada validation adalah selisih yang lebar. Skor training yang sempurna adalah ciri tree yang tumbuh berlebihan, bukan tanda keberhasilan.
+- prompt: Tree kedalaman 3 menjawab benar 188 dari 200 penguin training dan 59 dari 67 penguin validation. Berapa selisih antara training accuracy dan validation accuracy-nya?
+  options:
+  - Sekitar 0,6 poin
+  - Sekitar 5,9 poin
+  - Sekitar 12 poin
+  - Sekitar 29 poin
+  answer: 1
+  explanation: 188 / 200 = 94,0% dan 59 / 67 = 88,1%, serta 94,0 - 88,1 = 5,9 poin. Angka 12 adalah 200 - 188, yaitu jumlah penguin training yang dijawab salah, bukan selisih dalam persen.
+- prompt: Pada satu pembagian, validation accuracy adalah 88,1% di kedalaman 3 dan 80,6% di kedalaman 7, sementara training accuracy naik dari 94,0% menjadi 100%. Kedalaman mana yang sebaiknya kamu pilih?
+  options:
+  - Kedalaman 3, karena skor validation-nya terbaik dan tree-nya lebih kecil
+  - Kedalaman 7, karena skor training-nya terbaik
+  - Kedalaman 7, karena tree yang lebih besar selalu tahu lebih banyak
+  - Tidak keduanya, karena skor validation tidak dapat dipakai untuk memilih
+  answer: 0
+  explanation: Validation accuracy adalah perkiraan untuk penguin baru. Kedalaman 3 unggul di situ dan hanya membutuhkan 8 leaf dibanding 23.
+- prompt: Mengapa training accuracy kurang tepat sebagai pedoman memilih maximum depth?
+  options:
+  - Nilainya selalu persis sama dengan validation accuracy
+  - Hanya dapat dihitung satu kali
+  - Ia tidak pernah turun saat tree makin dalam, sehingga selalu menunjuk tree terdalam
+  - Ia mengabaikan leaf dari tree
+  answer: 2
+  explanation: Setiap split membuat skor training tetap sama atau naik, sehingga tree terdalam selalu tampak terbaik pada baris yang sudah dipelajarinya. Hanya baris yang ditahan yang menunjukkan kapan kedalaman berhenti membantu.
+- prompt: Dengan minimum leaf size 2, tree menjawab benar 57 dari 67 penguin validation, dan dengan minimum leaf size 5 menjawab benar 55 dari 67. Apa kesimpulan yang paling adil?
+  options:
+  - Ukuran 2 jelas lebih baik, karena 57 lebih besar daripada 55
+  - Ukuran 5 jelas lebih baik, karena tree-nya lebih kecil
+  - Selisihnya 2 penguin, sekitar 3 poin, terlalu kecil pada 67 penguin untuk menyebut salah satunya lebih baik
+  - Validation accuracy tidak pernah berubah terhadap leaf size
+  answer: 2
+  explanation: Satu penguin validation bernilai sekitar 1,5 poin, sehingga selisih dua penguin bisa berasal dari pembagian tertentu itu saja. Periksa lebih banyak pembagian sebelum memutuskan.
+- prompt: Pada pertanyaan spesies (206 penguin training dari "Baselines and splits"), sebuah tree mencapai 206 dari 206 penguin training benar di kedalaman 3 dengan 5 leaf. Apa yang terjadi jika maximum depth dinaikkan menjadi 10?
+  options:
+  - Tidak ada yang berubah, karena setiap leaf sudah murni dan tidak ada yang perlu dibelah
+  - Tree menumbuhkan 2^10 = 1.024 leaf
+  - Training accuracy naik di atas 100%
+  - Validation accuracy selalu turun
+  answer: 0
+  explanation: Maximum depth adalah batas atas. Tree berhenti sendiri ketika leaf-nya murni, sehingga batas itu baru berpengaruh ketika tree akan terus tumbuh tanpanya.
+- prompt: Pada 30 pembagian, berpindah dari kedalaman 3 ke kedalaman 8 menaikkan rata-rata training accuracy dari 91,6% menjadi 99,8% dan rata-rata validation accuracy dari 86,0% menjadi 86,5%. Apa artinya?
+  options:
+  - Tree yang lebih dalam jauh lebih baik pada penguin baru
+  - Setelah kedalaman 3, leaf tambahan sebagian besar menghafal penguin training dan hampir tidak menambah apa pun pada penguin baru
+  - Validation set dipakai untuk training
+  - Tree yang lebih dalam lebih buruk daripada baseline
+  answer: 1
+  explanation: Training accuracy naik sekitar 8 poin, sedangkan validation hanya setengah poin, sehingga selisihnya melebar. Tree yang lebih sederhana hampir sama baiknya pada data baru dan lebih mudah dibaca.

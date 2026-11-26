@@ -1,0 +1,80 @@
+- prompt: Pernyataan mana tentang kedua penalti yang benar?
+  options:
+  - Ridge membuat sebagian koefisien tepat nol, dan lasso mengecilkan semuanya tetapi mempertahankan setiap feature
+  - Kedua penalti membuat koefisien tepat nol begitu lambda cukup besar
+  - Lasso (L1) dapat membuat koefisien tepat nol, sedangkan ridge (L2) hanya mengecilkannya
+  - Tidak ada penalti yang mengubah koefisien, keduanya hanya mengubah galat training
+  answer: 2
+  explanation: Lasso mengurangi jumlah tetap lalu berhenti di nol, sehingga koefisien kecil lenyap dan feature-nya keluar. Ridge membagi dengan bilangan di atas 1, dan membagi nilai bukan nol tidak pernah menghasilkan tepat nol.
+- prompt: Panjang flipper saja punya koefisien standar 0,6976. Ridge dengan lambda = 0,8 membaginya dengan 1 + lambda. Berapa hasilnya?
+  options:
+  - 0,388
+  - 0,298
+  - 0,349
+  - 0,558
+  answer: 0
+  explanation: 0,6976 / 1,8 = 0,388. Nilai 0,298 adalah hasil lasso (0,6976 - 0,4). Membagi dengan 2 atau mengalikan dengan 0,8 tidak mengikuti rumus ridge.
+- prompt: Koefisien standar 0,30 dikenai penalti lasso dengan lambda = 0,8, yang mengurangi lambda / 2 lalu berhenti di nol. Menjadi berapa koefisien itu?
+  options:
+  - 0,17
+  - 0,30, karena lasso hanya menyentuh koefisien yang besar
+  - -0,10
+  - 0
+  answer: 3
+  explanation: lambda / 2 = 0,4, dan 0,30 - 0,4 berada di bawah nol, sehingga lasso berhenti di tepat 0. Koefisien yang lebih kecil dari lambda / 2 disingkirkan. Nilai 0,17 adalah hasil ridge (0,30 / 1,8).
+- prompt: Belanjakan total bobot 1 untuk dua koefisien, sebagai (1, 0) atau (0,5, 0,5). Bagaimana perbandingan kedua penalti?
+  options:
+  - L1 mengenakan 1 untuk keduanya, sedangkan L2 mengenakan 1 untuk (1, 0) tetapi 0,5 untuk (0,5, 0,5)
+  - L1 mengenakan 1 untuk (1, 0) tetapi 0,5 untuk (0,5, 0,5), sedangkan L2 mengenakan 1 untuk keduanya
+  - Kedua penalti mengenakan tepat 1 untuk kedua pilihan itu
+  - L2 mengenakan 0,5 untuk (1, 0) dan 1 untuk (0,5, 0,5), sedangkan L1 mengenakan 1 untuk keduanya
+  answer: 0
+  explanation: L1 menjumlahkan nilai mutlak, 1 + 0 = 1 dan 0,5 + 0,5 = 1. L2 menjumlahkan kuadrat, 1 + 0 = 1 tetapi 0,25 + 0,25 = 0,5. Karena itu L2 lebih menyukai penyebaran bobot, sedangkan L1 tidak keberatan memusatkan bobot pada satu koefisien.
+- prompt: Kamu mengukur panjang flipper dalam meter, bukan milimeter, lalu mem-fit ridge tanpa standardisasi. Apa yang terjadi?
+  options:
+  - Tidak ada yang berubah, karena prediksi sama di satuan panjang apa pun
+  - Koefisien menjadi 1000 kali lebih kecil, sehingga ridge hampir tidak menyentuhnya sama sekali
+  - Koefisien menjadi 1000 kali lebih besar, sehingga penalti memukulnya jauh lebih keras
+  - Koefisien dibuat tepat nol oleh penalti, berapa pun lambda-nya
+  answer: 2
+  explanation: Feature dengan angka kecil membutuhkan koefisien besar, dan penalti membebankan harga berdasarkan besar koefisien. Pada tabel pelajaran, versi meter hanya mempertahankan 0,4% dari kemiringannya pada lambda = 0,05, sedangkan versi milimeter mempertahankan 99,97%. Standardisasi menghilangkan satuan dari penalti.
+- prompt: Dua salinan identik dari satu feature layak mendapat total bobot 0,8. Apa yang biasanya dilakukan ridge dan lasso, tanpa memperhitungkan penyusutannya sendiri?
+  options:
+  - Keduanya memberikan 0,8 pada salinan pertama dan 0 pada salinan kedua
+  - Ridge memberi 0,4 dan 0,4, dan lasso biasanya mempertahankan satu salinan serta membuang yang lain
+  - Ridge mempertahankan satu salinan serta membuang yang lain, dan lasso memberi 0,4 dan 0,4 pada keduanya
+  - Keduanya memberikan 0,8 pada tiap salinan, sehingga totalnya menjadi 1,6
+  answer: 1
+  explanation: Pembagian rata paling murah dalam kuadrat, sehingga ridge membagi bobot. Dalam nilai mutlak, setiap pembagian 0,8 berharga sama, sehingga lasso tidak punya alasan untuk membagi dan dalam praktik cenderung mempertahankan satu salinan.
+- prompt: Mengapa galat training tidak dapat dipakai untuk memilih lambda?
+  options:
+  - Galat training tidak terdefinisi ketika lambda di atas 0
+  - Galat training selalu turun saat lambda membesar, sehingga ia akan memilih lambda terbesar
+  - Galat training sama sekali tidak bergantung pada lambda, sehingga semua lambda tampak sama
+  - Nilainya paling rendah pada lambda = 0, sehingga ia selalu memilih tanpa penalti
+  answer: 3
+  explanation: Penalti hanya menahan model agar tidak terlalu pas pada baris training. Pada tabel pelajaran, galat training naik dari 0,043 ke 0,098 saat lambda membesar, sehingga ia selalu memilih penalti terkecil. Galat validation-lah yang memperlihatkan overfitting.
+- prompt: Pada tabel pelajaran, lambda = 0,0001 memberi galat training ridge 0,043 dan galat validation 0,211. Apa arti selisih itu?
+  options:
+  - Model mengalami underfitting, sehingga lambda perlu dibuat lebih besar
+  - Validation set terlalu kecil untuk menyimpulkan apa pun tentang model
+  - Model mengalami overfitting pada 20 penguin training, sehingga penalti yang lebih besar mungkin membantu
+  - Model siap dipakai, karena galat training-nya sangat rendah
+  answer: 2
+  explanation: Galat training yang rendah dengan galat validation yang jauh lebih tinggi adalah overfitting. Galat validation terendah, 0,150, muncul pada lambda = 0,03 dengan galat training yang lebih tinggi (0,080), dan itulah harga dari penalti.
+- prompt: Lasso pada lambda = 0,2 untuk data penguin menghasilkan koefisien 0 untuk panjang paruh, 0 untuk kedalaman paruh, 0,578 untuk panjang flipper, dan 0,094 untuk jenis kelamin (jantan = 1). Feature mana yang ada di dalam model?
+  options:
+  - Panjang paruh dan kedalaman paruh
+  - Keempatnya, karena lasso mempertahankan setiap feature
+  - Hanya panjang flipper
+  - Panjang flipper dan jenis kelamin
+  answer: 3
+  explanation: Koefisien yang tepat 0 menyingkirkan feature-nya, dan panjang flipper serta jenis kelamin adalah yang bukan nol. Pada lambda = 0,2 jenis kelamin masih ada, dan lintasan di pelajaran memperlihatkan ia keluar sekitar lambda = 0,44.
+- prompt: Dari mana rata-rata dan simpangan baku untuk standardisasi feature sebaiknya diambil?
+  options:
+  - Dari baris validation, karena di situlah model dinilai
+  - Hanya dari baris training, lalu dipakai ulang pada baris validation
+  - Dari semua baris sekaligus, karena data lebih banyak memberi angka yang lebih baik
+  - Dari baris test, supaya pengujian adil
+  answer: 1
+  explanation: Men-fit scaling pada baris training lalu menerapkannya ke baris lain menjaga informasi tentang baris yang ditahan tetap di luar training, seperti di "Pipeline dan leakage". Memakai baris validation atau test untuk menghitungnya membuat baris-baris itu bocor ke dalam model.

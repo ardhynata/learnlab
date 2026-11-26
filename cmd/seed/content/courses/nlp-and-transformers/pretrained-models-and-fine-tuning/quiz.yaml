@@ -1,0 +1,80 @@
+- prompt: In the counting model, the word after "is" was late 3 times and wrong 2 times. What is the next-token loss at a position where the true next word is late?
+  options:
+  - 0.40
+  - 0.51
+  - 0.60
+  - 0.92
+  answer: 1
+  explanation: The model gives late a probability of 3 / 5 = 0.6, and the loss is minus the natural log of it, -ln 0.6 = 0.51. The number 0.60 is the probability, not the loss, and 0.92 is the loss at a position where the true word is wrong.
+- prompt: How does masked prediction differ from next-token prediction?
+  options:
+  - Masked prediction needs a person to label every message first
+  - Masked prediction always predicts the last word of the message
+  - Masked prediction fills a blank using the words on both sides, while next-token prediction sees only the tokens before it
+  - Masked prediction is used only on images, and next-token prediction only on text
+  answer: 2
+  explanation: Both make their labels from the text itself. Masked prediction hides a token and uses the words around the blank, while next-token prediction uses only what came before the token to predict.
+- prompt: A pretrained encoder returns 768 numbers per message and there are 3 classes. If the encoder is frozen, how many numbers do the labels have to fit in a head with weights and biases?
+  options:
+  - 768
+  - 2,304
+  - About 100 million
+  - 2,307
+  answer: 3
+  explanation: The head has 768 x 3 = 2,304 weights plus 3 biases, which is 2,307 numbers. Leaving out the biases gives 2,304, and the encoder's own weights are locked, so they are not fitted.
+- prompt: Which statement matches the results of the small frozen code against bag-of-words naive Bayes?
+  options:
+  - The frozen code led with 3 labeled messages per class (74.7% against 64.9%), and naive Bayes led with 40 (89.8% against 82.6%)
+  - The frozen code led at every number of labeled messages, because it was pretrained
+  - Naive Bayes led at every number of labeled messages, because it is the simpler model
+  - The two scored the same at 3 and at 40 labeled messages per class
+  answer: 0
+  explanation: Pretraining helps most when labels are few. With more labels, naive Bayes learns the words itself and the frozen head, limited to 24 numbers, stops improving. They tied near 10 per class (80.9% and 81.7%).
+- prompt: In a 3-class text test, one class has TP = 63, FP = 32 and FN = 5. What is its F1?
+  options:
+  - 0.66
+  - 0.93
+  - 0.77
+  - 0.50
+  answer: 2
+  explanation: F1 = 2 x 63 / (2 x 63 + 32 + 5) = 126 / 163 = 0.77. The value 0.66 is the precision, 63 / 95, and 0.93 is the recall, 63 / 68. F1 sits between them, a little closer to the lower one.
+- prompt: There are 1,000 messages and 20 of them are urgent. A model says "not urgent" for every message. What are its accuracy and its F1 for urgent?
+  options:
+  - 98% and 0.98
+  - 98% and 0
+  - 2% and 0
+  - 50% and 0.50
+  answer: 1
+  explanation: It is right on the 980 messages that are not urgent, so accuracy is 980 / 1,000 = 98%. It never finds an urgent message, so recall is 0 and F1 is 0. High accuracy on rare classes hides this, which is why you look at F1 as well.
+- prompt: Why give the bag-of-words baseline the same labeled messages and the same test messages as the pretrained model?
+  options:
+  - So that both models always reach the same score
+  - Because naive Bayes cannot be trained on other messages
+  - To save time when the models are trained
+  - So that a difference in score comes from the model and not from easier messages
+  answer: 3
+  explanation: A fair comparison changes one thing at a time. If the two models saw different labeled or test messages, a gap could come from a lucky draw instead of from pretraining.
+- prompt: Why remove test messages that have a near-copy in the training text or the pretraining text?
+  options:
+  - A model can look their answer up, so the score would be higher than on messages it has never met
+  - Near-copies are always labeled wrongly
+  - Test messages must all be different in length
+  - A model cannot read the same words twice
+  answer: 0
+  explanation: Customer text has many forwarded and template messages. A model that has seen a near-copy may score well by memory, and the score then overstates how it will do on new messages. In this lesson it could raise a score by up to 2.8 points.
+- prompt: With 3 labeled messages per class, a code learned from Indonesian text scored 48.4% on English messages, and guessing scores about 33%. What is the best reading?
+  options:
+  - The Indonesian code is better than the English code
+  - Pretraining always hurts on a small labeled set
+  - The code was built for another domain, so it carries little that helps here and a model should be checked on its own domain
+  - A score above guessing proves that the code is useful
+  answer: 2
+  explanation: The two vocabularies share only 9 of the 173 word types in the English messages. The English code scored 74.7%. A pretrained model reused on a different domain can look fine and still do little, so test it where you will use it.
+- prompt: A model reads at most 512 tokens, and a review has 900 tokens. Which share of the review does it read?
+  options:
+  - 43%
+  - 57%
+  - 78%
+  - 88%
+  answer: 1
+  explanation: 512 / 900 = 0.57, so it reads about 57% of the review. The other 388 tokens, 43%, are cut off, and a verdict that sits at the end is lost.

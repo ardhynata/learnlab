@@ -1,0 +1,72 @@
+- prompt: Di Lab attention, dengan Head 1, baris "kucing" yang pertama terbaca 37%, 5%, 5%, 4%, 5%, 40%, dan 5%. Apa arti baris ini?
+  options:
+  - Kata "kucing" punya probabilitas 37% menjadi kata benda dan 63% menjadi kelas lain
+  - Ketujuh token masing-masing memberi suara, dan "kucing" kedua menang dengan 40% suara
+  - Vektor baru untuk "kucing" yang pertama adalah campuran vektor ketujuh token, 37% dari dirinya sendiri dan 40% dari "kucing" yang kedua
+  - 63% token dalam kalimat sama sekali tidak berkaitan dengan "kucing" yang pertama
+  answer: 2
+  explanation: Satu baris adalah softmax, sehingga bobotnya berjumlah 100% dan menjadi porsi pencampuran vektor value. Vektor baru untuk "kucing" yang pertama adalah 37% value-nya sendiri, 40% value "kucing" yang kedua, ditambah 5%, 5%, 4%, 5%, dan 5% dari yang lain. Tidak ada pemungutan suara di sini, dan bobot itu juga bukan probabilitas bahwa sebuah kata punya kelas tertentu.
+- prompt: Head 1 memberi skor pada "kucing" dengan q = (2,0; 0,0; 0,1) terhadap sebuah "itu" dengan k = (0,3; 0,3; 0,3), memakai 3 angka per vektor. Berapa skor yang sudah diskalakan?
+  options:
+  - 0,63
+  - 0,36
+  - 1,09
+  - 2,00
+  answer: 1
+  explanation: Dot product-nya 2,0 × 0,3 + 0,0 × 0,3 + 0,1 × 0,3 = 0,63. Skala membaginya dengan akar kuadrat dari 3, yaitu 1,73, sehingga skor yang sudah diskalakan adalah 0,63 / 1,73 = 0,36. Angka 0,63 yang belum diskalakan melewatkan langkah itu.
+- prompt: Ambil baris "kucing" dalam "itu kucing duduk", dengan 0,11 pada "itu", 0,79 pada "kucing", dan 0,10 pada "duduk". Dengan causal mask menyala, "duduk" disembunyikan. Berapa bobot "kucing" pada dirinya sendiri?
+  options:
+  - 0,79, karena menyembunyikan sebuah token tidak mengubah bobot token lain
+  - 0,89, karena 0,10 milik "duduk" yang tersembunyi ditambahkan ke "kucing"
+  - 1,00, karena mask menyisakan "kucing" sebagai satu-satunya token yang dapat dilihat
+  - 0,88, karena kedua bobot yang tersisa, 0,79 dan 0,11, diskalakan ulang agar berjumlah 1
+  answer: 3
+  explanation: 'Mask menetapkan sel yang disembunyikan menjadi 0 dan softmax berjalan pada token yang tersisa, sehingga 0,79 dan 0,11 diskalakan agar berjumlah 1: 0,79 / 0,90 = 0,88 dan 0,11 / 0,90 = 0,12. Token pertama dalam kalimat tidak punya token sebelumnya dan tetap 100% pada dirinya sendiri.'
+- prompt: Di lab, Head 2 (kata berdekatan) menampilkan 14% di setiap sel ketika Tambahkan kode posisi dimatikan. Mengapa?
+  options:
+  - Head ini hanya membandingkan kode posisi, sehingga tanpa kode itu semua skor sama dan masing-masing dari 7 token mendapat 1/7
+  - Head ini belum dilatih, sehingga setiap kali melihat ia memilih token yang dilihat secara acak
+  - Head 2 menyembunyikan masa depan setiap kali posisi dimatikan, sehingga semua baris berbentuk sama
+  - 14% adalah porsi function word dalam kalimat, dan Head 2 memberikan porsi itu pada setiap sel
+  answer: 0
+  explanation: Head 2 diatur untuk hanya memakai kode posisi. Tanpa kode itu semua skor sama, sehingga softmax memberi masing-masing dari 7 token 1/7, sekitar 14%. Attention tidak melihat urutan dengan sendirinya. Head 4 adalah head acak, dan ia menampilkan pola yang tidak merata.
+- prompt: Di lab kamu mengetik "kucing duduk". Sebagai Karakter ia terdiri dari 12 token, dan dengan 0 merge BPE 13 token. Dari mana token tambahannya?
+  options:
+  - Slider menambahkan token awal teks di depan setiap teks yang dipecahnya
+  - BPE mengakhiri tiap kata dengan tanda · (6 + 1 + 5 + 1 = 13), sedangkan Karakter punya satu spasi (6 + 1 + 5 = 12)
+  - BPE memecah setiap kata menjadi dua potongan, sehingga tiap kata menambah satu token
+  - Token tak dikenal ditambahkan satu kali, karena lab belum pernah melihat teks ini
+  answer: 1
+  explanation: Teks itu punya 6 + 5 = 11 huruf. BPE menaruh tanda akhir kata setelah masing-masing dari 2 kata, sehingga 11 + 2 = 13. Tokenizer Karakter justru mempertahankan satu spasi di antara kedua kata, sehingga 11 + 1 = 12.
+- prompt: Pada 8 pesan berlabel, pengambilan pertama memberi bag of words 57,8% dan vektor beku 73,9%, pada 180 pesan test. Kira-kira berapa pesan lebih banyak yang diklasifikasikan benar oleh model beku?
+  options:
+  - '16'
+  - '29'
+  - '58'
+  - '133'
+  answer: 1
+  explanation: 57,8% dari 180 kira-kira 104 pesan dan 73,9% kira-kira 133, selisihnya 29. Selisih 16,1 poin bukan 16 pesan, karena satu pesan bernilai 1/180, sekitar 0,56 poin.
+- prompt: Pada 8 pesan berlabel, lima pengambilan memberi selisih vektor beku dikurangi bag of words sebesar +16,1, -1,1, +27,2, -5,0, dan -5,6 poin. Kesimpulan mana yang paling adil?
+  options:
+  - Bag of words lebih baik, karena menang pada pengambilan terakhir dari kelima pengambilan
+  - Vektor pretrained selalu menang pada 8 pesan, karena pengambilan dengan selisih terbesar, +27,2, memihaknya
+  - Hasil tiap pengambilan tidak sama, sehingga vektor pretrained unggul secara rata-rata tetapi satu pengambilan bisa menunjukkan sebaliknya
+  - Tidak ada yang dapat disimpulkan, karena pengambilannya tidak memakai pesan test yang sama
+  answer: 2
+  explanation: Dua pengambilan menguntungkan vektor pretrained dengan selisih besar, satu hampir sama (-1,1), dan dua menguntungkan bag of words, sehingga hasilnya bergerak mengikuti pengambilan; rata-rata selisihnya +6,3 poin. Semua pengambilan memakai 180 pesan test yang sama, dan itulah yang membuatnya dapat dibandingkan. Pada dua belas pengambilan pertama, angka di lab menunjukkan vektor pretrained jelas unggul di 8.
+- prompt: Pada 360 pesan berlabel, lab menampilkan bag of words 93,3%, vektor beku 91,1%, dan vektor yang di-fine-tune 92,8%. Apa yang menjelaskan hasil vektor beku?
+  options:
+  - Head beku hanya dapat memakai 8 angka tetap per kata, sehingga dengan banyak label baseline, yang mempelajari setiap kata, menyalipnya
+  - Model beku melihat terlalu banyak pesan berlabel dan mulai menghafalnya alih-alih belajar
+  - Pretraining membuat vektor semakin buruk ketika jumlah data berlabel bertambah, sehingga label tambahan merugikan
+  - Pesan test berubah di antara ukuran, sehingga model beku bertemu kata yang belum pernah dilihatnya
+  answer: 0
+  explanation: Vektor beku tidak dapat berubah, sehingga label hanya dapat menyesuaikan head kecil di atasnya. Bag of words mempelajari setiap kata secara terpisah dan mendapat manfaat dari label yang lebih banyak. Fine-tuning membiarkan label menggeser vektor, dan hasilnya hampir menyusul (92,8%). Pesan test sama pada setiap ukuran.
+- prompt: Di lab, Head 3 memberi "kucing" dan "tikar" bobot terbesar pada kata kerja "duduk" dan "tidur". Seorang pelajar menyimpulkan bahwa setiap model yang sudah dilatih punya head yang mencari kata kerja. Tanggapan mana yang paling adil?
+  options:
+  - Benar, karena Head 3 memperlihatkan pola yang dipelajari setiap head attention selama training
+  - Salah, karena head pada model yang sudah dilatih semuanya hanya melihat token tepat di depannya
+  - Belum terbukti di sini, karena lab mengatur head ini dengan tangan, dan model yang dilatih mempelajari hubungan apa pun yang membantu tugasnya
+  - Salah, karena sebuah head tidak dapat menghubungkan dua kata berbeda, hanya sebuah kata dan posisinya sendiri
+  answer: 2
+  explanation: Keempat head di lab diatur dengan tangan untuk memperlihatkan empat pola yang khas. Model yang dilatih mulai dari head acak seperti Head 4, dan training membentuknya menjadi hubungan apa pun yang membantu tugasnya. Hubungan apa yang ditemukan sebuah head dipelajari, bukan dipilih.

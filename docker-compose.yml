@@ -1,0 +1,37 @@
+# Local-development dependency stack. `make dev` brings up exactly the
+# services this project needs (computed at init time from --database /
+# --storage choices) and runs the app against `.env.local`.
+#
+# Move to managed services in production by changing the env vars in
+# `.env.production` — the generated app talks to interchangeable backends
+# via the same Port surfaces, no code changes required.
+#
+# Credentials (#5518): there are NO well-known defaults here. Every
+# required-variable reference below is resolved by `docker compose` from the untracked
+# `.env` that `hexago init` wrote with fresh random per-project values; the
+# matching DSN / S3 keys in `.env.local` were generated from the same
+# values. A bare `docker compose up` therefore needs no manual step, and
+# nothing secret is ever committed.
+name: learnlab
+services:
+  postgres:
+    image: postgres:17-alpine
+    ports:
+      - "127.0.0.1:5442:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is missing - it lives in the gitignored .env that `hexago init` writes}
+      POSTGRES_DB: postgres
+    healthcheck:
+      # TCP probe (#5303): the first-boot init server is socket-only.
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+  # @hexago:compose:services
+
+volumes:
+  postgres-data:
+  # @hexago:compose:volumes

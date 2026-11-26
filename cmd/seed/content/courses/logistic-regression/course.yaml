@@ -1,0 +1,31 @@
+slug: logistic-regression
+title: "Logistic regression"
+summary: "The sigmoid, predicted probabilities, log loss, and classification thresholds."
+topic: Machine learning
+level: beginner
+path: beginner
+position: 6
+translations:
+  id:
+    title: "Regresi logistik"
+    summary: "Sigmoid, probabilitas prediksi, log loss, dan threshold klasifikasi."
+modules:
+- slug: core-ideas
+  title: Core ideas
+  summary: "The concepts, in the order the lab uses them."
+  lessons:
+  - probabilities-and-the-sigmoid
+  - log-loss-and-fitting
+  translations:
+    id:
+      title: "Ide inti"
+      summary: "Konsep-konsepnya, sesuai urutan yang dipakai lab."
+- slug: lab
+  title: Lab
+  summary: "Run the idea yourself, then check what you learned."
+  lessons:
+  - thresholds-and-decisions
+  translations:
+    id:
+      title: "Lab"
+      summary: "Jalankan idenya sendiri, lalu periksa apa yang sudah kamu pelajari."

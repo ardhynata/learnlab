@@ -1,0 +1,72 @@
+- prompt: A calibrated model predicts 0.8 for 200 test cases. About how many of them should be positive?
+  options:
+  - About 80
+  - About 120
+  - About 160
+  - All 200, because 0.8 is above 0.5
+  answer: 2
+  explanation: Calibrated means a predicted 0.8 comes true about 80 percent of the time, and 0.8 × 200 = 160. Being above 0.5 only decides which side of a default threshold the case falls on, not how many are positive.
+- prompt: On a reliability diagram, the group with a predicted probability of 0.85 sits at an observed share of 0.60. What does this say about the model?
+  options:
+  - It is underconfident there, because its dot sits low on the diagram
+  - It is overconfident there, because fewer cases were positive than predicted
+  - It ranks those cases badly, so its AUC must be low for the whole model
+  - It is perfectly calibrated there, because the observed share is above 0.5
+  answer: 1
+  explanation: The model claimed 85 percent and only 60 percent came true, so the dot is below the diagonal and the model is overconfident in that range. A reliability diagram says nothing about the order of the cases.
+- prompt: "A model gives these predictions, with what really happened in brackets (1 is positive): 0.7 (1), 0.2 (0), 0.5 (0). What is its Brier score?"
+  options:
+  - 0.38
+  - 0.253
+  - 0.090
+  - 0.127
+  answer: 3
+  explanation: The squared gaps are (1 − 0.7)² = 0.09, (0 − 0.2)² = 0.04 and (0 − 0.5)² = 0.25. They sum to 0.38, and the mean over three cases is 0.38 / 3 = 0.127. The value 0.38 is the sum before dividing by the number of cases.
+- prompt: Model B's probabilities are Model A's probabilities pushed toward 0 and 1, with the order of the cases unchanged. Which statement is correct?
+  options:
+  - They have the same AUC but can have different calibration
+  - B has a higher AUC, because its numbers look more confident
+  - They have the same calibration, because the order is the same
+  - B has a lower AUC, because its numbers are further from the truth
+  answer: 0
+  explanation: AUC only uses the order of the scores, and the order did not change. Calibration depends on the numbers themselves, so pushing them toward 0 and 1 can make a model overconfident.
+- prompt: A false positive costs 5 units and a false negative costs 45. If the probabilities are calibrated, at what threshold should you start flagging cases?
+  options:
+  - 0.50
+  - 0.10
+  - 0.90
+  - 0.05
+  answer: 1
+  explanation: The threshold is the cost of a false positive divided by the sum of both costs, 5 / (5 + 45) = 0.10. The value 0.90 comes from putting the costs the wrong way round.
+- prompt: A case has a calibrated probability of 0.4. A false positive costs 10 and a false negative costs 30. What should you do?
+  options:
+  - Do not flag it, because 0.4 is below the usual 0.5
+  - Flag it, because flagging costs 0.4 × 10 = 4 and that is cheap
+  - Flag it, because flagging costs 6 and not flagging costs 12
+  - Do not flag it, because a false negative is rare in most data
+  answer: 2
+  explanation: Flagging is only a mistake when the case is fine, which has probability 0.6, so its expected cost is 6. Not flagging is a mistake when the case is positive, expected cost 12. The cost rule agrees with the threshold 10 / 40 = 0.25, and 0.4 is above it.
+- prompt: The cost of a false negative rises from 30 to 90, and a false positive still costs 10. What happens to the cost-based threshold?
+  options:
+  - It falls from 0.25 to 0.10, so more cases get flagged
+  - It rises from 0.25 to 0.90, so fewer cases get flagged
+  - It stays at 0.25, because only the ratio of probabilities matters
+  - It falls to 0.03, because 10 / 90 is the new rule
+  answer: 0
+  explanation: The threshold is 10 / (10 + 90) = 0.10. A costlier false negative makes you willing to flag cases with lower probabilities. The ratio 10 / 90 is not the rule, because the denominator is the sum of the two costs.
+- prompt: What does recalibration with Platt scaling or isotonic regression change?
+  options:
+  - The training of the model, which must be repeated from scratch
+  - The order of the cases, so the AUC usually improves
+  - The cost of each kind of mistake, to match the data seen
+  - The numbers it outputs, mapped to observed frequencies
+  answer: 3
+  explanation: Recalibration learns a map from the score to the observed share of positives. Platt scaling with a positive slope keeps the order exactly, and isotonic regression can only create ties, so the AUC does not improve. It should be fitted on data the model did not train on.
+- prompt: In the lesson's test set, the cost threshold 0.25 gave Model A a total cost of 3360 but Model B a cost of 3900. Why?
+  options:
+  - B ranks the cases in a different order from A, so it misses more fraud
+  - B's numbers are not calibrated, so its 0.20 row fell below the threshold
+  - The cost of a false negative was set differently for B than for A
+  - A threshold from costs only works for models with a high Brier score
+  answer: 1
+  explanation: The ranking is the same, but B reports 0.20 for a row that is really 34 percent positive, so the rule leaves that row out and misses its positives. The formula assumes calibrated probabilities.

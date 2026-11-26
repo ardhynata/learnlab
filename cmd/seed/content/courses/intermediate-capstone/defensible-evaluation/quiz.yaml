@@ -1,0 +1,80 @@
+- prompt: A hospital's model will score discharges of patients it has never seen, and each patient has four discharges in the data. Which cut makes the test set honest?
+  options:
+  - Shuffle all discharges and hold out a random 20%
+  - Hold out only the most recent months
+  - Hold out whole patients, with all four of their discharges on the same side
+  - Hold out one discharge per patient
+  answer: 2
+  explanation: The test rows must be new in the way real use is new, and here that means new patients. Cutting by patient keeps every patient on one side. A random cut or one held-out discharge per patient leaves each test row with siblings in training.
+- prompt: Each of 500 patients has four discharges, and you hold out a random 20% of the 2,000 rows. For a test discharge, each of the patient's other three discharges is in training with probability 0.8. About how often does a test discharge have at least one sibling in training?
+  options:
+  - 20%
+  - 51.2%
+  - 80%
+  - 99.2%
+  answer: 3
+  explanation: The chance that none of the three siblings is in training is 0.2 × 0.2 × 0.2 = 0.008, so at least one is there with probability 0.992. The 51.2% is the chance that all three are.
+- prompt: Of 1,000 discharges, 100 are readmissions. A model misses 30 of them and raises 120 false alarms. A miss costs 500 and a false alarm costs 100. What is its cost per discharge?
+  options:
+  - 15.0
+  - 27.0
+  - 50.0
+  - 150.0
+  answer: 1
+  explanation: 30 × 500 = 15,000 and 120 × 100 = 12,000, so the total is 27,000, which is 27.0 per discharge. The figure 50.0 is the cost of never calling anyone (100 × 500 / 1,000), the baseline the model has to beat.
+- prompt: On out-of-fold predictions a model has accuracy 86.6% and cost 23.9 per discharge. Always saying "no" has accuracy 91.0% and cost 45.0. Which conclusion is right?
+  options:
+  - The model is better, because the cost is the metric that matters here
+  - The model is worse, because its accuracy is lower than the baseline's
+  - The two are equal, because accuracy and cost always rank rules the same way
+  - Nothing can be said yet, because only the test set can compare the two rules
+  answer: 0
+  explanation: Accuracy treats a miss and a false alarm alike, but here a miss costs 500 and a false alarm 100. On cost the model is about half as expensive as the better no-model rule. The out-of-fold predictions already allow this comparison, without the test set.
+- prompt: You tune ten equally good candidates, and each is scored with a standard error of 4 points. About how much better does the best of them look than any of them truly is? (The expected largest of ten standard normal draws is about 1.54.)
+  options:
+  - About 0 points, since they are equally good
+  - About 2 points
+  - About 6 points
+  - About 12 points
+  answer: 2
+  explanation: The winner of ten noisy scores is the luckiest one, which sits about 1.54 standard errors above the truth. 1.54 × 4 = 6.2 points. This is why the test set must not be used to choose among candidates.
+- prompt: Which step spoils the test set?
+  options:
+  - Fitting the scaler on the tuning rows only
+  - Choosing the threshold that gives the lowest cost on the test rows
+  - Scoring the test rows once, after every choice is made
+  - Refitting the winning setting on all the tuning rows
+  answer: 1
+  explanation: A threshold picked on the test rows is tuned to them, so the reported cost is flattered and no clean data is left. The other three are the normal protocol. The threshold should come from out-of-fold predictions on the tuning data.
+- prompt: A model's scores are calibrated probabilities. A miss costs 300 and a false alarm costs 50. Which cutoff minimizes the expected cost? Give it to two decimals.
+  options:
+  - 0.50
+  - 0.86
+  - 0.17
+  - 0.14
+  answer: 3
+  explanation: Calling is cheaper when (1 - p) × 50 < p × 300, which gives p > 50 / 350 = 0.143. The 0.86 is 300 / 350, with the costs swapped, and 0.17 is 50 / 300, which forgets to add the two costs.
+- prompt: The test set holds 400 discharges from 100 patients, four each. Why do you resample patients, not discharges, in the bootstrap?
+  options:
+  - A patient's discharges are linked, so resampling rows makes the interval too narrow
+  - Resampling patients makes the interval smaller, because there are fewer patients than rows
+  - Patients are easier to count than discharges, so the interval is simpler to report
+  - Resampling discharges is not possible with replacement, because a row cannot be drawn twice
+  answer: 0
+  explanation: The discharges of one patient tend to be alike, so the 400 rows carry less information than 400 independent cases. In the lesson, resampling rows gave 20.8 to 41.5 and resampling patients gave 19.0 to 43.3, about 17% wider.
+- prompt: The tuning estimate was 23.9 per discharge. The test cost is 30.25 with a 95% interval of 19.0 to 43.3. What is the fairest reading?
+  options:
+  - The test set must have leaked, because the test cost is higher than the tuning estimate
+  - The tuning estimate was wrong, because it differs from the test cost
+  - The model got worse, because the test cost is higher
+  - The two agree, because 23.9 lies inside the interval
+  answer: 3
+  explanation: A single test set is one draw, and its 100 patients happen to include more readmissions (11.0% of discharges against 9.0%). With an interval this wide, a gap of 6.4 is within sampling wobble and does not show that anything is wrong. Both numbers belong in the report.
+- prompt: A team wants to forecast next month's discharge count from the earlier months. Which evaluation can they defend?
+  options:
+  - Shuffle the months and hold out a random fifth of them
+  - Train on earlier months and test on later ones, repeating with a rolling origin
+  - Train on the latest months and test on the earliest
+  - Test on the same months the model was trained on
+  answer: 1
+  explanation: On the day of use, the future is the one thing the model does not have. A temporal split, and a rolling origin to repeat it, tests exactly that. A shuffled split lets the model fill gaps between known months, which is a different and easier job.

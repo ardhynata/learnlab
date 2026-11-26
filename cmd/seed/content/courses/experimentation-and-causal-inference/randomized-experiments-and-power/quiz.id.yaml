@@ -1,0 +1,80 @@
+- prompt: Mengapa melempar koin untuk menentukan siapa yang melihat halaman checkout baru membuat selisih rata-rata yang sederhana dapat memperkirakan efeknya?
+  options:
+  - Lemparan koin membuat kedua kelompok persis sama dalam setiap ciri
+  - Lemparan koin berarti kamu hanya perlu mengukur outcome di satu kelompok
+  - Tidak ada ciri pembeli yang dapat mengarahkan siapa mendapat halaman itu, sehingga kedua kelompok hanya berbeda karena kebetulan dan karena halamannya
+  - Kelompok yang lebih besar selalu menunjukkan selisih yang lebih besar
+  answer: 2
+  explanation: Random assignment memutus hubungan antara siapa pembelinya dan halaman mana yang ia lihat. Pada satu kali jalan, kedua kelompok tidak identik (itulah anggapan keliru yang umum); sisa selisihnya adalah kebetulan, dan standard error mengukur seberapa besar ia dapat menjadi.
+- prompt: Pada sebuah A/B test dengan 2.000 pengunjung per grup, 10% membeli di halaman A dan 12% di halaman B. Berapa standard error dari selisih 2 poin itu?
+  options:
+  - Sekitar 0,99 poin
+  - Sekitar 1,40 poin, kedua standard error dijumlahkan
+  - Sekitar 0,70 poin, kedua standard error dirata-rata
+  - Sekitar 2,00 poin, sebesar selisihnya
+  answer: 0
+  explanation: Setiap tingkat punya varians, 0,000045 untuk A dan 0,0000528 untuk B. Kedua kelompok independen, sehingga varians dijumlahkan menjadi 0,0000978, yang akar kuadratnya 0,00989, atau 0,989 poin. Menjumlahkan atau merata-ratakan standard error-nya langsung menghasilkan angka yang salah.
+- prompt: Dengan standard error 0,989 poin dan selisih 2 poin itu, manakah interval 95% untuk efeknya?
+  options:
+  - 1,01 sampai 2,99 poin
+  - -1,94 sampai 1,94 poin
+  - 0,00 sampai 2,00 poin
+  - 0,06 sampai 3,94 poin
+  answer: 3
+  explanation: Intervalnya adalah selisih ditambah dan dikurangi 1,96 standard error, sehingga 2 ± 1,96 × 0,989 = 2 ± 1,94. Hasilnya 0,06 sampai 3,94 poin. Interval ini hanya sedikit di luar 0, sesuai dengan p-value 0,043.
+- prompt: Test itu memberi p = 0,043. Apa yang dikatakannya?
+  options:
+  - Ada peluang 4,3% bahwa halaman baru tidak berpengaruh
+  - Jika halaman itu sungguh tidak berpengaruh, selisih sebesar ini atau lebih, ke arah mana pun, akan muncul sekitar 4,3% dari waktu karena kebetulan
+  - Halaman baru bekerja dengan probabilitas 95,7%
+  - Halaman baru menaikkan tingkat pembelian sebesar 4,3 poin
+  answer: 1
+  explanation: P-value berangkat dari hipotesis nol dan bertanya seberapa mengejutkan datanya. Ia bukan probabilitas bahwa hipotesis nol benar, dan ia tidak mengatakan apa pun tentang ukuran efek.
+- prompt: Tim lain menguji dengan 300 pengunjung per grup, mendapat p = 0,20, dan mengumumkan bahwa halaman itu tidak berpengaruh. Bagaimana bacaan terbaiknya?
+  options:
+  - Mereka benar, karena p-value di atas 0,05 membuktikan tidak ada efek
+  - Mereka benar, karena 0,20 adalah peluang bahwa halaman itu berhasil
+  - Hasilnya belum meyakinkan, karena dengan pengunjung sesedikit itu hanya efek yang besar yang akan terdeteksi
+  - Halaman itu menurunkan penjualan, karena 0,20 lebih kecil dari 1
+  answer: 2
+  explanation: P-value yang besar berarti data tidak dapat memisahkan efek dari kebetulan. Dengan 300 per grup, test ini berpower rendah dan minimum detectable effect-nya besar, sehingga efek yang nyata tetapi sedang biasanya terlewat.
+- prompt: Test kita punya standard error 0,989 poin. Berapa minimum detectable effect-nya pada power 80%?
+  options:
+  - 1,94 poin, selisih yang dibutuhkan untuk signifikan
+  - 2,77 poin
+  - 0,99 poin, satu standard error
+  - 3,94 poin, ujung atas interval
+  answer: 1
+  explanation: MDE = 2,80 × SE = 2,80 × 0,989 = 2,77 poin. Selisih yang dibutuhkan untuk signifikan memang 1,94, tetapi efek sebenarnya yang persis sebesar itu hanya terdeteksi sekitar separuh waktu.
+- prompt: Test yang dirancang untuk mendeteksi kenaikan 2 poin dari baseline 10% memerlukan 3.834 pengunjung per grup. Kira-kira berapa per grup yang dibutuhkan untuk mendeteksi kenaikan 1 poin?
+  options:
+  - Sekitar 1.900, separuhnya
+  - Sekitar 3.834, sama saja
+  - Sekitar 7.700, dua kali lipat
+  - Sekitar 14.700, kira-kira empat kali lipat
+  answer: 3
+  explanation: Jumlah pengunjung yang dibutuhkan bertumbuh dengan 1 / d², sehingga kenaikan yang separuhnya mengalikan kebutuhan sekitar empat kali. Hitungan tepatnya memberi 7,84 × 0,1879 / 0,0001 = 14.731 per grup.
+- prompt: Sebuah tim mengecek test setiap hari dan berhenti begitu p di bawah 0,05. Tidak ada efek yang nyata. Pada 5 pengecekan dengan jarak yang sama, seberapa sering tim itu akan mengumumkan kemenangan?
+  options:
+  - Sekitar 14% dari waktu, jauh di atas 5% yang dimaksudkan
+  - Tepat 5% dari waktu, karena tiap pengecekan memakai batas 0,05
+  - Sekitar 1% dari waktu, karena efeknya nol
+  - Tidak pernah, karena tidak ada efek yang dapat ditemukan
+  answer: 0
+  explanation: Setiap pengecekan adalah kesempatan baru bagi keberuntungan. Dalam simulasi eksperimen tanpa efek, 5 pengecekan memberi kemenangan palsu sekitar 14% dari waktu. Lihat sekali pada akhir yang direncanakan, atau pakai metode yang dibuat untuk pengecekan berulang.
+- prompt: Sebuah dashboard menguji 20 metrik yang independen, masing-masing pada tingkat 0,05, dan sebenarnya tidak ada yang berubah. Seberapa besar peluang bahwa setidaknya satu metrik tampak signifikan?
+  options:
+  - Sekitar 5%
+  - Sekitar 20%
+  - Sekitar 64%
+  - Sekitar 100%
+  answer: 2
+  explanation: Peluang bahwa tidak ada yang signifikan adalah 0,95^20 = 0,36, sehingga peluang setidaknya satu adalah 1 - 0,36 = 0,64. Batas Bonferroni 0,05 / 20 = 0,0025 untuk setiap metrik, atau satu metrik utama yang ditetapkan sejak awal, menjaga tingkat keseluruhan di sekitar 5%.
+- prompt: Halaman baru menaikkan pembelian (p = 0,043), tetapi guardrail yang ditetapkan sebelum peluncuran berbunyi refund tidak boleh naik lebih dari 0,5 poin, dan tingkat refund naik 1,2 poin dengan interval 95% 0,7 sampai 1,7. Apa keputusan terbaik?
+  options:
+  - Rilis, karena metrik utama menang dan guardrail tidak dihitung
+  - Tahan dulu, karena guardrail dilanggar, dan cari tahu mengapa refund naik sebelum merilis
+  - Rilis, tetapi jalankan test lagi sampai tingkat refund tidak lagi signifikan
+  - Abaikan guardrail, karena 0,043 di bawah 0,05
+  answer: 1
+  explanation: Guardrail ada untuk memveto perubahan yang menang pada metrik utama tetapi merugikan di tempat lain. Seluruh intervalnya, 0,7 sampai 1,7, berada di luar batas 0,5 poin, sehingga pelanggarannya bukan kebetulan. Mengulang test sampai guardrail tampak aman berarti peeking dan memilih hasil yang disukai.

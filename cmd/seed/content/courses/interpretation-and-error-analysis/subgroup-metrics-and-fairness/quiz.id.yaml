@@ -1,0 +1,72 @@
+- prompt: Kelompok P berisi 300 kasus dan model benar pada 285 di antaranya. Kelompok Q berisi 100 kasus dan model benar pada 70. Berapa accuracy keseluruhan?
+  options:
+  - 0,83, rata-rata dari 0,95 dan 0,70
+  - 0,89, karena 355 dari 400 kasus benar
+  - 0,95, karena kelompok besar menentukan skor
+  - 0,70, karena kelompok terlemah yang menentukan
+  answer: 1
+  explanation: Accuracy keseluruhan menghitung semua kasus, sehingga hasilnya (285 + 70) / 400 = 0,8875, sekitar 0,89. Merata-ratakan kedua accuracy kelompok menghasilkan 0,83, yang mengabaikan bahwa P tiga kali lebih besar daripada Q.
+- prompt: Pada aturan penguin, 58 penguin betina adalah Gentoo dan aturan menemukan 32 di antaranya. Berapa recall untuk Gentoo betina?
+  options:
+  - 0,55, dari 32 / 58
+  - 0,84, dari 139 / 165
+  - 0,91, dari 303 / 333
+  - 1,00, karena ia menemukan semua Gentoo jantan
+  answer: 0
+  explanation: Recall adalah positif yang ditemukan dibagi positif sebenarnya dalam kelompok itu, 32 / 58 = 0,55. Angka 0,84 adalah accuracy untuk penguin betina, dan 0,91 adalah accuracy untuk semuanya.
+- prompt: 26 dari 30 galat aturan jatuh pada 58 penguin Gentoo betina, dari 333 penguin. Bagaimana pembacaan yang paling tepat?
+  options:
+  - Galat tersebar merata, sehingga tidak ada slice yang perlu dipelajari
+  - Batas 4700 g dipilih dengan bantuan kolom jenis kelamin
+  - Galat menumpuk pada slice kecil, di situlah penyebabnya patut dicari
+  - Accuracy keseluruhan 0,91 pasti salah hitung
+  answer: 2
+  explanation: 58 dari 333 penguin adalah 17 persen data, tetapi memuat 87 persen galat. Di situlah pencarian berikutnya dimulai, dan massa tubuh adalah petunjuknya. Angka 0,91 sudah benar, ia hanyalah rata-rata.
+- prompt: Penguin jantan di Torgersen menunjukkan 1 galat dari 23 penguin, tingkat 0,04. Bagaimana cara terbaik memperlakukan slice ini?
+  options:
+  - Menyebut penguin jantan Torgersen kelompok yang paling terlayani, karena tingkat galatnya terendah
+  - Menyebut aturan itu rusak untuk penguin jantan Torgersen, karena ada galat
+  - Membuang slice itu dari laporan, karena 23 tidak banyak
+  - Melaporkannya dengan n = 23 dan menganggap angkanya tidak stabil, karena satu galat lagi membuatnya dua kali lipat
+  answer: 3
+  explanation: Dengan 23 kasus, satu galat lebih banyak atau lebih sedikit menggeser tingkat galat antara 0,04 dan 0,09. Slice kecil harus dilaporkan dengan jumlah kasusnya dan dikonfirmasi pada data baru sebelum dipercaya.
+- prompt: Kriteria mana yang meminta model memberi flag pada bagian yang sama dari setiap kelompok?
+  options:
+  - Equal opportunity
+  - Demographic parity
+  - Calibration within groups
+  - Equal accuracy
+  answer: 1
+  explanation: Demographic parity membandingkan flag rate. Equal opportunity membandingkan recall di antara kasus positif sebenarnya, dan calibration within groups membandingkan seberapa sering sebuah flag benar.
+- prompt: Pada koloni B alat itu punya TP 16, FN 4, FP 8, dan TN 72. Berapa precision-nya?
+  options:
+  - 0,80
+  - 0,24
+  - 0,67
+  - 0,84
+  answer: 2
+  explanation: Precision adalah TP / (TP + FP) = 16 / 24 = 0,67. Angka 0,80 adalah recall, 0,24 adalah flag rate, dan 0,84 adalah precision di koloni A.
+- prompt: Alat untuk koloni B diubah agar memberi flag pada 38 penguin supaya flag rate-nya sama dengan koloni A, dan ia tetap menemukan 16 dari 20 kasus positif. Apa yang terjadi pada precision-nya?
+  options:
+  - Tetap 0,67
+  - Turun menjadi 0,42, dari 16 / 38
+  - Naik menjadi 0,84
+  - Tetap 0,80
+  answer: 1
+  explanation: Memberi flag pada 38 penguin dengan 16 di antaranya benar menghasilkan 16 / 38 = 0,42. Menyamakan flag rate sambil menjaga recall membuat precision menjauh dari 0,84 milik koloni A.
+- prompt: Kapan demographic parity, equal opportunity, dan calibration within groups dapat terpenuhi sekaligus?
+  options:
+  - Kapan pun training set cukup besar
+  - Ketika setiap kelompok dinilai dengan threshold yang sama
+  - Ketika kolom kelompok tidak dipakai sebagai feature
+  - Hanya ketika kelompok-kelompok punya base rate yang sama
+  answer: 3
+  explanation: Flag rate = recall x base rate / precision, sehingga jika ketiganya sama antar kelompok, base rate pun harus sama. Model yang sempurna pun memberi flag pada tiap kelompok sebesar base rate-nya sendiri, sehingga demographic parity tetap gagal. Data lebih banyak, satu threshold, atau membuang satu kolom tidak mengubah hal ini.
+- prompt: Aturan penguin tidak pernah memakai jenis kelamin sebagai input. Mengapa galatnya tetap dapat berbeda jauh antara penguin betina dan jantan?
+  options:
+  - Massa tubuh berbeda antar jenis kelamin, sehingga batas pada massa jatuh di tempat yang berbeda pada tiap kelompok
+  - Aturan tanpa jenis kelamin sebagai input selalu sama akuratnya untuk kedua jenis kelamin
+  - Penguin betina diukur dengan kurang cermat
+  - Recall hanya dapat dihitung untuk kelompok yang lebih berat
+  answer: 0
+  explanation: Rata-rata Gentoo betina 4680 g dan Gentoo jantan 5485 g, sehingga batas 4700 g membelah kelompok betina tetapi tidak kelompok jantan. Tidak memakai sebuah kolom tidak membuat galat sama antar kelompoknya jika feature lain berkaitan dengannya.

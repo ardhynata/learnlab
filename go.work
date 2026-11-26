@@ -1,0 +1,24 @@
+// go.work pins the multi-module workspace so language servers (gopls)
+// resolve every package in this tree without per-file "not in workspace
+// module" diagnostics. For a single-module project the workspace
+// contains just `.`; tools/ or sub-modules can be added later by
+// hand-editing this file.
+//
+// Issue #457 origin: bantubangun-shape consumer projects without a
+// go.work emitted a "not in workspace module" diagnostic for every
+// open file in the IDE — noise that drowned real diagnostics. Hexago
+// scaffolds this file at init so the IDE works on the first checkout.
+//
+// The `go` directive must be ≥ the highest `go` directive of any
+// included module, and Go compares the FULL semver (major.minor.patch).
+// Floor is 1.26.0: the hexago module itself declares go 1.26.0, and a
+// local `replace` of hexago (the recommended dev setup) advances go.mod
+// to that version on `go mod tidy` — same mechanism as goose/v3 v3.27.1
+// pushing the old 1.25.7 floor (issue #545). If go.work lags the floor,
+// `go build ./...` fails with "module . listed in go.work file requires
+// go >= 1.26.0, but go.work lists go <older>".
+go 1.26.0
+
+use (
+	.
+)

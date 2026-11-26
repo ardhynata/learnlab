@@ -1,0 +1,26 @@
+entity: Progress
+context: ""
+fields:
+    - name: id
+      type: string
+      auto: true
+      required: true
+    - name: learner_id
+      type: string
+      required: true
+      ref: Learner
+      on_delete: cascade
+    - name: lesson_id
+      type: string
+      required: true
+      ref: Lesson
+      on_delete: cascade
+    - name: completed
+      type: bool
+    - name: score
+      type: int
+    - name: total
+      type: int
+operations: [Create, GetByID, List, Update, Delete]
+transports: [rest]
+repository: postgresql

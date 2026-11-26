@@ -1,0 +1,80 @@
+- prompt: Sebuah garis menyisakan empat residual yang persegi-persegi di atasnya berluas 0,09; 0,01; 1,21; dan 0,49. Berapa mean squared error-nya?
+  options:
+  - "1,8"
+  - "0,9"
+  - "0,5"
+  - "0,45"
+  answer: 3
+  explanation: Luas-luas itu berjumlah 1,8, dan MSE adalah rata-rata luasnya, 1,8 / 4 = 0,45. Nilai 1,8 adalah total sebelum dirata-ratakan, sedangkan 0,9 muncul karena dibagi 2, bukan dibagi 4 titik.
+- prompt: Untuk sejumlah titik, rata-rata x = 2,5, rata-rata y = 3,5, dan slope least squares-nya 0,8. Berapa intercept-nya?
+  options:
+  - "3,5"
+  - "2,7"
+  - "1,5"
+  - "2,0"
+  answer: 2
+  explanation: Intercept sama dengan rata-rata y dikurangi slope kali rata-rata x, 3,5 - 0,8 × 2,5 = 3,5 - 2 = 1,5. Nilai 2,7 muncul karena hanya mengurangkan slope, 3,5 - 0,8, dan lupa mengalikannya dengan rata-rata x.
+- prompt: Titik mana yang selalu dilewati garis least squares?
+  options:
+  - Titik data yang pertama
+  - Titik (rata-rata x, rata-rata y)
+  - Titik dengan residual terbesar
+  - Titik (0, 0)
+  answer: 1
+  explanation: Rumus intercept, rata-rata y - slope × rata-rata x, menyatakan persis bahwa garis mencapai rata-rata y pada rata-rata x. Untuk contoh empat titik, garis y = 0,8x + 1,5 memberi 0,8 × 2,5 + 1,5 = 3,5 pada x = 2,5.
+- prompt: Intercept ditahan tetap dan hanya slope yang digeser. Bentuk apa yang digambar oleh tiap loss ketika slope berubah?
+  options:
+  - MSE berupa mangkuk mulus, MAE berupa V dari potongan lurus
+  - Keduanya berupa mangkuk mulus, karena keduanya merata-ratakan residual
+  - MSE berupa V dari potongan lurus, MAE berupa mangkuk mulus
+  - Keduanya berupa garis lurus, karena keduanya memakai titik yang sama
+  answer: 0
+  explanation: Mengkuadratkan residual menghasilkan kurva mulus dengan satu titik terendah, yaitu mangkuk. Nilai absolut menghasilkan potongan-potongan lurus yang menekuk di tempat garis melewati sebuah titik, sehingga kurvanya tampak seperti V.
+- prompt: Di lab, intercept tertahan di 4,00. Menggeser slope saja menurunkan MSE paling jauh ke 1,885, sedangkan garis terbaik punya MSE 0,236. Apa yang ditunjukkan hal ini?
+  options:
+  - Slider Slope tidak berfungsi, sehingga MSE hampir tidak berubah
+  - Slope tidak berpengaruh pada loss, sehingga nilai apa pun memberi MSE yang sama
+  - Tidak ada garis yang dapat memiliki MSE di bawah 1,885
+  - Slope tidak dapat memperbaiki intercept yang salah tempat, sehingga kedua dial harus bergerak
+  answer: 3
+  explanation: Slope terbaik bergantung pada intercept. Dengan intercept 4,00, garis berada jauh di atas titik-titik apa pun slope-nya, sehingga loss tetap tinggi. Memindahkan intercept ke sekitar 1,5 membuat slope dapat mencapai 0,57 dan MSE 0,237.
+- prompt: Garis least squares untuk empat titik punya MAE 0,55, sedangkan garis y = x + 1 punya MAE 0,5. Apa yang ditunjukkan hal ini?
+  options:
+  - Setiap loss dapat punya garis terbaik yang berbeda
+  - Garis y = x + 1 juga merupakan garis least squares
+  - MAE selalu lebih besar daripada MSE pada garis yang sama
+  - Least squares memberi jawaban yang salah pada data kecil
+  answer: 0
+  explanation: Setiap loss punya garis terbaiknya sendiri. Garis least squares adalah garis dengan MSE terendah (0,45), tetapi menurut MAE garis y = x + 1 lebih baik (0,5 dibandingkan 0,55).
+- prompt: Tujuh titik di dekat sebuah garis di-fit dengan kedua loss. Setelah satu titik yang jauh ditambahkan, slope garis MSE turun dari 0,89 ke 0,30, sedangkan garis MAE tetap pada slope 0,83. Mengapa garis MSE bergeser jauh lebih banyak?
+  options:
+  - MAE sama sekali mengabaikan titik yang jauh itu, sehingga garisnya tidak dapat bergeser
+  - Rumus least squares hanya melihat titik terakhir yang ditambahkan
+  - Pengkuadratan membuat selisih besar berbobot jauh lebih besar, sehingga garis tertarik ke arahnya
+  - MSE dibagi dengan titik yang lebih sedikit daripada MAE, sehingga tiap titik lebih berbobot
+  answer: 2
+  explanation: Titik yang jauh itu meleset dari garis MAE sekitar 6,8. Selisih itu menambah 6,8 pada total absolut tetapi sekitar 47 pada total kuadrat, sehingga loss kuadrat tidak dapat mengabaikannya. MAE tetap menghitung titik itu, tetapi hanya sebesar ukurannya, yang di sini tidak cukup untuk mengubah garis terbaik.
+- prompt: Di lab, dengan outlier menyala dan garis berada di garis MAE terbaik, outlier menyumbang 48% dari total galat absolut tetapi 88% dari total galat kuadrat. Mengapa berbeda?
+  options:
+  - Galat absolut mengabaikan separuh dari setiap selisih, sehingga bagiannya lebih kecil
+  - Pengkuadratan membesarkan selisih besar jauh lebih cepat daripada yang kecil, sehingga bagiannya lebih besar
+  - Lab menggambar bagian kuadratnya dengan salah, karena menjumlahkan persegi dua kali
+  - Outlier berpindah ke tempat yang berbeda ketika loss diganti
+  answer: 1
+  explanation: Selisih outlier adalah 5,91, dan 19 dari 20 selisih lainnya di bawah 1. Setelah dikuadratkan, 5,91 menjadi sekitar 35, sedangkan selisih-selisih kecil menjadi angka yang sangat kecil. Titik dan garisnya sama; hanya cara loss menjumlahkan selisih yang berubah.
+- prompt: Pada 20 titik buatan, satu outlier menggeser garis MSE terbaik sejauh 0,55 satuan plot. Pada 342 penguin, pergeserannya hanya 0,05. Apa alasan yang paling mungkin?
+  options:
+  - Data penguin tidak punya noise, sehingga tidak ada yang menarik garis
+  - Lab mematikan outlier ketika memuat data nyata
+  - Satu titik adalah bagian yang lebih kecil dari 343 titik daripada dari 21, sehingga tarikannya lebih lemah
+  - Yang bergeser justru garis MAE, sedangkan garis MSE diam
+  answer: 2
+  explanation: Loss adalah rata-rata atas semua titik, sehingga satu titik yang jauh hanya berbobot 1 dari 343 pada penguin, tetapi 1 dari 21 pada data buatan. Outlier yang sama tetap ada, tetapi suaranya kalah banyak.
+- prompt: Titik-titik buatan di lab digambar di sekitar y = 0,6x + 1,5. Dengan Loss pada MSE (galat kuadrat rata-rata), tombol Ke garis terbaik memberi slope 0,57 dan intercept 1,47. Mengapa hasilnya tidak persis 0,6 dan 1,5?
+  options:
+  - Noise pada 20 titik ini menggeser garis terbaik sedikit dari aturannya
+  - Tombol itu membulatkan slope ke bawah, sehingga tidak pernah mencapai 0,60
+  - Slider tidak dapat menampilkan 0,60, sehingga dipakai langkah terdekat
+  - Least squares hanya kurang lebih benar, sehingga meleset sedikit
+  answer: 0
+  explanation: Garis terbaik adalah yang terbaik untuk titik-titik yang kamu punya, bukan untuk aturan yang membuatnya. Sampel noise yang lain akan memberi garis terbaik yang sedikit berbeda, itulah sebabnya loss yang rendah saja tidak membuktikan bahwa garis itu adalah kebenarannya.

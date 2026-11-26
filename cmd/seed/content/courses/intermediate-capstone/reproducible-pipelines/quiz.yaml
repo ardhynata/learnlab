@@ -1,0 +1,72 @@
+- prompt: In 5-fold cross-validation, a pipeline has an imputer, a scaler, a selector and a model. When is each of them fitted?
+  options:
+  - Once, on all the rows, before the folds are made
+  - In every round, on the training folds of that round only
+  - In every round, on the held-out fold
+  - In round 1 on the training folds, then reused in the other rounds
+  answer: 1
+  explanation: A step fitted before the folds, or in an earlier round, has seen rows that are held out later. Each round fits the whole pipeline again on its own training folds, then only applies it to the held-out fold.
+- prompt: Round 2 of the penguin example trains on masses 3,750, 3,800, 3,450 and 3,650 g. What mean does its scaler learn?
+  options:
+  - 3,662.5
+  - 3,591.67
+  - 3,700
+  - 3,650
+  answer: 0
+  explanation: The four masses add to 14,650, and 14,650 / 4 = 3,662.5. The value 3,591.67 is the mean of all six penguins, which a leaky pipeline would use, and 3,700 is the imputer's median.
+- prompt: The scaler of round 2 has mean 3,662.5 and standard deviation 134.05. A held-out penguin of 3,800 g gets which z?
+  options:
+  - -1.03
+  - 0.73
+  - 1.03
+  - 137.5
+  answer: 2
+  explanation: z = (3,800 - 3,662.5) / 134.05 = 137.5 / 134.05 = 1.03. The value 0.73 would come from dividing by 188.01, the standard deviation of all six penguins, and 137.5 is the gap before dividing.
+- prompt: What does fixing a seed do for a pipeline?
+  options:
+  - It makes the model more accurate
+  - It removes the need to use a held-out fold
+  - It guarantees that two different models score the same
+  - It makes the random choices, such as the fold shuffle, come out the same every run
+  answer: 3
+  explanation: A seed fixes a random generator, so the folds, and any random start a model has, repeat. It does not make a model better. It makes the run repeatable and lets you measure how much the score depends on the shuffle.
+- prompt: With seed 42, a new model scores 0.4 points above k-NN in 5-fold cross-validation. Across ten seeds the mean score of k-NN alone ranged from 90.1% to 91.9%. What is the fair conclusion?
+  options:
+  - The new model is better, because 0.4 is above zero
+  - The gap is smaller than the spread from the seed, so it shows nothing yet
+  - k-NN must be broken, because its score changes with the seed
+  - The seed should be changed until the new model wins by more
+  answer: 1
+  explanation: The seed alone moves k-NN by 1.8 points (91.9 - 90.1), more than the 0.4 gap, so the gap is not evidence. Searching for a seed that makes the new model win is exactly the misuse a fixed, pre-chosen seed prevents.
+- prompt: In the results table, the row "Always predict male" scores 50.4% on average. Why keep it?
+  options:
+  - To show that the pipeline has a bug
+  - To pad the table with a third model
+  - To show what guessing earns, so the score of a model has something to be compared with
+  - To replace the fold scores of the other rows
+  answer: 2
+  explanation: A score alone does not say much. The baseline row says that 50.4% is what the most common class earns here, so 90.7% for k-NN is a gain of about 40 points. It is not a bug and it replaces nothing.
+- prompt: You rerun a colleague's script from a clean copy of the folder and get a table that differs in the second decimal. Which is the most likely cause?
+  options:
+  - "Something is not in the record: a seed, a data version or a library version"
+  - Cross-validation always gives a slightly different table
+  - The held-out folds were too large
+  - The baseline row was left out
+  answer: 0
+  explanation: With every seed and every setting recorded, a rerun returns the same table. A difference means something unrecorded changed, such as a seed, the data file or a library version. Cross-validation itself is repeatable once its seed is fixed.
+- prompt: Which of these is a silent leak that raises no error?
+  options:
+  - Reporting the mean and the spread of the fold scores
+  - Fitting the scaler on the training folds in each round
+  - Adding a baseline row to the results table
+  - Copying a rare class to balance it before the folds are made
+  answer: 3
+  explanation: The copies of one row can land in a training fold and in the held-out fold, so the model is tested on rows it has seen. The other three are good practice, not leaks.
+- prompt: A model's true accuracy is 88%. Scored on one 50-row hold-out, it reaches 94% or better with chance about 0.13. You try 20 such models and report the best one. Why is the reported score too good?
+  options:
+  - Twenty models always have a lower true accuracy than one
+  - Out of many tries, the best score is picked partly for luck, and luck will not repeat on new rows
+  - The hold-out has too few features
+  - Reporting the best fold score is allowed only when the seed is fixed
+  answer: 1
+  explanation: With a 0.13 chance each, the chance that at least one of 20 independent tries reaches 94% is about 0.94, yet every model is still 88% on new rows. Picking the best of many tries on the same rows selects luck. A fixed seed does not remove that.

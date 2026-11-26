@@ -1,0 +1,72 @@
+- prompt: Pada tabel bawaan lab, k-fold acak mendapat skor 78,4% dan grouped k-fold 64,7%. Pernyataan mana yang benar?
+  options:
+  - k-fold acak adalah skor yang jujur, karena skor yang lebih tinggi berarti model yang lebih baik
+  - Grouped k-fold adalah skor yang jujur untuk orang baru, dan skor acak membengkak sekitar 14 poin
+  - Kedua skor mengukur hal yang sama, sehingga selisih 14 poin itu hanya kebetulan
+  - Grouped k-fold terlalu ketat, sehingga skor yang benar adalah rata-rata keduanya
+  answer: 1
+  explanation: Model yang sama dinilai pada tabel yang sama. Pada fold acak, record uji milik orang yang sudah pernah dilihat model, sehingga model dapat mengenalinya. Skor grouped-lah yang menggambarkan orang baru. Selisihnya 78,4 - 64,7 = 13,7 poin.
+- prompt: Sebuah fold acak berisi 64 record dan model menjawab benar 55 di antaranya. Berapa akurasi fold itu?
+  options:
+  - 55,0%
+  - 64,0%
+  - 89,1%
+  - 85,9%
+  answer: 3
+  explanation: 55 / 64 = 0,859, yaitu 85,9%, fold terbaik dari kelima fold acak di lab. Angka 89,1% berarti 57 benar, dan 55,0% mencampuradukkan jumlah dengan persentase.
+- prompt: Pada fold acak, lab menyebut bahwa 100% record uji milik orang yang juga punya record di data training. Apa yang dijelaskan oleh hal ini?
+  options:
+  - Model mengenali orang itu dari ciri khasnya dan mengulang labelnya, sehingga skornya membengkak
+  - Model sudah melihat semua orang yang mungkin ada, sehingga skornya pada orang baru akan sama tingginya
+  - Fold-nya terlalu kecil, sehingga skornya tidak stabil tetapi tidak bias ke arah mana pun
+  - Label-nya teracak, sehingga skornya tidak berarti apa-apa
+  answer: 0
+  explanation: Record-record milik satu orang saling mirip, sehingga neighbor terdekat sebuah record uji adalah record lain dari orang yang sama. Itu menghargai kemampuan mengingat orang. Orang baru tidak akan punya neighbor seperti itu, dan itulah yang ditunjukkan fold grouped.
+- prompt: Kamu mengatur Kekuatan ciri khas tiap orang ke 0. k-fold acak kini mendapat 63,1% dan grouped k-fold 64,4%, sedangkan menebak label mayoritas terus-menerus mendapat 61,9%. Apa kesimpulanmu?
+  options:
+  - k-fold acak kini menjadi satu-satunya split yang jujur, dan 63,1% adalah angka yang dipercaya
+  - Model tidak belajar apa-apa, sehingga datanya pasti rusak
+  - Tanpa ciri khas tidak ada yang bisa dihafal, sehingga kedua split sepakat, dan kemampuannya hanya sedikit di atas tebakan
+  - Grouped k-fold gagal, karena skornya seharusnya selalu lebih rendah daripada k-fold acak
+  answer: 2
+  explanation: Selisihnya 63,1 - 64,4 = -1,3 poin, di dalam margin 2 poin yang oleh lab dianggap hampir sama. Kebocoran memerlukan tanda pengenal orang untuk dimanfaatkan. Model masih punya sedikit sinyal sungguhan di F1, itulah sebabnya kedua skor sedikit di atas 61,9% (selisih 1,2 dan 2,5 poin).
+- prompt: Pada tabel buatan, split berurutan waktu mendapat skor 76,8%, dekat dengan skor acak 78,4%, dan 100% record ujinya milik orang yang sudah ada di training. Mengapa urutan waktu tidak memberi skor yang jujur untuk orang baru?
+  options:
+  - Split berurutan waktu selalu mendapat skor yang dekat dengan k-fold acak, apa pun tabelnya
+  - Urutan waktu memakai terlalu sedikit fold, dan jumlah fold yang sedikit saja menaikkan skornya
+  - Record yang lebih baru selalu lebih mudah diprediksi daripada yang lebih awal, siapa pun orangnya
+  - Orang yang sama muncul lagi nanti, sehingga record baru tetap punya record lama milik orangnya di training
+  answer: 3
+  explanation: Urutan waktu melindungi dari mengintip masa depan. Ia tidak memisahkan orang, sehingga model tetap mengenali seseorang dari record-recordnya yang lebih awal. Untuk orang baru kamu memerlukan split grouped.
+- prompt: Dengan 16 evaluasi, grid mencoba 4 nilai k dan 4 nilai bobot, sedangkan random search mencoba 13 dan 16. Apa yang ditunjukkan angka-angka itu, dan apa yang tidak ditunjukkannya?
+  options:
+  - Random search mencoba lebih banyak nilai berbeda untuk tiap pengaturan, yang membuktikan bahwa ia menemukan pengaturan yang lebih baik
+  - Random search mencoba lebih banyak nilai tiap pengaturan, tetapi skor terbaiknya berselisih kurang dari satu poin, sehingga tidak ada pemenang jelas
+  - Grid mencoba lebih sedikit nilai tiap pengaturan, sehingga skor terbaiknya pasti lebih rendah
+  - Kedua pencarian mencoba pengaturan yang sama dalam urutan lain, sehingga hasilnya identik
+  answer: 1
+  explanation: Lebih banyak nilai berbeda adalah keunggulan random search, tetapi skor terbaik di lab adalah 71,9% dan 70,9%, dan undian berulang kadang seri dan kadang kalah 1,6 poin. Menjangkau lebih banyak nilai tidak menjamin pemenang yang lebih baik.
+- prompt: Kamu mengatur Anggaran pencarian (evaluasi) ke 7. Grid mencoba 3 nilai k dan 2 nilai bobot. Berapa evaluasi yang dipakainya?
+  options:
+  - 7, karena ia harus menghabiskan seluruh anggaran
+  - 5, jumlah dari 3 dan 2
+  - 6, karena grid adalah tabel penuh dari 3 x 2 kombinasi
+  - 3, yang lebih besar dari kedua jumlah itu
+  answer: 2
+  explanation: Grid mencoba setiap kombinasi, sehingga 3 nilai k dan 2 nilai bobot memerlukan 3 x 2 = 6 evaluasi. Lab memilih tabel yang kira-kira persegi dan muat dalam anggaran, sehingga satu dari 7 evaluasi tidak terpakai.
+- prompt: Kamu menilai pencarian dengan k-fold acak. Pemenang random search menunjukkan 79,4%, tetapi pada fold grouped hanya mencapai 69,7%. Berapa poin pencarian itu terlalu memuji pemenangnya?
+  options:
+  - 9,7 poin
+  - 7,2 poin
+  - 2,8 poin
+  - 79,4 poin
+  answer: 0
+  explanation: 79,4 - 69,7 = 9,7 poin. Pencarian yang dinilai dengan fold acak menghargai pengaturan yang mengenali orang, sehingga skor yang diklaim terlalu tinggi untuk orang baru.
+- prompt: Pada penguin sungguhan, memprediksi spesies, fold acak mendapat 99,1% dan leave-one-island-out 56,5%. Apa yang paling menjelaskan selisih 42,6 poin itu?
+  options:
+  - Record dari burung yang sama terpecah ke beberapa fold, sehingga skor acak adalah kebocoran per orang
+  - Menahan Biscoe membuang Gentoo dari training, karena Gentoo hanya hidup di sana, sebuah shift ke pulau baru
+  - 11 penguin dengan missing value dibuang, sehingga data training menyusut
+  - Fold acak memakai k yang berbeda dari fold pulau, dan itu mengubah skor
+  answer: 1
+  explanation: Setiap baris adalah burung yang berbeda, sehingga tidak ada orang yang dapat dikenali. Menahan Biscoe membuang Gentoo dari training, sehingga model tidak dapat menyebutnya, dan fold Biscoe hanya mendapat 26,3%. Untuk spesies lab mempertahankan 342 dari 344 penguin, sehingga hanya 2 baris yang dibuang, dan kedua lajur memakai k yang sama.

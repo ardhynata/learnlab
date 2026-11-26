@@ -1,0 +1,80 @@
+- prompt: Kamu ingin memprediksi berat seekor penguin dari pulau, jenis kelamin, dan panjang siripnya. Kolom mana yang menjadi target?
+  options:
+  - Pulau
+  - Jenis kelamin
+  - Massa tubuh
+  - Panjang sirip
+  answer: 2
+  explanation: Target adalah kolom yang ingin kamu prediksi, dan di sini itu adalah massa tubuh. Pulau, jenis kelamin, dan panjang sirip adalah feature, yaitu inputnya.
+- prompt: Kolom mana dari tabel penguin yang bersifat kategorikal?
+  options:
+  - Panjang sirip dalam milimeter
+  - Pulau, dengan nilai Biscoe, Dream, dan Torgersen
+  - Massa tubuh dalam gram
+  - Kedalaman paruh dalam milimeter
+  answer: 1
+  explanation: Pulau berisi nama dari himpunan yang tetap, sehingga kamu dapat menghitung berapa penguin di tiap pulau tetapi tidak dapat merata-ratakannya. Tiga kolom lain adalah kuantitas, tempat nilai yang lebih besar berarti lebih banyak dari sesuatu.
+- prompt: Sebuah tabel memberi kode pulau 1 untuk Biscoe, 2 untuk Dream, dan 3 untuk Torgersen. Rata-rata Biscoe dan Torgersen adalah (1 + 3) / 2 = 2, yaitu kode untuk Dream. Apa yang ditunjukkan hal ini?
+  options:
+  - Dream sebenarnya adalah rata-rata dari dua pulau lainnya
+  - Perhitungan rata-rata berlaku untuk kolom angka apa pun
+  - Pulau punya terlalu sedikit nilai untuk dijadikan feature
+  - Kode itu hanya label nama, sehingga menghitung dengannya tidak bermakna
+  answer: 3
+  explanation: Kategori yang ditulis sebagai angka tetap sebuah kategori. Kode itu hanya melabeli pulau dan tidak membawa kuantitas, sehingga merata-ratakannya menghasilkan sesuatu yang tidak masuk akal.
+- prompt: Penguin #154 beratnya 5.700 g dan penguin #155 beratnya 4.450 g. Berapa gram selisih berat #154 dari #155?
+  options:
+  - 1.250 g
+  - 1.150 g
+  - 2.200 g
+  - 10.150 g
+  answer: 0
+  explanation: Kurangkan kedua massa tubuh itu, 5.700 - 4.450 = 1.250. Selisih seperti ini bermakna karena massa tubuh adalah feature numerik.
+- prompt: Peneliti mengukur 20 penguin lagi dan menambahkannya ke tabel berisi 344 penguin. Apa yang bertambah pada tabel?
+  options:
+  - 20 kolom baru, satu per penguin
+  - 20 feature baru
+  - 20 baris baru, satu per penguin
+  - 20 target baru, satu per kolom
+  answer: 2
+  explanation: Setiap penguin adalah satu observasi, dan satu observasi adalah satu baris. Penguin baru menambah baris. Kolom baru berarti jenis fakta baru untuk semua penguin.
+- prompt: Di file penguin, baris diurutkan menurut spesies, sehingga baris 1 sampai 152 adalah Adelie. Mengapa nomor baris menjadi feature yang buruk untuk memprediksi spesies?
+  options:
+  - Nomor baris bukan angka
+  - Tampak sempurna di file ini, tetapi penguin baru tidak punya nomor baris yang bermakna
+  - Nomor baris membuat tabel terlalu lebar
+  - Model tidak dapat memakai bilangan bulat
+  answer: 1
+  explanation: Model dapat mempelajari "baris 154 berarti Gentoo" dan mendapat skor sempurna pada file itu, tetapi aturan tersebut tidak mengatakan apa pun tentang penguin yang belum pernah dilihatnya. ID dan nomor baris hanyalah catatan administrasi, bukan fakta tentang penguin.
+- prompt: Kamu ingin memprediksi massa tubuh dalam gram. Seorang rekan menambahkan kolom berisi massa tubuh yang sama dalam kilogram. Apa masalahnya jika kolom itu dipakai sebagai feature?
+  options:
+  - Kilogram tidak bersifat numerik
+  - Kilogram kurang akurat daripada gram
+  - Kolom itu adalah feature kategorikal
+  - Kolom itu salinan target, sehingga membocorkan jawabannya
+  answer: 3
+  explanation: 5.700 g dan 5,7 kg adalah fakta yang sama. Feature yang mengulang target tampak sempurna di tabel, tetapi penguin baru tidak punya massa yang sudah diketahui untuk disalin.
+- prompt: Di file penguin ada 344 baris, 11 di antaranya punya setidaknya satu sel NA, dan dua di antaranya sama sekali tidak punya pengukuran. Jika kamu membuang setiap baris yang punya sel kosong, berapa baris yang tersisa?
+  options:
+  - 333
+  - 342
+  - 331
+  - 344
+  answer: 0
+  explanation: Membuang 11 baris yang punya sel kosong menyisakan 344 - 11 = 333. Dua baris tanpa pengukuran sudah termasuk dalam 11 baris itu, sehingga tidak dikurangkan lagi. Angka 342 hanya menghitung penguin yang berhasil diukur.
+- prompt: Pertanyaan mana tentang tabel penguin yang punya target kategorikal?
+  options:
+  - Seberapa berat penguin ini nanti?
+  - Penguin ini spesies apa?
+  - Penguin mana saja yang mirip?
+  - Berapa panjang siripnya?
+  answer: 1
+  explanation: Spesies adalah nama dari himpunan yang tetap, sehingga bersifat kategorikal. Massa dan panjang sirip adalah angka. "Penguin mana saja yang mirip?" sama sekali tidak punya kolom target.
+- prompt: Pada plot panjang sirip terhadap massa tubuh, dua spesies mana yang begitu tumpang tindih sehingga kedua feature ini nyaris tidak memisahkannya?
+  options:
+  - Adelie dan Gentoo
+  - Gentoo dan Chinstrap
+  - Adelie dan Chinstrap
+  - Ketiga spesies
+  answer: 2
+  explanation: Penguin Gentoo berada terpisah, dengan sirip lebih panjang dan tubuh lebih berat, tetapi titik Adelie dan Chinstrap saling tumpang tindih pada kedua feature ini. Feature lain, seperti panjang atau kedalaman paruh, dapat memisahkan keduanya dengan lebih baik.

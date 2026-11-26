@@ -1,0 +1,80 @@
+- prompt: Sebuah cluster berisi tiga penguin dengan panjang sirip 181, 186 dan 195 mm. Pada jarak Euclidean kuadrat, di mana langkah update menaruh centroid-nya?
+  options:
+  - 181, nilai terkecil
+  - 186, nilai tengah
+  - 187,33, yaitu rata-rata
+  - 195, nilai terbesar
+  answer: 2
+  explanation: Langkah update memakai rata-rata, (181 + 186 + 195) / 3 = 187,33. Nilai tengah 186 adalah median, yang menjadi pusat untuk jarak Manhattan, bukan untuk Euclidean kuadrat.
+- prompt: Centroid berada di 183,5 dan 211,5. Ke cluster mana penguin dengan panjang sirip 195 mm masuk pada langkah assign?
+  options:
+  - Cluster di 183,5, karena 11,5 lebih kecil daripada 16,5
+  - Cluster di 211,5, karena 195 lebih dekat ke angka yang lebih besar
+  - Tidak ke mana pun sampai update berikutnya
+  - Salah satunya, karena kedua jaraknya hampir sama
+  answer: 0
+  explanation: Jarak ke 183,5 adalah 195 - 183,5 = 11,5 dan jarak ke 211,5 adalah 211,5 - 195 = 16,5. Langkah assign memilih jarak yang lebih kecil, sehingga penguin itu masuk ke cluster di 183,5.
+- prompt: Pada putaran k-means, kapan run berhenti?
+  options:
+  - Setelah tepat k pass, satu untuk setiap centroid
+  - Ketika Inertia mencapai nol dan tidak ada jarak yang tersisa
+  - Ketika setiap centroid berada tepat di sebuah titik data
+  - Ketika sebuah langkah assign membiarkan setiap titik tetap di tempatnya
+  answer: 3
+  explanation: Jika tidak ada titik yang pindah cluster, update berikutnya akan menghasilkan rata-rata yang sama, sehingga tidak ada lagi yang dapat berubah. Inertia biasanya tetap di atas nol, dan jumlah pass tidak ditetapkan sebelumnya.
+- prompt: Di lab, pada Cluster tumpang tindih dengan k = 2, Inertia terbaca 260,09 setelah langkah assign pertama dan 189,99 setelah langkah update pertama. Apa yang ditunjukkan hal ini?
+  options:
+  - Langkah update dapat menaikkan Inertia, sehingga putaran mungkin perlu banyak percobaan
+  - Memindahkan setiap centroid ke rata-rata titiknya menurunkan total kuadrat jarak
+  - Hanya langkah assign yang berpengaruh
+  - k = 2 adalah pilihan terbaik untuk data ini
+  answer: 1
+  explanation: Rata-rata adalah tempat dengan total kuadrat jarak terkecil ke titik-titik sebuah cluster, sehingga update tidak mungkin menaikkan Inertia. Penurunan dari 260,09 ke 189,99 adalah efek itu. Satu run tidak memberi tahu apakah k = 2 pilihan terbaik.
+- prompt: Sebuah cluster berisi titik 4, 6 dan 8, dan centroid-nya berada di 6. Berapa yang disumbangkan cluster ini pada Inertia?
+  options:
+  - 0
+  - 4
+  - 8
+  - 12
+  answer: 2
+  explanation: Kuadrat jaraknya adalah (4 - 6)² = 4, (6 - 6)² = 0 dan (8 - 6)² = 4. Jumlahnya 8.
+- prompt: Di lab, mengapa angkanya disebut Total jarak dan bukan Inertia ketika Jarak diatur ke Manhattan?
+  options:
+  - Manhattan menjumlahkan selisih mutlak, bukan kuadrat jarak, sehingga besarannya berbeda
+  - Run Manhattan mengabaikan centroid dan hanya melihat titik-titiknya
+  - Total jarak hanya ditampilkan setelah run mencapai Konvergen
+  - Manhattan selalu menghasilkan angka yang lebih rendah daripada Euclidean kuadrat
+  answer: 0
+  explanation: Inertia didefinisikan dengan kuadrat jarak Euclidean. Pada Manhattan, lab menjumlahkan selisih mutlak (82,66 pada data bawaan, dibandingkan 110,89 untuk Inertia), yang merupakan besaran yang berbeda, sehingga keduanya tidak dapat dibandingkan.
+- prompt: Pada Cincin konsentris dengan k = 2, mengapa k-means memotong kedua cincin?
+  options:
+  - Cincin dalam punya terlalu sedikit titik untuk dijangkau sebuah centroid
+  - Putaran berhenti terlalu cepat, sebelum sempat memisahkan kedua cincin
+  - Jarak Euclidean tidak dapat dipakai pada cincin berisi titik
+  - Batas antara dua centroid berupa garis lurus, dan tidak ada garis lurus yang memisahkan kedua cincin
+  answer: 3
+  explanation: Setiap titik masuk ke yang terdekat dari dua centroid, sehingga batas antara kedua cluster berupa garis lurus. Garis lurus yang melewati bagian tengah memotong kedua cincin, sehingga setiap cluster mendapat sebagian dari tiap cincin.
+- prompt: Pada Papan catur dengan k = 4, sepuluh posisi awal acak berakhir di Inertia 114,24 sebanyak enam kali dan di nilai yang lebih tinggi sebanyak empat kali, seperti 135,91. Semua run mencapai Konvergen. Hasil mana yang kamu simpan?
+  options:
+  - Run pertama, karena ia berhenti paling dulu
+  - Run di 114,24, yaitu Inertia terendah pada data dan k yang sama
+  - Run dengan iterasi terbanyak
+  - Rata-rata dari kesepuluh hasil
+  answer: 1
+  explanation: Setiap run berhenti pada jawaban yang stabil, tetapi tidak semua jawaban stabil sama baiknya. Pada data, jarak, dan k yang sama, Inertia terendah adalah hasil terbaik yang ditemukan.
+- prompt: Kamu menaruh dua centroid tepat di tempat yang sama lalu menjalankan putaran. Apa yang terjadi pada centroid yang kedua?
+  options:
+  - Keduanya berbagi titik secara merata, karena setiap titik sama jauhnya dari keduanya
+  - k-means menolak berjalan sampai kedua centroid dipisahkan
+  - Ia tidak mendapat titik dan tetap di tempatnya
+  - Ia dihapus setelah update pertama karena clusternya kosong
+  answer: 2
+  explanation: Kedua centroid sama dekatnya dengan setiap titik, dan yang disebut lebih dulu memenangkan setiap seri. Cluster kedua kosong, dan cluster kosong mempertahankan centroid-nya yang sekarang.
+- prompt: Setelah Acak menggambar titik baru, putaran konvergen pada Inertia 140, sedangkan run pertama pada titik bawaan berakhir di 110,89. Apakah 140 berarti pengelompokannya lebih buruk?
+  options:
+  - Tidak, karena gambar data yang berbeda adalah data yang berbeda, sehingga kedua angka tidak dapat dibandingkan
+  - Ya, karena Inertia yang lebih tinggi selalu berarti kelompok yang lebih buruk pada data apa pun
+  - Ya, karena centroid pasti bergerak lebih jauh selama putaran
+  - Tidak, karena Inertia itu acak dan tidak berarti apa-apa pada satu run
+  answer: 0
+  explanation: Inertia menjumlahkan jarak atas titik-titik dalam run itu. Gambar data yang berbeda punya titik yang berbeda, sehingga kedua angka itu mengukur hal yang berbeda. Bandingkan Inertia hanya untuk data, jarak, dan k yang sama.

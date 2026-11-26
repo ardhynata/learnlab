@@ -1,0 +1,80 @@
+- prompt: In the Representation lab, which of the three arms uses the 400 unlabelled glyphs?
+  options:
+  - All three, because they are all scored on the same test glyphs
+  - Only the frozen pretrained features, through the autoencoder that learned the code
+  - Only the network from scratch, because it has the most numbers to set
+  - "None of them: the unlabelled glyphs are only drawn on the map"
+  answer: 1
+  explanation: The autoencoder learns its code from the unlabelled pool, and the frozen arm uses that code. The raw pixels and the network from scratch see only the few labelled glyphs. All three are scored on the same 240 test glyphs, which are never used for learning.
+- prompt: The lab uses a code of 8 numbers and 4 shapes, with one linear model per shape (8 weights and 1 bias each). How many numbers must the labels set in the frozen arm?
+  options:
+  - 9
+  - 260
+  - 529
+  - 36
+  answer: 3
+  explanation: Each of the 4 models has 8 + 1 = 9 numbers, so 4 × 9 = 36. The raw arm sets 4 × (64 + 1) = 260, and one network from scratch has 529 numbers (4 × 529 = 2,116 for the four of them). Fewer numbers to set is easier to do from 20 labelled rows.
+- prompt: With 5 labelled glyphs per shape the table shows frozen 94.2%, raw 85.1% and from scratch 79.2%. Which statement does it support?
+  options:
+  - Frozen features beat raw pixels by 9.1 points and the network from scratch by 15.0 points
+  - Raw pixels beat the network from scratch by 15.0 points
+  - The three arms are about the same, because all are above 75%
+  - Frozen features beat raw pixels by 0.9 points
+  answer: 0
+  explanation: 94.2 - 85.1 = 9.1 and 94.2 - 79.2 = 15.0, and both gaps are larger than the lab's 3-point margin for "about the same". Raw beats the network by 85.1 - 79.2 = 5.9 points, not 15.0.
+- prompt: At 100 labelled glyphs per shape the table shows frozen 94.6%, raw 95.8% and from scratch 93.5%. What is a fair conclusion?
+  options:
+  - Raw pixels clearly win, because 95.8% is the highest number
+  - Pretraining made the frozen arm worse, because its score is below the raw one
+  - "About the same, because every gap is under 3 points"
+  - The network from scratch is the best, because it learns its own features
+  answer: 2
+  explanation: The largest gap is 95.8 - 93.5 = 2.3 points, under the 3-point margin the lab uses. With plenty of labels the classifier learns the shapes itself, so the frozen lead seen at 5 per shape has faded.
+- prompt: A bottleneck of 3 gives frozen accuracy of 72.2% at 5 labelled glyphs per shape, while raw pixels give 85.1%. What is the best reading?
+  options:
+  - The labelled set is too small to say anything about the pretrained code
+  - "A code of 3 is too narrow to keep what separates the shapes: negative transfer"
+  - Raw pixels are always better than any pretrained code, whatever its size
+  - The autoencoder was never trained, because a code this small cannot be learned
+  answer: 1
+  explanation: The raw score did not change (85.1%), only the code did. At 8 numbers the same autoencoder gives 94.2%, so pretraining can help; a code of 3 is too small for this task. The reconstruction error (0.131) did fall below the untrained 0.253, so training did happen.
+- prompt: With 5 pretraining epochs the test error is 0.139 and the frozen accuracy 76.3%. With 20 epochs they are 0.128 and 94.2%. What does this show?
+  options:
+  - A lower error always brings a proportional gain in accuracy, so error is the best guide
+  - The error and the accuracy are unrelated, so neither says anything about the other
+  - Pretraining only matters in the last few epochs, after the error has stopped falling
+  - A small drop in error (0.011) came with a large gain in accuracy (17.9 points)
+  answer: 3
+  explanation: The error fell by 0.139 - 0.128 = 0.011 while the accuracy rose by 94.2 - 76.3 = 17.9 points. The two are related but not in proportion, so judge a code by the downstream score as well as by its rebuilding error.
+- prompt: With noise at 35% the lab shows, at 100 labelled glyphs per shape, frozen 55.0%, raw 62.5% and from scratch 54.6%. What does this suggest?
+  options:
+  - Pretraining always beats the baselines when the data is noisy, because the code removes noise
+  - Noise has no effect on classifiers that use pixels, so all arms score alike
+  - Noise can remove what separates the classes, and then the raw baseline can still lead
+  - Frozen features are better than raw pixels at any size, because they use fewer numbers
+  answer: 2
+  explanation: Raw leads frozen by 62.5 - 55.0 = 7.5 points. The code was learned from the same noisy glyphs, so it cannot recover what the noise removed. At noise 0% all three arms score 100.0%, so there pretraining adds nothing either.
+- prompt: On the first penguin split, the 2-number code gives frozen 82.5% at 5 per species, raw 98.8%. Over four splits the raw leads are 16.3, 11.4, 8.0 and 7.6 points. What is the mean lead?
+  options:
+  - 10.8 points
+  - 12.0 points
+  - 7.6 points
+  - 43.3 points
+  answer: 0
+  explanation: (16.3 + 11.4 + 8.0 + 7.6) / 4 = 43.3 / 4 = 10.8. The sum 43.3 is not a mean. Raw won on all four splits, so the weakness of the 2-number code is not a fluke of one split.
+- prompt: On the penguins with a code of 3 numbers, frozen scores 98.2% and raw 98.8% at 5 per species. There are 170 test penguins, so one penguin is about 0.6 point. What should you write?
+  options:
+  - Raw wins, because its score is higher, even if only by 0.6 point
+  - "About the same: the gap is about one test penguin, under the lab's 3-point margin"
+  - Frozen wins, because it uses fewer numbers to set and so is simpler
+  - Nothing can be said, because penguins are real data and real data is too noisy
+  answer: 1
+  explanation: 1 / 170 is about 0.6 point, so the whole gap is roughly one penguin. Over four splits the gaps stay within 0.6 point. Reporting a winner here would read noise as a result.
+- prompt: With 3 numbers the map says 86% of test glyphs are nearest their own class centre, yet the frozen classifier scores 72.2% at 5 labelled glyphs per shape. Why do the numbers differ?
+  options:
+  - The map is wrong, because the autoencoder never saw any labels while pretraining
+  - The classifier is broken, because a score of 72.2% is below the 86% of the map
+  - The map's centres use all 240 test labels, while the classifier has only 20
+  - The map shows 8 numbers and the classifier shows 3, so they cannot be compared
+  answer: 2
+  explanation: The 86% measures how separated the classes are, using every test label to place the centres. The classifier has to find that structure from 20 labelled glyphs, which is harder. The two measure different things, so the score on test glyphs is the one that counts.

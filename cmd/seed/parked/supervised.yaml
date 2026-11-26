@@ -1,0 +1,10 @@
+slug: supervised
+title: Supervised learning
+summary: Learn from labeled examples and predict new ones, starting with the simplest classifier.
+level: beginner
+position: 3
+requires: []
+translations:
+  id:
+    title: "Supervised learning"
+    summary: "Belajar dari contoh yang sudah berlabel, lalu memprediksi contoh baru. Kita mulai dari classifier yang paling sederhana."

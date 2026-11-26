@@ -1,0 +1,72 @@
+- prompt: Nudging a dial up by 0.01 raises the loss from 0.50 to 0.52. What does the change in loss divided by the nudge say about the derivative at that spot?
+  options:
+  - It is about -2, because the loss changed
+  - It is about +2, because 0.02 / 0.01 = 2
+  - It is about +0.02, the change in loss
+  - It is about 0.52, the new loss
+  answer: 1
+  explanation: The ratio is 0.02 / 0.01 = 2, and the positive sign says that raising the dial raises the loss here. The value 0.02 is the raw change before dividing by the size of the nudge, and the new loss is not a slope at all.
+- prompt: What is a partial derivative of the loss?
+  options:
+  - The slope of the loss for one dial, with the other dials held still
+  - Half of the derivative, because only part of the loss is used
+  - The derivative at the lowest point only
+  - The slope of the line you are fitting
+  answer: 0
+  explanation: A partial derivative asks how the loss changes when one dial moves and the rest stay where they are. The slope of the fitted line is a different slope, a parameter of the model. The loss has a derivative at every spot, not only at the bottom.
+- prompt: At line A the gradient of the MSE is (-2, -0.67). What does the -2 tell you?
+  options:
+  - The slope should be lowered by 2
+  - The loss is -2 at this line
+  - Raising the slope lowers the loss here, steeply
+  - The line misses its points by 2 on average
+  answer: 2
+  explanation: A negative partial derivative means the loss falls as that dial rises, and the size 2 says how steeply per unit of slope. It is a rate of change, not a step to take and not a loss, which can never be negative.
+- prompt: The line y = x (slope 1, intercept 0) predicts 1, 2 and 3 for the points (1, 2), (2, 3) and (3, 5), so its residuals are +1, +1 and +2. What is the partial derivative of the MSE with respect to the slope?
+  options:
+  - "+6"
+  - "-18"
+  - "-2.67"
+  - "-6"
+  answer: 3
+  explanation: The sum of x times r is 1 × 1 + 2 × 1 + 3 × 2 = 9, so the slope's partial derivative is -(2/3) × 9 = -6. The value -18 forgets to divide by n = 3, -2.67 is the intercept's partial derivative from the sum of r alone, and +6 loses the minus sign.
+- prompt: The gradient at line A is (-2, -0.67) and the learning rate is 0.15. What is the new slope after one update, starting from slope 1?
+  options:
+  - "1.3"
+  - "0.7"
+  - "3"
+  - "0.85"
+  answer: 0
+  explanation: New slope = 1 - 0.15 × (-2) = 1 + 0.3 = 1.3. The value 0.7 adds the step instead of subtracting it, 3 forgets the learning rate, and 0.85 uses the rate where the gradient belongs.
+- prompt: Why does the update subtract the gradient instead of adding it?
+  options:
+  - Because gradients are always negative
+  - Because subtracting keeps the numbers small
+  - Because the gradient points uphill and we want lower loss
+  - Because the learning rate is a negative number
+  answer: 2
+  explanation: The gradient points toward the fastest rise of the loss, so the step goes the opposite way. In the lesson, a step with the gradient raised the MSE from 0.33 to 1.55 and a step against it lowered it to 0.22. Gradients can have any sign, and the learning rate is positive.
+- prompt: The downhill step from line A raised the intercept from 1 to 1.1, although the lowest point has an intercept of 0.33. Is something wrong?
+  options:
+  - No, the gradient shows the steepest way down from the current spot, not the way to the lowest point
+  - Yes, the gradient must have been computed wrongly, because a correct one points at the lowest point
+  - Yes, a good step should always aim straight at the lowest point of the valley
+  - No, but only because the learning rate was small enough not to matter
+  answer: 0
+  explanation: The gradient describes the ground right here. On a long, tilted valley the steepest way down can point partly sideways to the goal, and the loss still fell from 0.33 to 0.22. Both partial derivatives were checked by hand, and the learning rate does not change the direction.
+- prompt: From line A, a rate of 0.3 gives slope 1.6, intercept 1.2 and an MSE of 1.2, worse than the start of 0.33. What does this show?
+  options:
+  - The gradient pointed uphill this time, so the step went the wrong way
+  - A big step can overshoot, because the gradient describes only the ground at the start point
+  - The MSE cannot go down for this data, whatever step you take
+  - A bigger rate always gives a bigger improvement, so 0.3 should have won
+  answer: 1
+  explanation: The direction was right, but the step was long enough to cross the valley and climb the other side. The rate of 0.15 on the same gradient lowered the loss to 0.22, so the loss can go down here. A bigger rate is not always better.
+- prompt: Why are the nudges in the derivative table made tiny, such as 0.001, instead of 0.5?
+  options:
+  - Because big nudges are not allowed in a derivative, only tiny ones are
+  - Because a tiny nudge always lowers the loss, whatever the starting spot
+  - Because the loss only exists for small slopes, not for large ones
+  - Because a big nudge can jump over the bottom of the bowl, so the ratio no longer describes the ground at the start
+  answer: 3
+  explanation: With a nudge of +0.5 the loss rose, from 0.33 to 0.5, although the derivative at slope 1 is -2, because the nudge crossed the bottom at slope 1.21. Only tiny nudges measure the slope at one spot. Any nudge is allowed, and tiny nudges do not always lower the loss.

@@ -1,0 +1,80 @@
+- prompt: CNN kecil di lab punya 4 filter 3 × 3 dan membaca gambar 12 × 12. Setelah convolution dan max pooling 2 × 2, 4 peta berukuran 5 × 5 masuk ke dense layer dengan 4 output. Berapa jumlah weight dan bias model seluruhnya?
+  options:
+  - 40
+  - 404
+  - 444
+  - 9.348
+  answer: 2
+  explanation: Convolution punya 4 × 9 weight dan 4 bias, jadi 40. Dense layer punya 100 × 4 weight dan 4 bias, jadi 404. Bersama-sama totalnya 444, yaitu "Ukuran model" yang ditampilkan lab. Angka 40 dan 404 masing-masing hanya satu layer, dan 9.348 adalah baseline dense dari empat network.
+- prompt: Piksel bentuk 0,9 ditampilkan dengan cahaya berkurang 60%. Lab mengalikannya dengan 1 − 0,6 lalu mengurangkan 0,1. Berapa nilai barunya?
+  options:
+  - 0,26
+  - 0,36
+  - 0,44
+  - 0,80
+  answer: 0
+  explanation: 0,9 × 0,4 = 0,36, lalu 0,36 − 0,1 = 0,26. Nilai 0,36 melupakan offset, dan 0,44 mengalikan dengan 0,6, bukan dengan bagian cahaya yang tersisa.
+- prompt: Pada seed 1, network yang dilatih tanpa augmentation mendapat skor 27% pada gambar test gelap. Di confusion matrix, hampir semuanya diprediksi sebagai batang. Apa artinya?
+  options:
+  - Batang adalah bentuk tersulit, sehingga network ragu pada batang
+  - Gambar yang lebih gelap terlalu berisik untuk dibaca network mana pun
+  - Network sedikit lebih buruk pada gambar gelap, seperti yang wajar untuk 120 gambar test
+  - Network tidak pernah melihat gambar redup dan kembali ke satu jawaban saja, sehingga 27% hampir sama dengan tebakan acak
+  answer: 3
+  explanation: Baris batang sempurna dan ketiga bentuk lain hampir semuanya disebut batang, sehingga 32 benar dari 120 terdiri dari 30 batang dan 2 cincin. Penurunan dari 98% ke 27% bukan kehilangan kecil, dan penyebabnya adalah tidak ada gambar redup dalam training, bukan karena batang itu sulit.
+- prompt: Network yang dilatih dengan Geser acak hingga 2 px mendapat skor 95% pada 1 px, 87% pada 2 px, 63% pada 3 px, dan 36% pada 4 px pada seed 1. Apa pelajarannya?
+  options:
+  - Augmentation geseran tidak berhasil, karena akurasi tetap turun
+  - Augmentation menjangkau kira-kira rentang yang kamu latihkan, jadi latih dengan perubahan yang kamu duga akan ditemui
+  - Kekuatan test yang lebih besar selalu membuat network mempelajari geseran
+  - Network sebaiknya dilatih dengan geseran 4 px agar tidak pernah gagal
+  explanation: Akurasi bertahan sampai rentang yang dilatihkan dan turun setelahnya. Melatih dengan 4 px akan mencakup lebih banyak, tetapi itu memakai ruang network yang terbatas untuk perubahan yang mungkin tidak pernah kamu temui, dan tetap tidak akan mencakup 5 px.
+  answer: 1
+- prompt: Kamu mengharapkan kameramu dipakai saat senja dan tidak ada hal lain yang berubah, sehingga gambarnya berada di tengah dan tegak tetapi redup. Augmentation mana yang pertama kamu nyalakan?
+  options:
+  - Geser acak, karena augmentation apa pun membuat network lebih tangguh
+  - Rotasi kecil, karena itu perubahan yang paling murah
+  - Variasi kecerahan, karena sesuai dengan perubahannya (Geser acak saja membiarkan gambar gelap di 25%)
+  - Balik kiri-kanan, karena menggandakan jumlah gambar
+  answer: 2
+  explanation: Sebuah augmentation terutama membantu perubahan yang ditanganinya. Pada tabel sepuluh seed, network yang dilatih dengan geseran mendapat skor 25% pada gambar gelap, sedangkan variasi kecerahan memberi 99%.
+- prompt: Seed 1 memberi 27% pada gambar yang lebih gelap tanpa augmentation, dan seed 2 memberi 98%. Gambar bergeser memberi sekitar 35% pada keduanya. Apa kesimpulanmu?
+  options:
+  - Network seed 2 lebih baik, jadi pakai seed 2 mulai sekarang
+  - Kegagalan pada gambar bergeser adalah efek training; skor pada gambar gelap bergantung pada titik awal acak, karena gambar redup tidak pernah dilihat
+  - Kedua hasil adalah noise, karena test set hanya berisi 120 gambar
+  - Test gambar gelap salah untuk seed 1 dan sebaiknya diabaikan
+  answer: 1
+  explanation: Pada sepuluh seed, skor gambar bergeser tetap di antara 24% dan 39%, jadi hasilnya berulang. Skor gambar gelap berkisar dari 27% sampai 98%, karena network tidak pernah dilatih pada gambar redup dan jawabannya di sana sembarang.
+- prompt: Kotak yang benar untuk sebuah segitiga berukuran 6 × 6, luas 36. Kotak putus-putusmu berukuran 7,5 × 6,5, luas 48,75, dan keduanya tumpang tindih pada 33 piksel persegi. Pada IoU threshold 0,75, apa hasilnya?
+  options:
+  - IoU 0,64, true positive
+  - IoU 0,68, true positive
+  - IoU 0,91, true positive
+  - IoU 0,64, false positive, dan segitiganya terlewat
+  answer: 3
+  explanation: Gabungannya 36 + 48,75 − 33 = 51,75, sehingga IoU = 33 / 51,75 = 0,64. Itu di bawah 0,75, jadi kotak dihitung sebagai false positive dan objeknya sebagai false negative. Pada threshold 0,50, kotak itu akan lolos.
+- prompt: Dua network mendapat 97 dan 93 benar dari 120 gambar test yang sama (81% dan 78%). Standard error skor semacam itu sekitar 3,7 poin. Apa yang dapat kamu katakan?
+  options:
+  - Tidak banyak, karena selisih sekitar 3 poin lebih kecil daripada noise-nya, jadi ulangi dengan seed lain
+  - Network pertama jelas lebih baik, karena 97 lebih tinggi daripada 93
+  - Network kedua jelas lebih baik, karena lebih tangguh
+  - Kedua network identik, karena 3 poin sama dengan nol
+  answer: 0
+  explanation: Selisih 4 gambar masih dalam batas yang dihasilkan oleh pengambilan sampel 120 gambar, dan seed training baru menambah sebaran yang lebih besar. Percayai perbedaan yang berulang pada seed baru dan lebih besar dari beberapa poin.
+- prompt: Dengan ketiga augmentation menyala, network seed 1 di lab mendapat 85% pada gambar asli, dibanding 98% tanpa augmentation, dan loss training berakhir di sekitar 0,29. Penjelasan mana yang sesuai?
+  options:
+  - Augmentation merusak gambar latih, sehingga network mempelajari label yang salah
+  - Gambar test juga diberi augmentation, yang membuatnya lebih sulit
+  - 444 weight dan 30 epoch yang sama kini harus mencakup jauh lebih banyak jenis gambar, sehingga kecocokan pada gambar asli lebih longgar
+  - Lab membaca loss validation, bukan loss training
+  answer: 2
+  explanation: Labelnya tetap benar dan gambar test tidak pernah diberi augmentation. Network punya ruang dan waktu yang tetap. Ruang dan waktu yang lebih banyak membantu. Dengan 8 filter dan 60 epoch, akurasi pada gambar asli naik menjadi 97%.
+- prompt: Lab menyebut bahwa Balik kiri-kanan hampir tidak berpengaruh di sini. Mengapa?
+  options:
+  - Membalik gambar mengubah labelnya
+  - Keempat bentuk tampak sama saat dicerminkan, sehingga salinan yang dibalik hampir tidak menunjukkan hal baru kepada network
+  - Network tidak dapat membaca gambar yang dicerminkan
+  - Flip hanya bekerja pada gambar test
+  answer: 1
+  explanation: Cincin, batang, silang, dan segitiga simetris dari kiri ke kanan, sehingga bayangan cermin hampir sama dengan gambar aslinya. Untuk tugas seperti membaca digit, flip akan salah, seperti di pelajaran sebelumnya.

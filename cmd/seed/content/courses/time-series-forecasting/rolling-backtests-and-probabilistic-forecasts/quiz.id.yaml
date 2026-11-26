@@ -1,0 +1,72 @@
+- prompt: Sebuah toko menguji dua model forecasting hanya pada tahun 3, dan model A menang. Apa kelemahan utama kesimpulan itu?
+  options:
+  - Empat kuartal terlalu sedikit untuk menghitung MAE apa pun.
+  - Temporal split selalu membocorkan masa depan ke data latih.
+  - Kesimpulan itu hanya menunjukkan kinerja model pada satu origin, dan origin lain dapat memberi peringkat yang berbeda.
+  - MAE tidak dapat dipakai untuk membandingkan dua model.
+  answer: 2
+  explanation: Satu window hanyalah satu contoh perilaku sebuah forecaster. Tahun ujinya bisa mudah, sulit, atau berada di salah satu sisi sebuah perubahan, sehingga rolling backtest mengulang pengujian pada banyak origin. Temporal split saja tidak membocorkan apa pun, dan MAE dapat membandingkan model dengan baik.
+- prompt: Deskripsi mana yang sesuai dengan aturan sliding window untuk bagian latih sebuah backtest?
+  options:
+  - Bagian latih mempertahankan panjang tetap, sehingga baris lama gugur saat origin bergeser ke depan.
+  - Bagian latih selalu dimulai dari baris pertama dan bertambah di setiap origin.
+  - Baris uji diacak ke dalam baris latih.
+  - Origin tetap diam sementara horizon bertambah.
+  answer: 0
+  explanation: Sliding window hanya menyimpan baris terbaru, misalnya 8 kuartal terbaru. Aturan yang dimulai dari baris pertama dan terus bertambah adalah expanding window. Aturan sliding membantu saat pola bergeser, karena baris lama tidak lagi khas.
+- prompt: Lag 4 + offset meramal 150, 180, 160, dan 170 untuk empat kuartal, dan nilai sebenarnya 148, 183, 160, dan 175. Berapa MAE-nya?
+  options:
+  - '1,5'
+  - '2'
+  - '10'
+  - '2,5'
+  answer: 3
+  explanation: Galatnya (actual dikurangi forecast) adalah -2, +3, 0, dan +5. Galat absolutnya 2, 3, 0, dan 5, yang berjumlah 10, dan 10 / 4 = 2,5. Nilai 1,5 adalah rata-rata galat bertanda, ketika selisihnya saling meniadakan, dan 10 adalah totalnya, bukan rata-ratanya.
+- prompt: Pada tiga window, model A memiliki MAE 2, 3, dan 9, sedangkan model B memiliki MAE 5, 6, dan 4. Pembacaan mana yang paling masuk akal?
+  options:
+  - A lebih baik karena rata-ratanya lebih rendah, jadi tidak ada lagi yang perlu diperiksa.
+  - A menang di 2 dari 3 window dan rata-ratanya lebih rendah, tetapi ia kalah jauh di window terbaru, jadi cari tahu dulu adanya perubahan sebelum memercayai rata-rata.
+  - B lebih baik, karena hanya window terbaru yang dihitung.
+  - Kedua model setara, karena rata-ratanya berbeda kurang dari satu unit.
+  answer: 1
+  explanation: A memiliki rata-rata lebih rendah (4,67 berbanding 5) dan menang di window 1 dan 2, tetapi ia kalah di window terbaru, 9 berbanding 4. Rata-rata menyembunyikan perbalikan itu. Window terbaru paling dekat dengan masa depan, tetapi satu window saja juga belum bukti, jadi periksa apakah datanya berubah.
+- prompt: Total tahunan pada tahun-tahun latih adalah 300, 330, dan 372 unit. Berapa offset per kuartal yang ditambahkan lag 4 + offset pada salinan seasonal naive?
+  options:
+  - '18'
+  - '36'
+  - '9'
+  - '72'
+  answer: 2
+  explanation: Total naik 372 - 300 = 72 selama 2 selang tahun, yaitu 36 per tahun, dan 36 / 4 = 9 per kuartal. Nilai 72 adalah seluruh perubahannya dan 36 adalah perubahan per tahun.
+- prompt: Sembilan galat backtest yang terurut adalah -6, -2, -1, 0, 1, 2, 3, 4, dan 7, dan forecast barunya 50. Interval 80% apa yang diberikan aturan seluruh rentang?
+  options:
+  - 44 sampai 57
+  - 50 sampai 57
+  - 46 sampai 54
+  - 43 sampai 58
+  answer: 0
+  explanation: Dengan 9 galat ada 10 tempat bagi galat baru, dan seluruh rentang menutup 8 di antaranya, yaitu 80%. Intervalnya 50 - 6 = 44 sampai 50 + 7 = 57.
+- prompt: Interval 80% dibuat dari galat satu langkah sebuah random walk lalu dipakai ulang untuk 4 kuartal ke depan. Apa yang terjadi pada coverage-nya?
+  options:
+  - Tetap 80%, karena intervalnya tidak berubah.
+  - Naik di atas 80%, karena horizon yang lebih panjang punya lebih banyak data.
+  - Tetap di atas 80%, karena galat mengecil saat horizon bertambah.
+  - Turun menjadi sekitar 48%, karena galat pada 4 kuartal memiliki sebaran dua kali lipat.
+  answer: 3
+  explanation: Pada random walk, sebaran galat tumbuh sebanding akar horizon, sehingga pada 4 kuartal ia dua kali sebaran satu langkah. Interval yang sama lalu hanya memiliki coverage sekitar 48%. Perbaikannya adalah memakai galat tiap horizon secara terpisah.
+- prompt: Interval 80% diperiksa pada 20 window dan 13 nilai sebenarnya jatuh di dalamnya. Bagaimana sebaiknya membacanya?
+  options:
+  - Diharapkan 20, jadi interval itu gagal total.
+  - Diharapkan 16, dan 13 berada sekitar 1,7 standard error di bawahnya, yang layak diselidiki tetapi bukan bukti.
+  - 13 adalah angka yang tepat untuk interval 80%.
+  - Diharapkan 8, jadi intervalnya terlalu lebar.
+  answer: 1
+  explanation: 80% dari 20 adalah 16. Standard error-nya sqrt(0,8 x 0,2 / 20), sekitar 9 poin, sehingga 13 dari 20 (65%) berada sekitar 1,7 standard error di bawah target. Itu alasan untuk memeriksa, bukan kesimpulan akhir.
+- prompt: Pada window terbaru, galat sebuah model adalah -7, -8, -6, dan -9, semuanya negatif, setelah sebelumnya bertanda campuran. Apa yang paling mungkin ditunjukkannya, dan langkah apa yang masuk akal?
+  options:
+  - Noise acak, jadi biarkan modelnya.
+  - Bug dalam backtest, jadi acak barisnya dan jalankan lagi.
+  - Regime change yang membuat model bias, jadi coba bagian latih yang lebih pendek atau latih ulang, lalu periksa lagi intervalnya.
+  - Horizon yang terlalu pendek, jadi ramal lebih jauh ke depan.
+  answer: 2
+  explanation: Galat bertanda sama adalah bias, bukan noise, karena noise memberi tanda campuran. Regime change membuat aturan lama keliru. Sliding window, pelatihan ulang, dan interval yang dikalibrasi ulang menjawabnya, sedangkan mengacak baris merusak urutan waktu.

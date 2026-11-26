@@ -1,0 +1,72 @@
+- prompt: Dalam cross-validation 5 fold, sebuah pipeline punya imputer, scaler, selector, dan model. Kapan masing-masing di-fit?
+  options:
+  - Sekali, pada semua baris, sebelum fold dibuat
+  - Di setiap putaran, hanya pada fold latih putaran itu
+  - Di setiap putaran, pada fold uji
+  - Di putaran 1 pada fold latih, lalu dipakai ulang di putaran lainnya
+  answer: 1
+  explanation: Langkah yang di-fit sebelum fold dibuat, atau di putaran sebelumnya, sudah melihat baris yang baru menjadi fold uji kemudian. Setiap putaran men-fit seluruh pipeline lagi pada fold latihnya sendiri, lalu hanya menerapkannya ke fold uji.
+- prompt: Putaran 2 pada contoh penguin berlatih dengan massa 3.750, 3.800, 3.450, dan 3.650 g. Berapa rata-rata yang dipelajari scaler-nya?
+  options:
+  - 3.662,5
+  - 3.591,67
+  - 3.700
+  - 3.650
+  answer: 0
+  explanation: Keempat massa berjumlah 14.650, dan 14.650 / 4 = 3.662,5. Angka 3.591,67 adalah rata-rata keenam penguin, yang akan dipakai pipeline yang bocor, dan 3.700 adalah median imputer.
+- prompt: Scaler putaran 2 punya rata-rata 3.662,5 dan simpangan baku 134,05. Penguin uji seberat 3.800 g mendapat z berapa?
+  options:
+  - -1,03
+  - 0,73
+  - 1,03
+  - 137,5
+  answer: 2
+  explanation: z = (3.800 - 3.662,5) / 134,05 = 137,5 / 134,05 = 1,03. Angka 0,73 berasal dari pembagian dengan 188,01, simpangan baku keenam penguin, dan 137,5 adalah selisih sebelum dibagi.
+- prompt: Apa yang dilakukan penetapan seed pada sebuah pipeline?
+  options:
+  - Membuat model lebih akurat
+  - Menghilangkan kebutuhan akan fold uji
+  - Menjamin dua model yang berbeda mendapat skor yang sama
+  - Membuat pilihan acak, seperti pengacakan fold, keluar sama di setiap proses
+  answer: 3
+  explanation: Seed mengunci sebuah pembangkit acak, sehingga fold dan awal acak sebuah model berulang. Seed tidak membuat model lebih baik. Ia membuat proses dapat diulang dan memungkinkanmu mengukur seberapa besar skor bergantung pada pengacakan.
+- prompt: Dengan seed 42, sebuah model baru mendapat skor 0,4 poin di atas k-NN pada cross-validation 5 fold. Pada sepuluh seed, skor rata-rata k-NN saja berkisar dari 90,1% sampai 91,9%. Apa kesimpulan yang adil?
+  options:
+  - Model baru lebih baik, karena 0,4 lebih besar dari nol
+  - Selisihnya lebih kecil daripada sebaran akibat seed, jadi belum menunjukkan apa-apa
+  - k-NN pasti rusak, karena skornya berubah menurut seed
+  - Seed harus diganti terus sampai model baru menang dengan selisih lebih besar
+  answer: 1
+  explanation: Seed saja menggeser k-NN sebesar 1,8 poin (91,9 - 90,1), lebih besar dari selisih 0,4, sehingga selisih itu bukan bukti. Mencari seed yang membuat model baru menang adalah penyalahgunaan yang justru dicegah oleh seed yang tetap dan dipilih lebih dulu.
+- prompt: Dalam tabel hasil, baris "Selalu menebak male" mendapat skor rata-rata 50,4%. Mengapa baris itu dipertahankan?
+  options:
+  - Untuk menunjukkan bahwa pipeline punya bug
+  - Untuk mengisi tabel dengan model ketiga
+  - Untuk menunjukkan apa yang didapat dari menebak, sehingga skor sebuah model punya pembanding
+  - Untuk menggantikan skor fold pada baris lain
+  answer: 2
+  explanation: Skor saja tidak banyak bercerita. Baris baseline menunjukkan bahwa 50,4% adalah yang didapat kelas terbanyak di sini, sehingga 90,7% untuk k-NN berarti naik sekitar 40 poin. Baris itu bukan bug dan tidak menggantikan apa pun.
+- prompt: Kamu menjalankan ulang skrip rekanmu dari salinan folder yang bersih dan mendapat tabel yang berbeda di desimal kedua. Apa penyebab yang paling mungkin?
+  options:
+  - "Ada yang tidak tercatat: sebuah seed, versi data, atau versi library"
+  - Cross-validation selalu menghasilkan tabel yang sedikit berbeda
+  - Fold ujinya terlalu besar
+  - Baris baseline terlewat
+  answer: 0
+  explanation: Kalau setiap seed dan pengaturan tercatat, menjalankan ulang mengembalikan tabel yang sama. Perbedaan berarti ada yang tidak tercatat yang berubah, seperti seed, file data, atau versi library. Cross-validation sendiri dapat diulang setelah seed-nya ditetapkan.
+- prompt: Manakah yang merupakan kebocoran diam-diam yang tidak memunculkan error?
+  options:
+  - Melaporkan rata-rata dan sebaran skor fold
+  - Men-fit scaler pada fold latih di setiap putaran
+  - Menambahkan baris baseline ke tabel hasil
+  - Menyalin kelas langka untuk menyeimbangkannya sebelum fold dibuat
+  answer: 3
+  explanation: Salinan dari satu baris dapat jatuh ke fold latih dan ke fold uji, sehingga model diuji pada baris yang sudah pernah dilihatnya. Ketiga pilihan lain adalah praktik yang baik, bukan kebocoran.
+- prompt: Akurasi sebenarnya sebuah model adalah 88%. Pada satu hold-out 50 baris, peluangnya mencapai 94% atau lebih sekitar 0,13. Kamu mencoba 20 model seperti itu dan melaporkan yang terbaik. Mengapa skor yang dilaporkan terlalu bagus?
+  options:
+  - Dua puluh model selalu punya akurasi sebenarnya yang lebih rendah daripada satu
+  - Dari banyak percobaan, skor terbaik terpilih sebagian karena keberuntungan, dan keberuntungan itu tidak akan berulang pada baris baru
+  - Hold-out itu punya terlalu sedikit feature
+  - Melaporkan skor fold terbaik hanya boleh kalau seed-nya tetap
+  answer: 1
+  explanation: Dengan peluang 0,13 untuk tiap percobaan, peluang setidaknya satu dari 20 percobaan yang saling bebas mencapai 94% adalah sekitar 0,94, padahal setiap model tetap 88% pada baris baru. Memilih yang terbaik dari banyak percobaan pada baris yang sama berarti memilih keberuntungan. Seed yang tetap tidak menghapusnya.

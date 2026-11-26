@@ -1,0 +1,80 @@
+- prompt: What happens during the "training" of k-NN?
+  options:
+  - It fits a straight line through the labelled points
+  - It chooses the best value of k automatically
+  - It stores the labelled examples and does little else
+  - It computes the center of each class
+  answer: 2
+  explanation: There is no fitting step. The stored, labelled data is the model, and all the work happens when a query arrives.
+- prompt: A query is 0.9 mm away across and 0.5 mm away up from a stored penguin. What is the Euclidean distance between them, to two decimals?
+  options:
+  - 1.03
+  - 1.06
+  - 1.40
+  - 0.45
+  answer: 0
+  explanation: The square root of (0.9² + 0.5²) = the square root of 1.06 = 1.03. A distance of 1.06 forgets the square root, and 1.40 adds the gaps instead of squaring them.
+- prompt: In the worked example, which answer does k = 3 give for the held-out penguin?
+  options:
+  - Adelie, 2 votes to 1
+  - Chinstrap, 2 votes to 1
+  - Adelie, 3 votes to 0
+  - A tie
+  answer: 1
+  explanation: The three nearest are Chinstrap (rank 1), Adelie (rank 2) and Chinstrap (rank 3), so Chinstrap wins 2 to 1.
+- prompt: What is the smallest k at which the held-out penguin is labelled Adelie?
+  options:
+  - 1
+  - 3
+  - 4
+  - 5
+  answer: 3
+  explanation: At k = 4 the vote is tied 2 to 2 and the closest neighbor, a Chinstrap, decides. At k = 5 the votes are Adelie 3, Chinstrap 2.
+- prompt: At k = 4 the vote for the held-out penguin is Adelie 2, Chinstrap 2. What does this lesson do with a tie?
+  options:
+  - It lets the closest neighbor decide
+  - It adds one more neighbor and votes again
+  - It picks a class at random
+  - It refuses to give an answer
+  answer: 0
+  explanation: The closest neighbor, the Chinstrap at rank 1, breaks the tie. Other libraries use other rules, so it is worth knowing which one yours uses.
+- prompt: The held-out penguin is an Adelie, and k = 5 got it right while k = 1 got it wrong. What can you conclude?
+  options:
+  - k = 5 is always better than k = 1, because it asks more neighbors
+  - Larger k always helps k-NN, so k should be as large as possible
+  - Nothing general, because one penguin cannot show which k is better
+  - k = 1 is broken, because its only neighbor was a Chinstrap
+  answer: 2
+  explanation: One example proves nothing about which k works best. For the same penguin the answer even flips back to Chinstrap at k = 15, so k must be judged on many held-out examples.
+- prompt: Body mass in grams is added as a third feature next to two bill measurements in millimeters. Why does it end up deciding who the nearest neighbor is?
+  options:
+  - Heavier penguins are always more similar to the query, whatever the other features
+  - Its gaps are in hundreds, so they exceed the bill gaps of about a millimeter
+  - Distance only uses the last feature added to the table
+  - k-NN automatically gives extra weight to the feature with the most digits
+  answer: 1
+  explanation: Differences in grams are hundreds of times bigger than differences in millimeters, so they dominate the distance. Scaling the features fixes this.
+- prompt: Why can k-NN be slow when it makes a prediction?
+  options:
+  - It must retrain the model for every query
+  - It has to optimize the value of k each time
+  - It compares the query with every stored example
+  - It can only handle one feature at a time
+  answer: 2
+  explanation: Nothing is prepared in advance, so each query is measured against all the stored examples before the k nearest can be picked.
+- prompt: How does the decision boundary of k = 1 compare with that of k = 9 on the same data?
+  options:
+  - The k = 1 boundary is jagged and follows single points, and the k = 9 boundary is smoother
+  - The k = 1 boundary is always a straight line, and the k = 9 boundary is curved
+  - They are identical, because k only changes the vote count and not the shape of the regions
+  - The k = 9 boundary is more jagged, because it follows more points
+  answer: 0
+  explanation: With k = 1 every stored point claims the area nearest to it, odd points included. With k = 9 one odd point cannot win alone, so the border smooths out.
+- prompt: What happens to k-NN as more and more features are added (the curse of dimensionality)?
+  options:
+  - Points spread out until almost everything is about equally far away, so "nearest" loses its meaning
+  - It always becomes more accurate, because every feature adds information
+  - Predictions become faster, because there is more to compare
+  - The decision boundary automatically turns into a straight line
+  answer: 0
+  explanation: With many features, the distances between points become nearly equal, so the nearest neighbors stop being meaningful. A useless feature also adds noise to every distance.

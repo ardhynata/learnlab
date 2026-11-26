@@ -1,0 +1,23 @@
+slug: optimization-basics
+title: Optimization basics
+summary: "How models are fitted: loss functions, gradient descent, and what goes wrong with the learning rate."
+topic: Machine learning
+level: beginner
+path: foundations
+position: 2
+translations:
+  id:
+    title: "Dasar optimisasi"
+    summary: "Bagaimana model dilatih: loss, gradient descent, dan masalah yang bisa muncul di learning rate."
+modules:
+- slug: fitting-by-descent
+  title: Fitting by descent
+  summary: Measure how wrong a model is, then walk downhill to make it less wrong.
+  lessons:
+  - loss-functions
+  - gradient-descent
+  - learning-rate-and-trouble
+  translations:
+    id:
+      title: "Training dengan gradient descent"
+      summary: "Ukur seberapa meleset sebuah model, lalu \"turun bukit\" supaya kesalahannya makin kecil."

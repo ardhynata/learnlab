@@ -1,0 +1,80 @@
+- prompt: Pada layar awal lab, test set berisi 1.000 contoh dan 50 di antaranya positif. Berapa accuracy baseline kelas mayoritas?
+  options:
+  - 5,0%
+  - 50,0%
+  - 95,0%
+  - 58,0%
+  answer: 2
+  explanation: Baseline selalu menjawab negatif, sehingga ia benar pada 950 negatif, dan 950 / 1.000 = 95,0%. Ia tidak menemukan satu pun dari 50 positif, jadi recall-nya 0,0%. Angka 58,0% adalah recall model.
+- prompt: "Pada pengaturan awal, model menemukan 29 dari 50 positif di test set dan menimbulkan 12 alarm palsu. Berapa recall-nya?"
+  options:
+  - 58,0%
+  - 70,7%
+  - 96,7%
+  - 2,9%
+  answer: 0
+  explanation: Recall adalah bagian dari positif sebenarnya yang berhasil ditemukan, 29 / 50 = 58,0%. Angka 70,7% adalah precision, 29 / (29 + 12), dan 96,7% adalah accuracy.
+- prompt: "Model yang sama memiliki TP = 29, FP = 12, dan FN = 21 pada test set. Berapa F1-nya?"
+  options:
+  - 58,0%
+  - 70,7%
+  - 96,7%
+  - 63,7%
+  answer: 3
+  explanation: F1 = 2 x 29 / (2 x 29 + 12 + 21) = 58 / 91, sekitar 63,7%. Nilainya berada di antara precision (70,7%) dan recall (58,0%), dan ia mengabaikan 938 true negative yang mengangkat accuracy.
+- prompt: "Kamu menggeser Persentase contoh positif dari 50% ke 5%. Accuracy baseline berubah dari 50,0% menjadi 95,0%, accuracy model dari 88,9% menjadi 96,7%, dan recall model dari 88,0% menjadi 58,0%. Bagaimana pembacaan yang paling tepat?"
+  options:
+  - Model membaik, karena accuracy-nya naik
+  - Accuracy naik terutama karena negatif menjadi mayoritas yang besar, sementara model kini menemukan bagian positif yang lebih kecil
+  - Baseline menjadi model yang bagus, karena accuracy-nya kini 95,0%
+  - Recall turun karena test set menjadi lebih besar
+  answer: 1
+  explanation: Accuracy baseline hanyalah persentase negatif, sehingga naik tanpa ada proses belajar sama sekali. Accuracy model naik karena alasan yang sama, sedangkan recall-nya menunjukkan bahwa ia menemukan lebih sedikit positif. Ukuran test set tetap 1.000 contoh.
+- prompt: "Pada 2% positif, training set berisi 980 negatif dan 20 positif. Lab menetapkan class weight agar seluruh positif berbobot hampir sama dengan seluruh negatif. Berapa bobotnya?"
+  options:
+  - 2
+  - 20
+  - 49
+  - 98
+  answer: 2
+  explanation: Bobotnya adalah jumlah negatif dibagi jumlah positif, 980 / 20 = 49, dan 20 x 49 = 980. Pada 5%, aturan yang sama memberi 950 / 50 = 19.
+- prompt: "Pada 5% positif, menyalakan class weight mengubah recall dari 58,0% menjadi 86,0% dan accuracy dari 96,7% menjadi 90,1%, yaitu di bawah 95,0% milik baseline. Pernyataan mana yang benar?"
+  options:
+  - Model berbobot lebih buruk, karena accuracy-nya di bawah baseline
+  - Model berbobot menemukan 43 dari 50 positif, bukan 29, sehingga lebih berguna bila sebuah positif yang terlewat lebih mahal daripada alarm palsu
+  - Class weight menurunkan recall demi menaikkan precision
+  - Precision ikut naik, karena recall naik
+  answer: 1
+  explanation: Accuracy turun karena alarm palsu naik dari 12 menjadi 92, dan precision turun dari 70,7% menjadi 31,9%. Model menangkap 14 positif lebih banyak, yang penting bila positif yang terlewat itu mahal. Accuracy baseline yang lebih tinggi berasal dari tidak menemukan apa-apa.
+- prompt: "Pada 5% positif, kamu menurunkan Threshold keputusan dari 0,50 ke 0,20. Model kini menemukan 35 positif, melewatkan 15, dan menimbulkan 35 alarm palsu. Berapa precision-nya?"
+  options:
+  - 70,0%
+  - 58,3%
+  - 35,0%
+  - 50,0%
+  answer: 3
+  explanation: Precision adalah bagian jawaban positif yang benar, 35 / (35 + 35) = 50,0%. Angka 70,0% adalah recall, 35 / 50, dan 58,3% adalah F1.
+- prompt: "Pada 1% positif, test set memiliki 10 positif. Pada empat sampel, model menemukan 3, 4, 1, dan 1 di antaranya. Apa kesimpulan yang tepat?"
+  options:
+  - Recall bergerak dalam langkah 10 poin di sini, jadi satu sampel tidak banyak bercerita; ulangi dengan sampel baru atau pakai lebih banyak positif
+  - Model makin buruk pada setiap sampel
+  - Recall sebenarnya model tepat 30,0%, yaitu nilai pertama
+  - Baseline akan mengalahkan model dalam recall
+  answer: 0
+  explanation: Dengan 10 positif, satu positif lebih banyak atau lebih sedikit yang ditemukan menggeser recall sebesar 10 poin, sehingga 10,0% sampai 40,0% bisa saja kebetulan. Recall baseline selalu 0,0%, jadi ia tidak lebih baik.
+- prompt: "Dengan class weight menyala, model menimbulkan 51 alarm palsu di antara 500 negatif pada 50% positif, dan 92 di antara 950 negatif pada 5%. Ia menemukan 440 positif pada 50% dan 43 pada 5%. Mengapa precision turun dari 89,6% menjadi 31,9%?"
+  options:
+  - Model menjadi lebih buruk dalam membedakan negatif
+  - Laju alarm tetap sekitar 10%, tetapi positifnya jauh lebih sedikit, sehingga alarm palsu lebih banyak daripada tangkapan yang benar
+  - Class weight terlalu kecil pada 5%
+  - Precision hanya bergantung pada jumlah negatif
+  answer: 1
+  explanation: Laju alarm palsunya 51 / 500 = 10,2% dan 92 / 950 = 9,7%, hampir sama. Tetapi precision adalah 43 / (43 + 92) = 31,9% pada 5%, dibandingkan 440 / (440 + 51) = 89,6% pada 50%. Yang menjadi langka adalah positifnya.
+- prompt: "Pada penguin asli dengan 10% positif, test set berisi 152 penguin, 15 di antaranya Chinstrap. Berapa accuracy baseline?"
+  options:
+  - 10,0%
+  - 85,0%
+  - 90,1%
+  - 9,9%
+  answer: 2
+  explanation: Baseline menjawab bukan-Chinstrap untuk ke-152 penguin dan benar pada 137 penguin lain, jadi 137 / 152 = 90,1%. Angka 9,9% adalah persentase Chinstrap di test set, 15 / 152, yang dekat dengan 10% yang kamu minta tetapi tidak sama persis.

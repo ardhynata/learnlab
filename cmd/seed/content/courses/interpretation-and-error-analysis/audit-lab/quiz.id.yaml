@@ -1,0 +1,80 @@
+- prompt: Pada audit bawaan lab, accuracy-nya 78,8% di Kelompok A maupun Kelompok B, tetapi positive rate-nya 64,2% di A dan 37,5% di B. Apa yang ditunjukkan hal ini?
+  options:
+  - Model memperlakukan kedua kelompok dengan sama, karena accuracy-nya sama
+  - Accuracy yang sama dapat menyembunyikan galat yang berbeda, sehingga setiap baris tabel perlu dilihat
+  - Positive rate-nya salah, karena harus sama dengan accuracy
+  - Kelompok B punya bug pada barisnya, karena positive rate-nya lebih rendah
+  answer: 1
+  explanation: Accuracy hanyalah satu rata-rata. Kelompok A punya base rate 60,8% dan B hanya 31,3%, sehingga model memberi flag pada A jauh lebih sering, dan selisih precision, recall dan false-positive rate semuanya besar. Accuracy yang sama tidak berarti galat yang sama.
+- prompt: Pada Kelompok B model menemukan 38 dari 50 baris positif dan memberi flag keliru pada 22 dari 110 baris negatif. Berapa recall dan false-positive rate-nya?
+  options:
+  - Recall 76,0% dan false-positive rate 20,0%
+  - Recall 63,3% dan false-positive rate 20,0%
+  - Recall 76,0% dan false-positive rate 36,7%
+  - Recall 38,0% dan false-positive rate 22,0%
+  answer: 0
+  explanation: Recall adalah 38 / 50 = 76,0%. False-positive rate adalah 22 / 110 = 20,0%, karena hanya baris negatif yang dapat menjadi false positive. Angka 63,3% pada pilihan kedua adalah precision, yaitu 38 / 60.
+- prompt: Kelompok B punya recall 0,76, base rate 0,313 dan precision 0,633 pada threshold bawaan. Dengan flag rate = recall x base rate / precision, seberapa sering model memberi flag pada B?
+  options:
+  - Sekitar 24%
+  - Sekitar 48%
+  - Sekitar 76%
+  - Sekitar 37,5%
+  answer: 3
+  explanation: 0,76 x 0,313 / 0,633 = 0,376, sekitar 37,5% (0,375 dari jumlah yang tepat), yaitu positive rate yang ditampilkan lab untuk B. Periksa baris Positive rate (diprediksi positif) pada Galat menurut kelompok.
+- prompt: Kamu menekan Samakan positive rate. Threshold Kelompok B turun dari 0,50 ke 0,36 dan 103 dari 160 barisnya diberi flag, dengan 44 true positive. Berapa precision-nya sekarang?
+  options:
+  - 63,3%, sama seperti sebelumnya, karena precision tidak bergantung pada threshold
+  - 88,0%, yaitu recall barunya
+  - 42,7%
+  - 64,4%, yaitu positive rate barunya
+  answer: 2
+  explanation: Precision adalah true positive dibagi baris yang diberi flag, 44 / 103 = 42,7%, turun dari 38 / 60 = 63,3%. Baris tambahan yang diberi flag sebagian besar adalah alarm palsu. Angka 88,0% adalah recall (44 / 50) dan 64,4% adalah positive rate.
+- prompt: Setelah Samakan positive rate, selisih positive rate turun dari 26,7 menjadi 0,1 poin. Apa yang terjadi pada ukuran lain di tabel trade-off?
+  options:
+  - Semua selisih lain ikut turun, dan accuracy naik
+  - Tidak ada yang lain berubah, karena hanya threshold Kelompok B yang bergeser
+  - Selisih false-positive rate naik dari 11,4 menjadi 22,2 poin dan accuracy turun dari 78,8% menjadi 73,6%
+  - Accuracy tetap 78,8% dan hanya selisih recall yang berubah
+  answer: 2
+  explanation: Menutup satu selisih di sini membuka selisih lain dan mengorbankan accuracy. Selisih recall memang turun, dari 9,4 menjadi 2,6 poin, tetapi selisih false-positive rate menjadi dua kali lipat. Petunjuk lab mengatakan bahwa menutup satu selisih biasanya membuka selisih lain atau mengurangi accuracy, sehingga katakan biasanya dan periksa setiap kali.
+- prompt: Setelah Samakan recall, selisih recall adalah 0,6 poin, tetapi selisih positive rate masih 11,7 poin. Mengapa keduanya tidak dapat sama-sama mencapai nol di sini?
+  options:
+  - Lab hanya dapat menggeser satu threshold dalam satu waktu
+  - Positive rate bergantung pada recall, base rate dan precision, dan base rate-nya berbeda
+  - Recall dan positive rate adalah angka yang sama
+  - Kelompok B punya terlalu sedikit baris untuk sebuah threshold
+  answer: 1
+  explanation: Flag rate sama dengan recall x base rate / precision. Dengan base rate 60,8% dan 31,3%, recall dan positive rate yang sama akan memaksa precision menjauh satu sama lain, sehingga menutup satu selisih meninggalkan atau membuka selisih lain.
+- prompt: Korelasi naik dari 0,20 ke 0,95. Sinyal turun dari 25,9% ke 14,5%, salinan sinyal naik dari 0,0% ke 6,9%, dan Keduanya bersama tetap sekitar 25,8%. Bagaimana bacaan terbaiknya?
+  options:
+  - Sinyal menjadi kurang berguna bagi model, sehingga boleh dibuang
+  - Salinan menjadi penyebab hasilnya
+  - Model membagi kredit antara kedua feature, dan pasangannya masih bernilai hampir sama
+  - Kedua bar seharusnya membesar, sehingga lab menampilkan galat
+  answer: 2
+  explanation: Mengacak satu feature membuat kembarannya menutupi, sehingga tiap bar tunggal mengecil. Mengacak keduanya bersamaan menurunkan accuracy sekitar 25,8 poin, hampir sama dengan sinyal sendirian pada 0,20. Pasangannya tetap bernilai, dan tidak ada satu bar pun yang mengatakannya.
+- prompt: Pada data buatan, hasilnya tidak pernah bergantung pada salinan sinyal, tetapi pada korelasi 0,95 importance-nya 6,9%. Apa yang dikatakan angka itu kepadamu?
+  options:
+  - Model memakai salinan itu, tetapi angkanya tidak mengatakan apa pun tentang apa yang menentukan hasil di dunia nyata
+  - Ternyata hasilnya memang bergantung pada salinan
+  - Salinan adalah feature yang lebih baik daripada sinyal
+  - Importance-nya hanyalah noise acak dari pengacakan
+  answer: 0
+  explanation: Permutation importance menggambarkan model yang sudah di-fit. Model bersandar pada salinan karena salinan adalah kembaran dekat sinyal, itulah sebabnya nilainya lebih dari 0,0% yang tampak pada 0,20. Angka ini bukan bukti bahwa salinan berpengaruh.
+- prompt: Pada kasus 2, prediksi rata-rata adalah 53,8%. Sinyal mendorong sebesar -7,7 poin, sinyal lain -11,7, dan salinan serta noise 0,0. Kira-kira berapa prediksi yang diberikan model untuk kasus ini?
+  options:
+  - 34%
+  - 73%
+  - 54%
+  - 65%
+  answer: 0
+  explanation: Nilainya dijumlahkan dari rata-rata, 53,8 - 7,7 - 11,7 = 34,4, jadi sekitar 34% (lab menampilkan 34,5% sebelum pembulatan). Pada threshold 0,50 model memprediksi negatif, sedangkan kasusnya sebenarnya positif, jadi model salah.
+- prompt: Pada penguin nyata menurut jenis kelamin, positive rate-nya 37,8% untuk betina dan 41,0% untuk jantan, tetapi recall-nya 100,0% dan 62,7%. Bagaimana kamu membaca ini, dan bagaimana memeriksanya?
+  options:
+  - Modelnya adil, karena positive rate-nya berdekatan
+  - Selisih recall pasti bug, karena positive rate-nya sama
+  - Positive rate-nya hampir sama tetapi recall-nya sangat berbeda, sehingga periksa pada split baru apakah recall jantan tetap rendah
+  - Selisih recall membuktikan bahwa jantan secara alami lebih sulit diprediksi
+  answer: 2
+  explanation: Positive rate yang sama tidak memberi recall yang sama. Pada tiga split baru, recall jantan adalah 72,5%, 60,8% dan 64,7% dibanding 96,6% sampai 100,0% untuk betina, sehingga selisihnya bertahan. Audit menunjukkan di mana model ini gagal, bukan mengapa.

@@ -1,0 +1,80 @@
+- prompt: The lab's small CNN has 4 filters of 3 × 3 and reads 12 × 12 pictures. After the convolution and a 2 × 2 max pooling, 4 maps of 5 × 5 reach a dense layer with 4 outputs. How many weights and biases does the model have in all?
+  options:
+  - 40
+  - 404
+  - 444
+  - 9,348
+  answer: 2
+  explanation: The convolution has 4 × 9 weights and 4 biases, 40. The dense layer has 100 × 4 weights and 4 biases, 404. Together that is 444, the "Model size" the lab shows. 40 and 404 are only one layer each, and 9,348 is the dense baseline of four networks.
+- prompt: A shape pixel of 0.9 is shown with 60% less light. The lab multiplies by 1 − 0.6 and subtracts 0.1. What is the new value?
+  options:
+  - 0.26
+  - 0.36
+  - 0.44
+  - 0.80
+  answer: 0
+  explanation: 0.9 × 0.4 = 0.36, and 0.36 − 0.1 = 0.26. The value 0.36 forgets the offset, and 0.44 multiplies by 0.6 instead of by the share of light that is left.
+- prompt: On seed 1 the network trained without augmentation scores 27% on dark test pictures. In the confusion matrix almost all of them are predicted as bars. What does this tell you?
+  options:
+  - Bars are the hardest shape, so the network is unsure about them
+  - The darker pictures are too noisy for any network to read
+  - The network is slightly worse on dark pictures, as expected from 120 test images
+  - The network never saw dim pictures and falls back on one answer, so 27% is little more than guessing
+  answer: 3
+  explanation: The bar row is perfect and the other three shapes are almost all called bars, so the 32 right out of 120 are the 30 bars and 2 rings. A drop from 98% to 27% is no small loss, and the cause is that nothing in training showed a dim picture, not that bars are hard.
+- prompt: A network trained with Random shift up to 2 px scores 95% at 1 px, 87% at 2 px, 63% at 3 px and 36% at 4 px on seed 1. What is the lesson?
+  options:
+  - Shift augmentation does not work, because accuracy still falls
+  - Augmentation covers about the range you trained, so train with the changes you expect to meet
+  - A larger test strength always makes the network learn the shift
+  - The network should be trained with shifts of 4 px so it never fails
+  explanation: Accuracy holds up to the trained range and falls past it. Training with 4 px would cover more, but it uses the network's limited room on changes you may never meet, and it still would not cover 5 px.
+  answer: 1
+- prompt: You expect your camera to work at dusk and nothing else changes, so the pictures are centred and upright but dim. Which augmentation do you switch on first?
+  options:
+  - Random shift, because any augmentation makes the network more robust
+  - Small rotation, because it is the cheapest change
+  - Brightness jitter, because it matches the change (Random shift alone left dark pictures at 25%)
+  - Flip left-right, because it doubles the number of pictures
+  answer: 2
+  explanation: An augmentation helps mostly the change it covers. In the ten-seed table the shift-trained networks scored 25% on dark pictures, while brightness jitter gave 99%.
+- prompt: Seed 1 gives 27% on darker pictures without augmentation, and seed 2 gives 98%. Shifted pictures give about 35% on both. What do you conclude?
+  options:
+  - The seed 2 network is better, so use seed 2 from now on
+  - The shifted failure is an effect of training; the darker score depends on the random start, since dim pictures were never seen
+  - Both results are noise, since the test set has only 120 pictures
+  - The darker test is wrong for seed 1 and should be ignored
+  answer: 1
+  explanation: Across ten seeds shifted stays between 24% and 39%, so it repeats. Darker ranges from 27% to 98%, because the network was never trained on dim pictures and its answer there is arbitrary.
+- prompt: The true box of a triangle is 6 × 6, area 36. Your dashed box is 7.5 × 6.5, area 48.75, and they overlap on 33 square pixels. At an IoU threshold of 0.75, what is the result?
+  options:
+  - IoU 0.64, a true positive
+  - IoU 0.68, a true positive
+  - IoU 0.91, a true positive
+  - IoU 0.64, a false positive, and the triangle is missed
+  answer: 3
+  explanation: The union is 36 + 48.75 − 33 = 51.75, so IoU = 33 / 51.75 = 0.64. That is below 0.75, so the box counts as a false positive and the object as a false negative. It would pass at a threshold of 0.50.
+- prompt: Two networks score 97 and 93 correct out of the same 120 test pictures (81% and 78%). The standard error of such a score is about 3.7 points. What can you say?
+  options:
+  - Not much, because the gap of about 3 points is smaller than the noise, so repeat with other seeds
+  - The first network is clearly better, because 97 is higher than 93
+  - The second network is clearly better, because it is more robust
+  - The networks are identical, because 3 points is zero
+  answer: 0
+  explanation: A gap of 4 pictures is within what the sampling of 120 pictures produces, and a new training seed adds more spread. Trust a difference that repeats on fresh seeds and is larger than a few points.
+- prompt: With all three augmentations on, the lab's seed 1 network gets 85% on clean pictures, against 98% without augmentation, and the training loss ends near 0.29. Which explanation fits?
+  options:
+  - Augmentation damages the training pictures, so the network learns the wrong labels
+  - The test pictures were augmented as well, which made them harder
+  - The same 444 weights and 30 epochs must now cover many more kinds of picture, so the fit to clean pictures is looser
+  - The lab reads the validation loss instead of the training loss
+  answer: 2
+  explanation: The labels stay true and the test pictures are never augmented. The network has a fixed amount of room and time. More room and time helped. With 8 filters and 60 epochs clean accuracy rose to 97%.
+- prompt: The lab says that Flip left-right hardly matters here. Why?
+  options:
+  - Flipping a picture changes its label
+  - All four shapes look the same mirrored, so a flipped copy shows the network almost nothing new
+  - The network cannot read mirrored pictures
+  - Flip only works on test pictures
+  answer: 1
+  explanation: A ring, a bar, a cross and a triangle are symmetric left to right, so a mirror image is almost the same picture. For a task such as reading digits a flip would be wrong, as in the last lesson.

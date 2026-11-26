@@ -1,0 +1,80 @@
+- prompt: You train a digit classifier. Which augmentation is NOT label-preserving?
+  options:
+  - Shift the digit 2 pixels to the right
+  - Add a small random brightness jitter
+  - Rotate the digit by 12 degrees
+  - Rotate the digit by 180 degrees
+  answer: 3
+  explanation: Turned by 180 degrees, a 6 looks like a 9, so the label would be wrong. A small shift, a small rotation and a modest brightness change still show the same digit.
+- prompt: Which images should receive random augmentation?
+  options:
+  - The training images only
+  - The test images only, to make the score harder
+  - The training and test images alike
+  - The validation and test images, but not the training images
+  answer: 0
+  explanation: Augmentation helps the model learn, so it belongs in training. Validation and test images stay as they were so their score describes real pictures. Augmenting before the split would also put copies of one photo on both sides.
+- prompt: A model gets 188 of 200 clean test images right, but only 150 of 200 once the same images are made dimmer. What does this show?
+  options:
+  - The dimmer images are mislabelled
+  - Clean accuracy of 94% is the best estimate of how it will do in dim light
+  - Clean accuracy of 94% overstates its robustness, since it falls to 75% in dim light
+  - The model has underfit the clean images
+  answer: 2
+  explanation: 188 / 200 = 94% and 150 / 200 = 75%. The clean score only describes pictures like the training ones, so a stress test on realistic changes is needed to see the drop.
+- prompt: A model trained with augmentation scores 92% on clean test images, while the same model trained without it scores 94%, but on dimmer images it scores 88% against 75%. How do you read this?
+  options:
+  - The augmented model is worse, because its clean score is lower
+  - It gave up 2 points on clean images and gained 13 on dim ones, which is a good trade if dim photos will occur
+  - The two models are equal, since 92 and 94 are close
+  - The dim score does not matter because the test set is clean
+  answer: 1
+  explanation: The clean score fell by 2 points and the dim score rose by 88 - 75 = 13 points. Which model is better depends on the conditions it will meet, which is why both scores are reported.
+- prompt: What does average precision (AP) summarize for a detector?
+  options:
+  - The mean of all the IoU values of the predicted boxes
+  - The top-1 accuracy on clean images
+  - The share of images where the true class is in the top five scores
+  - The area under the precision-recall curve for one class, found by lowering the confidence cut
+  answer: 3
+  explanation: AP sorts the boxes by confidence, tracks precision and recall as more boxes are accepted, and takes the area under that curve at a fixed IoU threshold. Mean AP then averages it over the classes.
+- prompt: The frozen layers give 64 features and the new head scores 3 classes, with one bias per class. How many numbers does the head train?
+  options:
+  - 195
+  - 192
+  - 67
+  - 64
+  answer: 0
+  explanation: Each of the 3 classes has 64 weights and 1 bias, so 64 x 3 + 3 = 195. Leaving out the biases gives 192, and 67 adds instead of multiplying.
+- prompt: In the confusion matrix of 300 images, there are 60 dogs; 36 were called dog, 20 cat and 4 bird. What is the recall for dog?
+  options:
+  - 75%
+  - 60%
+  - 86.7%
+  - 12%
+  answer: 1
+  explanation: Recall is the share of the true dogs that were found, 36 / 60 = 60%. The overall top-1 accuracy is 260 / 300 = 86.7%, and it hides this weak class.
+- prompt: A true box has area 24 and a predicted box has area 24. They overlap in an area of 12. What is the IoU?
+  options:
+  - 0.5
+  - 0.25
+  - 0.33
+  - 0.67
+  answer: 2
+  explanation: The union is 24 + 24 - 12 = 36, so IoU = 12 / 36 = 0.33. Dividing by 24 gives 0.5, which forgets that the union counts the overlap only once.
+- prompt: A predicted box 6 wide and 8 tall contains a true box of 6 by 4 completely. What is the IoU?
+  options:
+  - 1, because the true box is fully inside
+  - 0.5
+  - 0.75
+  - 0, because the boxes are different sizes
+  answer: 1
+  explanation: The overlap is the whole true box, 24, and the union is the larger box, 48, so IoU = 24 / 48 = 0.5. A box that is too large is punished too.
+- prompt: In the lesson's example with 5 true boxes and 6 predicted boxes, 3 predictions are true positives at an IoU threshold of 0.5. Why do precision and recall both fall at 0.75?
+  options:
+  - Fewer predicted boxes are produced at 0.75
+  - Boxes that were good enough at 0.5 now count as misses, so TP falls from 3 to 1
+  - Recall is always lower at stricter thresholds, but precision stays the same
+  - The true boxes become smaller at 0.75
+  answer: 1
+  explanation: The same predictions are checked against a stricter bar. TP falls from 3 to 1, so precision goes from 3 / 6 = 0.5 to 1 / 6 = 0.17 and recall from 3 / 5 = 0.6 to 1 / 5 = 0.2.

@@ -1,0 +1,80 @@
+- prompt: Berapa jarak Euclidean antara titik (1, 2) dan (4, 6)?
+  options:
+  - '7'
+  - '25'
+  - '5'
+  - '4'
+  answer: 2
+  explanation: Selisihnya 3 ke samping dan 4 ke atas, sehingga jaraknya adalah akar kuadrat dari 3 kuadrat ditambah 4 kuadrat, yaitu akar kuadrat dari 25, atau 5. Menjumlahkan selisih memberi 7 (Manhattan), dan selisih yang lebih besar adalah 4 (Chebyshev).
+- prompt: Berapa jarak Manhattan dan jarak Chebyshev antara (0, 0) dan (3, 9), dalam urutan itu?
+  options:
+  - 12 dan 9
+  - 9 dan 12
+  - 9,49 dan 9
+  - 12 dan 3
+  answer: 0
+  explanation: Selisihnya 3 ke samping dan 9 ke atas. Jarak Manhattan menjumlahkannya sehingga hasilnya 12, dan jarak Chebyshev mengambil yang lebih besar, yaitu 9. Nilai 9,49 adalah jarak Euclidean.
+- prompt: Di lab, kamu menyorot jarak Manhattan dan mengatur Jarak dari A ke 3. Seperti apa tepi bentuk berarsir di sekeliling A?
+  options:
+  - Lingkaran
+  - Belah ketupat
+  - Persegi dengan sisi sejajar sumbu
+  - Garis lurus
+  answer: 1
+  explanation: Titik-titik yang jumlah selisihnya 3 membentuk belah ketupat, dengan sudutnya berjarak 3 satuan di atas, bawah, kiri, dan kanan A. Lingkaran adalah Euclidean, dan persegi yang sisinya sejajar sumbu adalah Chebyshev.
+- prompt: Sebuah query berada di (0, 0). Titik P1 di (2, 0) dan titik P2 di (1,5; 1,5). Titik mana yang terdekat menurut jarak Euclidean, dan mana menurut jarak Chebyshev?
+  options:
+  - P1 menurut keduanya
+  - P2 menurut keduanya
+  - P2 menurut Euclidean, P1 menurut Chebyshev
+  - P1 menurut Euclidean, P2 menurut Chebyshev
+  answer: 3
+  explanation: Euclidean memberi P1 jarak 2,00 dan P2 sekitar 2,12, sehingga P1 lebih dekat. Chebyshev memberi P1 jarak 2 dan P2 jarak 1,5, sehingga P2 lebih dekat. Pilihan jarak mengubah titik yang terdekat.
+- prompt: Ketika jumlah feature menjadi sangat besar, apa yang cenderung terjadi pada jarak antartitik?
+  options:
+  - Jaraknya mengumpul, sehingga titik terdekat tidak jauh lebih dekat daripada titik terjauh
+  - Semuanya menyusut menjadi nol
+  - Titik terdekat dan terjauh menjadi mudah dibedakan
+  - Cosine distance menjadi sama dengan jarak Euclidean
+  answer: 0
+  explanation: Di banyak dimensi, jarak cenderung mengumpul, sehingga "terdekat" memberi lebih sedikit informasi. Jarak tidak menyusut menjadi nol, dan jarak-jarak yang berbeda tidak menjadi identik.
+- prompt: Kamu ingin membandingkan dua artikel dengan topik yang sama berdasarkan jumlah katanya. Satu panjang dan satu pendek, tetapi keduanya memakai kata dengan proporsi yang mirip. Jarak mana yang paling sesuai?
+  options:
+  - Euclidean, karena itu pilihan default yang umum
+  - Manhattan, karena jumlah katanya harus dijumlahkan
+  - Chebyshev, karena satu selisih besar paling menentukan
+  - Cosine, karena ia membandingkan arah dan mengabaikan panjang
+  answer: 3
+  explanation: Cosine distance hanya melihat arah dari daftar jumlah kata, sehingga teks panjang dan teks pendek dengan proporsi yang mirip dianggap dekat. Euclidean, Manhattan, dan Chebyshev akan menganggap keduanya berjauhan, karena teks yang panjang punya jumlah kata yang jauh lebih besar.
+- prompt: Dua titik berjarak 3 menurut jarak Euclidean. Dengan kemiripan 1 ÷ (1 + d), berapa kemiripan keduanya?
+  options:
+  - '0,33'
+  - '0,25'
+  - '0,75'
+  - '3'
+  answer: 1
+  explanation: Dengan d = 3, kemiripannya adalah 1 ÷ (1 + 3) = 1 ÷ 4 = 0,25. Pilihan 0,33 lupa menambahkan 1 pada jarak. Jarak yang lebih besar selalu memberi kemiripan yang lebih rendah.
+- prompt: Pada contoh hitungan, A = (3, 3) dan B = (7, 6). B dipindahkan ke (14, 12), dua kali lebih jauh dari titik asal pada arah yang sama, sedangkan A tetap. Apa yang terjadi pada jarak Euclidean dan cosine dari A ke B?
+  options:
+  - Euclidean naik dari 5 menjadi sekitar 14,2, dan cosine tetap sekitar 0,003
+  - Keduanya tetap sama
+  - Euclidean tetap 5, dan cosine naik
+  - Keduanya naik
+  answer: 0
+  explanation: Jarak Euclidean bergantung pada seberapa jauh kedua titik terpisah, dan selisihnya kini 11 dan 9, sehingga jaraknya menjadi akar kuadrat dari 202, sekitar 14,2. Cosine distance hanya bergantung pada arah, dan arahnya tidak berubah, sehingga tetap sekitar 0,003.
+- prompt: Sebuah komponen lolos inspeksi hanya jika setiap pengukurannya berselisih paling banyak 0,1 dari target. Jarak mana dengan nilai paling banyak 0,1 yang menyatakan persis hal ini?
+  options:
+  - Euclidean
+  - Manhattan
+  - Chebyshev
+  - Cosine
+  answer: 2
+  explanation: Jarak Chebyshev adalah selisih tunggal terbesar, sehingga nilainya paling banyak 0,1 hanya jika setiap selisih paling banyak 0,1. Euclidean dan Manhattan paling banyak 0,1 lebih ketat, sehingga keduanya juga menolak komponen dengan beberapa selisih 0,08, padahal setiap pengukurannya masih dalam batas 0,1.
+- prompt: Panjang bill penguin berkisar dari 32 sampai 60 mm dan panjang flipper dari 172 sampai 231 mm. Kamu mengukur jarak antarpenguin dengan jarak Euclidean pada milimeter mentah. Feature mana yang lebih berpengaruh, dan apa solusinya?
+  options:
+  - Panjang bill, karena diukur lebih dulu; skalakan kedua feature ke rentang yang mirip
+  - Panjang flipper, karena nilainya tersebar pada rentang yang lebih lebar; skalakan kedua feature ke rentang yang mirip
+  - Keduanya sama berpengaruh, karena sama-sama dalam milimeter
+  - Panjang flipper; ganti ke jarak cosine, yang membuat kedua feature setara
+  answer: 1
+  explanation: Nilai flipper tersebar pada rentang yang lebih lebar (sekitar 59 mm dibandingkan 28 mm), sehingga selisihnya mendominasi jumlah kuadrat dan selisih bill berpengaruh lebih kecil. Menskalakan kedua feature ke rentang yang mirip, seperti plot 0 sampai 10 di lab, memberi setiap feature suara yang adil. Cosine tidak menyelesaikan masalah ini, dan satuan yang sama tidak membuat rentangnya setara.

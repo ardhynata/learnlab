@@ -1,0 +1,16 @@
+bin/
+*.test
+*.out
+.env
+.env.local
+.env.production
+.DS_Store
+# Per-machine Claude Code state (agent worktrees, local settings) —
+# never committed; leaks into PRs otherwise. The shared review-gate agents
+# under .claude/agents/ are the one exception, so the ignore is `**/.claude/*`
+# (a file cannot be re-included once its parent directory is excluded; the
+# `**/` keeps a NESTED .claude ignored, and the anchored negations re-include
+# only the repository root's agents).
+**/.claude/*
+!/.claude/agents/
+!/.claude/agents/**

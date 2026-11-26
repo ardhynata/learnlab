@@ -1,0 +1,80 @@
+- prompt: Sebuah tokenizer sederhana mengubah teks menjadi huruf kecil, memisahkannya pada spasi, dan membuang tanda baca. Token apa yang dihasilkannya dari "The Cat sat."?
+  options:
+  - The, Cat, sat
+  - the, cat, sat
+  - the cat sat, sebagai satu token
+  - the, cat, sat, dan satu token untuk tanda titik
+  answer: 1
+  explanation: Huruf kecil mengubah "The" menjadi "the" dan "Cat" menjadi "cat", pemisahan pada spasi menghasilkan tiga potongan, dan tanda titik dibuang. Tanpa huruf kecil, "The" dan "the" menjadi dua feature yang berbeda.
+- prompt: Pada corpus di pelajaran, "the dog sat on the log" adalah D2. Seperti apa count vector-nya pada vocabulary the, cat, sat, on, mat, dog, log, chased?
+  options:
+  - 1, 0, 1, 1, 0, 1, 1, 0
+  - 2, 1, 1, 1, 1, 0, 0, 0
+  - 2, 0, 1, 1, 0, 1, 1, 1
+  - 2, 0, 1, 1, 0, 1, 1, 0
+  answer: 3
+  explanation: '"the" muncul dua kali, dan sat, on, dog serta log masing-masing sekali. Sel cat, mat dan chased bernilai 0. Vektor 1, 0, 1, 1, 0, 1, 1, 0 melupakan "the" yang kedua, dan 2, 1, 1, 1, 1, 0, 0, 0 adalah D1.'
+- prompt: Sebuah vocabulary berisi 20.000 kata dan sebuah email memakai 80 kata berbeda. Pernyataan mana yang benar tentang count vector-nya?
+  options:
+  - Semua 20.000 selnya berisi hitungan di atas 0
+  - Paling banyak 80 sel yang tidak nol, sehingga vektor itu sparse
+  - Tepat 80 sel berisi hitungan 1
+  - Vektor itu punya 80 sel, satu untuk tiap kata yang dipakai
+  answer: 1
+  explanation: Tiap sel milik satu kata vocabulary, jadi vektornya punya 20.000 sel. Hanya 80 kata yang dipakai email itu yang dapat bernilai di atas 0 (kurang dari 0,5% sel), dan kata yang dipakai dua kali berisi 2, bukan 1.
+- prompt: Mengapa sebuah pipeline membuang "the" sebagai stop word?
+  options:
+  - Kata itu ada di setiap dokumen, sehingga hitungannya tidak membantu membedakan dokumen
+  - Kata dengan tiga huruf tidak pernah dapat dipakai model
+  - Kata itu akan membuat vocabulary lebih besar
+  - Stop word selalu merupakan salah ketik
+  answer: 0
+  explanation: Kata yang sangat umum muncul hampir sama banyak di mana-mana, sehingga hitungannya hanya sedikit memberi tahu dokumen atau kelas mana asal sebuah teks. Membuangnya juga membuat vocabulary lebih kecil, bukan lebih besar.
+- prompt: Pernyataan mana yang benar tentang membuang stop word?
+  options:
+  - Selalu aman, karena kata umum tidak punya makna
+  - Tidak pernah aman, karena setiap kata berguna
+  - Itu pilihan yang perlu diuji, karena kata seperti "not" dapat membalik makna
+  - Hanya berhasil bila corpus berisi kurang dari 10 dokumen
+  answer: 2
+  explanation: Beberapa daftar stop word memuat "not", dan membuangnya membuat "not good" tampak seperti "good". Karena itu kamu memeriksanya pada validation set, bukan berasumsi.
+- prompt: Pada corpus berisi 3 dokumen, sebuah kata muncul di 2 di antaranya. Berapa idf-nya, ln(N / df)?
+  options:
+  - 0
+  - 0,41
+  - 1,10
+  - 1,50
+  answer: 1
+  explanation: idf = ln(3 / 2) = ln(1,5) = 0,41. Nilai 1,10 adalah ln(3), yang dimiliki kata yang hanya ada di satu dokumen, dan 0 dimiliki kata yang ada di ketiga dokumen.
+- prompt: Di D1, "the" muncul dua kali dan "mat" muncul sekali. Mengapa "mat" mendapat TF-IDF yang lebih tinggi?
+  options:
+  - Kata dengan huruf lebih sedikit dihukum
+  - Hitungan diabaikan, dan hanya kata pertama dalam teks yang diberi skor
+  - '"mat" muncul lebih belakang dalam kalimat daripada "the"'
+  - '"the" ada di ketiga dokumen, sehingga idf-nya 0, sedangkan "mat" ada di 1 dokumen, sehingga idf-nya 1,10'
+  answer: 3
+  explanation: '"the" mendapat skor 2 x ln(3 / 3) = 0, dan "mat" mendapat skor 1 x ln(3 / 1) = 1,10. Hitungan tetap berpengaruh, tetapi idf menskalakannya menjadi nol untuk kata yang ada di mana-mana.'
+- prompt: Pada corpus berisi 3 dokumen, sebuah kata hanya muncul di D1, dan muncul 3 kali di sana. Berapa TF-IDF-nya di D1?
+  options:
+  - 1,10
+  - 0,41
+  - 3,30
+  - 0
+  answer: 2
+  explanation: tf = 3 dan idf = ln(3 / 1) = 1,10, sehingga tf-idf = 3 x 1,10 = 3,30. Nilai 1,10 melupakan hitungannya, dan 0 dimiliki kata yang ada di setiap dokumen.
+- prompt: '"the cat chased the dog" dan "the dog chased the cat" bermakna berlawanan. Apa yang dilakukan bag of words terhadap keduanya?'
+  options:
+  - Memberi vektor yang berbeda, karena urutan kata dipertahankan
+  - Memberi vektor yang sama, karena urutan kata hilang
+  - Membuang "chased", karena kata itu kata kerja
+  - Memberi kalimat kedua TF-IDF lebih rendah, karena muncul belakangan
+  answer: 1
+  explanation: Kedua kalimat memakai kata yang sama dengan jumlah yang sama, dan sebuah bag hanya mencatat hitungannya. Inilah batas utama metode ini, dan n-gram adalah salah satu cara untuk memulihkan sedikit urutan.
+- prompt: Kamu membangun vocabulary dan nilai idf untuk sebuah text classifier. Kapan sebaiknya keduanya dihitung?
+  options:
+  - Pada dokumen latih dan dokumen uji sekaligus, agar tidak ada kata yang hilang
+  - Terpisah pada tiap dokumen baru, agar idf-nya terkini
+  - Hanya pada dokumen latih, lalu dipakai ulang pada dokumen baru
+  - Hanya pada dokumen uji, karena itulah yang diprediksi
+  answer: 2
+  explanation: Vocabulary dan idf dipelajari dari data, jadi memakai dokumen uji akan membocorkan informasi uji ke dalam training, seperti pada "Pipelines and leakage". Dokumen baru lalu dijelaskan dengan vocabulary dari data latih, dan kata yang tidak ada di dalamnya diabaikan.

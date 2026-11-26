@@ -1,0 +1,80 @@
+- prompt: Sebuah tabel punya 120 titik. Berapa langkah yang diambil gradient descent mini-batch dengan batch size 30 dalam 5 epoch?
+  options:
+  - 4
+  - 20
+  - 150
+  - 600
+  answer: 1
+  explanation: Tiap epoch memotong 120 titik menjadi 120 / 30 = 4 kelompok, dan setiap kelompok adalah satu langkah. Lima epoch memberi 5 × 4 = 20 langkah. Jawaban 4 hanya untuk satu epoch, dan 600 adalah yang akan diambil SGD (120 langkah per epoch).
+- prompt: Sebuah tabel punya 100 titik dan batch size-nya 30. Seperti apa satu epoch?
+  options:
+  - 3 langkah, dan 10 titik terakhir dilewati
+  - 4 langkah berisi 25 titik masing-masing
+  - 1 langkah yang memakai semua 100 titik
+  - 3 langkah berisi 30 titik dan satu langkah berisi 10 titik, jadi 4 langkah semuanya
+  answer: 3
+  explanation: Titik yang sudah diacak dipotong menjadi kelompok 30, 30, 30, dan kelompok terakhir 10, sehingga ceil(100 / 30) = 4 langkah. Tidak ada yang dilewati, karena setiap titik dipakai satu kali per epoch. Kelompok terakhir hanya lebih pendek.
+- prompt: Garis A (slope 1, intercept 1) dicocokkan ke titik (1, 2), (2, 3), dan (3, 5), dengan learning rate 0,15. Apa yang dilakukan satu langkah SGD bila kebetulan memilih titik (1, 2)?
+  options:
+  - Garis bergerak sejauh langkah full batch, ke slope 1,3 dan intercept 1,1
+  - Garis bergerak ke slope 1,9 dan intercept 1,3
+  - Garis tidak berubah, karena garis A sudah melewati (1, 2)
+  - Garis bergerak ke slope 0,7 dan intercept 0,9
+  answer: 2
+  explanation: Residual di (1, 2) adalah 2 - (1 × 1 + 1) = 0, sehingga gradient-nya (-2 × x × r, -2 × r) adalah (0, 0) dan langkahnya nol. Slope 1,9 dan intercept 1,3 adalah hasil memilih (3, 5). Hanya rata-rata atas ketiga titik yang memberi langkah penuh.
+- prompt: Batch size naik dari 4 menjadi 16 pada learning rate yang sama. Apa yang terjadi pada noise di gradient tiap langkah?
+  options:
+  - Tetap sama, karena learning rate-nya sama
+  - Kira-kira menjadi dua kali lipat
+  - Kira-kira menjadi separuh
+  - Turun menjadi nol
+  answer: 2
+  explanation: Meleset akar-rata-rata-kuadrat menyusut kira-kira seperti 1 per akar kuadrat batch size. Batch empat kali lebih besar membuatnya separuh (dalam pelajaran, sekitar 3,7 untuk 4 titik dan 1,7 untuk 16). Nilainya baru nol pada full batch.
+- prompt: Pada run bawaan lab, goyangan adalah 0,00 untuk full batch, 0,14 untuk mini-batch (16), dan 0,96 untuk SGD. Apa artinya?
+  options:
+  - Hampir seluruh jalur SGD adalah zigzag yang tidak mendekatkannya, sedangkan full batch berjalan lurus
+  - SGD membuat kemajuan terbanyak per langkah
+  - Full batch paling noisy, karena memakai titik terbanyak
+  - Full batch berakhir lebih dekat ke garis terbaik daripada SGD, karena jalurnya lurus
+  answer: 0
+  explanation: Goyangan adalah bagian dari sebuah jalur yang tidak membawa kemajuan. Nilai 0,96 berarti jalur SGD panjang tetapi titik awal dan akhirnya berdekatan, karena tiap titik mendorongnya ke arah yang berbeda. Full batch memakai gradient yang tepat, sehingga jalurnya lurus. Goyangan tidak menyatakan di mana sebuah jalur berakhir. Pada tabel lab, full batch masih di loss 1,34 setelah 10 epoch, di atas 0,51 milik SGD.
+- prompt: Pada run bawaan, SGD mencapai loss rendah setelah 0,14 epoch dan full batch tidak mencapainya dalam 10 epoch. Apakah itu berarti SGD bekerja lebih sedikit?
+  options:
+  - Ya, karena SGD memakai satu titik per langkah
+  - Ya, karena SGD mengambil langkah lebih sedikit daripada full batch
+  - Tidak, keduanya mengerjakan 80 gradient titik per epoch yang sama banyaknya, tetapi SGD mengambil 80 langkah untuk itu dan full batch 1
+  - Tidak, SGD bekerja lebih banyak, karena jalurnya lebih noisy
+  answer: 2
+  explanation: Setiap epoch mengunjungi tiap titik satu kali, sehingga kerja per epoch sama untuk semua batch size. SGD membelanjakannya untuk 80 langkah kecil dan full batch untuk satu langkah yang tepat. SGD butuh epoch lebih sedikit, tetapi dalam 10 epoch ia mengambil 800 langkah dibanding 10.
+- prompt: Pada garis terbaik gradient penuhnya nol, tetapi SGD dengan learning rate konstan tetap bergetar di sekitarnya. Mengapa?
+  options:
+  - Learning rate-nya terlalu kecil untuk berhenti
+  - SGD tidak dapat menghitung gradient di dekat minimum
+  - Garis terbaiknya berubah setiap epoch
+  - Gradient satu titik di sana masih tidak nol, dan tiap langkah mengikuti salah satunya
+  answer: 3
+  explanation: Gradient satu titik saling meniadakan jika dirata-ratakan, tetapi tiap langkah hanya memakai satu di antaranya, jadi ia tetap bergerak. Di lab, gradient satu titik pada garis terbaik berukuran akar-rata-rata-kuadrat sekitar 1,8. Getarannya menyusut dengan learning rate yang lebih kecil atau yang meluruh.
+- prompt: Mengapa noise pada SGD dapat membantu di permukaan yang punya beberapa lembah?
+  options:
+  - Dorongan acak dapat mengangkat titik melewati dinding lembah dangkal, sesuatu yang tidak pernah dilakukan descent biasa
+  - Ia membuat tiap langkah menunjuk tepat ke lembah terdalam
+  - Ia menurunkan loss di setiap lembah
+  - Ia menghilangkan punggungan di antara lembah
+  answer: 0
+  explanation: Descent biasa hanya turun, jadi ia tetap berada di lembah tempat ia mulai. Dorongan acak dapat membawanya melewati dinding yang lebih rendah. Pemeriksaan dalam pelajaran mendapati 42 dari 200 jalur ber-noise berakhir di sisi lembah dalam, dibanding tidak ada tanpa noise. Itu peluang, bukan jaminan, dan mangkuk tunggal di lab tidak dapat memperlihatkannya.
+- prompt: Learning rate meluruh sebagai rate / (1 + decay × epoch), dengan epoch pertama dihitung sebagai 0. Dengan rate 0,2 dan decay 0,5, berapa rate pada epoch 3?
+  options:
+  - 0,133
+  - 0,100
+  - 0,080
+  - 0,057
+  answer: 2
+  explanation: Epoch 3 memberi 0,2 / (1 + 0,5 × 3) = 0,2 / 2,5 = 0,08. Nilai 0,133 adalah epoch 1, tempat 0,2 / 1,5 berlaku.
+- prompt: Di lab pada ukuran batch 16 dan Learning rate 0,3, tabel menampilkan meledak hanya untuk SGD, sedangkan full batch dan mini-batch baik-baik saja. Apa perbaikan terbaiknya?
+  options:
+  - Naikkan rate-nya, karena dua jalur lainnya baik-baik saja
+  - Turunkan learning rate, atau pakai batch yang lebih besar, supaya gradient satu titik tidak dapat melempar garisnya sejauh itu
+  - Tambah epoch
+  - Tidak perlu apa-apa, karena meledak berarti SGD mencapai garis terbaik
+  answer: 1
+  explanation: Satu langkah atas satu titik dapat melempar garis jauh lebih jauh daripada satu langkah atas rata-rata. Rate yang lebih kecil memperpendek setiap langkah, dan batch yang lebih besar merata-ratakan titik-titik sehingga tiap langkah lebih tenang. Menambah epoch hanya memberi SGD lebih banyak kesempatan untuk meledak.

@@ -1,0 +1,32 @@
+slug: validation-and-tuning
+title: "Validation and hyperparameter tuning"
+summary: "Cross-validation, stratification, grouped and temporal splits, and grid and random search."
+topic: Machine learning
+level: intermediate
+path: intermediate
+position: 4
+translations:
+  id:
+    title: "Validasi dan tuning hyperparameter"
+    summary: "Cross-validation, stratifikasi, split berkelompok dan temporal, serta grid dan random search."
+modules:
+- slug: core-ideas
+  title: Core ideas
+  summary: "The concepts, in the order the lab uses them."
+  lessons:
+  - cross-validation-and-stratification
+  - grouped-and-temporal-splits
+  - tuning-search
+  translations:
+    id:
+      title: "Ide inti"
+      summary: "Konsep-konsepnya, sesuai urutan yang dipakai lab."
+- slug: lab
+  title: Lab
+  summary: "Run the idea yourself, then check what you learned."
+  lessons:
+  - validation-lab
+  translations:
+    id:
+      title: "Lab"
+      summary: "Jalankan idenya sendiri, lalu periksa apa yang sudah kamu pelajari."

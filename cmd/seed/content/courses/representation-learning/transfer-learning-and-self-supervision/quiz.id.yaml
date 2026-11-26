@@ -1,0 +1,80 @@
+- prompt: Manakah yang merupakan objective masking?
+  options:
+  - Membangun ulang seluruh input dari code yang kecil
+  - Menyembunyikan satu bagian input dan memprediksinya dari bagian lainnya
+  - Menarik code dua view dari satu item agar berdekatan
+  - Memprediksi nama spesies yang ditulis oleh seseorang
+  answer: 1
+  explanation: Masking menyembunyikan satu bagian input dan memakai sisanya untuk memprediksinya, sehingga datanya menyediakan targetnya sendiri. Membangun ulang seluruh input adalah reconstruction, menarik dua view agar berdekatan adalah contrastive training, dan nama yang ditulis seseorang adalah label biasa.
+- prompt: Sebuah foto dan salinannya yang dipotong adalah dua view dari satu item. Apa yang diinginkan contrastive training dari code keduanya?
+  options:
+  - Kedua code berjauhan, supaya encoder melihat perbedaannya
+  - Kedua code identik dengan piksel foto
+  - Kedua code berdekatan, sedangkan code item yang berbeda berjauhan
+  - Kedua code memprediksi label spesies yang sama
+  answer: 2
+  explanation: Contrastive training menarik view dari item yang sama agar berdekatan dan mendorong item yang berbeda agar berjauhan. Menarik saja dapat membuat setiap input mendapat code yang sama, dan tidak ada label yang terlibat.
+- prompt: Pada contoh enam penguin, memprediksi panjang sirip yang disembunyikan dengan rata-rata menghasilkan galat kuadrat rata-rata 279,14 mm², sedangkan garis dari body mass menghasilkan 61,17 mm². Apa yang ditunjukkan oleh penurunan ini?
+  options:
+  - Body mass membawa informasi tentang panjang sirip yang diabaikan oleh rata-rata
+  - Garis itu memakai spesies setiap penguin
+  - Pretext task selalu mencapai galat mendekati 0
+  - Rata-rata 202,17 mm dihitung dengan keliru
+  answer: 0
+  explanation: Garis itu menemukan pola di dalam data, yaitu penguin yang lebih berat punya sirip lebih panjang, dan sama sekali tidak memakai label. Turun ke 61,17 adalah peningkatan, bukan kecocokan sempurna, dan rata-rata 202,17 sudah benar.
+- prompt: Sebuah encoder mengubah 4 pengukuran menjadi code berisi 2 angka, dengan satu bias untuk setiap angka code. Head mengubah code menjadi satu skor, dengan 2 weight dan 1 bias. Berapa angka yang dicocokkan oleh fine-tuning dibandingkan dengan pelatihan frozen?
+  options:
+  - 3 untuk fine-tuning dan 3 untuk frozen
+  - 10 untuk fine-tuning dan 3 untuk frozen
+  - 13 untuk fine-tuning dan 10 untuk frozen
+  - 13 untuk fine-tuning dan 3 untuk frozen
+  answer: 3
+  explanation: Encoder punya 4 x 2 = 8 weight dan 2 bias, yaitu 10 angka, dan head punya 3. Pelatihan frozen hanya mencocokkan 3 angka milik head, sedangkan fine-tuning mencocokkan ke-13 angkanya.
+- prompt: Kamu punya 10 baris berlabel, dan data pretraining berasal dari domainmu sendiri. Apa pilihan pertama yang lebih aman?
+  options:
+  - Fine-tune seluruh encoder dengan learning rate besar
+  - Bekukan encoder dan latih hanya head
+  - Latih encoder dari nol pada 10 baris itu
+  - Lewati baris berlabel dan pakai pretext task saja
+  answer: 1
+  explanation: Encoder yang frozen hanya menyisakan sedikit angka untuk dicocokkan oleh 10 baris, sehingga overfitting tetap terkendali. Melatih semuanya, atau seluruh encoder dari nol, meminta data yang sangat kecil menentukan banyak angka, dan pretext task saja tidak pernah mempelajari jawaban downstream-mu.
+- prompt: Pasangan kondisi mana yang paling mungkin membuat transfer membantu?
+  options:
+  - Data berlabel besar dan domain yang tidak berkaitan
+  - Data berlabel besar dan domain yang berkaitan
+  - Data berlabel kecil dan domain yang berkaitan
+  - Data berlabel kecil dan domain yang tidak berkaitan
+  answer: 2
+  explanation: Dengan data berlabel kecil, fitur yang dipelajari darinya saja akan goyah, sehingga representasi dari banyak baris tanpa label paling banyak memberi tambahan. Transfer membantu hanya bila domainnya berkaitan, sehingga hal-hal yang sama penting.
+- prompt: Representasi pretrained yang frozen memberi skor downstream lebih rendah daripada pengukuran mentah. Apa sebutan untuk hal ini?
+  options:
+  - Negative transfer
+  - Fine-tuning
+  - Contrastive collapse
+  - Reconstruction loss
+  answer: 0
+  explanation: Negative transfer berarti representasi hasil pretraining membuat hasil downstream lebih buruk daripada tidak memakainya. Penyebabnya dapat berupa domain mismatch atau pretext task yang menyimpan informasi yang salah.
+- prompt: Seorang rekan melaporkan 90% untuk code hasil pretraining pada satu split acak dan 85% untuk baseline fitur mentah pada split acak yang lain. Apa yang salah pada perbandingan ini?
+  options:
+  - Tidak ada, karena 90% lebih tinggi daripada 85%
+  - Baseline mentah seharusnya di-fine-tune dulu
+  - Code hasil pretraining tidak dapat dibandingkan dengan fitur mentah
+  - Kedua arm dinilai pada baris yang berbeda, sehingga selisih 5 poin itu mungkin berasal dari split-nya
+  answer: 3
+  explanation: Perbandingan yang adil menjaga baris berlabel, baris uji, dan head tetap sama, lalu mengulanginya pada banyak split. Dengan data berlabel kecil, skor dapat bergeser beberapa poin dari satu split ke split berikutnya.
+- prompt: Pada penguin Dream, code frozen dari domain yang sama mendapat 83,8% dan pengukuran mentah 83,4%, dengan spread sekitar 10 poin dari 1000 putaran. Bagaimana pembacaan yang paling adil?
+  options:
+  - Pretraining jelas mengalahkan pengukuran mentah
+  - Pretraining jelas kalah dari pengukuran mentah
+  - Pada dasarnya seri, karena 0,4 poin jauh lebih kecil daripada spread-nya
+  - Perbandingannya tidak sah karena pengukuran mentah tidak punya code
+  answer: 2
+  explanation: Selisih 0,4 poin sangat kecil dibandingkan spread sekitar 10 poin, dan code domain yang sama menang di 398 putaran melawan 341 kalah. Ia memang mengalahkan code yang dipelajari dari 10 penguin berlabel saja, tetapi tidak mengalahkan pengukuran mentah.
+- prompt: Kumpulan data pretraining tanpa label tanpa sengaja memuat penguin yang kemudian kamu uji. Apa dampaknya?
+  options:
+  - Tidak ada, karena label spesies mereka tersembunyi
+  - Skor uji dapat terlalu optimistis, karena encoder sudah melihat input itu
+  - Skor uji menjadi pesimistis, karena kumpulan datanya terlalu besar
+  - Head tidak dapat dilatih lagi
+  answer: 1
+  explanation: Menyembunyikan label saja tidak cukup. Encoder sudah dibentuk oleh input uji, dan itu adalah kebocoran, sama seperti men-fit scaler pada semua baris. Pisahkan data lebih dulu dan pretrain hanya pada sisi training.

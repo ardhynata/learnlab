@@ -1,0 +1,72 @@
+- prompt: Sebuah model memiliki training error 0,05 dan validation error 4,80. Apa artinya kemungkinan besar?
+  options:
+  - Model underfit, karena kedua galatnya tidak nol
+  - Model overfit, karena jauh lebih cocok dengan data training daripada data baru
+  - Model sudah cukup pas, karena training error-nya sangat kecil
+  - Validation set pasti rusak, karena validation error tidak mungkin melebihi training error
+  answer: 1
+  explanation: Training error yang sangat kecil dengan validation error yang jauh lebih besar adalah ciri overfitting. Validation error biasanya sedikit lebih tinggi daripada training error, dan training error saja tidak mengatakan apa-apa tentang data baru.
+- prompt: Garis derajat 1 memiliki training error 1,02 dan validation error 1,06, sedangkan derajat 3 mencapai 0,27 dan 0,46. Perubahan mana yang paling mungkin membantu garis itu?
+  options:
+  - Mengumpulkan banyak titik training lagi yang sejenis dengan yang ada
+  - Menyisihkan lebih banyak titik validasi dari data yang ada
+  - Memakai model yang lebih fleksibel, misalnya derajat yang lebih tinggi
+  - Berhenti melihat validation error dan hanya memakai training error
+  answer: 2
+  explanation: Kedua galat tinggi dan berdekatan, itulah underfitting. Garis tidak dapat menekuk, sehingga ia membutuhkan fleksibilitas lebih besar. Data sejenis yang lebih banyak tidak mengubah apa yang dapat dilakukan garis lurus.
+- prompt: Mengapa polinomial derajat 9 yang dicocokkan ke 10 titik training memiliki training error tepat 0,00?
+  options:
+  - Polinomial itu memiliki 10 koefisien, satu untuk tiap titik
+  - Ke-10 titik itu kebetulan sama sekali tidak mengandung noise
+  - Derajat 9 selalu menjadi pilihan terbaik untuk 10 titik
+  - Polinomial itu juga memakai titik validasi saat fitting
+  answer: 0
+  explanation: Polinomial berderajat d memiliki d + 1 koefisien, sehingga derajat 9 dapat diselesaikan untuk mengenai setiap dari 10 titik. Itu termasuk noise pada tiap titik, dan itulah sebabnya ia gagal pada data baru.
+- prompt: Pada contoh dalam pelajaran, baseline yang selalu memprediksi rata-rata training memiliki validation error 2,72. Kurva derajat 9 memiliki 17,74. Apa yang ditunjukkan hal itu?
+  options:
+  - Derajat 9 sedikit lebih buruk daripada baseline, dan itu dapat diterima untuk model fleksibel
+  - Validation error terlalu besar untuk dapat dibandingkan dengan angka lain mana pun
+  - Training error yang lebih rendah selalu menghasilkan validation error yang lebih rendah pada data baru
+  - "Derajat 9 jauh lebih buruk daripada tidak tahu apa-apa: yang dipelajarinya sebagian besar noise"
+  answer: 3
+  explanation: Baseline adalah skor model yang tidak mempelajari apa pun. Model yang sekitar 6,5 kali lebih buruk pada data baru telah mempelajari detail yang menyesatkannya. Itulah overfitting.
+- prompt: Sebuah baseline selalu memprediksi rata-rata jawaban training. Jawaban training adalah 2, 4 dan 9. Berapa training error-nya sebagai mean squared error?
+  options:
+  - Sekitar 8,67
+  - 26
+  - 5
+  - Sekitar 2,89
+  answer: 0
+  explanation: Rata-ratanya (2 + 4 + 9) / 3 = 5. Kuadrat selisihnya 9, 1 dan 16, yang berjumlah 26. Dibagi 3 hasilnya 8,67. Nilai 26 adalah jumlah, bukan rata-rata, dan 5 adalah prediksinya sendiri.
+- prompt: Model derajat 1 dilatih pada 10 titik, lalu pada 120 titik. Validation error-nya turun dari sekitar 1,40 menjadi sekitar 1,21, dan training error-nya naik dari 0,95 menjadi 1,16. Apa yang ditunjukkan hal ini?
+  options:
+  - Validation error sedang menuju batas noise sebesar 0,25 seiring data bertambah
+  - Training error akan terus turun sampai mencapai nol
+  - Kedua galat mendekat tetapi tetap jauh di atas batas noise
+  - Model mulai overfit setelah melihat lebih banyak data
+  answer: 2
+  explanation: Data yang lebih banyak menutup selisih antara kedua galat, tetapi garis lurus tidak dapat mengikuti kurva, sehingga keduanya menetap di sekitar 1,2, jauh di atas 0,25 yang disisakan noise saja. Data yang lebih banyak tidak dapat memperbaiki underfitting.
+- prompt: Perubahan mana yang membuat overfitting lebih mungkin terjadi?
+  options:
+  - Melatih pada 120 titik, bukan hanya 20 titik
+  - Mencocokkan derajat 9 ke 10 titik, bukan derajat 3
+  - Memilih model yang kurang fleksibel dengan lekukan lebih sedikit
+  - Mengumpulkan data dengan noise yang lebih sedikit di sekitar pola
+  answer: 1
+  explanation: Model yang sangat fleksibel dengan titik yang sedikit dapat meliuk untuk mengenai setiap titik, termasuk noise-nya. Data yang lebih banyak, model yang kurang fleksibel, dan noise yang lebih sedikit semuanya memberi model lebih sedikit untuk dikejar.
+- prompt: Mengapa kita membandingkan galat dengan baseline?
+  options:
+  - Baseline selalu menjadi model yang paling akurat dari semuanya
+  - Baseline menghilangkan kebutuhan akan validation set tersendiri
+  - Training error tidak bermakna kecuali baseline juga dihitung
+  - Angka seperti 1,06 tinggi atau rendah hanya bila ada acuan
+  answer: 3
+  explanation: Galat 1,06 tergolong bagus bila baseline-nya mendapat 50 dan buruk bila baseline-nya 1,2. Baseline memberi skalanya. Baseline tidak menggantikan validation set.
+- prompt: Sebuah model overfit. Mana yang paling mungkin membantu?
+  options:
+  - Menambah derajat agar model cocok lebih rapat lagi dengan titik-titiknya
+  - Melatihnya lebih lama pada titik-titik yang persis sama seperti tadi
+  - Mengumpulkan data training lebih banyak atau model yang lebih sederhana
+  - Menilainya dari training error saja, bukan dari validation error
+  answer: 2
+  explanation: Overfitting berarti fleksibilitas terlalu besar untuk jumlah datanya. Data yang lebih banyak, model yang lebih sederhana, atau feature yang lebih sedikit semuanya menguranginya. Derajat yang lebih tinggi memperburuknya, dan training error menyembunyikan masalahnya.

@@ -1,0 +1,80 @@
+- prompt: A penguin reading of 6,440 g gets a very confident score from the 4,700 g rule. Why can an abstain band on the score not catch this case?
+  options:
+  - The band only works for weights below 4,700 g
+  - A score never says whether the case resembles the training data, so a separate range check is needed
+  - Confident scores are always correct
+  - Heavy penguins are always sent to a person anyway
+  answer: 1
+  explanation: The score is large because the weight is far from 4,700 g, not because the model has seen such cases. Out-of-distribution inputs need their own check, such as a range test, and a confident score can hide them.
+- prompt: In the penguin table, a band sends to a person every penguin closer than 200 g to 4,700 g. How many penguins is that?
+  options:
+  - 21
+  - 36
+  - 38
+  - 74
+  answer: 2
+  explanation: The band holds the first two rows, 21 + 17 = 38 penguins. The 36 is only the third row (200 to 399 g), and 74 is the count for the 400 g band.
+- prompt: With the 200 g band, what is the accuracy on the cases the model still decides?
+  options:
+  - 0.95, which is 279 / 295
+  - 0.89, which is 295 / 333
+  - 0.91, which is 303 / 333
+  - 0.97, which is 252 / 259
+  answer: 0
+  explanation: The model decides 295 penguins and is right on 303 - (13 + 11) = 279 of them, so 279 / 295 = 0.95. The 0.89 is the coverage, 0.91 is the accuracy with no band, and 0.97 belongs to the 400 g band.
+- prompt: Why does accuracy on decided cases rise as the band gets wider?
+  options:
+  - The model is retrained on the cases inside the band
+  - Reviewers correct the errors, and their fixes count as model accuracy
+  - Deciding fewer cases always raises accuracy, whatever the score
+  - The cases sent away are the ones the rule gets wrong most often
+  answer: 3
+  explanation: Near 4,700 g the rule is wrong on 8 of 21 penguins, far away on only 7 of 259. Removing the doubtful cases leaves an easier set. This only works when the score tracks correctness.
+- prompt: A review takes 3 minutes and a wrong automatic decision costs 50 minutes of rework. Above what chance of error does review pay off?
+  options:
+  - 0.03
+  - 0.06
+  - 0.17
+  - 0.94
+  answer: 1
+  explanation: Review pays when the chance of error times 50 is larger than 3, so when the chance is above 3 / 50 = 0.06. In the table, the three closest rows have error shares of 0.38, 0.35 and 0.25, above that line, and the far row has 0.03, below it.
+- prompt: A reviewer has 2 hours a day and each review takes 3 minutes. Which is the widest band in the table that fits?
+  options:
+  - No band
+  - 100 g
+  - 200 g
+  - 400 g
+  answer: 2
+  explanation: Two hours is 120 minutes, which is 40 reviews. The 200 g band sends 38 penguins (114 minutes) and fits. The 400 g band sends 74 penguins, about 222 minutes, which does not.
+- prompt: With the 400 g band, a reviewer simply accepts every suggestion. On how many of the 333 penguins is the system right?
+  options:
+  - 303
+  - 322
+  - 252
+  - 312
+  answer: 0
+  explanation: The model is right on 252 decided penguins and on 51 of the 74 reviewed ones, because accepting every suggestion copies the model. That is 303 of 333, exactly the accuracy with no review at all. The 322 is for a reviewer who decides alone and is right on 70 of the 74.
+- prompt: The rule is wrong on 23 of the 74 reviewed penguins, but the log shows reviewers overrode it only 2 times, an override rate of 0.03. What does this suggest?
+  options:
+  - The reviewers are almost always right
+  - The model is nearly perfect in the band
+  - The band is too narrow
+  - The reviewers probably accept suggestions without checking, which is automation bias
+  answer: 3
+  explanation: If reviewers caught the rule's errors, they would override it about 23 times. A rate near zero in a band where the model is wrong 31% of the time points to automation bias, and the next step is to check how the reviewers work.
+- prompt: Overall accuracy of the rule is 0.91. Why does the model card still list metrics by group?
+  options:
+  - Every card needs a longer table
+  - One overall figure can hide a group that does much worse, such as 0.84 for females against 0.98 for males
+  - Group metrics are always higher than the overall figure
+  - Group figures replace the need for any review rule
+  answer: 1
+  explanation: The overall figure is an average. By sex the rule gets 139 of 165 females and 164 of 168 males right. A card that gives only 0.91 would not warn a user about that gap.
+- prompt: 'Which statement follows the four parts of a good "do not use" notice: what not to do, the evidence, what to do instead, and what would change the answer?'
+  options:
+  - "This model is unreliable, so avoid it."
+  - "Use the rule everywhere, but tell users to be careful."
+  - "Do not use the rule below 2,700 g or above 6,300 g. It was built on 333 penguins in that range, so send those cases to a biologist, and we will reconsider when new labeled data exists."
+  - "Never use any model on penguins."
+  answer: 2
+  explanation: The third statement names the limit, gives the evidence, says where the case goes instead and states what would reopen the question. The others are vague warnings that nobody can act on or check.

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Interactive courses where you learn by running the algorithm yourself.">
+<title>Learnlab · learn by running it</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%235143cb'/%3E%3Ccircle cx='11' cy='12' r='3' fill='%23fff'/%3E%3Ccircle cx='21' cy='11' r='3' fill='%23fff' opacity='.7'/%3E%3Ccircle cx='16' cy='22' r='3' fill='%23fff' opacity='.85'/%3E%3C/svg%3E">
+<script src="theme.js"></script>
+<link rel="stylesheet" href="style.css">
+<!-- app.js imports these; preloading lets the browser fetch them side by side instead of one import after another. -->
+<link rel="modulepreload" href="api.js">
+<link rel="modulepreload" href="store.js">
+<link rel="modulepreload" href="i18n.js">
+<link rel="modulepreload" href="md.js">
+<link rel="modulepreload" href="sims/index.js">
+<script type="module" src="app.js"></script>
+</head>
+<body>
+<a class="skip" href="#app">Skip to content</a>
+<header class="top"><div class="wrap bar">
+  <a class="brand" href="#/"><span class="logo" aria-hidden="true"></span>Learnlab</a>
+  <nav aria-label="Main"><a href="#/" data-nav="home">Courses</a><button type="button" class="theme-toggle" id="theme-toggle" aria-label="Switch theme"></button></nav>
+</div></header>
+<div id="notices" class="wrap"></div>
+<main id="app" class="wrap" tabindex="-1" aria-busy="true"><div class="loading" role="status"><span class="spinner" aria-hidden="true"></span><span id="loading-text">Loading…</span></div><noscript><p>Learnlab needs JavaScript to run its simulators. · Learnlab memerlukan JavaScript untuk menjalankan simulatornya.</p></noscript></main>
+<footer class="site wrap"></footer>
+<p id="route-status" class="sr-only" role="status" aria-live="polite"></p>
+</body>
+</html>

@@ -1,0 +1,31 @@
+slug: nlp-and-transformers
+title: "NLP and transformers"
+summary: "Tokenization, attention, positional information, pretrained models, fine-tuning, and evaluation."
+topic: Machine learning
+level: advanced
+path: advanced
+position: 6
+translations:
+  id:
+    title: "NLP dan transformer"
+    summary: "Tokenization, attention, informasi posisi, pretrained model, fine-tuning, dan evaluasi."
+modules:
+- slug: core-ideas
+  title: Core ideas
+  summary: "The concepts, in the order the lab uses them."
+  lessons:
+  - tokenization-and-attention
+  - pretrained-models-and-fine-tuning
+  translations:
+    id:
+      title: "Ide inti"
+      summary: "Konsep-konsepnya, sesuai urutan yang dipakai lab."
+- slug: lab
+  title: Lab
+  summary: "Run the idea yourself, then check what you learned."
+  lessons:
+  - attention-lab
+  translations:
+    id:
+      title: "Lab"
+      summary: "Jalankan idenya sendiri, lalu periksa apa yang sudah kamu pelajari."

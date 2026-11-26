@@ -1,0 +1,72 @@
+- prompt: Aturan lulusnya adalah accuracy keseluruhan minimal 0,85 dan accuracy tiap jenis kelamin minimal 0,80. Dengan timbangan yang membaca 200 g terlalu ringan, accuracy keseluruhan 288 / 333 = 0,86, accuracy betina 121 / 165 = 0,73, dan accuracy jantan 167 / 168 = 0,99. Bagaimana hasilnya?
+  options:
+  - Lulus, karena accuracy keseluruhan di atas 0,85
+  - Gagal, karena accuracy betina di bawah 0,80
+  - Gagal, karena accuracy turun dari 0,91
+  - Tidak ada hasil, karena uji robustness memerlukan noise acak
+  answer: 1
+  explanation: Aturannya punya dua bagian dan keduanya harus terpenuhi. Angka keseluruhan di atas 0,85, tetapi slice betina berada di 0,73, di bawah 0,80, sehingga ujinya gagal. Rata-rata menyembunyikan slice tersebut.
+- prompt: Mengapa aturan lulus ditulis sebelum uji robustness dijalankan?
+  options:
+  - Agar ujinya berjalan lebih cepat
+  - Agar model dengan skor uji tinggi selalu lulus
+  - Agar hasilnya tidak dapat dijelaskan sekehendak hati setelah kejadian
+  - Agar setiap uji memakai threshold yang sama
+  answer: 2
+  explanation: Aturan yang ditetapkan setelah melihat angka cenderung menerima apa pun yang terjadi. Menetapkannya lebih dulu membuat uji menjadi pertanyaan yang sungguh-sungguh, dengan jawaban "tidak" yang mungkin muncul.
+- prompt: Ketika semua massa tubuh Biscoe kosong, aturan penguin hanya menemukan 0 dari 119 Gentoo. Apa penjelasannya?
+  options:
+  - Nilai yang kosong membuat model mempelajari aturan baru
+  - Penguin Gentoo di Biscoe lebih ringan
+  - Test set terlalu kecil untuk menyimpulkan apa pun
+  - Kode memperlakukan massa kosong sebagai lebih ringan dari 4700 g, sehingga menjawab "bukan Gentoo"
+  answer: 3
+  explanation: Aturan ini tidak punya pemeriksaan input. Massa yang kosong jatuh ke sisi ringan dari batas dan mendapat jawaban yang yakin tetapi salah. Pemeriksaan yang mengirim nilai kosong ke seseorang akan membuat kegagalan ini terlihat.
+- prompt: Grup B punya TP = 60, FN = 40, FP = 15, dan TN = 285. Berapa false-positive rate-nya?
+  options:
+  - 15 / 300 = 0,05
+  - 15 / 75 = 0,20
+  - 15 / 400 = 0,04
+  - 40 / 100 = 0,40
+  answer: 0
+  explanation: False-positive rate adalah FP / (FP + TN) = 15 / 300 = 0,05, yaitu bagian kasus yang tidak memerlukan apa-apa tetapi tetap ditandai. 15 / 75 adalah bagian flag yang salah, yaitu 1 dikurangi precision.
+- prompt: Grup A dan B sama-sama punya precision 0,80, tetapi TPR-nya 0,80 di A dan 0,60 di B. Pernyataan mana yang benar?
+  options:
+  - Alat ini adil, karena satu kriteria terpenuhi
+  - Calibration by group berlaku untuk flag, tetapi equal opportunity tidak terpenuhi
+  - Equalized odds terpenuhi, karena precision sama
+  - Selisih TPR pasti hanya kebetulan pada sampel kecil
+  answer: 1
+  explanation: Precision yang sama berarti sebuah flag sama seringnya benar di kedua grup, yaitu calibration by group untuk flag ya/tidak. Equal opportunity menuntut TPR yang sama, dan 0,80 lawan 0,60 berarti selisih 0,20.
+- prompt: Threshold grup B diturunkan sampai TPR-nya 0,80 dan FPR-nya 0,20, sama dengan grup A. B menandai 80 dari 100 pengajuan yang memang perlu diperiksa dan 60 dari 300 yang tidak perlu. Apa yang terjadi pada precision B?
+  options:
+  - Tetap 0,80, karena modelnya sama
+  - Naik menjadi 1,00, karena lebih banyak kasus ditemukan
+  - Turun dari 0,80 menjadi 80 / 140 = 0,57
+  - Tidak dapat dihitung tanpa skor untuk setiap kasus
+  answer: 2
+  explanation: Sekarang ada 80 + 60 = 140 flag dan 80 di antaranya benar, sehingga precision-nya 80 / 140 = 0,57. Dengan base rate yang berbeda di tiap grup, error rate yang sama memaksa precision yang berbeda.
+- prompt: Alat ini mempertahankan TPR 0,60 dan FPR 0,05 untuk grup B, tetapi base rate B naik menjadi 0,40 (160 dari 400 pengajuan perlu diperiksa). Berapa precision B setelah kenaikan itu?
+  options:
+  - 0,80, karena modelnya tidak berubah
+  - 0,60, karena sama dengan TPR
+  - 0,45, karena base rate lebih tinggi
+  - 96 / 108 = 0,89
+  answer: 3
+  explanation: Ditandai dan memang perlu adalah 0,60 x 160 = 96, sedangkan ditandai tetapi tidak perlu adalah 0,05 x 240 = 12. Precision-nya 96 / 108 = 0,89, sehingga muncul selisih precision 0,09 tanpa perubahan apa pun pada model.
+- prompt: Sebuah tabel berisi 12 record dengan kelompok berukuran 4, 2, 2, dan 4 record yang rentang usia dan wilayahnya sama. Berapa k, dan apa artinya?
+  options:
+  - k = 4, karena kelompok terbesar menentukan perlindungan
+  - k = 12, karena semua record ada dalam satu tabel
+  - k = 2, sehingga tidak ada yang dapat mengetahui kondisi siapa pun
+  - k = 2, sehingga setiap record tampak seperti setidaknya satu record lain
+  answer: 3
+  explanation: k adalah ukuran kelompok terkecil, di sini 2, sehingga setiap record berbagi rentang usia dan wilayah dengan setidaknya satu record lain. Ini tidak mencegah orang mengetahui suatu kondisi bila semua orang dalam kelompok memilikinya.
+- prompt: Seorang rekan berkata bahwa menghapus kolom nama membuat tabel menjadi anonim. Jawaban terbaik apa?
+  options:
+  - Kombinasi kolom lain, seperti rentang usia dan wilayah, tetap dapat menunjuk satu record
+  - Itu benar, karena nama adalah satu-satunya kolom yang mengidentifikasi
+  - Itu benar bila tabelnya berisi lebih dari 10 record
+  - Itu salah, karena model tetap mempelajari namanya
+  answer: 0
+  explanation: Kolom yang tidak berbahaya sendirian dapat mengidentifikasi seseorang bila digabung. Pada tabel 12 record, dua kombinasi hanya berisi satu record, sehingga baris-baris itu dapat ditemukan tanpa nama apa pun.

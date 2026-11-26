@@ -1,0 +1,80 @@
+- prompt: A simple tokeniser lowercases the text, splits on spaces and drops punctuation. What tokens does it make from "The Cat sat."?
+  options:
+  - The, Cat, sat
+  - the, cat, sat
+  - the cat sat, as one token
+  - the, cat, sat, and a token for the full stop
+  answer: 1
+  explanation: Lowercasing turns "The" into "the" and "Cat" into "cat", splitting on spaces gives three pieces, and the full stop is dropped. Without lowercasing, "The" and "the" would be two different features.
+- prompt: In the lesson's corpus, "the dog sat on the log" is D2. What is its count vector over the vocabulary the, cat, sat, on, mat, dog, log, chased?
+  options:
+  - 1, 0, 1, 1, 0, 1, 1, 0
+  - 2, 1, 1, 1, 1, 0, 0, 0
+  - 2, 0, 1, 1, 0, 1, 1, 1
+  - 2, 0, 1, 1, 0, 1, 1, 0
+  answer: 3
+  explanation: '"the" occurs twice, and sat, on, dog and log once each. The cat, mat and chased cells are 0. The vector 1, 0, 1, 1, 0, 1, 1, 0 forgets the second "the", and 2, 1, 1, 1, 1, 0, 0, 0 is D1.'
+- prompt: A vocabulary has 20,000 words and an email uses 80 different ones. What is true of its count vector?
+  options:
+  - All 20,000 cells hold a count above 0
+  - At most 80 cells are non-zero, so it is sparse
+  - Exactly 80 cells hold the count 1
+  - It has 80 cells, one per word used
+  answer: 1
+  explanation: Each cell belongs to a vocabulary word, so the vector has 20,000 cells. Only the 80 words the email uses can be above 0 (fewer than 0.5% of cells), and a word used twice holds 2, not 1.
+- prompt: Why would a pipeline drop "the" as a stop word?
+  options:
+  - It is in every document, so its count cannot help tell documents apart
+  - Words with three letters can never be used by a model
+  - It would make the vocabulary larger
+  - Stop words are always misspellings
+  answer: 0
+  explanation: A word that is very common shows up about the same everywhere, so its count carries little about which document or class a text belongs to. Dropping it also makes the vocabulary smaller, not larger.
+- prompt: Which statement about dropping stop words is correct?
+  options:
+  - It is always safe, because common words carry no meaning
+  - It is never safe, because every word helps
+  - It is a choice to test, because a word like "not" can flip a meaning
+  - It only works when the corpus has fewer than 10 documents
+  answer: 2
+  explanation: Some stop-word lists contain "not", and dropping it makes "not good" look like "good". So you check on a validation set instead of assuming.
+- prompt: In a corpus of 3 documents, a word appears in 2 of them. What is its idf, ln(N / df)?
+  options:
+  - 0
+  - 0.41
+  - 1.10
+  - 1.50
+  answer: 1
+  explanation: idf = ln(3 / 2) = ln(1.5) = 0.41. The value 1.10 is ln(3), which belongs to a word found in only one document, and 0 belongs to a word found in all three.
+- prompt: In D1, "the" occurs twice and "mat" occurs once. Why does "mat" get the higher TF-IDF?
+  options:
+  - Words with fewer letters are punished
+  - Counts are ignored, and only the first word in the text scores
+  - '"mat" comes later in the sentence than "the"'
+  - '"the" is in all 3 documents, so its idf is 0, while "mat" is in 1 document, so its idf is 1.10'
+  answer: 3
+  explanation: '"the" scores 2 x ln(3 / 3) = 0, and "mat" scores 1 x ln(3 / 1) = 1.10. The count still matters, but the idf scales it down to nothing for a word found everywhere.'
+- prompt: In a corpus of 3 documents, a word appears in only D1, and it occurs 3 times there. What is its TF-IDF in D1?
+  options:
+  - 1.10
+  - 0.41
+  - 3.30
+  - 0
+  answer: 2
+  explanation: tf = 3 and idf = ln(3 / 1) = 1.10, so tf-idf = 3 x 1.10 = 3.30. The value 1.10 forgets the count, and 0 belongs to a word found in every document.
+- prompt: '"the cat chased the dog" and "the dog chased the cat" mean opposite things. What does a bag of words do with them?'
+  options:
+  - Gives them different vectors, because the order of words is kept
+  - Gives them the same vector, because the order of words is lost
+  - Drops "chased", because it is a verb
+  - Gives the second one a lower TF-IDF, because it comes later
+  answer: 1
+  explanation: Both sentences use the same words the same number of times, and a bag records only the counts. This is the main limit of the method, and n-grams are one way to recover a little order.
+- prompt: You build a vocabulary and idf values for a text classifier. When should you compute them?
+  options:
+  - On the training and test documents together, so no word is missing
+  - Separately on each new document, so its idf is current
+  - On the training documents only, then reuse them on new documents
+  - On the test documents only, because they are the ones you predict
+  answer: 2
+  explanation: The vocabulary and idf are learned from data, so using test documents would leak test information into training, as in "Pipelines and leakage". A new document is then described with the training vocabulary, and words not in it are ignored.

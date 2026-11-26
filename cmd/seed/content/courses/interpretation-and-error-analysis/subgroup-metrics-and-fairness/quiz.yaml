@@ -1,0 +1,72 @@
+- prompt: Group P has 300 cases and a model is right on 285 of them. Group Q has 100 cases and the model is right on 70. What is the overall accuracy?
+  options:
+  - 0.83, the average of 0.95 and 0.70
+  - 0.89, because 355 of the 400 cases are right
+  - 0.95, because the big group sets the score
+  - 0.70, because the weakest group decides
+  answer: 1
+  explanation: Overall accuracy counts every case, so it is (285 + 70) / 400 = 0.8875, about 0.89. Averaging the two group accuracies gives 0.83, which ignores that P is three times the size of Q.
+- prompt: In the penguin rule, 58 female penguins are Gentoo and the rule finds 32 of them. What is the recall for female Gentoo?
+  options:
+  - 0.55, from 32 / 58
+  - 0.84, from 139 / 165
+  - 0.91, from 303 / 333
+  - 1.00, because it finds every male Gentoo
+  answer: 0
+  explanation: Recall is the found positives over the real positives of the group, 32 / 58 = 0.55. The number 0.84 is the accuracy for females, and 0.91 is the accuracy for everyone.
+- prompt: 26 of the rule's 30 errors fall on the 58 female Gentoo penguins, out of 333 penguins. What is the best reading?
+  options:
+  - The errors are spread evenly, so there is no slice to study
+  - The 4700 g cut was chosen with the help of the sex column
+  - The errors pile up in a small slice, which is where to look for a cause
+  - The overall accuracy of 0.91 must have been computed wrongly
+  answer: 2
+  explanation: 58 of 333 penguins is 17 percent of the data, yet it holds 87 percent of the errors. That is where to look next, and body mass is the clue. The overall 0.91 is correct, it is just an average.
+- prompt: Torgersen males show 1 error among 23 penguins, a rate of 0.04. What is the best way to handle this slice?
+  options:
+  - Call Torgersen males the best-served group, since the rate is lowest
+  - Call the rule broken for Torgersen males, since errors occur
+  - Drop the slice from the report, since 23 is not many
+  - Report it with n = 23 and treat the rate as unsteady, since one more error would double it
+  answer: 3
+  explanation: With 23 cases, one error more or less moves the rate between 0.04 and 0.09. A small slice should be reported with its number of cases and confirmed on new data before it is trusted.
+- prompt: Which criterion asks that the model flags the same share of each group?
+  options:
+  - Equal opportunity
+  - Demographic parity
+  - Calibration within groups
+  - Equal accuracy
+  answer: 1
+  explanation: Demographic parity compares flag rates. Equal opportunity compares recall among real positives, and calibration within groups compares how often a flag is right.
+- prompt: In colony B the tool has TP 16, FN 4, FP 8 and TN 72. What is its precision?
+  options:
+  - 0.80
+  - 0.24
+  - 0.67
+  - 0.84
+  answer: 2
+  explanation: Precision is TP / (TP + FP) = 16 / 24 = 0.67. The number 0.80 is the recall, 0.24 is the flag rate, and 0.84 is the precision in colony A.
+- prompt: The tool for colony B is changed to flag 38 penguins so that its flag rate matches colony A, and it still finds 16 of the 20 positives. What happens to its precision?
+  options:
+  - It stays at 0.67
+  - It falls to 0.42, from 16 / 38
+  - It rises to 0.84
+  - It stays at 0.80
+  answer: 1
+  explanation: Flagging 38 penguins with 16 of them true gives 16 / 38 = 0.42. Matching the flag rate while recall stays fixed makes precision move apart from colony A's 0.84.
+- prompt: When can demographic parity, equal opportunity and calibration within groups all hold at once?
+  options:
+  - Whenever the training set is large enough
+  - When every group is scored with the same threshold
+  - When the group column is left out of the features
+  - Only when the groups have the same base rate
+  answer: 3
+  explanation: Flag rate = recall x base rate / precision, so if the three are equal across groups the base rates must be equal too. Even a perfect model flags each group at its own base rate, so demographic parity still fails. More data, one threshold or dropping a column does not change this.
+- prompt: The penguin rule never used sex as an input. Why can its errors still differ so much between females and males?
+  options:
+  - Body mass differs between the sexes, so a cut on mass lands differently in each group
+  - A rule without sex as an input is always equally accurate for both sexes
+  - Female penguins were measured less carefully
+  - Recall can only be computed for the heavier group
+  answer: 0
+  explanation: Female Gentoo average 4680 g and male Gentoo 5485 g, so the 4700 g cut splits the females and not the males. Leaving a column out does not make errors equal across its groups when other features relate to it.

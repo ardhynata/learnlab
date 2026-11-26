@@ -1,0 +1,72 @@
+- prompt: A degree 1 line is refitted on many fresh samples. The fits are almost identical each time, yet their average is far from the true curve. What does that describe?
+  options:
+  - Low bias and high variance
+  - High bias and low variance
+  - High bias and high variance
+  - Low bias and low variance
+  answer: 1
+  explanation: Fits that barely change have low variance. An average far from the truth means high bias, a consistent miss. This is the signature of underfitting.
+- prompt: In the lesson's simulation, degree 3 has bias squared 0.01 and variance 0.08, and the noise variance is 0.25. What is its expected squared error on a new point?
+  options:
+  - 0.09
+  - 0.08
+  - 0.34
+  - 0.25
+  answer: 2
+  explanation: For squared error, bias squared + variance + noise = 0.01 + 0.08 + 0.25 = 0.34. The noise term of 0.25 stays, because no model can remove it.
+- prompt: What does the ridge (L2) penalty add to the fit loss?
+  options:
+  - λ times the sum of the squared coefficients
+  - λ times the sum of the residuals
+  - λ times the number of training points
+  - The validation error, multiplied by λ
+  answer: 0
+  explanation: Ridge charges for the squared size of the coefficients, so large coefficients cost a lot. The residuals belong to the fit loss, not to the penalty.
+- prompt: In the worked example the total loss is 65 - 60w + (14 + λ)w², and it is smallest at w = 30 / (14 + λ). Which w do you get for λ = 14?
+  options:
+  - 2.14
+  - 1.50
+  - 0.54
+  - 1.07
+  answer: 3
+  explanation: 30 / (14 + 14) = 30 / 28, which is about 1.07. That is half of the unpenalized 2.14, because λ equals the sum of the squared x values.
+- prompt: With λ = 4 the coefficient moves from 2.14 to 1.67, and the fit loss rises from 0.71 to 3.89. What does that show?
+  options:
+  - The penalty found a better fit to the training data
+  - The penalty accepts a worse training fit in return for a smaller coefficient
+  - The data changed when the penalty was added
+  - The coefficient was wrong before and the penalty fixed it
+  answer: 1
+  explanation: The data alone prefer w = 2.14. The penalty adds a cost that grows with w², so the sum is smallest at a smaller w, and the training fit pays for that.
+- prompt: You raise λ step by step on a degree 9 fit. Training error rises every step (0.00, 0.14, 0.21, 0.37, ...). Why can it not be used to choose λ?
+  options:
+  - Training error cannot be computed once there is a penalty
+  - Training error is always equal to validation error
+  - It always prefers λ = 0, the overfit end
+  - Training error only matters when λ is very large
+  answer: 2
+  explanation: Training error only rises with λ, so it always points to no penalty at all. Validation error measures new data, so it falls and then climbs, and its minimum marks a good λ.
+- prompt: A learning curve ends at 1.16 for training error and 1.21 for validation error with 120 points, and the noise floor is 0.25. What does it show, and what helps?
+  options:
+  - High variance; a stronger penalty will close the gap
+  - High variance; more data will close the gap
+  - Overfitting; a simpler model is needed
+  - High bias; the model needs more flexibility
+  answer: 3
+  explanation: Both errors are high and close together, far above the noise floor. That is a bias problem, and more data or a stronger penalty will not fix it.
+- prompt: A degree 6 model has training error 0.06 and validation error 3.76 with 10 points. With 120 points they are 0.24 and 0.27. What does the learning curve show?
+  options:
+  - High variance, which more data and a penalty can reduce
+  - High bias, which more data cannot reduce
+  - The validation set is broken
+  - The model is perfect at 10 points
+  answer: 0
+  explanation: A huge gap between the two errors that closes as data grows is variance. A penalty narrows the gap with few points, and more data narrows it too.
+- prompt: A model already underfits, with both errors high and close together. What does adding a strong ridge penalty do?
+  options:
+  - It lowers both errors by shrinking the noise
+  - It leaves the errors unchanged
+  - It makes the underfitting worse by raising the bias
+  - It turns the model into an overfit one
+  answer: 2
+  explanation: A penalty lowers variance and raises bias. A model with a bias problem gets less flexible, so its errors rise.

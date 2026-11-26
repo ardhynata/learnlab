@@ -1,0 +1,31 @@
+slug: imbalance-ranking-and-calibration
+title: "Imbalance, ranking, and calibration"
+summary: "ROC and precision-recall curves, class weighting, reliability diagrams, and cost-based thresholds."
+topic: Machine learning
+level: intermediate
+path: intermediate
+position: 10
+translations:
+  id:
+    title: "Imbalance, ranking, dan kalibrasi"
+    summary: "Kurva ROC dan precision-recall, class weighting, reliability diagram, dan threshold berbasis biaya."
+modules:
+- slug: core-ideas
+  title: Core ideas
+  summary: "The concepts, in the order the lab uses them."
+  lessons:
+  - roc-and-precision-recall
+  - calibration-and-costs
+  translations:
+    id:
+      title: "Ide inti"
+      summary: "Konsep-konsepnya, sesuai urutan yang dipakai lab."
+- slug: lab
+  title: Lab
+  summary: "Run the idea yourself, then check what you learned."
+  lessons:
+  - calibration-lab
+  translations:
+    id:
+      title: "Lab"
+      summary: "Jalankan idenya sendiri, lalu periksa apa yang sudah kamu pelajari."

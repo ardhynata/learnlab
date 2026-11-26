@@ -1,0 +1,80 @@
+- prompt: On the clean test rows of the lab, group A has a recall of 97.2% and group C has 58.3%. What is the Equal opportunity gap (recall), and what does it say?
+  options:
+  - 18.6 points, because that is the gap in accuracy between the groups
+  - 38.9 points, so the model finds far fewer of the positive cases in C than in A
+  - 9.2 points, because the model never sees the group column, so the gap between the groups must be small
+  - 155.5 points, because the gap is the two recalls added up and then read as a total
+  answer: 1
+  explanation: A gap is the largest value minus the smallest, 97.2 - 58.3 = 38.9 points. It exists even though the model never sees the group column, because the groups differ in base rate, noise and the postcode score.
+- prompt: You set Stress type to Missing values and Stress strength to 1. Every Fairness gap reads 0.0 and accuracy falls from 87% to 54%. What is going on?
+  options:
+  - The model became perfectly fair, so the lab can stop testing it and the model can be released
+  - The stress fixed the calibration of every group, which closed all the gaps at once
+  - The groups became identical, so their base rates and their error rates are now equal
+  - Every score is the same and nobody is flagged, so every recall and false-positive rate is 0%
+  answer: 3
+  explanation: With every cell blank, the model fills each one with the training average, so all rows get the same score and nobody is flagged. All the rates are 0%, so the gaps are 0.0, and each group's accuracy is only its share of negative cases. A gap of zero says nothing about quality.
+- prompt: Under Distribution shift at strength 0.4, the recall gap goes from 38.9 to 20.8 points, the false-positive-rate gap goes from 9.2 to 23.6, and accuracy goes from 87% to 71%. Which reading is best?
+  options:
+  - The model is worse, and the recall gap shrank only because more cases of every group are now flagged
+  - The model is fairer, because the biggest gap shrank by 18.1 points and nothing else got worse
+  - Nothing changed for the groups, because the gaps are only a summary of the whole test set
+  - The shift hurt only group A, so the other two groups are unaffected by it at all
+  answer: 0
+  explanation: 38.9 - 20.8 = 18.1, but recall rose for every group because more cases are flagged, and the false-positive-rate gap grew by 14.4 points. Read a gap beside accuracy, which fell by 16 points.
+- prompt: With A different threshold for each group set to match recall, the recall gap on clean rows falls from 38.9 to 8.1 points, not to 0. Why is it not 0?
+  options:
+  - The lab always leaves a gap of 8.1 points on purpose, to show that no method is ever perfect
+  - The group with the lowest threshold simply cannot reach the recall of the other two groups
+  - The thresholds are tuned on other rows, so on the test rows the recalls match only roughly
+  - Equal opportunity cannot be matched by thresholds, only demographic parity can be matched
+  answer: 2
+  explanation: The lab tunes the thresholds on other rows, as you should, so that the test rows give an honest result. A match on the tuning rows becomes only a near match on new rows.
+- prompt: You use one threshold per group, matched on recall. On the clean rows the recall gap is 8.1 points. After 40% blank cells the table shows 28.8 under After. What does the Change column show, and what does it mean?
+  options:
+  - ▼ −20.7, so the stress made the three groups more alike than before
+  - ▲ +20.7, so a fix tuned on clean data did not survive the stress
+  - ▲ +36.9, because the Change column adds the two gaps up
+  - 0.0, because the thresholds did not move after they were tuned
+  answer: 1
+  explanation: 28.8 - 8.1 = 20.7, and a gap that grows is marked ▲. The thresholds did not move, but the stressed scores did, so the match made on clean rows no longer holds.
+- prompt: At 40% blank cells the default Human review band (0.35 to 0.65) sends 236 of the 900 cases to a person. If one review takes 3 minutes (an assumption), how long is the queue?
+  options:
+  - About 4.8 hours, as on the clean rows
+  - About 3.9 hours
+  - About 708 hours
+  - About 11.8 hours
+  answer: 3
+  explanation: 236 x 3 = 708 minutes, and 708 / 60 is about 11.8 hours. On the clean rows the band sends only 96 cases, 288 minutes or 4.8 hours. A stress pushes scores into the band, so the review queue grows.
+- prompt: At 40% blank cells, Accuracy with a reviewer reads 91% and Accuracy with no review reads 79%. What does the 91% assume?
+  options:
+  - That the reviewer is always right on the cases in the band, a best case
+  - That the reviewer accepts every suggestion of the model without checking it
+  - That the reviewer agrees with the model on 8 of 10 of the cases in the band
+  - That the band holds no cases, so the machine decides every case on its own
+  answer: 0
+  explanation: The lab counts every case in the band as correct. A reviewer who accepts the model's suggestion (automation bias) would bring the number back toward 79%, so the 91% is a ceiling.
+- prompt: In the privacy panel, with Age bin size 10 and Postcode digits kept 3, the smallest group has 15 people and k = 5 is met. You then tick Job title and the smallest group becomes 1 person. What is the lesson?
+  options:
+  - The k-anonymity report becomes wrong as soon as you add one more field to it
+  - Job title is a sensitive value, and it was already counted in the first groups
+  - Each added quasi-identifier splits the groups into smaller ones, so k can fail again
+  - A smaller group is safer, because fewer people can recognise anyone in it
+  answer: 2
+  explanation: More columns means more combinations, and each combination holds fewer people. Here 27 people (3%) fall below k = 5 again. A group of 1 means the row can be singled out.
+- prompt: With Privacy budget ε (epsilon) at 0.05, the typical error of a released count is 1 / 0.05 = 20.0. The count of cases flagged in group C is 55. About how large is the error, relative to the count?
+  options:
+  - 4%, because the error is the same as it was with ε = 0.5
+  - 36%, so the noise makes the small-group count much less useful
+  - 20%, because the error is 20.0 and the lab reads it as a percentage
+  - 0%, because the lab rounds the released count to a whole number, which removes the noise
+  answer: 1
+  explanation: 20.0 / 55 is about 0.36. The smaller ε is, the more privacy and the more noise, and a small count suffers most. At ε = 0.5 the error is 2.0, which is 4% of 55.
+- prompt: On the penguins, 40% blank cells cut Gentoo's accuracy by 30.5 points on the first split and by 18.6 on the second, while the weakest group on clean rows changed from Adelie to Chinstrap. What does this tell you?
+  options:
+  - The result is a bug, because a fresh split of the same data must give exactly the same numbers
+  - The stress does not hurt Gentoo, because the size of its loss changed between the two splits
+  - Only the clean accuracy matters, because a stress like blank cells is artificial and rare
+  - Gentoo was hit hardest twice, but the size of a loss and the weakest group move with the split
+  answer: 3
+  explanation: A check on a second split is cheap and shows what is stable (Gentoo hit hardest) and what is noise (the weakest group, the size of the loss). A small group (Chinstrap has 34 test rows) makes its numbers rough, as the model card should say.

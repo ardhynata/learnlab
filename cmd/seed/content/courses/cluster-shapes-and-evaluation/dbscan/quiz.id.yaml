@@ -1,0 +1,80 @@
+- prompt: Apa yang dimaksud dengan border point?
+  options:
+  - Titik di tepi plot
+  - Titik dengan tetangga kurang dari MinPts yang ditandai noise
+  - Titik yang bukan core tetapi berada di dalam ε-neighborhood sebuah titik core
+  - Titik dengan tetangga terbanyak di dalam clusternya
+  answer: 2
+  explanation: Border point termasuk ke sebuah cluster karena dijangkau oleh titik core, tetapi neighborhood-nya sendiri terlalu kecil untuk memperluas cluster. Titik dengan neighborhood kecil yang tidak dijangkau titik core mana pun adalah noise.
+- prompt: Dengan MinPts = 4, sebuah titik punya tiga titik lain dalam jarak ε. Termasuk jenis apakah titik itu?
+  options:
+  - Core, karena neighborhood-nya menghitung dirinya sendiri sehingga berisi 4 titik
+  - Border, karena tetangganya kurang dari 4
+  - Noise, karena ia membutuhkan 4 titik lain
+  - Bergantung pada urutan kunjungan titik
+  answer: 0
+  explanation: ε-neighborhood mencakup titik itu sendiri, jadi tiga titik lain ditambah dirinya sendiri menjadi 4, yang memenuhi MinPts. Lupa menghitung titik itu sendiri adalah kekeliruan yang umum.
+- prompt: Pada contoh hitungan (ε = 1, MinPts = 3), mengapa 9,0 dan 9,2 adalah noise padahal keduanya berdekatan?
+  options:
+  - Keduanya terlalu jauh dari nol
+  - DBSCAN mengabaikan pasangan titik
+  - Nilainya berupa desimal
+  - Masing-masing hanya punya 2 titik di neighborhood-nya, di bawah MinPts, dan tidak ada titik core yang menjangkau keduanya
+  answer: 3
+  explanation: Dua titik yang saling berada dalam jarak ε tidak memenuhi MinPts = 3. Dengan MinPts = 2, keduanya akan menjadi core dan membentuk cluster sendiri.
+- prompt: Di lab, Ring dan outlier pada ε 1,35 dan MinPts 4 menghasilkan 2 cluster, 76 titik core, dan 4 titik noise. Titik manakah yang menjadi 4 noise itu?
+  options:
+  - Empat titik dari ring dalam
+  - Empat titik di tempat kedua ring paling berdekatan
+  - Empat border point di antara kedua ring
+  - Empat titik sudut yang terpencil, masing-masing hanya punya dirinya sendiri di dalam ε
+  answer: 3
+  explanation: Titik sudut berada jauh dari kedua ring, sehingga masing-masing punya 1 titik di neighborhood-nya. Setiap titik ring punya sedikitnya 4, jadi tidak ada border point sama sekali.
+- prompt: Pada Ring dan outlier, ε = 1,0 dengan MinPts 4 menghasilkan 1 cluster berisi 38 titik core dan 42 titik noise, sedangkan ε = 1,35 menemukan kedua ring. Apa penjelasannya?
+  options:
+  - ε = 1,0 terlalu besar, sehingga kedua ring menyatu
+  - Ring luar lebih tersebar, sehingga pada ε = 1,0 titik-titiknya punya kurang dari 4 titik di neighborhood-nya
+  - DBSCAN selalu hanya menemukan ring pertama yang ia jumpai
+  - MinPts diabaikan ketika ε di bawah 1,35
+  answer: 1
+  explanation: Kedua ring masing-masing punya 38 titik, tetapi yang luar tersebar di lingkaran yang lebih panjang, sehingga titik-titiknya lebih berjauhan. Radius yang cukup untuk ring dalam terlalu kecil untuk ring luar.
+- prompt: Pada Dua bulan sabit dengan ε 0,8, MinPts naik dari 4 ke 8 lalu ke 10. Hasil mana yang sesuai dengan lab?
+  options:
+  - 80 core, lalu 80 core, lalu 80 core
+  - 80 core, lalu 68 core dan 12 border, lalu seluruh 80 titik menjadi noise
+  - 80 core, lalu 12 core dan 68 border, lalu 2 cluster
+  - 2 cluster pada setiap MinPts, dengan noise naik dari 0 ke 12
+  answer: 1
+  explanation: Menaikkan MinPts membuat syaratnya lebih ketat. Sebagian titik dengan tetangga kurang dari 8 kehilangan status core tetapi masih menyentuh titik core, sehingga menjadi border. Pada 10, tidak ada neighborhood yang cukup besar dan semuanya menjadi noise.
+- prompt: Sebuah tabel memuat tinggi dalam meter (sekitar 1,6) dan berat dalam gram (sekitar 60.000). Mengapa keduanya perlu di-scaling sebelum menjalankan DBSCAN dengan satu ε?
+  options:
+  - ε adalah satu radius untuk semua feature, sehingga tanpa scaling gram yang menentukan tetangga dan tinggi nyaris tidak berpengaruh
+  - DBSCAN hanya menerima nilai antara 0 dan 1
+  - Scaling menghilangkan titik noise
+  - Scaling mengatur MinPts secara otomatis
+  answer: 0
+  explanation: Selisih 0,1 m sangat kecil dibandingkan selisih 100 g, sehingga jarak tanpa scaling hampir seluruhnya ditentukan berat. Scaling membuat kedua feature ikut membentuk neighborhood.
+- prompt: Pada Density tidak merata, ε = 1,0 menghasilkan 2 cluster pada 80 titik, tetapi 1 cluster dan 13 titik noise pada 30 titik. Apa yang ditunjukkan hal ini?
+  options:
+  - DBSCAN tidak dapat menemukan dua cluster bila titiknya kurang dari 80
+  - Titik noise selalu berasal dari kelompok yang renggang
+  - MinPts sebaiknya diturunkan setiap kali titik dikurangi
+  - Pengurangan data menurunkan kepadatan kelompok yang renggang, sehingga radius yang tadinya berhasil kini terlalu kecil untuknya
+  answer: 3
+  explanation: Dengan titik yang lebih sedikit, kelompok yang renggang menjadi lebih jarang, sehingga neighborhood-nya jatuh di bawah MinPts pada ε = 1,0. Ia membutuhkan ε yang lebih besar, dan rentang kerja bergeser naik serta menyempit.
+- prompt: Sebuah titik ditandai "Titik ditandai sebagai noise" di awal proses. Pernyataan mana yang benar?
+  options:
+  - Titik itu dihapus dari data
+  - Titik itu dapat menjadi border point jika cluster yang muncul kemudian menjangkaunya lewat sebuah titik core
+  - Titik itu menjadi core begitu MinPts diturunkan di tengah proses
+  - Titik itu tetap noise, karena label tidak pernah diubah
+  answer: 1
+  explanation: Noise hanyalah tebakan pertama. Di lab, dengan Dua bulan sabit pada ε 0,8 dan MinPts 6, Titik 5 ditandai noise pada langkah 41 dan ditambahkan sebagai border point pada langkah 65.
+- prompt: Pada data penguin, panjang flipper dan massa tubuh yang distandarkan dengan MinPts 4 menghasilkan 2 cluster pada ε 0,22 (satu berisi 110 Gentoo dan satunya lagi berisi 132 Adelie dan 58 Chinstrap) dan 1 cluster pada ε 0,25. Bagaimana pembacaan yang masuk akal?
+  options:
+  - DBSCAN menemukan ketiga spesies dan 0,25 hanya terlalu besar
+  - DBSCAN salah karena seharusnya selalu menemukan tiga cluster
+  - Gentoo membentuk keramaian tersendiri, tetapi Adelie dan Chinstrap saling tumpang tindih, sehingga kedua pengukuran ini mungkin tidak dapat memisahkan ketiganya
+  - Titik noise membuktikan bahwa label spesies keliru
+  answer: 2
+  explanation: Kolom spesies tidak dipakai, dan Adelie serta Chinstrap berbagi satu cluster pada ε 0,22 lalu menyatu dengan Gentoo pada 0,25. Ketika kelompok yang nyata bersentuhan, kepadatan saja mungkin tidak cukup untuk memisahkannya, dan rentang kerjanya dapat sangat sempit.

@@ -1,0 +1,80 @@
+- prompt: On Adelie or Chinstrap at Split 1 the 55 test rows hold 38 Adelie and 17 Chinstrap. The baseline answers "Adelie" every time. What accuracy and what recall does it score?
+  options:
+  - Accuracy 30.9% and recall 100.0%
+  - Accuracy 50.0% and recall 50.0%
+  - Accuracy 98.2% and recall 94.1%
+  - Accuracy 69.1% and recall 0.0%
+  answer: 3
+  explanation: It is right on the 38 Adelie, so accuracy is 38 / 55 = 69.1%. It never says Chinstrap, so it finds 0 of 17 and recall is 0.0%. The 30.9% is the share of Chinstrap rows (17 of 55), which the baseline gets wrong.
+- prompt: On Male or female, you choose Recall of the positive class as your metric, and the baseline scores 100.0% on the test rows. What does that tell you?
+  options:
+  - The data has no female penguins
+  - The baseline says "male" for every penguin, so it finds every male while calling 41 females male
+  - The baseline is a very good classifier
+  - The lab has a bug, because a baseline cannot use any measurement
+  answer: 1
+  explanation: Recall only asks how many of the 42 real males were found. Answering "male" every time finds all of them, but accuracy is 42 / 83 = 50.6%. Read recall next to the baseline and to precision.
+- prompt: On Male or female, Model B finds 39 of the 42 males in the test rows. What is its recall of the positive class?
+  options:
+  - 39 / 42 = 92.9%
+  - 39 / 83 = 47.0%
+  - 3 / 42 = 7.1%
+  - 39 / 45 = 86.7%
+  answer: 0
+  explanation: Recall is the share of the real positives that were found, here 39 of 42. The 3 missed males are the false negatives. Dividing by 83 would count all test rows, and 45 would count the rows the model called male, which is precision territory.
+- prompt: In Adelie or Chinstrap, you turn off Scale the features for k-NN. Accuracy on the test rows falls from 98.2% to 78.2% and recall from 94.1% to 41.2%. Why?
+  options:
+  - Without scaling, k-NN can no longer find neighbors
+  - The test rows change when scaling is turned off
+  - Scaling adds training rows, so the model learns more
+  - Raw body mass, in thousands of grams, dominates the distance, so the millimetre measurements hardly count
+  answer: 3
+  explanation: k-NN works by distance, and a column measured in thousands of grams outweighs columns measured in tens of millimetres. Scaling puts the four features on a common footing. The split does not change; only the distances do.
+- prompt: Model B is a tree. It scores 100.0% on the training rows and 85.5% on the 83 test rows, and the baseline scores 50.6%. What is the best reading?
+  options:
+  - Model B is excellent, because 100.0% is the highest possible score
+  - Model B does not beat the baseline, because 85.5% is below 100.0%
+  - Model B beats the baseline, but the 14.5-point gap suggests it memorized the training rows
+  - Model B is the same as model A, so step 4 cannot finish
+  answer: 2
+  explanation: 85.5% against 50.6% is a real gain, so it beats the baseline. The large gap between training and test is the sign of overfitting. The test score is the one to trust, not the training score.
+- prompt: On Adelie or Chinstrap at Split 1, model B scores 100.0% and model A scores 98.2% on 55 test rows. How should you treat that lead?
+  options:
+  - As one penguin out of 55, which is 1.8 points, so check it on a new split before you call a winner
+  - As proof that B is better, because 100.0% beats 98.2%
+  - As a tie, because the lab only counts differences above 10 points
+  - As a bug, since two different models cannot score differently
+  answer: 0
+  explanation: One test row is worth 1 / 55 = 1.8 points. A new split can reverse so small a lead, and on later splits it does for these two models. The lab's tie band is one point, not ten.
+- prompt: On Adelie or Chinstrap, model B uses only Body mass (g) and scores 69.1% on the test rows. The baseline scores 69.1%. What does the Quick Quiz answer say?
+  options:
+  - No, it scores about the same, within one point
+  - Yes, it beats the baseline
+  - No, it scores lower than the baseline
+  - Nothing, because the Quick Quiz only works for model A
+  answer: 0
+  explanation: The scores are equal, so the difference is under one point. A tree that sees only body mass never says Chinstrap on these rows, which is the baseline's own behavior. Its recall is 0.0%.
+- prompt: On Adelie or Chinstrap at Split 1, model B makes no mistakes on the test rows. What does step 5 show?
+  options:
+  - An empty table, so you cannot finish the step
+  - Five close calls, which are correctly classified rows that sit closest to the other class
+  - The mistakes of model A instead
+  - The training rows the model got wrong
+  answer: 1
+  explanation: When the better model makes fewer than three mistakes, the lab adds the correct test rows nearest to the other class, marked "close call", so you can still study three rows. A New split may give real mistakes.
+- prompt: Row 344 is a female that k-NN calls male with 100% confidence. Its bill is 50.2 mm, above the male average of 45.9 mm, and its mass is 3,775 g, below the female average of 3,862 g. Which note and reason are best?
+  options:
+  - Note that the model is broken, with the reason Model too simple
+  - Note that 100% confidence means the label must be wrong, with the reason Label may be wrong
+  - No note and no reason, because the mistake is only noise
+  - Note that the bill is male-like but the mass is female-like, with the reason Classes overlap
+  answer: 3
+  explanation: A good note quotes the numbers and names a hypothesis the numbers support. Mixed signals fit overlap. High confidence only shows how the neighbors voted; it does not show that the label is wrong.
+- prompt: You rate Fair comparison as Yes. Which description earns it?
+  options:
+  - I compared the models on different rows, or only on training scores
+  - I used the same test rows but did not look at the train and test gap
+  - Same split, test scores, and I read the train and test gap before choosing; I know a new split could change the order
+  - I picked the model that scored highest on the training rows
+  answer: 2
+  explanation: A fair comparison keeps the rows and the metric the same, reads test scores and the gap, and admits that one split is one opinion. The other three are the Not yet and Partly levels, or a common mistake.

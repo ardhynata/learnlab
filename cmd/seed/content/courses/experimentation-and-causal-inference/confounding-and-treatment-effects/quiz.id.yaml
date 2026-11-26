@@ -1,0 +1,72 @@
+- prompt: Di rumah sakit pada pelajaran, 350 dari 500 pasien yang diobati pulih dan 370 dari 500 pasien yang tidak diobati pulih. Mengapa kamu tidak dapat menyimpulkan bahwa obat menurunkan peluang pulih sebesar 0,04?
+  options:
+  - Karena 500 pasien terlalu sedikit untuk membandingkan dua kelompok
+  - Karena kelompok yang diobati sebagian besar sakit parah, sehingga kedua kelompok sudah berbeda sebelum obat apa pun diberikan
+  - Karena pemulihan adalah hasil ya atau tidak, dan hasil seperti itu tidak dapat dibandingkan
+  - Karena pasien yang tidak diobati juga menerima obat yang lain
+  answer: 1
+  explanation: Dokter memberikan obat terutama kepada pasien parah, yang lebih jarang pulih apa pun yang mereka terima. Selisih mentah itu mencampur efek obat dengan perbedaan antara kedua kelompok. Ukuran kelompok dan jenis hasilnya bukan masalahnya.
+- prompt: Mahasiswa memilih sendiri apakah memakai aplikasi les, dan kamu bertanya apakah aplikasi itu menaikkan nilai ujian. Variabel mana yang paling mungkin menjadi confounder?
+  options:
+  - Nilai ujian di akhir semester
+  - Skor mahasiswa pada kuis dalam aplikasi setelah satu bulan memakainya
+  - Motivasi yang diukur sebelum semester, yang memengaruhi siapa yang mendaftar dan juga nilainya
+  - Skema warna aplikasi
+  answer: 2
+  explanation: Confounder diukur sebelum perlakuan dan mendorong siapa yang mendapatkannya sekaligus hasilnya, dan motivasi melakukan keduanya. Nilai akhir adalah hasilnya, skor kuis dalam aplikasi diubah oleh perlakuan, dan skema warna tidak memengaruhi keduanya.
+- prompt: Sebuah klinik memiliki 30% pasien ringan dan 70% pasien parah. Obat menambah 0,10 untuk pasien ringan dan 0,15 untuk pasien parah. Berapa average treatment effect-nya?
+  options:
+  - 0,135, karena 0,3 × 0,10 + 0,7 × 0,15 = 0,03 + 0,105
+  - 0,125, rata-rata dari 0,10 dan 0,15
+  - 0,15, efek untuk kelompok yang lebih besar
+  - 0,25, karena 0,10 + 0,15 = 0,25
+  answer: 0
+  explanation: ATE memberi bobot setiap efek strata sesuai porsi pasien di dalamnya. Dengan 30% dan 70%, bobotnya 0,3 dan 0,7, sehingga hasilnya 0,135. Rata-rata biasa 0,125 hanya benar bila kedua strata sama besar.
+- prompt: Pada rumah sakit di pelajaran, misalkan setiap pasien parah diberi obat. Apa yang akan salah ketika kamu mencoba mengoreksi tingkat keparahan?
+  options:
+  - Tingkat keparahan tidak lagi menjadi confounder, sehingga koreksi tidak diperlukan
+  - Efek untuk pasien ringan menjadi mustahil dihitung
+  - Estimasi yang dikoreksi akan menjadi lebih presisi
+  - Strata parah tidak punya pasien yang tidak diobati sebagai pembanding, sehingga efeknya tidak dapat dihitung dari data
+  answer: 3
+  explanation: Overlap berarti setiap strata berisi pasien yang diobati maupun yang tidak. Tanpa pasien parah yang tidak diobati, tidak ada yang dapat dibandingkan, dan model harus melakukan ekstrapolasi, bukan memakai data.
+- prompt: Pada inverse-propensity weighting, probabilitas perlakuan untuk pasien parah adalah 0,8. Berapa bobot seorang pasien parah yang diobati?
+  options:
+  - 0,8, probabilitasnya sendiri
+  - 1,25, karena 1 / 0,8 = 1,25
+  - 5, karena 1 / 0,2 = 5
+  - 0,2, peluang tidak diobati
+  answer: 1
+  explanation: Bobotnya adalah 1 dibagi probabilitas perlakuan yang benar-benar diterima pasien. Pasien parah yang diobati itu umum, sehingga bobotnya hanya 1 / 0,8 = 1,25. Bobot 5 dimiliki kombinasi yang jarang, seperti pasien ringan yang diobati.
+- prompt: Pada uji obat yang tidak berpengaruh dalam pelajaran, hanya pasien yang ditindaklanjuti yang dianalisis (setiap pasien yang diobati, dan pasien yang tidak diobati hanya bila masih sakit). Mengapa ini menunjukkan selisih 0,50?
+  options:
+  - Karena obat memang berhasil pada pasien yang ditindaklanjuti
+  - Karena 400 pasien terlalu sedikit untuk perbandingan yang adil
+  - Karena siapa yang ditindaklanjuti bergantung pada perlakuan dan hasil sekaligus, sehingga membatasi data pada mereka menciptakan hubungan yang tidak disebabkan oleh obat
+  - Karena kelompok yang tidak diobati lebih sehat sebelum uji
+  answer: 2
+  explanation: Tindak lanjut adalah collider, disebabkan oleh perlakuan dan hasil sekaligus. Menyimpan hanya pasien yang ditindaklanjuti menciptakan hubungan palsu di antara keduanya, dengan 100 dari 200 pasien yang diobati pulih dan 0 dari 100 yang tidak diobati. Efek yang sebenarnya 0.
+- prompt: Sebuah obat menurunkan tekanan darah, dan tekanan darah yang lebih rendah menaikkan pemulihan. Kamu mengoreksi tekanan darah yang diukur setelah perlakuan. Apa yang terjadi pada efek obat yang diestimasi?
+  options:
+  - Efeknya mengecil mendekati nol, karena koreksi menghilangkan bagian efek yang bekerja lewat tekanan darah
+  - Efeknya menjadi tepat, karena koreksi yang lebih banyak selalu menghilangkan lebih banyak bias
+  - Efeknya membesar, karena tekanan darah adalah confounder
+  - Efeknya tetap sama, karena tekanan darah hanyalah sebuah hasil
+  answer: 0
+  explanation: Tekanan darah di sini adalah variabel pasca-perlakuan, sesuatu yang diubah oleh obat. Menahannya tetap menutup jalur yang justru dilalui obat, sehingga estimasi melewatkan bagian efek tersebut.
+- prompt: Mengapa eksperimen acak tidak membutuhkan koreksi untuk tingkat keparahan?
+  options:
+  - Karena tingkat keparahan tidak penting dalam sebuah uji
+  - Karena uji selalu memiliki pasien lebih banyak daripada data rumah sakit
+  - Karena pasien dalam sebuah uji tidak boleh sakit parah
+  - Karena lemparan koin menentukan siapa yang diobati, sehingga tingkat keparahan tidak berkaitan dengan perlakuan dan kedua kelompok setara secara rata-rata
+  answer: 3
+  explanation: Pengacakan memutus hubungan antara confounder dan perlakuan. Pada uji 800 pasien dalam pelajaran, setiap kelompok berisi sekitar 200 pasien ringan dan 200 pasien parah, sehingga selisih sederhana antara 0,775 dan 0,65 sudah memperkirakan efeknya.
+- prompt: Sebuah model memprediksi pemulihan dengan baik dari catatan pasien, dan seorang rekan membaca koefisiennya untuk "mendapat obat" sebagai efek dari meresepkan obat. Apa masalah utamanya?
+  options:
+  - Model prediksi tidak dapat memakai feature ya atau tidak
+  - Koefisien itu menggambarkan cara model memakai data yang dibentuk oleh pilihan dokter tentang siapa yang diobati, sehingga tidak harus sama dengan efek mengubah perlakuan
+  - Koefisien selalu tepat nol untuk model yang akurat
+  - Model yang memprediksi dengan baik otomatis merupakan model kausal
+  answer: 1
+  explanation: Model prediksi dilatih pada data sebagaimana data itu dihasilkan, termasuk pilihan para dokter. Koefisien dan importance-nya menggambarkan hal itu, bukan apa yang terjadi bila perlakuannya diubah.

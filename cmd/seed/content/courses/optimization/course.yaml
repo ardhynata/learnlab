@@ -1,0 +1,32 @@
+slug: optimization
+title: "Optimization"
+summary: "Gradients, gradient descent, learning rates, and stochastic and mini-batch updates."
+topic: Machine learning
+level: intermediate
+path: intermediate
+position: 2
+translations:
+  id:
+    title: "Optimisasi"
+    summary: "Gradient, gradient descent, learning rate, serta update stochastic dan mini-batch."
+modules:
+- slug: core-ideas
+  title: Core ideas
+  summary: "The concepts, in the order the lab uses them."
+  lessons:
+  - gradients-and-the-loss-surface
+  translations:
+    id:
+      title: "Ide inti"
+      summary: "Konsep-konsepnya, sesuai urutan yang dipakai lab."
+- slug: lab
+  title: Lab
+  summary: "Run the idea yourself, then check what you learned."
+  lessons:
+  - gradient-descent
+  - learning-rate-and-trouble
+  - stochastic-and-mini-batch
+  translations:
+    id:
+      title: "Lab"
+      summary: "Jalankan idenya sendiri, lalu periksa apa yang sudah kamu pelajari."

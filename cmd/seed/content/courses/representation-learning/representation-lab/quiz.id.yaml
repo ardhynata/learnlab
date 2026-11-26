@@ -1,0 +1,80 @@
+- prompt: Di Lab representasi, arm mana dari ketiganya yang memakai 400 glyph tanpa label?
+  options:
+  - Ketiganya, karena semuanya dinilai pada glyph test yang sama
+  - Hanya fitur pretrained yang dibekukan, lewat autoencoder yang mempelajari kodenya
+  - Hanya network dari nol, karena ia punya angka paling banyak untuk ditentukan
+  - "Tidak satu pun: glyph tanpa label hanya digambar di peta"
+  answer: 1
+  explanation: Autoencoder mempelajari kodenya dari pool tanpa label, dan arm beku memakai kode itu. Piksel mentah dan network dari nol hanya melihat sedikit glyph berlabel. Ketiganya dinilai pada 240 glyph test yang sama, yang tidak pernah dipakai untuk belajar.
+- prompt: Lab memakai kode 8 angka dan 4 bentuk, dengan satu model linear per bentuk (masing-masing 8 bobot dan 1 bias). Berapa angka yang harus ditentukan label pada arm beku?
+  options:
+  - 9
+  - 260
+  - 529
+  - 36
+  answer: 3
+  explanation: Setiap dari 4 model punya 8 + 1 = 9 angka, sehingga 4 × 9 = 36. Arm mentah menentukan 4 × (64 + 1) = 260, dan satu network dari nol punya 529 angka (4 × 529 = 2.116 untuk keempatnya). Angka yang harus ditentukan lebih sedikit lebih mudah dilakukan dari 20 baris berlabel.
+- prompt: Dengan 5 glyph berlabel per bentuk, tabel menunjukkan beku 94,2%, mentah 85,1%, dan dari nol 79,2%. Pernyataan mana yang didukung tabel itu?
+  options:
+  - Fitur beku mengalahkan piksel mentah sebesar 9,1 poin dan network dari nol sebesar 15,0 poin
+  - Piksel mentah mengalahkan network dari nol sebesar 15,0 poin
+  - Ketiga arm hampir sama, karena semuanya di atas 75%
+  - Fitur beku mengalahkan piksel mentah sebesar 0,9 poin
+  answer: 0
+  explanation: 94,2 - 85,1 = 9,1 dan 94,2 - 79,2 = 15,0, dan kedua selisih itu lebih besar daripada batas 3 poin milik lab untuk "hampir sama". Piksel mentah mengalahkan network sebesar 85,1 - 79,2 = 5,9 poin, bukan 15,0.
+- prompt: Pada 100 glyph berlabel per bentuk, tabel menunjukkan beku 94,6%, mentah 95,8%, dan dari nol 93,5%. Kesimpulan apa yang adil?
+  options:
+  - Piksel mentah jelas menang, karena 95,8% adalah angka tertinggi
+  - Pretraining membuat arm beku lebih buruk, karena skornya di bawah skor mentah
+  - "Hampir sama, karena setiap selisih di bawah 3 poin"
+  - Network dari nol yang terbaik, karena ia mempelajari fiturnya sendiri
+  answer: 2
+  explanation: Selisih terbesar adalah 95,8 - 93,5 = 2,3 poin, di bawah batas 3 poin yang dipakai lab. Dengan label yang melimpah, classifier mempelajari bentuknya sendiri, sehingga keunggulan beku yang terlihat pada 5 per bentuk sudah memudar.
+- prompt: Bottleneck 3 memberi akurasi beku 72,2% pada 5 glyph berlabel per bentuk, sementara piksel mentah memberi 85,1%. Bagaimana pembacaan yang terbaik?
+  options:
+  - Set berlabel terlalu kecil untuk menyimpulkan apa pun tentang kode pretrained
+  - "Kode 3 terlalu sempit untuk menyimpan apa yang memisahkan bentuk: negative transfer"
+  - Piksel mentah selalu lebih baik daripada kode pretrained mana pun, berapa pun ukurannya
+  - Autoencoder tidak pernah dilatih, karena kode sekecil itu tidak dapat dipelajari
+  answer: 1
+  explanation: Skor mentah tidak berubah (85,1%), hanya kodenya yang berubah. Pada 8 angka autoencoder yang sama memberi 94,2%, sehingga pretraining dapat membantu; kode 3 terlalu kecil untuk tugas ini. Error rekonstruksi (0,131) memang turun di bawah 0,253 milik autoencoder yang belum dilatih, jadi pelatihan terjadi.
+- prompt: Dengan 5 epoch pretraining, error test adalah 0,139 dan akurasi beku 76,3%. Dengan 20 epoch keduanya menjadi 0,128 dan 94,2%. Apa yang ditunjukkan ini?
+  options:
+  - Error yang lebih rendah selalu membawa kenaikan akurasi yang sebanding, sehingga error adalah panduan terbaik
+  - Error dan akurasi tidak berhubungan, sehingga yang satu tidak mengatakan apa pun tentang yang lain
+  - Pretraining hanya berarti pada beberapa epoch terakhir, setelah error berhenti turun
+  - Penurunan kecil pada error (0,011) disertai kenaikan besar pada akurasi (17,9 poin)
+  answer: 3
+  explanation: Error turun sebesar 0,139 - 0,128 = 0,011 sementara akurasi naik sebesar 94,2 - 76,3 = 17,9 poin. Keduanya berhubungan tetapi tidak sebanding, karena itu nilai sebuah kode dari skor downstream-nya dan juga dari error rekonstruksinya.
+- prompt: "Dengan noise 35%, lab menunjukkan pada 100 glyph berlabel per bentuk: beku 55,0%, mentah 62,5%, dan dari nol 54,6%. Apa yang disarankan oleh ini?"
+  options:
+  - Pretraining selalu mengalahkan baseline ketika datanya ber-noise, karena kodenya menghilangkan noise
+  - Noise tidak berpengaruh pada classifier yang memakai piksel, sehingga semua arm berskor sama
+  - Noise dapat menghilangkan apa yang memisahkan kelas-kelas, dan saat itu baseline mentah masih dapat unggul
+  - Fitur beku lebih baik daripada piksel mentah pada ukuran berapa pun, karena memakai angka yang lebih sedikit
+  answer: 2
+  explanation: Piksel mentah unggul atas beku sebesar 62,5 - 55,0 = 7,5 poin. Kode itu dipelajari dari glyph ber-noise yang sama, sehingga ia tidak dapat memulihkan apa yang dihilangkan noise. Pada noise 0% ketiga arm mendapat 100,0%, sehingga di sana pun pretraining tidak menambah apa-apa.
+- prompt: Pada pembagian penguin pertama, kode 2 angka memberi beku 82,5% pada 5 per spesies, mentah 98,8%. Dalam empat pembagian, keunggulan mentah adalah 16,3, 11,4, 8,0, dan 7,6 poin. Berapa rata-rata keunggulannya?
+  options:
+  - 10,8 poin
+  - 12,0 poin
+  - 7,6 poin
+  - 43,3 poin
+  answer: 0
+  explanation: (16,3 + 11,4 + 8,0 + 7,6) / 4 = 43,3 / 4 = 10,8. Jumlah 43,3 bukan rata-rata. Piksel mentah menang di keempat pembagian, sehingga kelemahan kode 2 angka bukan kebetulan dari satu pembagian.
+- prompt: Pada penguin dengan kode 3 angka, beku mendapat 98,2% dan mentah 98,8% pada 5 per spesies. Ada 170 penguin test, sehingga satu penguin sekitar 0,6 poin. Apa yang sebaiknya kamu tulis?
+  options:
+  - Mentah menang, karena skornya lebih tinggi, walaupun hanya 0,6 poin
+  - "Hampir sama: selisihnya sekitar satu penguin test, di bawah batas 3 poin milik lab"
+  - Beku menang, karena memakai lebih sedikit angka untuk ditentukan sehingga lebih sederhana
+  - Tidak ada yang dapat dikatakan, karena penguin adalah data nyata dan data nyata terlalu ber-noise
+  answer: 1
+  explanation: 1 / 170 adalah sekitar 0,6 poin, sehingga seluruh selisihnya kira-kira satu penguin. Dalam empat pembagian selisihnya tetap dalam 0,6 poin. Melaporkan pemenang di sini berarti membaca noise sebagai hasil.
+- prompt: Dengan 3 angka, peta menyebut 86% glyph test paling dekat dengan pusat kelasnya sendiri, tetapi classifier beku mendapat 72,2% pada 5 glyph berlabel per bentuk. Mengapa angkanya berbeda?
+  options:
+  - Petanya salah, karena autoencoder tidak pernah melihat label saat pretraining
+  - Classifier-nya rusak, karena skor 72,2% berada di bawah 86% milik peta
+  - Pusat pada peta memakai semua 240 label test, sedangkan classifier hanya punya 20
+  - Peta menampilkan 8 angka dan classifier menampilkan 3, sehingga tidak dapat dibandingkan
+  answer: 2
+  explanation: Angka 86% mengukur seberapa terpisah kelas-kelasnya, dengan memakai setiap label test untuk menaruh pusatnya. Classifier harus menemukan struktur itu dari 20 glyph berlabel, yang lebih sulit. Keduanya mengukur hal yang berbeda, karena itu skor pada glyph test-lah yang dihitung.

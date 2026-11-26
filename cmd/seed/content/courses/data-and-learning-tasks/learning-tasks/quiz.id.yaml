@@ -1,0 +1,72 @@
+- prompt: Kamu ingin model yang memprediksi massa tubuh penguin dalam gram dari panjang siripnya. Task apakah ini?
+  options:
+  - Clustering
+  - Classification
+  - Regression
+  - Unsupervised learning
+  answer: 2
+  explanation: Targetnya, massa tubuh, adalah angka dari rentang yang kontinu, sehingga ini regression. Clustering dan unsupervised learning sama sekali tidak punya kolom target.
+- prompt: Sebuah model harus menentukan salah satu dari tiga spesies untuk seekor penguin berdasarkan ukuran tubuhnya. Task apakah ini?
+  options:
+  - Classification
+  - Regression
+  - Clustering
+  - Bukan ketiganya, karena spesies tidak punya angka
+  answer: 0
+  explanation: Targetnya adalah nama dari daftar yang tetap, sehingga ini classification. Target tidak harus berupa angka, dan kolom spesies adalah label yang dipelajari model untuk diprediksi.
+- prompt: Sebuah tabel berisi ukuran 300 penguin tanpa kolom spesies. Kamu bertanya apakah penguin-penguin itu membentuk kelompok alami. Task apakah ini?
+  options:
+  - Regression, karena ukurannya berupa angka
+  - Classification, karena kelompok itu adalah kelas
+  - Supervised learning, karena kamu mengajukan pertanyaan
+  - Clustering
+  answer: 3
+  explanation: Tanpa kolom target untuk diprediksi, pertanyaannya adalah tentang kelompok di dalam feature, yaitu clustering. Kelompok baru menjadi kelas setelah seseorang memberinya nama.
+- prompt: Dengan massa = -5781 + 49,7 × sirip (gram dan milimeter), berapa massa yang diprediksi garis untuk sirip sepanjang 200 mm?
+  options:
+  - 9.940 g
+  - 4.159 g
+  - 5.781 g
+  - 3.910,5 g
+  answer: 1
+  explanation: 49,7 × 200 = 9.940, dan 9.940 - 5.781 = 4.159 g. Angka 9.940 baru langkah pertama, sedangkan 3.910,5 g adalah prediksi untuk sirip 195 mm.
+- prompt: Untuk penguin 2, garis memprediksi 3.910,5 g sedangkan timbangan menunjukkan 3.250 g. Bagaimana pembacaan yang benar?
+  options:
+  - Model benar dengan selisih sampai 50 g
+  - Model terlalu rendah 660,5 g
+  - Model terlalu tinggi 660,5 g
+  - Model terlalu tinggi 3.910,5 g
+  answer: 2
+  explanation: Prediksi dikurangi nilai sebenarnya adalah 3.910,5 - 3.250 = 660,5, sehingga model melampaui nilai sebenarnya sebesar 660,5 g. Galat regression diukur dalam satuan target.
+- prompt: Dari 342 penguin, 219 bukan Gentoo. Aturan yang selalu menjawab "bukan Gentoo" benar untuk 219 di antaranya. Mengapa pelajaran ini menyebut aturan tersebut?
+  options:
+  - Itu adalah baseline, yang harus dikalahkan oleh classifier yang sungguhan
+  - Itu adalah aturan terbaik yang ada untuk penguin-penguin ini
+  - Itu menunjukkan bahwa classification tidak dapat bekerja pada tabel ini
+  - Itu adalah metode clustering
+  answer: 0
+  explanation: Selalu memberi jawaban yang paling sering muncul menghasilkan 219 dari 342, yaitu 64,0%. Aturan yang benar untuk 334 dari 342 (97,7%) jelas mengalahkan baseline ini; sebuah skor baru bermakna bila dibandingkan dengannya.
+- prompt: Seorang rekan menyimpan tiga spesies sebagai 1, 2, dan 3 lalu berkata, "Targetnya angka, karena itu ini regression." Apa yang keliru dari pernyataan itu?
+  options:
+  - Tidak ada, target berupa angka selalu berarti regression
+  - Spesies hanya dapat disimpan sebagai teks
+  - Regression hanya dapat memprediksi massa
+  - Kodenya adalah nama yang menyamar, sehingga ini tetap classification
+  answer: 3
+  explanation: Yang menentukan task adalah apakah target berupa besaran atau nama, bukan cara penulisannya. Spesies 2 bukan "dua kali" spesies 1, dan rata-rata spesies 2,4 tidak berarti apa-apa.
+- prompt: Setelah clustering, penguin berada di "kelompok 0" dan "kelompok 1". Apa yang diperlukan untuk mengatakan arti kelompok-kelompok ini?
+  options:
+  - Tidak ada, karena algoritma memberi nama setiap kelompok
+  - Seseorang yang melihat anggotanya lalu menafsirkannya
+  - Menjalankan ulang algoritma dengan kolom label dibuang
+  - Menambah feature sampai kelompoknya punya nama
+  answer: 1
+  explanation: Clustering mengembalikan nomor kelompok, bukan nama. Hanya seseorang, atau label sungguhan seperti kolom spesies, yang dapat mengatakan apa sebuah kelompok itu.
+- prompt: Manakah dari pertanyaan berikut yang sama sekali tidak membutuhkan kolom label?
+  options:
+  - Berapa menit keterlambatan bus ini?
+  - Apakah email ini spam?
+  - Pelanggan mana yang membeli dengan pola yang mirip?
+  - Penguin ini termasuk spesies yang mana dari tiga spesies?
+  answer: 2
+  explanation: Menemukan pelanggan yang berperilaku serupa adalah clustering, yang hanya memakai feature. Ketiga pertanyaan lainnya masing-masing membutuhkan kolom target, berupa jumlah menit untuk yang pertama dan kelas untuk yang kedua dan keempat.

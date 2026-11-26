@@ -1,0 +1,80 @@
+- prompt: A word-level vocabulary has no id for the word "unhappiness". What does a subword tokenizer do with such a word?
+  options:
+  - It drops the word, because unknown words carry no meaning
+  - It splits the word into smaller known pieces, such as un, happi and ness
+  - It gives the word a random vector until training is over
+  - It spells the word out and stops at the first unknown letter
+  answer: 1
+  explanation: Subword tokenizers keep common words whole and break rare or unseen words into pieces that other words reuse, so almost nothing is left without an id. The pieces shown are one possible split.
+- prompt: In the corpus of low (5 times), lower (2), newer (6) and wider (3), why does byte-pair encoding make e + r its first merge?
+  options:
+  - Because e and r are the first letters to appear in the alphabet
+  - Because er is the shortest token it can build
+  - Because every word in the corpus ends in r
+  - Because that pair occurs most often, 2 + 6 + 3 = 11 times
+  answer: 3
+  explanation: Byte-pair encoding merges the most frequent neighboring pair. e + r occurs 11 times, ahead of w + e with 8. The word low does not end in r, and the alphabet plays no part.
+- prompt: After merge 2 the corpus holds 51 tokens. Merge 3 joins l + o, which occurs 7 times. How many tokens are there afterwards?
+  options:
+  - '44'
+  - '51'
+  - '58'
+  - '7'
+  answer: 0
+  explanation: Each of the 7 occurrences of l o becomes one token, so the corpus loses 7 tokens, and 51 - 7 = 44.
+- prompt: Self-attention with no position information gets "the cat chased the dog" and "the dog chased the cat". What does it do with them?
+  options:
+  - It reads the first sentence from the left and the second from the right
+  - It gives the second sentence a higher score because the dog comes first
+  - Each word gets the same output vector in both sentences, since it sees the same set of vectors
+  - It refuses to process sentences that share all their words
+  answer: 2
+  explanation: A token's score with another depends only on their vectors, never on where they stand, so the outputs only change places when the tokens do. That is why a position vector is added, and it is the same loss as in a bag of words.
+- prompt: A token has the embedding (2, 1), and the position vector for position 2 is (0.91, -0.42). What does the model see at that position?
+  options:
+  - (2.91, 1.42)
+  - (2.91, 0.58)
+  - (1.09, 1.42)
+  - (2, 1)
+  answer: 1
+  explanation: The position vector is added to the embedding, so 2 + 0.91 = 2.91 and 1 + (-0.42) = 0.58. The last option is what the model would see with no position information.
+- prompt: For the token "sat", the scores with the three keys are 1, 4 and 3 before scaling. Which token receives the largest attention weight, and why?
+  options:
+  - the, because it comes first in the sentence
+  - sat, because a token always attends most to itself
+  - the, because its score is the smallest and softmax favors small scores
+  - cat, because its key has the largest dot product with the query of "sat"
+  answer: 3
+  explanation: Softmax gives the largest share to the largest score, and 4 belongs to cat. Position in the sentence plays no part in the score, and a token does not always attend most to itself.
+- prompt: The weights of "sat" are 0.07 on "the", 0.62 on "cat" and 0.31 on "sat", and the values are (1, 0), (0, 2) and (2, 1). What is the first number of the output?
+  options:
+  - '0.69'
+  - '1.55'
+  - '1.00'
+  - '0.62'
+  answer: 0
+  explanation: The first number is 0.07 × 1 + 0.62 × 0 + 0.31 × 2 = 0.07 + 0.62 = 0.69. The second number of the output, 1.55, is 0.62 × 2 + 0.31 × 1.
+- prompt: Why are the dot-product scores divided by the square root of d before the softmax?
+  options:
+  - To make the weights add up to 1
+  - To remove the position information from the scores
+  - To stop the scores from growing with d, which would push softmax toward one token and tiny gradients
+  - To turn the query into a unit vector before it is compared
+  answer: 2
+  explanation: The softmax already makes the weights add to 1. For long vectors a plain dot product gets large, and softmax of large scores is nearly one-hot. Dividing by the square root of d keeps the typical score near 1.
+- prompt: Inside a transformer block, what is the difference between the attention part and the feed-forward part?
+  options:
+  - Attention uses labels and the feed-forward part does not
+  - Attention mixes information across tokens, and the feed-forward part transforms each token's vector on its own
+  - Attention only runs in the first block and the feed-forward part runs in all the others
+  - Attention transforms each token on its own, and the feed-forward part mixes the tokens
+  answer: 1
+  explanation: Attention is the only part where tokens exchange information. The feed-forward network is a small network applied to each token's vector separately, with the same weights for every token.
+- prompt: What does the residual connection in a transformer block do?
+  options:
+  - It rescales every vector to mean 0 and standard deviation 1
+  - It runs several attention steps side by side
+  - It removes the tokens that received the lowest weights
+  - It adds the input of a part back to its output, out = x + f(x), as a shortcut around the part
+  answer: 3
+  explanation: The shortcut lets information and gradients bypass the part, which helps deep stacks train. Rescaling is normalization, and running several attention steps side by side is multi-head attention.

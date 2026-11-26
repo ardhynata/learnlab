@@ -1,0 +1,72 @@
+- prompt: You want a model that predicts a penguin's body mass in grams from its flipper length. Which task is this?
+  options:
+  - Clustering
+  - Classification
+  - Regression
+  - Unsupervised learning
+  answer: 2
+  explanation: The target, body mass, is a number from a continuous range, so this is regression. Clustering and unsupervised learning have no target column at all.
+- prompt: A model must say which of three species a penguin belongs to, using its measurements. Which task is this?
+  options:
+  - Classification
+  - Regression
+  - Clustering
+  - None of the three tasks, because the species has no number
+  answer: 0
+  explanation: The target is a name from a fixed list, so this is classification. A target does not need to be a number, and the species column is a label that the model learns to predict.
+- prompt: A table has measurements for 300 penguins and no species column. You ask whether the penguins fall into natural groups. Which task is this?
+  options:
+  - Regression, because the measurements are numbers
+  - Classification, because the groups are classes
+  - Supervised learning, because you asked a question
+  - Clustering
+  answer: 3
+  explanation: With no target column to predict, the question is about groups in the features, which is clustering. The groups are not classes until someone supplies names for them.
+- prompt: Using mass = -5781 + 49.7 × flipper (grams and millimeters), what mass does the line predict for a flipper 200 mm long?
+  options:
+  - 9940 g
+  - 4159 g
+  - 5781 g
+  - 3910.5 g
+  answer: 1
+  explanation: 49.7 × 200 = 9940, and 9940 - 5781 = 4159 g. The 9940 is only the first step, and 3910.5 g is the prediction for a 195 mm flipper.
+- prompt: For penguin 2 the line predicted 3910.5 g and the scale said 3250 g. What is the right reading?
+  options:
+  - The model was right to within 50 g
+  - The model was too low by 660.5 g
+  - The model was too high by 660.5 g
+  - The model was too high by 3910.5 g
+  answer: 2
+  explanation: The prediction minus the true value is 3910.5 - 3250 = 660.5, so the model overshot by 660.5 g. A regression error is measured in the unit of the target.
+- prompt: Of 342 penguins, 219 are not Gentoo. A rule that always answers "not Gentoo" is right for 219 of them. Why does the lesson mention this rule?
+  options:
+  - It is the baseline, which a real classifier has to beat
+  - It is the best rule that exists for these penguins
+  - It shows that classification cannot work on this table
+  - It is a clustering method
+  answer: 0
+  explanation: Always giving the most common answer scores 219 of 342, which is 64.0%. A rule that is right for 334 of 342 (97.7%) clearly beats this baseline; a score only means something against it.
+- prompt: A colleague stores the three species as 1, 2 and 3 and says, "The target is a number, so this is regression." What is wrong with that?
+  options:
+  - Nothing, a number target always means regression
+  - Species can only be stored as text
+  - Regression can only predict masses
+  - The codes are names in disguise, so this is still classification
+  answer: 3
+  explanation: Whether a target is a quantity or a name decides the task, not how it is written down. Species 2 is not "twice" species 1, and an average species of 2.4 means nothing.
+- prompt: After clustering, the penguins sit in "group 0" and "group 1". What does it take to say what these groups mean?
+  options:
+  - Nothing, because the algorithm names each group
+  - A person who looks at the members and interprets them
+  - Rerunning the algorithm with a label column removed
+  - Adding more features until the groups are named
+  answer: 1
+  explanation: Clustering returns group numbers, not names. Only a person, or an actual label such as a species column, can say what a group is.
+- prompt: Which of these questions needs no label column at all?
+  options:
+  - How many minutes late will this bus be?
+  - Is this email spam?
+  - Which customers buy in similar ways?
+  - Which of three species is this penguin?
+  answer: 2
+  explanation: Finding customers who behave alike is clustering, which uses only the features. The other three each need a target column, a number of minutes for the first and a class for the second and fourth.

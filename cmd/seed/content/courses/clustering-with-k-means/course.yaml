@@ -1,0 +1,32 @@
+slug: clustering-with-k-means
+title: "Clustering with k-means"
+summary: "Centroids, the assignment and update steps, initialization, and choosing k."
+topic: Machine learning
+level: beginner
+path: beginner
+position: 10
+translations:
+  id:
+    title: "Clustering dengan k-means"
+    summary: "Centroid, langkah assignment dan update, inisialisasi, serta cara memilih k."
+modules:
+- slug: core-ideas
+  title: Core ideas
+  summary: "The concepts, in the order the lab uses them."
+  lessons:
+  - what-is-clustering
+  - initialization-and-choosing-k
+  translations:
+    id:
+      title: "Ide inti"
+      summary: "Konsep-konsepnya, sesuai urutan yang dipakai lab."
+- slug: lab
+  title: Lab
+  summary: "Run the idea yourself, then check what you learned."
+  lessons:
+  - kmeans
+  - clusters-vs-labels
+  translations:
+    id:
+      title: "Lab"
+      summary: "Jalankan idenya sendiri, lalu periksa apa yang sudah kamu pelajari."

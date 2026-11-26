@@ -1,0 +1,80 @@
+- prompt: Dua kolom dalam sebuah tabel berkorelasi r = 0,99. Apa yang akan ditunjukkan PCA pada kedua kolom yang distandardisasi ini?
+  options:
+  - PC1 dan PC2 masing-masing menjelaskan sekitar separuh varians
+  - PC2 menjelaskan hampir semua varians
+  - PC1 menjelaskan hampir semuanya, sehingga satu kolom hampir redundan
+  - PCA tidak dapat dijalankan pada kolom yang berkorelasi
+  answer: 2
+  explanation: Pada dua kolom yang distandardisasi, eigenvalue-nya adalah 1 + r dan 1 - r, di sini 1,99 dan 0,01, sehingga PC1 menjelaskan 99,5%. Kolom kedua nyaris tidak menambah apa pun setelah kolom pertama diketahui.
+- prompt: Apa itu principal component pertama (PC1)?
+  options:
+  - Arah tempat titik-titik yang sudah dipusatkan paling tersebar
+  - Kolom asli dengan rata-rata terbesar
+  - Arah tempat titik-titik paling berdekatan
+  - Garis yang paling baik memprediksi label
+  answer: 0
+  explanation: PC1 adalah arah dengan varians terbesar dari titik hasil proyeksi. PCA tidak pernah memakai label, dan rata-rata tidak berperan karena data dipusatkan lebih dulu.
+- prompt: Matriks kovarians sebuah data yang sudah dipusatkan punya eigenvalue 3,6 dan 0,4. Berapa porsi varians yang dijelaskan PC1?
+  options:
+  - 3,6%
+  - 40%
+  - 36%
+  - 90%
+  answer: 3
+  explanation: Explained variance ratio adalah eigenvalue dibagi jumlah semua eigenvalue, 3,6 / (3,6 + 0,4) = 0,90. PC2 menjelaskan 10% sisanya.
+- prompt: Sebuah titik yang sudah dipusatkan adalah (-2, -1) dan PC1 adalah vektor satuan (0,707; 0,707). Berapa skor PC1 titik itu?
+  options:
+  - -3,00
+  - -2,12
+  - -1,50
+  - 2,12
+  answer: 1
+  explanation: Skornya adalah hasil kali titik, -2 · 0,707 + -1 · 0,707 = -2,12. Titik itu berada di sisi negatif PC1, sehingga skornya negatif.
+- prompt: Pada empat kolom penguin yang distandardisasi, PC1 menjelaskan 68,8% varians dan PC2 menjelaskan 19,3%. Menurut total berjalan pada tabel pelajaran, berapa yang disimpan kedua komponen pertama bersama-sama?
+  options:
+  - 68,8%
+  - 79,1%
+  - 88,2%
+  - 97,3%
+  answer: 2
+  explanation: Kolom total berjalan pada tabel memberi 88,2% di PC2, yaitu tinggi garis pada scree plot. Explained variance ratio dijumlahkan, dan porsi tak terbulatkan berjumlah sedikit lebih besar daripada 68,8% + 19,3% = 88,1% yang sudah dibulatkan.
+- prompt: Pada kolom penguin mentah, panjang sirip dalam mm bervarians 197,15 dan massa tubuh dalam g bervarians 641.250,58, dan PC1 menjelaskan 99,99%. Bagaimana cara membacanya yang paling tepat?
+  options:
+  - Massa punya angka jauh lebih besar, sehingga mengambil alih PC1; standardisasi dulu
+  - Massa tubuh adalah satu-satunya ukuran penguin yang berguna
+  - Panjang sirip hampir konstan pada semua penguin
+  - PCA bekerja paling baik pada kolom mentah
+  answer: 0
+  explanation: Varians bergantung pada satuan, dan gram adalah satuan yang kecil, sehingga massa menang bagaimanapun keadaan penguinnya. Standardisasi membuat setiap kolom bervarians 1 dan menghilangkan pengaruh satuan.
+- prompt: Dua kolom yang distandardisasi berkorelasi r = 0,6. Berapa eigenvalue-nya, dan berapa yang dijelaskan PC1?
+  options:
+  - 1,6 dan 0,4, dengan PC1 menjelaskan 60%
+  - 1,6 dan 0,4, dengan PC1 menjelaskan 80%
+  - 0,6 dan 0,4, dengan PC1 menjelaskan 60%
+  - 1,0 dan 1,0, dengan PC1 menjelaskan 50%
+  answer: 1
+  explanation: Untuk dua kolom yang distandardisasi, eigenvalue-nya adalah 1 + r = 1,6 dan 1 - r = 0,4. Jumlahnya 2, sehingga PC1 menjelaskan 1,6 / 2 = 80%.
+- prompt: Lima kolom masing-masing distandardisasi, lalu PCA dijalankan. Berapa jumlah kelima eigenvalue-nya?
+  options:
+  - 1, karena jumlah rasionya 1
+  - 0, karena data sudah dipusatkan
+  - 4, karena satu komponen dibuang
+  - 5, karena setiap kolom bervarians 1
+  answer: 3
+  explanation: Jumlah eigenvalue sama dengan total varians, yaitu 1 untuk setiap kolom yang distandardisasi, jadi 5 di sini. Explained variance ratio adalah eigenvalue itu dibagi 5, dan jumlahnya 1.
+- prompt: Satu program melaporkan PC1 sebagai (0,71; 0,71) dan program lain melaporkan (-0,71; -0,71) untuk data yang sama. Apa artinya?
+  options:
+  - Salah satu program membuat kesalahan
+  - Kedua program menemukan arah varians terbesar yang berbeda
+  - Itu sumbu yang sama dengan arah berlawanan, sehingga skornya hanya berganti tanda
+  - Data distandardisasi pada satu program dan tidak pada yang lain
+  answer: 2
+  explanation: Sebuah eigenvector tidak punya tanda tetap. Kedua vektor terletak pada garis yang sama, sehingga explained variance-nya sama dan hanya tanda setiap skor PC1 yang berbalik.
+- prompt: Sebuah arah dengan varians kecil ternyata persis arah yang memisahkan dua kelas. Apa yang dapat dilakukan PCA terhadapnya?
+  options:
+  - Tidak ada, karena PCA selalu menyimpan arah yang paling berguna
+  - Arah itu dapat terbuang, karena PCA mengurutkan arah menurut varians dan tidak pernah melihat label
+  - Arah itu menjadi PC1, karena pemisahan adalah salah satu bentuk varians
+  - Arah itu dipindahkan ke PC1 setelah data distandardisasi
+  answer: 1
+  explanation: PCA bersifat unsupervised, sehingga varians adalah satu-satunya ukurannya. Arah yang penting bagi label tetapi sedikit bervariasi akan berada di urutan akhir dan dapat terbuang ketika kamu hanya menyimpan komponen-komponen pertama.

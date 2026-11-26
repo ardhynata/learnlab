@@ -1,0 +1,80 @@
+- prompt: Pada pengaturan awal, lab menampilkan Lebar margin 2,10, dan |w| model adalah 0,951. Aturan mana yang menghubungkan keduanya?
+  options:
+  - lebar = 2 × |w|, yaitu 1,90
+  - lebar = |w| / 2, yaitu 0,48
+  - lebar = 2 / |w|, yaitu 2,10
+  - lebar = 1 / |w|, yaitu 1,05
+  answer: 2
+  explanation: Skor naik sebesar 2 dari satu tepi jalur (-1) ke tepi lainnya (+1), dan naik sebesar |w| per satuan jarak, sehingga lebarnya 2 / |w| = 2 / 0,951 = 2,10. |w| yang lebih besar berarti jalur yang lebih sempit.
+- prompt: Pada C 10, kamu menyeret belah ketupat berlingkaran dari sekitar x 0,35, y 0,31 mendekati garis, ke sekitar x 0, y 0, dan lebar margin turun dari 1,38 menjadi 0,91. Mengapa?
+  options:
+  - Jalur harus muat di antara titik yang digeser dan support vector kelas A
+  - Lab menurunkan C ke nilai yang lebih kecil dengan sendirinya setiap kali kamu menyeret titik mana pun
+  - Titik yang digeser kini menjadi held-out, sehingga model berhenti memakainya untuk training
+  - Menyeret titik mengubah 24 titik held-out, dan titik-titik itulah yang menentukan lebar
+  answer: 0
+  explanation: Belah ketupat itu adalah support vector, sehingga ia berada di tepi jalur. Memindahkannya mendekati kelas lain menyisakan ruang yang lebih kecil di antara kedua kelas, dan jalurnya menyempit. C adalah slider yang hanya kamu yang mengubahnya, dan titik training tidak berubah menjadi held-out hanya karena diseret.
+- prompt: Pada C 0,1, seretan yang sama membiarkan margin tetap 2,10. Penjelasan mana yang paling tepat?
+  options:
+  - Pada C yang kecil, model mengabaikan setiap titik yang kamu geser atau seret
+  - Titik yang dilingkari baru dihitung sebagai support vector ketika C mencapai 10 atau lebih
+  - Jalur tidak dapat menjadi lebih sempit dari 2,10 pada C berapa pun, apa pun yang kamu lakukan pada titik
+  - Tiga titik di tepi menentukan garis, dan titik yang diseret berada di dalam jalur
+  answer: 3
+  explanation: Pada C 0,1, belah ketupat itu mendapat skor sekitar 0,45, di dalam jalur, dan bobotnya tertahan di batas atas C, sehingga tarikannya terbatas. Hanya 3 support vector di tepi yang menentukan garis, sehingga menggeser titik di dalam jalur nyaris tidak menggeser garis. Pada C 10, semua support vector berada di tepi, sehingga seretan menggeser salah satu titik yang menentukan garis.
+- prompt: Kamu menyeret sebuah silang held-out melewati boundary pada C 10. Apa yang berubah di baris status?
+  options:
+  - Lebar margin turun dan satu titik lagi menjadi support vector
+  - Hanya accuracy held-out, dari 100,0% menjadi 95,8%
+  - Training accuracy turun 1,8 poin
+  - Tidak ada, karena silang tidak dinilai
+  answer: 1
+  explanation: Model tidak pernah dilatih dengan silang itu, sehingga boundary, margin, dan titik yang dilingkari tetap seperti semula. Silang itu tetap dinilai, dan satu titik yang salah dari 24 menggeser accuracy held-out sebesar 4,2 poin.
+- prompt: Lab menyisihkan 24 titik held-out. Berapa poin accuracy held-out bergerak untuk setiap tambahan satu titik yang salah?
+  options:
+  - 1,0 poin
+  - 2,4 poin
+  - 4,2 poin
+  - 5,6 poin
+  answer: 2
+  explanation: Satu titik dari 24 adalah 1 / 24 = 0,0417, atau 4,2 poin persentase. Karena itu selisih satu atau dua titik held-out, seperti 95,8% berbanding 91,7%, hanyalah sinyal yang kecil.
+- prompt: Dari C 0,1 ke C 10 pada Dua kumpulan titik, lebar margin berubah dari 2,10 menjadi 1,38 dan support vector dari 13 menjadi 3. Kalimat mana yang menjelaskan turunnya support vector?
+  options:
+  - C yang lebih besar menambah bobot pada titik yang jauh dari jalur, sehingga titik itu berhenti menjadi support vector
+  - C yang lebih besar membuat titik di dalam jalur mahal, sehingga jalur menyempit di sekitar titik yang lebih sedikit
+  - C yang lebih besar melebarkan jalur, dan jalur yang lebih lebar selalu menyentuh lebih sedikit titik daripada jalur sempit
+  - C yang lebih besar membuat lab membuang titik yang tidak dapat diklasifikasikannya dengan benar
+  answer: 1
+  explanation: Pada C yang kecil, jalurnya lebar dan banyak titik berada di dalamnya, dan setiap titik itu dihitung sebagai support vector. C yang besar menghukum masing-masing titik itu, sehingga jalur menyempit dan lebih sedikit titik yang tersisa di tepi atau di dalamnya.
+- prompt: Pada Dua kumpulan titik, kamu menaikkan C dari 10 ke 100 dan masih membaca Lebar margin 1,38 dan 3 support vector. Mengapa tidak ada yang berubah?
+  options:
+  - Slider berhenti bekerja untuk nilai apa pun di atas 10
+  - Titik-titiknya terlalu berjauhan sehingga C tidak berpengaruh sama sekali
+  - Gamma, bukan C, yang menentukan margin ketika C sudah setinggi ini
+  - Tidak ada titik di dalam jalur, sehingga C yang lebih besar tidak punya apa-apa untuk dipersempit
+  answer: 3
+  explanation: Pada C 10, ketiga support vector sudah berada tepat di tepi dan tidak ada titik di dalam jalur. Harga yang lebih tinggi untuk titik di dalam jalur tidak punya sasaran, sehingga hasil fit-nya sama.
+- prompt: Pada Dua cincin, kernel Linear mendapat 60,7% pada titik training dan 54,2% pada titik held-out, dan tidak ada C yang membuatnya melewati 64,3% pada titik training. RBF mendapat 100,0% pada keduanya. Apa kesimpulanmu?
+  options:
+  - Tidak ada garis lurus yang memisahkan bentuk ini, tetapi boundary RBF yang melengkung dapat
+  - Kernel Linear hanya memerlukan C yang lebih besar untuk mencapai accuracy 100,0%
+  - Titik held-out pasti salah label, karena skornya berbeda jauh
+  - RBF adalah kernel yang lebih baik pada setiap dataset, jadi pakai di mana-mana
+  answer: 0
+  explanation: Satu kelas berada di dalam kelas lainnya, sehingga tidak ada garis lurus yang dapat memisahkannya, dan mengubah C hanya menggeser garis. RBF dapat menggambar kurva tertutup. Itu tidak membuatnya lebih baik di mana-mana, karena pada penguin, garis lurus setidaknya sama baiknya.
+- prompt: Pada Dua kumpulan yang tumpang tindih, RBF, C 10, menaikkan gamma dari 0,1 ke 10 membawa training accuracy dari 87,5% ke 100,0%, support vector dari 18 ke 50, dan membiarkan accuracy held-out di 79,2%. Apa yang ditunjukkan hal ini?
+  options:
+  - Model mempelajari kelas dengan lebih baik, karena training accuracy-nya naik
+  - Gamma 10 adalah pengaturan terbaik, karena tidak ada galat pada titik training
+  - Kurva membungkus titik training, sehingga training membaik dan held-out tidak
+  - Titik held-out ikut dipakai untuk training begitu gamma mencapai 10
+  answer: 2
+  explanation: Gamma yang besar memberi setiap titik petak kecilnya sendiri, sehingga skor training cenderung naik. Titik held-out menunjukkan apakah itu pembelajaran yang sebenarnya, dan di sini bukan. Ini adalah overfitting.
+- prompt: Pada empat sampel penguin dengan C 10, Linear mendapat 100,0% held-out setiap kali, dan RBF dengan gamma 10 mendapat 100,0% training tetapi 91,7%, 95,8%, 91,7%, dan 91,7% held-out. Kernel mana yang kamu pakai, dan mengapa?
+  options:
+  - RBF, karena training accuracy 100,0% adalah skor tertinggi yang dapat dicapai model
+  - Linear, karena skornya pada penguin held-out minimal sama baiknya dan lebih sederhana
+  - Tidak keduanya, karena accuracy held-out di bawah 100,0% berarti model gagal
+  - RBF, karena ia memakai lebih banyak support vector sehingga tahu lebih banyak tentang data
+  answer: 1
+  explanation: Accuracy held-out adalah skor yang penting, dan Linear menyamai atau mengungguli RBF pada keempat sampel dengan boundary yang lebih sederhana. Selisihnya satu atau dua penguin dari 24, sehingga empat sampel hanyalah pemeriksaan kecil dan bukan bukti.

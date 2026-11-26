@@ -1,0 +1,80 @@
+- prompt: Sebuah network punya dua lapisan tanpa fungsi aktivasi. Lapisan pertama mengalikan dengan 2 dan lapisan kedua dengan 3. Untuk input x = 1,5, berapa output-nya, dan apa yang ditunjukkan hasil itu?
+  options:
+  - 7,5, karena kedua lapisan menjumlahkan weight-nya
+  - 9, sama seperti hasil satu weight 6
+  - 4,5, karena hanya lapisan terakhir yang berperan
+  - Tidak ada, karena network membutuhkan fungsi aktivasi agar dapat berjalan
+  answer: 1
+  explanation: Output-nya 3 × (2 × 1,5) = 9, yaitu 6 × 1,5. Dua lapisan linear runtuh menjadi satu pemetaan linear, sehingga fungsi aktivasi harus melengkungkan skor di antara keduanya.
+- prompt: Pada network dalam berisi unit sigmoid dengan setiap weight bernilai 1, kemiringan sigmoid paling besar 0,25. Berapa bagian gradient lapisan terakhir yang paling banyak sampai ke lapisan yang 4 lapisan di belakangnya?
+  options:
+  - 0,25, karena kemiringan hanya dipakai sekali
+  - 1, karena weight-nya 1
+  - 0,0625, karena 0,25 dikuadratkan
+  - Sekitar 0,0039, karena 0,25 dikalikan sebanyak 4 kali
+  answer: 3
+  explanation: Setiap lapisan yang dilewati gradient mengalikannya dengan paling besar 0,25, sehingga setelah 4 lapisan faktornya 0,25^4 = 0,0039. Hasil kali yang menyusut inilah masalah vanishing gradient.
+- prompt: Sebuah unit ReLU mendapat skor negatif untuk setiap contoh di training set. Tanpa weight decay, apa yang terjadi pada weight-nya?
+  options:
+  - Weight-nya membesar, karena loss-nya masih besar
+  - Weight-nya bergerak ke arah nol, karena unit itu tidak aktif
+  - Weight-nya terus berubah, tetapi output unit tetap 0
+  - Weight-nya berhenti berubah, karena kemiringannya 0 dan tidak ada gradient yang sampai
+  answer: 3
+  explanation: Kemiringan ReLU adalah 0 untuk skor negatif, sehingga gradient ke weight unit ini 0 dan update tidak mengubah apa pun. Unit itu mati sampai ada hal lain yang menggeser skornya di atas nol.
+- prompt: Semua weight network dimulai dari nilai yang sama, misalnya 0,5 atau 0. Apa masalahnya?
+  options:
+  - Loss terlalu besar untuk dapat diturunkan
+  - Unit dalam satu lapisan mendapat gradient yang identik, sehingga tetap identik dan lapisan itu bekerja seperti satu unit
+  - Gradient menjadi terlalu besar dan meledak
+  - Network sama sekali tidak dapat menghitung prediksi
+  answer: 1
+  explanation: Weight yang sama memberi output dan gradient yang sama, sehingga setiap update membuat unit-unit itu tetap sama. Weight awal acak memecah simetri agar tiap unit dapat mempelajari feature yang berbeda.
+- prompt: Sebuah lapisan ReLU punya 200 input. Berapa simpangan baku weight awal menurut skala He, dengan varians 2 / n_in?
+  options:
+  - 0,1
+  - 0,0707
+  - 0,01
+  - 1
+  answer: 0
+  explanation: Variansnya 2 / 200 = 0,01, sehingga simpangan bakunya akar kuadrat dari 0,01, yaitu 0,1. Nilai 0,0707 berasal dari 1 / 200, tanpa faktor 2 yang menutupi kenyataan bahwa ReLU membuat sekitar separuh skor menjadi 0.
+- prompt: Pada langkah pertamanya, Adam dengan learning rate 0,01 melihat gradient 40 untuk satu weight. Kira-kira sejauh apa ia menggeser weight itu?
+  options:
+  - 0,4, sama seperti SGD
+  - 40
+  - 0,0004
+  - 0,01, kira-kira sebesar learning rate
+  answer: 3
+  explanation: Pada langkah pertama, rata-rata yang sudah dikoreksi memberi 40 untuk gradient dan 1600 untuk kuadratnya, sehingga langkahnya 0,01 × 40 / √1600 = 0,01. SGD akan menggeser weight sebesar 0,01 × 40 = 0,4. Adam menskalakan langkah tiap weight dengan ukuran gradient-nya sendiri.
+- prompt: Sebuah weight bernilai 2, gradient-nya 0, learning rate 0,1, dan penalti weight decay-nya λ × w² dengan λ = 0,25. Berapa weight itu setelah satu update?
+  options:
+  - 2, karena gradient-nya 0
+  - 1,95
+  - 1,9
+  - 1,5
+  answer: 2
+  explanation: Penalti menambahkan kemiringan 2 × 0,25 × 2 = 1, sehingga update-nya 2 - 0,1 × 1 = 1,9. Saat gradient-nya 0, setiap langkah mengalikan weight dengan 1 - 0,1 × 2 × 0,25 = 0,95.
+- prompt: Sebuah network dilatih dengan dropout berprobabilitas 0,5, dengan unit yang bertahan dikalikan 2 selama training. Apa yang harus dilakukannya saat membuat prediksi?
+  options:
+  - Mematikan separuh unit lagi, seperti saat training
+  - Tidak mematikan unit mana pun dan membagi dua setiap weight
+  - Tidak mematikan unit mana pun dan memakai semuanya tanpa penskalaan tambahan
+  - Mempertahankan mask acak yang sama dengan langkah training terakhir
+  answer: 2
+  explanation: Karena unit yang bertahan digandakan saat training, rata-rata output-nya sudah sesuai dengan hasil semua unit bersama-sama. Saat prediksi semua unit dipakai dan tidak ada yang diskalakan lagi.
+- prompt: Dengan patience 2, sebuah run memiliki validation loss 0,52, 0,41, 0,39, 0,40, 0,42, dan 0,45 pada epoch 1 sampai 6. Kapan early stopping berhenti, dan weight dari epoch mana yang disimpan?
+  options:
+  - Berhenti setelah epoch 5 dan menyimpan weight dari epoch 3
+  - Berhenti setelah epoch 6 dan menyimpan weight dari epoch 6
+  - Berhenti setelah epoch 3 dan menyimpan weight dari epoch 3
+  - Berhenti setelah epoch 4 dan menyimpan weight dari epoch 4
+  answer: 0
+  explanation: Loss terbaik, 0,39, muncul pada epoch 3. Epoch 4 dan 5 tidak mengungguli nilai itu, sehingga patience 2 habis, training berhenti setelah epoch 5, dan weight dari epoch 3 dikembalikan.
+- prompt: Training loss terus turun, tetapi validation loss naik sejak epoch 8. Tanggapan mana yang paling sesuai?
+  options:
+  - Naikkan learning rate agar training loss turun lebih cepat
+  - Mulai lagi dengan semua weight bernilai nol
+  - Tambahkan weight decay atau dropout, atau berhenti lebih awal
+  - Ganti setiap unit dengan sigmoid
+  answer: 2
+  explanation: Training loss yang turun sementara validation loss naik adalah ciri overfitting, dan weight decay, dropout, serta early stopping semuanya menahan network. Rate yang lebih tinggi, weight nol, atau unit sigmoid tidak menjawab masalah itu.

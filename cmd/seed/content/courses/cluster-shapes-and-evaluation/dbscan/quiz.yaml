@@ -1,0 +1,80 @@
+- prompt: What is a border point?
+  options:
+  - A point at the edge of the plot
+  - A point with fewer than MinPts neighbors that is marked noise
+  - A point that is not core but lies inside a core point's ε-neighborhood
+  - The point with the most neighbors in its cluster
+  answer: 2
+  explanation: A border point belongs to a cluster because a core point reaches it, but its own neighborhood is too small to extend the cluster. A point with a small neighborhood that no core point reaches is noise.
+- prompt: With MinPts = 4, a point has three other points within ε. What type is it?
+  options:
+  - Core, because its neighborhood counts itself and so holds 4 points
+  - Border, because it has fewer than 4 neighbors
+  - Noise, because it needs 4 other points
+  - It depends on the order the points are visited
+  answer: 0
+  explanation: The ε-neighborhood includes the point itself, so three others plus itself make 4, which meets MinPts. Forgetting to count the point itself is a common slip.
+- prompt: In the worked example (ε = 1, MinPts = 3), why are 9.0 and 9.2 noise even though they are close together?
+  options:
+  - They are too far from zero
+  - DBSCAN ignores pairs of points
+  - Their values are decimals
+  - Each has only 2 points in its neighborhood, below MinPts, and no core point reaches either
+  answer: 3
+  explanation: Two points within ε of each other fail MinPts = 3. With MinPts = 2 they would both be core and form a cluster of their own.
+- prompt: In the lab, Rings and outliers at ε 1.35 and MinPts 4 gives 2 clusters, 76 core points and 4 noise points. Which points are the 4 noise points?
+  options:
+  - Four points from the inner ring
+  - Four points where the two rings come closest
+  - Four border points between the rings
+  - The four isolated corner points, each with only itself inside ε
+  answer: 3
+  explanation: The corner points sit far from both rings, so each has 1 point in its neighborhood. Every ring point has at least 4, so there are no border points at all.
+- prompt: On Rings and outliers, ε = 1.0 with MinPts 4 gives 1 cluster of 38 core points and 42 noise points, while ε = 1.35 finds both rings. What explains it?
+  options:
+  - ε = 1.0 is too large, so the rings merge
+  - The outer ring is more spread out, so at ε = 1.0 its points have fewer than 4 points in their neighborhoods
+  - DBSCAN always finds only the first ring it meets
+  - MinPts is ignored when ε is below 1.35
+  answer: 1
+  explanation: Both rings have 38 points, but the outer one is spread over a longer circle, so its points sit farther apart. A radius that is enough for the inner ring is too small for the outer one.
+- prompt: On Two moons at ε 0.8, MinPts goes from 4 to 8 to 10. Which result matches the lab?
+  options:
+  - 80 core, then 80 core, then 80 core
+  - 80 core, then 68 core and 12 border, then all 80 points noise
+  - 80 core, then 12 core and 68 border, then 2 clusters
+  - 2 clusters at every MinPts, with noise rising from 0 to 12
+  answer: 1
+  explanation: Raising MinPts is stricter. Some points with fewer than 8 neighbors lose core status but still touch a core point, so they become border. At 10 no neighborhood is big enough and everything is noise.
+- prompt: A table has height in meters (about 1.6) and weight in grams (about 60 000). Why scale both before running DBSCAN with one ε?
+  options:
+  - ε is one radius for all features, so without scaling the grams decide the neighbors and height barely counts
+  - DBSCAN only accepts values between 0 and 1
+  - Scaling removes the noise points
+  - Scaling sets MinPts automatically
+  answer: 0
+  explanation: A difference of 0.1 m is tiny next to a difference of 100 g, so unscaled distances are almost entirely weight. Scaling lets both features shape the neighborhoods.
+- prompt: On Uneven density, ε = 1.0 gives 2 clusters at 80 points but 1 cluster and 13 noise points at 30 points. What does that show?
+  options:
+  - DBSCAN cannot find two clusters when there are fewer than 80 points
+  - Noise points are always the loose group
+  - MinPts should be lowered whenever points are removed
+  - Thinning the data lowers the loose group's density, so the radius that worked before is now too small for it
+  answer: 3
+  explanation: With fewer points the loose group is sparser, so its neighborhoods fall below MinPts at ε = 1.0. It needs a bigger ε, and the working range moves up and narrows.
+- prompt: A point is marked "Point marked as noise" early in a run. Which statement is true?
+  options:
+  - It is deleted from the data
+  - It may become a border point if a later cluster reaches it through a core point
+  - It becomes a core point once MinPts is lowered during the run
+  - It stays noise, because a label is never changed
+  answer: 1
+  explanation: Noise is only a first guess. In the lab, with Two moons at ε 0.8 and MinPts 6, Point 5 is marked noise at step 41 and added as a border point at step 65.
+- prompt: On the penguins, standardized flipper length and body mass at MinPts 4 gave 2 clusters at ε 0.22 (one with 110 Gentoo and the other with 132 Adelie and 58 Chinstrap) and 1 cluster at ε 0.25. What is the sensible reading?
+  options:
+  - DBSCAN found the three species and 0.25 is just too large
+  - DBSCAN is wrong because it should always find three clusters
+  - Gentoo forms a separate crowd, but Adelie and Chinstrap overlap, so these two measurements may not separate all three
+  - Noise points prove the species labels are mistaken
+  answer: 2
+  explanation: The species column was not used, and Adelie and Chinstrap share one cluster at ε 0.22 and merge with Gentoo at 0.25. When real groups touch, density alone may not separate them, and the working range can be tiny.

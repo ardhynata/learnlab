@@ -1,0 +1,72 @@
+- prompt: The pass rule is overall accuracy at least 0.85 and accuracy for each sex at least 0.80. With the scale reading 200 g light, accuracy is 288 / 333 = 0.86, female accuracy is 121 / 165 = 0.73 and male accuracy is 167 / 168 = 0.99. What is the verdict?
+  options:
+  - Pass, because overall accuracy is above 0.85
+  - Fail, because female accuracy is below 0.80
+  - Fail, because accuracy fell from 0.91 at all
+  - No verdict, because a robustness test needs random noise
+  answer: 1
+  explanation: The rule has two parts and both must hold. The overall figure is above 0.85, but the female slice is at 0.73, below 0.80, so the test fails. The average hid the slice.
+- prompt: Why is the pass rule written before the robustness test is run?
+  options:
+  - So that the test runs faster
+  - So that a model with a high test score always passes
+  - So that the result cannot be explained away after the fact
+  - So that every test uses the same threshold
+  answer: 2
+  explanation: A rule decided after seeing the numbers tends to accept whatever happened. Fixing it first makes the test a real question with a possible no for an answer.
+- prompt: When every Biscoe body mass is empty, the penguin rule finds 0 of the 119 Gentoo. What explains this?
+  options:
+  - Missing values make the model learn a new rule
+  - Gentoo penguins are lighter on Biscoe
+  - The test set is too small to say anything
+  - The code treats a missing mass as lighter than 4700 g, so it answers "not Gentoo"
+  answer: 3
+  explanation: The rule has no input check. An empty mass falls on the light side of the cut and gets a confident but wrong answer. A check that sends missing values to a person would make the failure visible.
+- prompt: Group B has TP = 60, FN = 40, FP = 15 and TN = 285. What is its false-positive rate?
+  options:
+  - 15 / 300 = 0.05
+  - 15 / 75 = 0.20
+  - 15 / 400 = 0.04
+  - 40 / 100 = 0.40
+  answer: 0
+  explanation: The false-positive rate is FP / (FP + TN) = 15 / 300 = 0.05, the share of the cases that needed nothing but were flagged. 15 / 75 is the share of flags that are wrong, which is 1 minus precision.
+- prompt: Groups A and B both have precision 0.80, but TPR is 0.80 in A and 0.60 in B. Which statement is true?
+  options:
+  - The tool is fair, because one criterion holds
+  - Calibration by group holds for the flag, but equal opportunity fails
+  - Equalized odds holds, because precision is equal
+  - The gap in TPR must be due to bad luck in a small sample
+  answer: 1
+  explanation: Equal precision means a flag is right equally often in both groups, which is calibration by group for a yes/no flag. Equal opportunity asks for equal TPR, and 0.80 against 0.60 is a gap of 0.20.
+- prompt: Group B's threshold is lowered until its TPR is 0.80 and its FPR is 0.20, matching group A. B flags 80 of its 100 applications that needed a check and 60 of its 300 that did not. What happens to B's precision?
+  options:
+  - It stays at 0.80, because the model is the same
+  - It rises to 1.00, because more cases are found
+  - It falls from 0.80 to 80 / 140 = 0.57
+  - It cannot be computed without a score for each case
+  answer: 2
+  explanation: There are now 80 + 60 = 140 flags and 80 of them are right, so precision is 80 / 140 = 0.57. With a different base rate in each group, equal error rates force different precision.
+- prompt: The tool keeps TPR 0.60 and FPR 0.05 for group B, but B's base rate rises to 0.40 (160 of 400 applications need a check). What is B's precision after the rise?
+  options:
+  - 0.80, because the model did not change
+  - 0.60, because it equals the TPR
+  - 0.45, because the base rate is higher
+  - 96 / 108 = 0.89
+  answer: 3
+  explanation: Flagged and needed is 0.60 x 160 = 96, and flagged but not needed is 0.05 x 240 = 12. Precision is 96 / 108 = 0.89, so a precision gap of 0.09 opens with no change to the model.
+- prompt: A table of 12 records has groups of 4, 2, 2 and 4 records with the same age band and area. What is k, and what does it mean?
+  options:
+  - k = 4, because the largest group sets the protection
+  - k = 12, because all records are in one table
+  - k = 2, so no one can learn anyone's condition
+  - k = 2, so each record looks like at least one other
+  answer: 3
+  explanation: k is the size of the smallest group, here 2, so each record shares its age band and area with at least one other record. It does not stop someone learning a condition when everyone in the group has it.
+- prompt: A colleague says that dropping the name column makes a table anonymous. What is the best reply?
+  options:
+  - Combinations of other columns, such as age band and area, can still single out a record
+  - It is true, because a name is the only identifying column
+  - It is true when the table has more than 10 records
+  - It is false, because the model learns the names anyway
+  answer: 0
+  explanation: Columns that are harmless alone can identify a person in combination. In the 12-record table two combinations hold a single record, so those rows can be found without any name.

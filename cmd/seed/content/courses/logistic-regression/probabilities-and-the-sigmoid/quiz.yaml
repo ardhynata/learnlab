@@ -1,0 +1,80 @@
+- prompt: Why is a plain straight line a poor model for a 0-or-1 answer such as pass or fail?
+  options:
+  - Because a line cannot have a slope, so it cannot follow the trend
+  - Because the classes cannot be written as numbers a line could use
+  - Because its predictions can fall below 0 or rise above 1, which a probability cannot do
+  - Because a line always predicts exactly 0.5 for every student
+  answer: 2
+  explanation: A line keeps going as x grows, so it leaves the range 0 to 1 on at least one side. The classes can be coded as 0 and 1, and a line can have any slope, so those are not the problem.
+- prompt: What is sigmoid(0)?
+  options:
+  - "0.5"
+  - "0"
+  - "1"
+  - "It is undefined"
+  answer: 0
+  explanation: At a score of 0 the formula gives 1 / (1 + e^0) = 1 / 2 = 0.5. The curve only approaches 0 and 1 at its far ends and never reaches them.
+- prompt: A model produces the score z = -4. Which probability is closest to what the sigmoid returns?
+  options:
+  - "0.98"
+  - "0.02"
+  - "0.50"
+  - "-4"
+  answer: 1
+  explanation: A large negative score maps to a probability near 0. The table gives sigmoid(-4) = 0.02, and 0.98 is sigmoid(4), its mirror image. A probability can never be negative.
+- prompt: The exam model has the score z = 1.2 × hours - 3.6. What is the probability of passing after 5 hours of study?
+  options:
+  - "0.50"
+  - "0.77"
+  - "2.4"
+  - "0.92"
+  answer: 3
+  explanation: The score is 1.2 × 5 - 3.6 = 2.4, and sigmoid(2.4) is about 0.92. The number 2.4 is the score, not the probability, and 0.77 is the probability for 4 hours.
+- prompt: For the same model, how many hours of study give a probability of exactly 0.5?
+  options:
+  - "1.2 hours"
+  - "5 hours"
+  - "3 hours"
+  - "3.6 hours"
+  answer: 2
+  explanation: The probability is 0.5 when the score is 0. Solving 1.2 × hours - 3.6 = 0 gives hours = 3.6 / 1.2 = 3. The value 3.6 is the intercept's size, not the answer.
+- prompt: A model says p = 0.8 that an email is spam. What are the odds of spam?
+  options:
+  - "0.8 to 1"
+  - "4 to 1"
+  - "1 to 4"
+  - "8 to 1"
+  answer: 1
+  explanation: The odds are p / (1 - p) = 0.8 / 0.2 = 4, which is 4 to 1. The value 1 to 4 would be the odds for p = 0.2.
+- prompt: In the exam model each extra hour adds 1.2 to the log-odds. What does one extra hour do to the odds of passing?
+  options:
+  - It adds 1.2 to the odds, so the odds go from 1 to 2.2
+  - It adds 1.2 to the probability every hour
+  - It doubles the odds, whatever the starting value
+  - It multiplies the odds by e^1.2, about 3.3
+  answer: 3
+  explanation: Adding to the log-odds means multiplying the odds. The lesson's table shows the odds growing from 1 to 3.32 to 11.02, each time by a factor of about 3.3. Neither the odds nor the probability grow by a fixed 1.2.
+- prompt: A model has the score z = hours + 0.8 × tests - 5. Which student lies exactly on the decision boundary?
+  options:
+  - 1 hour of study and 5 practice tests
+  - 2 hours and 3 tests
+  - 4 hours and 2 tests
+  - 3 hours and 3 tests
+  answer: 0
+  explanation: On the boundary the score is 0. For 1 hour and 5 tests, 1 + 4 - 5 = 0, so p = 0.5. The other students score -0.6, 0.6 and 0.4, so they sit on one side or the other.
+- prompt: A model says p = 0.77 that a student will pass, and the student fails. What is the fairest conclusion?
+  options:
+  - The model is broken, because it predicted a pass and the student failed
+  - The probability was really 0, and the model just reported it wrongly
+  - "Nothing is proven: about 23 in 100 such students would be expected to fail"
+  - The student must have been mislabeled in the data
+  answer: 2
+  explanation: A probability of 0.77 leaves room for the other outcome, about 23 times in 100. One failure does not show the model wrong. Only many cases can tell if its probabilities are trustworthy.
+- prompt: Why is the decision boundary of logistic regression a straight line when there are two features?
+  options:
+  - Because the sigmoid is a straight line in the features
+  - Because the boundary is where the score is 0, and the score is a linear formula
+  - Because the model uses 0.5 as the threshold and 0.5 always gives a line
+  - Because any two points always define a line, whatever the model
+  answer: 1
+  explanation: The boundary is where p = 0.5, which is where the score is 0. A linear score set to 0 is the equation of a straight line. The sigmoid itself is a curve, but it does not change where the score is 0.

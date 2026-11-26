@@ -1,0 +1,31 @@
+slug: feature-engineering
+title: "Feature engineering"
+summary: "Interactions, transformations, high-cardinality categories, leakage-safe target encoding, and ablation."
+topic: Machine learning
+level: intermediate
+path: intermediate
+position: 5
+translations:
+  id:
+    title: "Feature engineering"
+    summary: "Interaksi, transformasi, kategori dengan kardinalitas tinggi, target encoding yang aman dari leakage, dan ablation."
+modules:
+- slug: core-ideas
+  title: Core ideas
+  summary: "The concepts, in the order the lab uses them."
+  lessons:
+  - interactions-and-transformations
+  - high-cardinality-and-target-encoding
+  translations:
+    id:
+      title: "Ide inti"
+      summary: "Konsep-konsepnya, sesuai urutan yang dipakai lab."
+- slug: lab
+  title: Lab
+  summary: "Run the idea yourself, then check what you learned."
+  lessons:
+  - feature-ablation-lab
+  translations:
+    id:
+      title: "Lab"
+      summary: "Jalankan idenya sendiri, lalu periksa apa yang sudah kamu pelajari."

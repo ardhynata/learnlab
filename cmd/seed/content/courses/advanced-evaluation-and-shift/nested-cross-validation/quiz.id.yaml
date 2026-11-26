@@ -1,0 +1,80 @@
+- prompt: Sebuah search mencoba 30 nilai k dan melaporkan skor cross-validation 5 fold terbaiknya, 91,3%. Pemenang yang sama benar pada 88,7% penguin yang belum pernah dilihatnya. Apa yang menjelaskan selisih itu?
+  options:
+  - Model mengalami overfitting pada baris training-nya, sehingga setiap skornya terlalu tinggi
+  - Pemenang adalah yang tertinggi dari banyak skor berisik, dinilai pada fold yang sama
+  - k-NN tidak punya langkah training, sehingga tidak dapat dinilai dengan cross-validation
+  - Penguin yang belum pernah dilihat berasal dari spesies yang berbeda dari pool
+  answer: 1
+  explanation: Setiap dari 30 skor itu adalah kualitas sebenarnya ditambah sedikit keberuntungan, dan search menyimpan yang tertinggi, sehingga cenderung menyimpan yang paling beruntung. Fold yang sama memilih dan menilai pemenangnya, itulah sebabnya laporannya terlalu tinggi.
+- prompt: Pada nested cross-validation, loop mana yang memilih pengaturan dan loop mana yang menilainya?
+  options:
+  - Outer loop memilih pada seluruh pool, dan inner loop menilai pilihannya
+  - Kedua loop memilih dan menilai bersama-sama pada setiap baris pool
+  - Inner loop memilih pada baris training, outer loop menilai pada fold yang disisihkan
+  - Inner loop memilih, dan inner fold juga yang menilai pilihannya
+  answer: 2
+  explanation: Inner loop menjalankan seluruh search hanya pada baris training outer. Pilihannya lalu dinilai satu kali pada fold uji outer, yang tidak ikut menentukan pilihan itu.
+- prompt: Kelima fold outer berisi 20 penguin memberi 16, 18, 17, 15, dan 19 jawaban benar untuk satu resep. Berapa skor nested-nya?
+  options:
+  - 85%
+  - 17%
+  - 83,5%
+  - 90%
+  answer: 0
+  explanation: Jumlahkan skor outer, 16 + 18 + 17 + 15 + 19 = 85, lalu bagi dengan 100 penguin yang dinilai. Rata-rata kelima skor fold, 17 dari 20, sama dengan 85% itu. Kekeliruan yang umum adalah melaporkan rata-rata fold sebagai 17%.
+- prompt: Pada putaran 3 dalam tabel fold, skor inner untuk k = 1, 5, dan 15 adalah 74, 76, dan 69. Apa yang terjadi selanjutnya di putaran itu?
+  options:
+  - k = 1 dilatih ulang dan dinilai pada 20 penguin dari inner fold-nya
+  - k = 15 dilatih ulang pada seluruh pool dan dinilai di sana
+  - k = 5 dinilai lagi pada inner fold, dan angka 76-nya dilaporkan
+  - k = 5 dilatih ulang pada 80 penguin, lalu dinilai pada fold outer 3
+  answer: 3
+  explanation: Skor inner hanya dipakai untuk memilih. Pemenangnya, k = 5, dilatih ulang pada semua 80 penguin training outer dan dinilai pada 20 penguin di fold outer 3, yang belum pernah dilihat search. Nilai itu, 17 dari 20, yang dihitung.
+- prompt: Sebuah proses nested punya 5 fold outer, 4 fold inner, dan 10 pengaturan, dan tiap putaran outer ditutup dengan satu refit pemenang. Berapa fit yang dibutuhkan?
+  options:
+  - 50
+  - 205
+  - 200
+  - 45
+  answer: 1
+  explanation: Tiap putaran outer melatih 4 x 10 = 40 model di inner loop-nya dan 1 refit, yaitu 41. Lima putaran memberi 5 x 41 = 205, dibandingkan 50 untuk search biasa.
+- prompt: Mengapa dua model dibandingkan fold demi fold, bukan lewat dua rata-rata?
+  options:
+  - Skor fold selalu independen satu sama lain
+  - Perbandingan fold demi fold tidak memerlukan data uji
+  - Fold yang sulit sulit bagi kedua model, sehingga selisih di dalam fold meniadakan tingkat kesulitan itu
+  - Model dengan rata-rata lebih tinggi selalu menang di setiap fold
+  answer: 2
+  explanation: Kedua resep dinilai pada 20 penguin yang sama di tiap fold, sehingga tingkat kesulitan fold mengenai keduanya. Dalam pelajaran, simpangan selisihnya, 2,7 poin, lebih kecil daripada simpangan skor tiap model, 4,2 dan 6,5.
+- prompt: Dari 100 penguin, 79 benar untuk kedua model, 10 hanya untuk k-NN, 2 hanya untuk tree, dan 9 untuk keduanya salah. Berapa rata-rata selisih, k-NN dikurangi tree, dalam poin?
+  options:
+  - 8
+  - 10
+  - 12
+  - 88
+  answer: 0
+  explanation: Hanya penguin yang hasilnya berbeda di kedua model yang dihitung. Rata-ratanya (10 - 2) / 100 = 0,08, atau 8 poin. Ke-88 penguin yang hasilnya sama menyumbang nol.
+- prompt: Bootstrap interval untuk rata-rata selisih dua model berkisar dari -3 sampai +19 poin. Apa kesimpulanmu?
+  options:
+  - Model pertama lebih baik, sebab bagian tengah interval berada di atas nol
+  - Kedua model sama, sebab interval memuat nol
+  - Interval itu salah, sebab harus berpusat di nol
+  - Nol masih masuk akal, sehingga belum ada pemenang
+  answer: 3
+  explanation: Nol berada di dalam interval, sehingga penguin-penguin ini sesuai dengan keadaan tanpa selisih. Itu pun belum bukti bahwa keduanya sama. Data yang lebih banyak, atau lebih banyak pengulangan, akan mempersempit intervalnya.
+- prompt: Sebuah tim punya 50.000 baris berlabel, 10.000 di antaranya dikunci sebagai test set, dan sebuah model yang butuh berjam-jam untuk dilatih. Rencana mana yang sesuai?
+  options:
+  - Nested cross-validation pada 40.000 baris lainnya, dengan 10 fold outer dan 10 fold inner
+  - Lakukan tuning pada validation split, lalu nilai test set terkunci satu kali
+  - Lakukan tuning pada test set, sebab 10.000 baris adalah panduan yang andal
+  - Ulangi search pada test set sampai skornya berhenti naik
+  answer: 1
+  explanation: 10.000 baris test memberi standard error sekitar 0,3 poin di dekat 89%, sehingga satu kali melihat saja sudah cukup, sedangkan nesting akan melipatgandakan jam pelatihan. Memilih pada test set membuat skornya terlalu optimistis lagi.
+- prompt: Nested cross-validation pada satu pool penguin memberi 89%. Apa yang tidak diberitahukannya kepadamu?
+  options:
+  - Seberapa besar search biasa membuat skornya terlalu optimistis
+  - Nilai k mana yang dipilih inner loop di setiap putaran
+  - Bagaimana kinerjanya pada penguin dari pulau atau dekade lain
+  - Bagaimana seluruh resep, termasuk search-nya, bekerja pada penguin pool yang tidak ikut memilih k
+  answer: 2
+  explanation: Nesting menghilangkan sifat terlalu optimistis akibat tuning. Ia tidak dapat melihat data yang bergeser, karena setiap fold dipotong dari pool yang sama. Itulah topik pelajaran berikutnya.

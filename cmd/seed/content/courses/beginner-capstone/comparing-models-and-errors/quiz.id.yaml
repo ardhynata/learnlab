@@ -1,0 +1,80 @@
+- prompt: Model A dinilai pada baris held-out dari satu shuffle data, sedangkan model B pada baris held-out dari shuffle yang berbeda. Apa yang salah dari membandingkan skor keduanya?
+  options:
+  - Tidak ada masalah, karena accuracy adalah metrik yang sama untuk kedua model, apa pun barisnya
+  - Kedua model menghadapi baris uji yang berbeda, sehingga perbedaannya bisa berasal dari barisnya dan bukan dari modelnya
+  - Model B seharusnya diberi lebih banyak baris training agar kedua model punya data latih yang sama banyak
+  - Baris held-out tidak boleh pernah di-shuffle, karena shuffle membocorkan jawaban kepada model
+  answer: 1
+  explanation: Perbandingan yang adil menjaga split tetap sama. Dengan baris held-out yang berbeda, satu model bisa saja mendapat ujian yang lebih mudah.
+- prompt: k-NN dengan k = 1 benar pada 164 dari 164 penguin training dan 53 dari 55 penguin held-out. Berapa gap-nya, yaitu skor training dikurangi skor held-out?
+  options:
+  - 0,6 poin
+  - 1,8 poin
+  - 3,6 poin
+  - 96,4 poin
+  answer: 2
+  explanation: Skor training-nya 100% dan skor held-out-nya 53 / 55 = 96,4%, sehingga gap-nya 100 - 96,4 = 3,6 poin.
+- prompt: k = 5 mendapat 97,6% pada 164 penguin training dan 98,2% pada 55 penguin held-out. Mengapa ini bukan bukti kuat bahwa ia lebih baik pada baris baru daripada baris lama?
+  options:
+  - Selisihnya 0,6 poin, lebih kecil daripada 1,8 poin yang menjadi nilai satu penguin held-out
+  - Skor held-out tidak pernah lebih tinggi daripada skor training
+  - Kedua skor itu harus selalu sama
+  - Accuracy tidak dapat dibandingkan pada baris yang berbeda
+  answer: 0
+  explanation: Dengan 55 penguin held-out, satu penguin menggeser skor sebesar 1 / 55 = 1,8 poin. Selisih 0,6 poin masih berada dalam noise itu.
+- prompt: Kamu berpindah dari k-NN ke decision tree dan, dalam run yang sama, membuang dua feature. Skor held-out naik. Apa yang dapat kamu simpulkan?
+  options:
+  - Tree lebih baik daripada k-NN, karena skornya naik begitu tree dipakai
+  - Membuang kedua feature itu membantu, karena model dengan feature lebih sedikit menjadi lebih sederhana
+  - Kedua perubahan itu membantu, karena skornya naik setelah keduanya dilakukan bersamaan
+  - Kamu tidak dapat mengetahui perubahan mana penyebabnya, karena dua hal berubah sekaligus
+  answer: 3
+  explanation: Ubah satu hal saja setiap kali. Ketika dua hal berubah bersamaan, pengaruh masing-masing bercampur dan tidak dapat dipisahkan.
+- prompt: Pada sepuluh split baru, k-NN membuat 13 kesalahan dan tree membuat 15, dari 550 jawaban untuk masing-masing, dan separuh split berakhir seri. Apa ringkasan terbaiknya?
+  options:
+  - k-NN adalah pemenangnya
+  - Kedua model kurang lebih setara di sini
+  - Tree adalah pemenangnya karena mendapat 100% pada split pertama
+  - Tidak ada model yang mengalahkan baseline
+  answer: 1
+  explanation: Selisih 2 kesalahan dari 550 jawaban, dengan pemenang yang berganti dari split ke split, bukan perbedaan yang nyata. Kedua model jauh di atas baseline 69,1%.
+- prompt: Set held-out berisi 55 penguin. Satu jawaban benar tambahan menaikkan skor accuracy berapa poin?
+  options:
+  - 1,8
+  - 0,6
+  - 5,5
+  - 1,0
+  answer: 0
+  explanation: Satu penguin adalah 1 / 55 dari set held-out, sekitar 1,8 poin persentase. Itulah sebabnya keunggulan satu penguin adalah bukti yang lemah.
+- prompt: Satu penguin salah di setiap split saat ia menjadi held-out, sedangkan kesalahan lainnya tersebar. Apa yang ditunjukkan hal ini?
+  options:
+  - Kebetulan pada shuffle, yang akan hilang jika split-nya diganti
+  - Metriknya dipilih dengan salah, sebab metrik yang lebih baik tidak akan menampilkan kesalahan ini
+  - Ada sesuatu pada penguin itu atau pada feature yang membuatnya sulit, sehingga perlu diperiksa
+  - Set held-out terlalu besar, sehingga ikut memuat penguin yang seharusnya tidak ada
+  answer: 2
+  explanation: Kebetulan akan berpindah dari split ke split. Kesalahan yang selalu kembali menunjuk ke datanya, misalnya overlap antarkelas, nilai yang tidak biasa, label yang salah, atau feature yang hilang.
+- prompt: Seekor Adelie punya sirip 210 mm. Rata-rata sirip Adelie 190,0 mm dengan simpangan baku 6,5 mm. Kira-kira berapa simpangan baku di atas rata-ratanya, dan nama apa yang sesuai untuk kesalahan ini?
+  options:
+  - Sekitar 0,3, label noise
+  - Sekitar 1,5, overlap antarkelas
+  - Sekitar 6,5, feature yang hilang
+  - Sekitar 3,1, pengukuran yang tidak biasa
+  answer: 3
+  explanation: (210 - 190,0) / 6,5 = 3,1. Nilai yang sejauh itu dari kelasnya sendiri adalah pengukuran yang tidak biasa. Ini hipotesis yang perlu diperiksa, misalnya salah ketik atau burung yang sangat besar.
+- prompt: Kalimat mana dari sebuah laporan singkat yang paling jujur?
+  options:
+  - Tree mengalahkan k-NN, 100% melawan 98,2%, sehingga tree adalah model yang harus dipilih.
+  - Dalam sepuluh split, tree membuat 15 kesalahan dan k-NN 13 dari 550, sehingga saya tidak dapat membedakannya, dan keduanya mengalahkan baseline 69,1%.
+  - k-NN lebih baik karena ia metode yang lebih tua dan metode lama sudah lebih banyak diuji.
+  - Kedua model sempurna pada baris training, sehingga keduanya sama baiknya pada baris mana pun.
+  answer: 1
+  explanation: Kalimat itu melaporkan baseline, split yang diulang, dan batas dari apa yang berhasil ditunjukkan. Keunggulan pada satu split dan skor training saja tidak cukup untuk menyatakan pemenang.
+- prompt: Pada split pertama, k-NN menemukan 16 dari 17 penguin Chinstrap dan tidak membuat alarm palsu. Berapa recall-nya untuk Chinstrap?
+  options:
+  - 100,0%
+  - 98,2%
+  - 94,1%
+  - 69,1%
+  answer: 2
+  explanation: Recall adalah bagian Chinstrap asli yang berhasil ditemukan, 16 / 17 = 94,1%. Angka 98,2% adalah accuracy, 54 benar dari 55.

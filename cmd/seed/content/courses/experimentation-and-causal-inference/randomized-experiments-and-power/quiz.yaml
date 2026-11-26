@@ -1,0 +1,80 @@
+- prompt: Why does flipping a coin to decide who sees the new checkout page let a simple difference in means estimate its effect?
+  options:
+  - The coin flip makes the two groups exactly equal in every trait
+  - The coin flip means you only need to measure the outcome in one group
+  - No trait of a shopper can steer who gets the page, so the groups differ only by chance and by the page
+  - A larger group always shows a bigger difference
+  answer: 2
+  explanation: Random assignment cuts the link between who the shopper is and which page they see. The groups are not identical in any one run (that is the common wrong idea); the leftover gap is chance, and the standard error measures how large it can be.
+- prompt: In an A/B test with 2,000 visitors per group, 10% buy on page A and 12% on page B. What is the standard error of the 2-point difference?
+  options:
+  - About 0.99 points
+  - About 1.40 points, the two standard errors added
+  - About 0.70 points, the two standard errors averaged
+  - About 2.00 points, the size of the gap
+  answer: 0
+  explanation: Each rate has a variance, 0.000045 for A and 0.0000528 for B. The groups are independent, so the variances add to 0.0000978, whose square root is 0.00989, or 0.989 points. Adding or averaging the standard errors themselves gives the wrong number.
+- prompt: Using that standard error of 0.989 points and the 2-point gap, which is the 95% interval for the effect?
+  options:
+  - 1.01 to 2.99 points
+  - -1.94 to 1.94 points
+  - 0.00 to 2.00 points
+  - 0.06 to 3.94 points
+  answer: 3
+  explanation: The interval is the gap plus and minus 1.96 standard errors, so 2 ± 1.96 × 0.989 = 2 ± 1.94. That gives 0.06 to 3.94 points. It only just excludes 0, which matches the p-value of 0.043.
+- prompt: The test gives p = 0.043. What does that say?
+  options:
+  - There is a 4.3% chance that the new page does nothing
+  - If the page truly had no effect, a gap at least this large, in either direction, would turn up about 4.3% of the time by chance
+  - The new page works with 95.7% probability
+  - The new page raises the purchase rate by 4.3 points
+  answer: 1
+  explanation: A p-value starts from the null and asks how surprising the data are. It is not the probability that the null is true, and it says nothing about the size of the effect.
+- prompt: Another team tests with 300 visitors per group, gets p = 0.20 and announces that the page has no effect. What is the best reading?
+  options:
+  - They are right, because a p-value above 0.05 proves there is no effect
+  - They are right, because 0.20 is the chance that the page works
+  - The result is inconclusive, because with so few visitors only a large effect would have been detected
+  - The page lowers sales, because 0.20 is below 1
+  answer: 2
+  explanation: A large p-value means the data cannot separate the effect from chance. With 300 per group the test has low power and a large minimum detectable effect, so a real but modest effect would usually be missed.
+- prompt: Our test has a standard error of 0.989 points. What is its minimum detectable effect at 80% power?
+  options:
+  - 1.94 points, the gap needed for significance
+  - 2.77 points
+  - 0.99 points, one standard error
+  - 3.94 points, the top of the interval
+  answer: 1
+  explanation: MDE = 2.80 × SE = 2.80 × 0.989 = 2.77 points. The gap needed for significance is 1.94, but a true effect of exactly that size would be detected only about half the time.
+- prompt: A test sized to detect a 2-point lift over a 10% baseline needs 3,834 visitors per group. About how many per group would it need to detect a 1-point lift?
+  options:
+  - About 1,900, half as many
+  - About 3,834, the same
+  - About 7,700, twice as many
+  - About 14,700, roughly four times as many
+  answer: 3
+  explanation: The visitors needed grow with 1 / d², so halving the lift multiplies them by about four. The exact calculation gives 7.84 × 0.1879 / 0.0001 = 14,731 per group.
+- prompt: A team checks the test every day and stops the first time p is below 0.05. There is no real effect. Over 5 equally spaced looks, how often will it announce a win?
+  options:
+  - About 14% of the time, well above the intended 5%
+  - Exactly 5% of the time, since each look uses the 0.05 cutoff
+  - About 1% of the time, since the effect is zero
+  - Never, since there is no effect to find
+  answer: 0
+  explanation: Each look is another chance for luck. In a simulation of experiments with no effect, 5 looks gave a false win about 14% of the time. Look once at a planned end, or use methods built for repeated looks.
+- prompt: A dashboard tests 20 independent metrics, each at the 0.05 level, and nothing is really changing. How likely is it that at least one metric looks significant?
+  options:
+  - About 5%
+  - About 20%
+  - About 64%
+  - About 100%
+  answer: 2
+  explanation: The chance that none is significant is 0.95^20 = 0.36, so at least one is 1 - 0.36 = 0.64. A Bonferroni cutoff of 0.05 / 20 = 0.0025 for each metric, or one primary metric named in advance, keeps the overall rate near 5%.
+- prompt: The new page lifts purchases (p = 0.043), but a guardrail set before launch said refunds must not rise by more than 0.5 points, and the refund rate rose by 1.2 points with a 95% interval of 0.7 to 1.7. What is the best decision?
+  options:
+  - Ship it, because the primary metric won and guardrails do not count
+  - Hold it, because the guardrail was breached, and find out why refunds went up before shipping
+  - Ship it, but run the test again until the refund rate stops being significant
+  - Ignore the guardrail, because 0.043 is below 0.05
+  answer: 1
+  explanation: A guardrail exists to veto a change that wins on the main metric but does harm elsewhere. The whole interval, 0.7 to 1.7, lies beyond the 0.5-point margin, so the breach is not chance. Rerunning until the guardrail looks fine is peeking and cherry-picking.

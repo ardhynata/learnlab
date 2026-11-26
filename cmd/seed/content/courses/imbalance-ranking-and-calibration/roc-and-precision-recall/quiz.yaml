@@ -1,0 +1,80 @@
+- prompt: You walk down the six cases sorted by score (A 0.9 positive, B 0.8 negative, C 0.7 positive, D 0.6 positive, E 0.4 negative, F 0.2 negative). Where is the ROC point after case C?
+  options:
+  - (0, 1/3)
+  - (1/3, 1/3)
+  - (1/3, 2/3)
+  - (2/3, 1/3)
+  answer: 2
+  explanation: After A, B and C there are 2 true positives out of 3 (true-positive rate 2/3) and 1 false positive out of 3 (false-positive rate 1/3). The point is (1/3, 2/3), the second coordinate being the vertical one.
+- prompt: In the same six cases, the positive D has score 0.6. Against the three negatives (B 0.8, E 0.4, F 0.2), how many pairs does D win?
+  options:
+  - 1
+  - 2
+  - 3
+  - 0
+  answer: 1
+  explanation: A pair is won when the positive scores higher. D beats E (0.4) and F (0.2) but loses to B (0.8), so it wins 2 of its 3 pairs.
+- prompt: When the walk down the sorted list reaches a real negative, how does the point on the ROC curve move?
+  options:
+  - Up, because the threshold got lower
+  - Up and to the right at the same time
+  - It stays where it was, because the case is negative
+  - To the right, because the false-positive rate rises and the true-positive rate does not
+  answer: 3
+  explanation: A negative that is now above the threshold is a new false positive. That raises the false-positive rate (horizontal) and leaves the true-positive rate (vertical) alone, so the point moves right.
+- prompt: After case B (the two highest cases are A, a positive, and B, a negative), what is the precision?
+  options:
+  - 1/2
+  - 1/3
+  - 2/3
+  - 1
+  answer: 0
+  explanation: Two cases are flagged and one of them is a real positive, so precision = 1 / 2. The recall at that point is 1/3, a different number.
+- prompt: Which calculation gives the average precision (AP) of the six cases, using the precision at each real positive?
+  options:
+  - 7/9, the number of winning pairs out of 9
+  - (1 + 1/2 + 2/3 + 3/4 + 3/5 + 1/2) / 6, the average over all six cases
+  - (1 + 2/3 + 3/4) / 3
+  - 3/6, the positive rate
+  answer: 2
+  explanation: AP averages the precision at the moments recall rises, which are the three real positives A (precision 1), C (2/3) and D (3/4). That gives 0.81. The value 7/9 is the AUC, and 3/6 is the no-skill level.
+- prompt: A ranker has the ROC point (0.05, 0.80). On 10,000 payments with 5,000 frauds, what is its precision at that cut?
+  options:
+  - 0.05
+  - 0.80
+  - 0.14
+  - 0.94
+  answer: 3
+  explanation: It flags 0.80 x 5,000 = 4,000 frauds and 0.05 x 5,000 = 250 honest payments, so precision = 4,000 / 4,250 = 0.94. With only 100 frauds in 10,000 payments the same cut gives 0.14.
+- prompt: Positives are 1 percent of the cases. Where does the no-skill line sit on a precision-recall plot?
+  options:
+  - On the diagonal from (0, 0) to (1, 1)
+  - At precision 0.01, the positive rate
+  - At precision 0.50
+  - At precision 0.99
+  answer: 1
+  explanation: Flagging cases at random gives a precision equal to the share of positives, here 0.01. The diagonal is the no-skill line of the ROC plot, not of the precision-recall plot.
+- prompt: A kind of payment really has a 1 percent chance of fraud (odds 1 to 99). A model is trained with each fraud weighted 99 times. Roughly what score does it give such a payment?
+  options:
+  - About 0.50
+  - About 0.99
+  - About 0.01
+  - About 0.10
+  answer: 0
+  explanation: Weighting each positive by w multiplies the odds the model predicts by about w. Odds of 1 to 99 times 99 are 99 to 99, which is a score of 0.50. The ranking is kept, but the score is no longer the real chance of fraud.
+- prompt: A team oversamples the rare class and then splits the data into training and validation parts. Why is the validation score unreliable?
+  options:
+  - Oversampling always lowers recall
+  - The validation set ends up too small to give a stable score
+  - Copies of the same rare case can sit in both parts, so the model is tested on cases it has seen
+  - Weights and resampling cannot be combined with a split
+  answer: 2
+  explanation: Repeated cases make the validation set share cases with the training set, so the score looks better than it should. Resample only the training part, after the split, and keep the validation data at the real positive rate.
+- prompt: A fraud team reports an AUC of 0.96 on data with 1 percent fraud. Which extra number tells you most about the alerts the team would act on?
+  options:
+  - The accuracy at a threshold of 0.5
+  - The average precision, or the precision at the recall needed, measured at the real 1 percent rate
+  - The AUC on a resample that is half fraud
+  - The number of features in the model
+  answer: 1
+  explanation: AUC ignores the positive rate, so it cannot show how many flagged cases are real. Precision-recall figures measured at the real rate do. Accuracy at 0.5 is dominated by the honest cases, and a balanced resample hides the problem.

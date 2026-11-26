@@ -1,0 +1,80 @@
+- prompt: Pada model penghitung, kata setelah "is" adalah late sebanyak 3 kali dan wrong sebanyak 2 kali. Berapa loss token berikutnya pada posisi yang kata berikutnya sebenarnya late?
+  options:
+  - 0,40
+  - 0,51
+  - 0,60
+  - 0,92
+  answer: 1
+  explanation: Model memberi late probabilitas 3 / 5 = 0,6, dan loss-nya adalah minus logaritma natural dari angka itu, -ln 0,6 = 0,51. Angka 0,60 adalah probabilitas, bukan loss, dan 0,92 adalah loss pada posisi yang kata sebenarnya wrong.
+- prompt: Apa beda prediksi kata tersamar dengan prediksi token berikutnya?
+  options:
+  - Prediksi kata tersamar mengharuskan seseorang memberi label pada setiap pesan lebih dulu
+  - Prediksi kata tersamar selalu menebak kata terakhir dari pesan
+  - Prediksi kata tersamar mengisi bagian kosong dengan memakai kata di kedua sisinya, sedangkan prediksi token berikutnya hanya melihat token sebelumnya
+  - Prediksi kata tersamar hanya dipakai pada gambar, dan prediksi token berikutnya hanya pada teks
+  answer: 2
+  explanation: Keduanya membuat labelnya dari teks itu sendiri. Prediksi kata tersamar menyembunyikan sebuah token dan memakai kata di sekitar bagian kosong, sedangkan prediksi token berikutnya hanya memakai apa yang datang sebelum token yang ditebak.
+- prompt: Sebuah encoder pretrained menghasilkan 768 angka per pesan dan ada 3 kelas. Jika encoder di-frozen, berapa angka yang harus dicocokkan oleh label pada sebuah head dengan weight dan bias?
+  options:
+  - 768
+  - 2.304
+  - Sekitar 100 juta
+  - 2.307
+  answer: 3
+  explanation: Head memiliki 768 x 3 = 2.304 weight ditambah 3 bias, yaitu 2.307 angka. Jika bias dilupakan, hasilnya 2.304, dan weight milik encoder sendiri dikunci sehingga tidak dicocokkan.
+- prompt: Pernyataan mana yang sesuai dengan hasil code kecil yang frozen melawan naive Bayes bag-of-words?
+  options:
+  - Frozen code unggul dengan 3 pesan berlabel per kelas (74,7% melawan 64,9%), dan naive Bayes unggul dengan 40 (89,8% melawan 82,6%)
+  - Frozen code unggul pada setiap jumlah pesan berlabel, karena sudah di-pretrain
+  - Naive Bayes unggul pada setiap jumlah pesan berlabel, karena modelnya lebih sederhana
+  - Keduanya mendapat skor yang sama pada 3 dan pada 40 pesan berlabel per kelas
+  answer: 0
+  explanation: Pretraining paling membantu saat label sedikit. Dengan label lebih banyak, naive Bayes mempelajari kata-katanya sendiri dan head frozen, yang dibatasi 24 angka, berhenti membaik. Keduanya seimbang di sekitar 10 per kelas (80,9% dan 81,7%).
+- prompt: Pada uji teks dengan 3 kelas, satu kelas memiliki TP = 63, FP = 32 dan FN = 5. Berapa F1-nya?
+  options:
+  - 0,66
+  - 0,93
+  - 0,77
+  - 0,50
+  answer: 2
+  explanation: F1 = 2 x 63 / (2 x 63 + 32 + 5) = 126 / 163 = 0,77. Nilai 0,66 adalah precision, 63 / 95, dan 0,93 adalah recall, 63 / 68. F1 berada di antara keduanya, sedikit lebih dekat ke yang lebih rendah.
+- prompt: Ada 1.000 pesan dan 20 di antaranya mendesak. Sebuah model menjawab "tidak mendesak" untuk setiap pesan. Berapa accuracy-nya dan F1-nya untuk kelas mendesak?
+  options:
+  - 98% dan 0,98
+  - 98% dan 0
+  - 2% dan 0
+  - 50% dan 0,50
+  answer: 1
+  explanation: Model benar pada 980 pesan yang tidak mendesak, sehingga accuracy-nya 980 / 1.000 = 98%. Ia tidak pernah menemukan pesan mendesak, jadi recall-nya 0 dan F1-nya 0. Accuracy yang tinggi pada kelas langka menutupi hal ini, itulah sebabnya kamu juga melihat F1.
+- prompt: Mengapa baseline bag-of-words diberi pesan berlabel dan pesan uji yang sama dengan pretrained model?
+  options:
+  - Agar kedua model selalu mendapat skor yang sama
+  - Karena naive Bayes tidak dapat dilatih dengan pesan lain
+  - Untuk menghemat waktu saat melatih model
+  - Agar selisih skor berasal dari modelnya, bukan dari pesan yang lebih mudah
+  answer: 3
+  explanation: Perbandingan yang adil hanya mengubah satu hal pada satu waktu. Jika kedua model melihat pesan berlabel atau pesan uji yang berbeda, selisihnya dapat berasal dari undian yang beruntung, bukan dari pretraining.
+- prompt: Mengapa pesan uji yang memiliki salinan hampir sama di teks latih atau teks pretraining dibuang?
+  options:
+  - Model dapat mencari jawabannya, sehingga skornya lebih tinggi daripada pada pesan yang belum pernah ditemuinya
+  - Salinan hampir sama selalu diberi label yang salah
+  - Semua pesan uji harus berbeda panjangnya
+  - Model tidak dapat membaca kata yang sama dua kali
+  answer: 0
+  explanation: Teks pelanggan banyak berisi pesan yang diteruskan dan berbasis template. Model yang pernah melihat salinan hampir sama dapat berhasil lewat ingatan, sehingga skornya melebih-lebihkan kinerja pada pesan baru. Di pelajaran ini hal itu dapat menaikkan skor sampai 2,8 poin.
+- prompt: Dengan 3 pesan berlabel per kelas, code yang dipelajari dari teks berbahasa Indonesia mendapat 48,4% pada pesan berbahasa Inggris, sedangkan menebak mendapat sekitar 33%. Apa bacaan yang paling tepat?
+  options:
+  - Code berbahasa Indonesia lebih baik daripada code berbahasa Inggris
+  - Pretraining selalu merugikan pada set berlabel yang kecil
+  - Code itu dibangun untuk domain lain, sehingga hanya sedikit yang berguna di sini dan sebuah model perlu diperiksa pada domainnya sendiri
+  - Skor di atas menebak membuktikan bahwa code itu berguna
+  answer: 2
+  explanation: Kedua kosakata hanya berbagi 9 dari 173 jenis kata pada pesan berbahasa Inggris. Code berbahasa Inggris mendapat 74,7%. Pretrained model yang dipakai pada domain berbeda dapat tampak baik-baik saja dan tetap kurang berguna, jadi ujilah di tempat kamu akan memakainya.
+- prompt: Sebuah model membaca paling banyak 512 token, dan sebuah ulasan memiliki 900 token. Berapa porsi ulasan yang dibaca model?
+  options:
+  - 43%
+  - 57%
+  - 78%
+  - 88%
+  answer: 1
+  explanation: 512 / 900 = 0,57, jadi model membaca sekitar 57% ulasan. Sisanya, 388 token atau 43%, terpotong, dan kesimpulan yang berada di akhir hilang.

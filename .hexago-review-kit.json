@@ -1,0 +1,11 @@
+{
+  "kit_version": 4,
+  "hexago": "1e1d22a80a27ef5ca5cb83dd7122f896efdf00d5",
+  "files": {
+    ".claude/agents/pr-reviewer.md": "047a209929158164fe23412012543bc47e8983563cc06e54decd65ebfcbddf20",
+    ".claude/agents/pr-shipper.md": "fbbf22442e467b81a54be27c17c93245f2754285c11d7565e0ef7d7943caf654",
+    "docs/design/review-gate.md": "17e1984b9529042d05b91e930e1641afd3e94895d165dc2b29fc12938b7b7c24",
+    "scripts/review-gate.pin": "88c2382ef94afb363be5bf0416583cf351cf52bf30822f39796940a088359772",
+    "scripts/review_tiers.json": "24f88be235dcd17e671fb0203e86f794e93b2686ddf0cdbdcbfb8b5d005fc27c"
+  }
+}

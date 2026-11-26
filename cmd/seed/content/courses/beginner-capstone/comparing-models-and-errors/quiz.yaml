@@ -1,0 +1,80 @@
+- prompt: Model A is scored on held-out rows from one shuffle of the data, and model B on held-out rows from a different shuffle. What is wrong with comparing their scores?
+  options:
+  - Nothing is wrong, because accuracy is the same metric for both models, whatever the rows
+  - The two models faced different test rows, so a difference may come from the rows and not from the models
+  - Model B should have been given more training rows so both models have equal training data
+  - Held-out rows should never be shuffled, because shuffling leaks the answers to the model
+  answer: 1
+  explanation: A fair comparison keeps the split the same. With different held-out rows, one model may simply have received an easier test.
+- prompt: k-NN with k = 1 is right for 164 of 164 training penguins and 53 of 55 held-out penguins. What is its gap, training score minus held-out score?
+  options:
+  - 0.6 points
+  - 1.8 points
+  - 3.6 points
+  - 96.4 points
+  answer: 2
+  explanation: The training score is 100% and the held-out score is 53 / 55 = 96.4%, so the gap is 100 - 96.4 = 3.6 points.
+- prompt: k = 5 scores 97.6% on its 164 training penguins and 98.2% on its 55 held-out penguins. Why is this not strong evidence that it does better on new rows than on old ones?
+  options:
+  - The difference is 0.6 points, smaller than the 1.8 points that a single held-out penguin is worth
+  - Held-out scores are never higher than training scores
+  - The two scores must always be equal
+  - Accuracy cannot be compared across different rows
+  answer: 0
+  explanation: With 55 held-out penguins, one penguin moves the score by 1 / 55 = 1.8 points. A 0.6-point difference is within that noise.
+- prompt: You switch from k-NN to a decision tree and, in the same run, drop two features. The held-out score goes up. What can you conclude?
+  options:
+  - The tree is better than k-NN, because the score went up once the tree was used
+  - Dropping the two features helped, because a model with fewer features is simpler
+  - Both changes helped, because the score went up after the two were made together
+  - You cannot tell which change caused it, because two things changed at once
+  answer: 3
+  explanation: Change one thing at a time. When two things change together, the effect of each is mixed and cannot be separated.
+- prompt: Over ten fresh splits, k-NN makes 13 mistakes and the tree makes 15, out of 550 answers each, and half of the splits tie. What is the best summary?
+  options:
+  - k-NN is the winner
+  - The two models are about equal here
+  - The tree is the winner because it scored 100% on the first split
+  - Neither model beats the baseline
+  answer: 1
+  explanation: A gap of 2 mistakes in 550 answers, with the winner changing from split to split, is not a real difference. Both models are far above the 69.1% baseline.
+- prompt: The held-out set has 55 penguins. By how many accuracy points does one more correct answer raise the score?
+  options:
+  - 1.8
+  - 0.6
+  - 5.5
+  - 1.0
+  answer: 0
+  explanation: One penguin is 1 / 55 of the held-out set, which is about 1.8 percentage points. That is why a one-penguin lead is weak evidence.
+- prompt: One penguin is wrong in every split in which it is held out, and the other mistakes are scattered. What does this suggest?
+  options:
+  - Bad luck in the shuffle, which a different split would make disappear
+  - The metric was chosen wrongly, since a better metric would not show this mistake
+  - Something about that penguin or about the features is making it hard, so it is worth inspecting
+  - The held-out set is too large, so it picked up a penguin it should not contain
+  answer: 2
+  explanation: Luck would move from split to split. A mistake that returns every time points to the data, such as overlap between classes, an unusual value, a wrong label, or a missing feature.
+- prompt: An Adelie has a flipper of 210 mm. Adelie flippers average 190.0 mm with a standard deviation of 6.5 mm. About how many standard deviations above the mean is it, and what name fits the error?
+  options:
+  - About 0.3, label noise
+  - About 1.5, overlap between classes
+  - About 6.5, a missing feature
+  - About 3.1, an unusual measurement
+  answer: 3
+  explanation: (210 - 190.0) / 6.5 = 3.1. A value that far from its own class is an unusual measurement. It is a hypothesis to check, such as a typing error or a very large bird.
+- prompt: Which sentence from a short report is the most honest?
+  options:
+  - The tree beats k-NN, 100% against 98.2%, so the tree is the model to choose.
+  - On ten splits the tree made 15 mistakes and k-NN 13 out of 550, so I could not separate them, and both beat the 69.1% baseline.
+  - k-NN is better because it is the older method, and older methods have been tested more.
+  - Both models are perfect on the training rows, so they are equally good on any row.
+  answer: 1
+  explanation: It reports the baseline, the repeated splits and the limits of what was shown. A one-split lead and training scores alone do not support a winner.
+- prompt: On the first split k-NN finds 16 of the 17 Chinstrap penguins and makes no false alarms. What is its recall for Chinstrap?
+  options:
+  - 100.0%
+  - 98.2%
+  - 94.1%
+  - 69.1%
+  answer: 2
+  explanation: Recall is the share of real Chinstraps that were found, 16 / 17 = 94.1%. The 98.2% is the accuracy, 54 correct of 55.

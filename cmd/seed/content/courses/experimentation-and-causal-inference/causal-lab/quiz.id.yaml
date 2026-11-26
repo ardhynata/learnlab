@@ -1,0 +1,80 @@
+- prompt: Di awal, lab menunjukkan efek sebenarnya +2,00 dan selisih naif +4,15. Apa alasan utama selisih naif jauh lebih besar?
+  options:
+  - Sampel 400 orang terlalu kecil, sehingga estimasinya noisy dan berubah-ubah dari studi ke studi.
+  - Orang treated rata-rata punya z lebih tinggi, dan z yang lebih tinggi menaikkan outcome meskipun tanpa treatment.
+  - Efek treatment lebih besar pada orang treated daripada pada orang control di lab ini.
+  - Selisih naif dibagi dengan standard error yang salah, sehingga estimasinya sendiri membengkak.
+  answer: 1
+  explanation: Kelompok treated mulai dengan keunggulan pada z, dan selisih naif menghitung keunggulan itu sebagai efek treatment. Noise akan membuat estimasi berkeliaran ke dua arah, dan tidak akan mendorong 400 orang ke sisi yang sama setiap kali. Standard error hanya menentukan ukuran interval.
+- prompt: Di lab, orang treated punya rata-rata z +0,62 dan orang control −0,45, dan outcome tanpa treatment naik sekitar 2 untuk setiap kenaikan satu langkah z. Kira-kira berapa besar bias confounding pada selisih naif?
+  options:
+  - '0,50'
+  - '1,07'
+  - '2,15'
+  - '4,15'
+  answer: 2
+  explanation: Selisih z adalah 0,62 − (−0,45) = 1,07, dan outcome naik 2 untuk setiap langkah, sehingga keunggulan awalnya 2 × 1,07 = 2,15. Itulah Galat yang ditunjukkan tabel pada baris naif. Angka 4,15 adalah seluruh selisih naif, yaitu efek sebenarnya 2,00 ditambah bias ini.
+- prompt: Kamu menekan Jalankan eksperimen acak. Mengapa selisih z antara treated dan control mengecil dari 1,26 menjadi 0,16 simpangan baku?
+  options:
+  - Lab membuang orang dengan z ekstrem dari sampel sebelum membandingkan kedua kelompok.
+  - Lemparan koin yang menentukan siapa yang mendapat treatment, sehingga z tidak lagi mengarahkan siapa yang diberi treatment.
+  - Penyesuaian regresi mengurangi pengaruh z dari outcome sebelum kedua kelompok dibandingkan.
+  - Efek treatment ditetapkan nol untuk penetapan yang baru, sehingga kedua kelompok tampak lebih mirip.
+  answer: 1
+  explanation: Orang yang sama tetap memiliki z dan potential outcome mereka. Hanya penetapannya yang berubah, dan koin yang adil mengabaikan z. Selisih kecil yang tersisa, 0,16, adalah kebetulan.
+- prompt: Kekuatan confounding adalah 0. Selisih naif +1,87 dan eksperimen acak +1,68, dengan efek sebenarnya +2,00. Pernyataan mana yang benar?
+  options:
+  - Selisih naif menang, karena 1,87 lebih dekat ke 2,00 daripada 1,68.
+  - Eksperimen acak menang, karena pengacakan selalu mengalahkan selisih naif.
+  - Tidak ada lagi confounding, sehingga selisih naif sudah tidak berbias, dan selisih 0,19 sebanding dengan noise (standard error sekitar 0,23).
+  - Keduanya tidak dapat dipakai, karena tanpa confounding tidak ada efek yang dapat diestimasi.
+  answer: 2
+  explanation: Dengan confounding 0, kelompok treated dan control sama kecuali soal treatment, sehingga selisih naif membidik kebenaran seperti halnya eksperimen acak. Kedua galat, −0,13 dan −0,32, berbeda 0,19, kurang dari standard error salah satu estimasi (sekitar 0,23), sehingga tidak ada yang jelas lebih dekat. Pengacakan berguna ketika ada yang menjadi confounder. Lab menyebut dua galat sama dekat tepat dengan aturan ini.
+- prompt: Dari 200 studi, selisih naif punya bias +2,15 dan sebaran 0,20 dengan 400 orang. Apa yang terjadi ketika kamu mengatur Ukuran sampel ke 1600 dan menjalankan 200 studi lagi?
+  options:
+  - Sebaran turun menjadi sekitar 0,10 dan bias tetap sekitar +2,14.
+  - 'Keduanya turun: bias menjadi sekitar 0,5 dan sebaran sekitar 0,10.'
+  - Tidak ada yang berubah, karena besar efek tidak berubah.
+  - Bias turun menjadi sekitar 0,5 dan sebaran tetap sekitar 0,20.
+  answer: 0
+  explanation: Lebih banyak orang meratakan noise, sehingga sebaran turun (sekitar separuhnya untuk orang empat kali lipat). Keunggulan awal kelompok treated melekat pada kelompoknya sendiri, sehingga sampel yang lebih besar mengukur angka salah yang sama dengan lebih presisi.
+- prompt: Dari 200 studi, eksperimen acak punya bias −0,04 dan sebaran 0,21. Pernyataan mana yang benar?
+  options:
+  - Setiap studi acak tunggal berada dalam jarak 0,04 dari kebenaran, karena biasnya sekecil itu.
+  - Biasnya kecil hanya karena sampelnya besar, dan sampel yang lebih kecil akan membuatnya berbias.
+  - Eksperimen ini lebih buruk daripada selisih naif, karena sebarannya lebih besar daripada sebaran naif.
+  - Eksperimen ini tidak berbias secara rata-rata, tetapi satu studi tetap dapat meleset sekitar 0,2 atau lebih.
+  answer: 3
+  explanation: Bias mendekati nol berarti rata-ratanya membidik kebenaran. Sebaran menunjukkan bahwa satu studi tersebar sekitar 0,21 di sekitar rata-rata itu. Selisih naif punya sebaran lebih kecil (0,20) tetapi bias +2,15, yang jauh lebih buruk.
+- prompt: Kamu menyalakan Tambahkan confounder yang tidak terukur. Penyesuaian regresi pada z bergeser ke +3,30, dan eksperimen acak memberi +2,01 pada lemparan keduanya. Mengapa pengacakan tetap berhasil?
+  options:
+  - Lemparan koin memutus hubungan antara variabel tersembunyi dan treatment, seperti yang dilakukannya untuk z.
+  - Eksperimen acak menyesuaikan variabel tersembunyi secara otomatis, seperti yang dilakukan regresi.
+  - Variabel tersembunyi hanya memengaruhi kelompok control, sehingga tidak dapat membiaskan perbandingan.
+  - Eksperimen acak memakai lebih banyak orang daripada regresi, sehingga lebih tepat.
+  answer: 0
+  explanation: Lemparan koin mengabaikan setiap variabel, terukur atau tidak. Regresi hanya dapat menyesuaikan z, karena z satu-satunya confounder yang diberitahukan kepadanya. Lemparan acak pertama berbunyi +1,36 dan meleset dari kebenaran, yaitu peluang 1 dari 20 bahwa interval 95% meleset.
+- prompt: Dengan Tambahkan collider menyala, baris Menyesuaikan collider berbunyi −0,07 dibandingkan efek sebenarnya +2,00. Apa yang salah?
+  options:
+  - Collider adalah confounder, karena itu menyesuaikannya seharusnya berhasil seperti biasa.
+  - Menyesuaikan sesuatu yang diakibatkan oleh treatment dan outcome sekaligus menciptakan hubungan palsu dan menghapus efeknya.
+  - Sampelnya terlalu kecil untuk collider, sehingga estimasinya menjauh dari kebenaran.
+  - Intervalnya terlalu sempit untuk memuat efek sebenarnya, sehingga estimasinya hanya tampak salah.
+  answer: 1
+  explanation: Collider diakibatkan oleh treatment dan oleh outcome. Menahannya tetap mengikat keduanya dengan cara yang tidak ada di dunia nyata. Aturan dari pelajaran ini adalah menyesuaikan variabel yang sudah tetap sebelum treatment dan yang memengaruhi treatment sekaligus outcome.
+- prompt: Di kartu power, efeknya 0,5, sebarannya 1, dan ada 50 orang per kelompok. Berapa standard error selisihnya, dan berapa standard error besar efeknya?
+  options:
+  - 0,20 dan 2,5
+  - 0,14 dan 3,5
+  - 0,50 dan 1,0
+  - 1,00 dan 0,5
+  answer: 0
+  explanation: Standard error-nya 1 × sqrt(2 / 50) = 0,2, dan 0,5 / 0,2 = 2,5. Melewati 1,96 dari 2,5 menyisakan 0,54, yang memberi power 70,5% seperti pada kartu.
+- prompt: Tanpa efek nyata dan dengan 5 pengecekan, lab menunjukkan sekitar 14,7% false positive ketika kamu berhenti pada hasil signifikan pertama, bukan 5%. Apa perbaikan terbaiknya?
+  options:
+  - Mengecek lebih sering, sehingga berhenti segera setelah pengecekan pertama melewati garis.
+  - Menaikkan efek yang ingin dideteksi sampai false positive turun ke tingkat target.
+  - Memakai alpha yang lebih kecil hanya pada pengecekan terakhir dan membiarkan pengecekan awal apa adanya.
+  - Menetapkan ukuran sampel dan jumlah pengecekan lebih dulu, dan menguji tiap pengecekan pada cutoff yang lebih ketat seperti alpha dibagi jumlah pengecekan.
+  answer: 3
+  explanation: Setiap pengecekan adalah satu kesempatan lagi bagi keberuntungan. Merencanakan pengecekan sejak awal dan memakai cutoff yang lebih ketat untuk tiap pengecekan, yang ditunjukkan garis Dikoreksi di sekitar 3%, mengembalikan tingkat kesalahan mendekati target. Mengecek lebih sering justru memperburuknya.

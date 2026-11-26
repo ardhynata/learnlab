@@ -1,0 +1,10 @@
+slug: foundations
+title: Foundations
+summary: "The ideas every model rests on: data, distance, honest evaluation, and how models are fitted by descent."
+level: beginner
+position: 1
+requires: []
+translations:
+  id:
+    title: "Dasar-dasar"
+    summary: "Konsep dasar di balik setiap model: data, jarak, evaluasi yang jujur, dan cara model dilatih dengan gradient descent."

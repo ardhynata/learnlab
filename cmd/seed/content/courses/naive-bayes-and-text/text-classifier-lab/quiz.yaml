@@ -1,0 +1,72 @@
+- prompt: At smoothing alpha 0, a test message contains "parcel", a word seen 8 times in delivery training messages and never in billing or technical problem. The message has no other word that delivery never saw. What does the model do?
+  options:
+  - It ignores "parcel", because a word with probability 0 carries no information
+  - It gives billing and technical problem probability 0, so delivery wins
+  - It gives delivery probability 0, because the word was rare
+  - It lowers the score of billing and technical problem a little, so delivery wins narrowly
+  answer: 1
+  explanation: With alpha 0, P(parcel | billing) and P(parcel | technical problem) are exactly 0, and a product with one 0 factor is 0. Delivery keeps a positive score. The word is not ignored and the effect is not small.
+- prompt: In one lab model the billing training messages hold 393 words in all, the vocabulary has 153 words, and "have" occurs 5 times in billing. With alpha 1, what is P(have | billing)?
+  options:
+  - 5 / 393 = 0.0127
+  - 6 / 546 = 0.0110
+  - 6 / 393 = 0.0153
+  - 5 / 546 = 0.0092
+  answer: 1
+  explanation: Add alpha to the count and alpha times the vocabulary size to the class total, so (5 + 1) / (393 + 1 x 153) = 6 / 546 = 0.0110. The other options add alpha to only one side.
+- prompt: '"have" has a bar of 2.2 for billing. Since e^2.2 is about 9, what does the bar say?'
+  options:
+  - 2.2% of all the billing training words are "have"
+  - Billing messages are 9 times as likely to be classified correctly
+  - A message that contains "have" is 2.2 times as likely to be billing
+  - Among billing words "have" takes a share about 9 times as large as among other classes
+  answer: 3
+  explanation: The bar is ln P(have | billing) minus ln P(have | others), so e to the bar is the ratio of the two probabilities, about 9. It describes the training words, not a probability for a message.
+- prompt: In the lab at the start, "have" is a top word for billing even though it is a very common word. What is the most likely reason?
+  options:
+  - Five billing training messages happened to use it, and none of the other training messages did
+  - '"have" is a billing word in English'
+  - The lab always shows common words first
+  - The model counts it twice because it is a stop word
+  answer: 0
+  explanation: With only 60 training messages a word seen 5 times in one class and never in the others gets a large log-odds by chance. Turning on Remove stop words removes it from the lists. More training messages would test it.
+- prompt: With 6 training messages the model scores 100% on them and about 58% on test messages. What does the gap show?
+  options:
+  - The test set is badly chosen and holds too many hard messages
+  - Smoothing alpha is too large, so the model forgets what it saw
+  - The model fitted its few messages, not the general pattern, so it needs more
+  - Naive Bayes cannot learn from more than 6 messages at a time
+  answer: 2
+  explanation: A perfect score on training messages next to a weak score on new ones is the overfitting you met in Level 1. In the lab the gap shrinks as training size grows, to about 4 points at 180 messages.
+- prompt: On one split, Remove stop words moves the test accuracy from 53 to 55 correct of 60. On another it moves from 55 to 52. What should you conclude?
+  options:
+  - Stop words must be removed, because the first split is the more recent
+  - The change is within noise for 60 test messages, so test it on several splits before believing it
+  - The lab has a bug, because a setting must always help or always hurt
+  - Stop words matter only for the training messages
+  answer: 1
+  explanation: One test message is 1 / 60 = 1.7 points, so a few messages in either direction is what a new split gives. Averaged over 30 splits the change is about +0.3 messages, which is no reliable gain.
+- prompt: A message is pushed by still +2.33, cancelled +2.15 and subscription +2.04 toward billing, and by address −1.76, shipment −1.54 and courier −0.85 toward delivery. The priors are equal and no other word pushes. Which class does the model choose, and how many times as likely is it?
+  options:
+  - Billing, about 11 times as likely
+  - Delivery, because it has more negative numbers
+  - Billing, about 2.4 times as likely
+  - Neither, the pushes cancel out
+  answer: 0
+  explanation: The sum is 2.33 + 2.15 + 2.04 − 1.76 − 1.54 − 0.85 = 2.37, and e^2.37 = 10.7. The sum is a log-odds, so the factor is e to the sum. It is not 2.4 times.
+- prompt: The same wrong message gets 100.0% for billing with Word counts and 62.3% with TF-IDF. The sum of its pushes is +8.64 and +0.98. Why is TF-IDF less extreme?
+  options:
+  - TF-IDF changes the class priors, so the classes start unequal
+  - TF-IDF makes the model less accurate on every message it sees
+  - TF-IDF removes the words that point to billing from the message
+  - TF-IDF scales each message's weights to length 1, so every push shrinks
+  answer: 3
+  explanation: The lab's TF-IDF rescales each message, which shrinks the pushes and so the sum of log-odds. The order of the classes can stay the same while the probability falls from 99.98% to 62.3%.
+- prompt: The model says billing with 100.0% for a message whose true class is delivery. The message asks to change an address and also about a refund for a cancelled subscription. What is the best reading?
+  options:
+  - The model must have been trained on too few messages to see the address
+  - 100.0% proves the model's answer is right, since it is the top probability
+  - 'Two complaints in one message: five strong billing words outweigh the delivery words, and naive Bayes is overconfident'
+  - The test set is wrong, so the mistake can be ignored when judging the model
+  answer: 2
+  explanation: The pushes toward billing add to +9.8 against about −4.2 toward delivery, and the message really mentions both problems. Naive Bayes treats each word as new evidence, so its probabilities are often too extreme. The mistake is worth reading, not ignoring.

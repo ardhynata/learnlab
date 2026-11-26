@@ -1,0 +1,80 @@
+- prompt: Sebuah layanan pengantaran me-fit garis hanya pada 5 pengantaran lalu, dan prediksinya untuk perjalanan 6 km meleset jauh. Ini jenis ketidakpastian yang mana, dan apa yang mengurangi?
+  options:
+  - Aleatoric, dan dikurangi oleh loss function yang lebih baik
+  - Epistemic, dan dikurangi dengan mengumpulkan lebih banyak pengantaran
+  - Aleatoric, dan dikurangi dengan mengumpulkan lebih banyak pengantaran
+  - Epistemic, dan sama sekali tidak dapat dikurangi
+  answer: 1
+  explanation: Garis yang di-fit pada 5 pengantaran kurang dikenal karena datanya sedikit, yaitu kurangnya pengetahuan. Data lebih banyak mengecilkannya. Noise dalam pengantaran itu sendiri adalah bagian aleatoric, dan data lebih banyak tidak menghilangkannya.
+- prompt: Pada layanan rekaan, goyangan garis hasil fit di 6 km adalah 0,45 menit dengan 80 pengantaran latih. Kira-kira berapa dengan 320 pengantaran?
+  options:
+  - 0,45, karena datanya sejenis
+  - 0,11, seperempatnya
+  - 0,23, setengahnya
+  - 1,80, empat kalinya
+  answer: 2
+  explanation: Goyangan turun menurut akar kuadrat n, sehingga data empat kali lipat membuatnya setengah, 0,45 / 2 = 0,23. Sebaran satu pengantaran, 4,0 menit, sama sekali tidak berubah.
+- prompt: Lima model yang di-fit pada bootstrap sample sepakat erat di 4 km, tetapi memberi prediksi dari 37,8 sampai 52,9 menit di 12 km. Apa yang ditunjukkan ini?
+  options:
+  - Data hanya sedikit bercerita tentang 12 km, sehingga ketidakpastian epistemic di sana besar
+  - Pengantaran di 12 km berisik, sehingga ketidakpastian aleatoric besar
+  - Model di 4 km salah karena mereka sepakat
+  - Lima model terlalu sedikit, sehingga hasilnya tidak berarti
+  answer: 0
+  explanation: Ketidaksepakatan antara model yang dilatih pada sampel berbeda menandai kurangnya pengetahuan, yaitu epistemic. Penyebabnya dapat berupa data yang tipis, dan dalam pelajaran ini semua 14 pengantaran latih berada di bawah 8 km. Ia tidak mengatakan apa pun tentang noise.
+- prompt: Kelima model sebuah ensemble memprediksi 28 menit di 6 km, tanpa ketidaksepakatan. Dapatkah kamu menyimpulkan bahwa satu pengantaran 6 km akan memakan waktu sekitar 28 menit?
+  options:
+  - Ya, karena kesepakatan berarti prediksinya pasti
+  - Ya, karena model yang lebih banyak selalu memberi rentang yang lebih sempit
+  - Tidak, karena ensemble tidak menunjukkan sebaran aleatoric dari pengantaran tunggal
+  - Tidak, karena model-model itu pasti berselisih di setiap jarak
+  answer: 2
+  explanation: Kesepakatan menunjukkan bahwa rata-rata sudah terpatok dengan baik, yaitu bagian epistemic. Pengantaran tunggal masih dapat tersebar beberapa menit di sekitarnya, dan noise itu tetap ada.
+- prompt: Untuk τ = 0,9, sebuah pengantaran memakan 40 menit dan model memprediksi quantile 0,9 sebesar 30. Berapa pinball loss-nya?
+  options:
+  - 9
+  - 1
+  - 10
+  - 36
+  answer: 0
+  explanation: Prediksinya terlalu rendah 10 menit, sehingga loss-nya τ × (y - q) = 0,9 × 10 = 9. Terlalu tinggi 10 hanya berharga 0,1 × 10 = 1.
+- prompt: Mengapa pinball loss dengan τ = 0,9 membebankan lebih banyak untuk prediksi yang terlalu rendah daripada yang terlalu tinggi?
+  options:
+  - Pengantaran yang terlambat lebih penting bagi pelanggan daripada yang lebih cepat
+  - Itu membuat loss lebih mudah dihitung dengan tangan
+  - Loss harus selalu bertambah menurut besarnya prediksi
+  - Quantile 0,9 yang baik harus berada di atas 90% hasil, sehingga sebagian besar meleset ke sisi atas
+  answer: 3
+  explanation: Kemiringan itulah yang membuat prediksi terbaik menjadi quantile 0,9. Prediksi terlalu rendah berharga 0,9 per menit dan terlalu tinggi 0,1, sehingga loss terendah ada di tempat sekitar 90% hasil berada di bawah prediksi.
+- prompt: Untuk pengantaran 22, 25, 27, 31 dan 45 menit dengan τ = 0,9, berapa rata-rata pinball loss dari prediksi 31?
+  options:
+  - 1,5
+  - 4,1
+  - 14,5
+  - 2,9
+  answer: 3
+  explanation: Loss-nya 0,1 × 9 = 0,9, 0,1 × 6 = 0,6, 0,1 × 4 = 0,4, 0 dan 0,9 × 14 = 12,6. Jumlahnya 14,5, dan 14,5 / 5 = 2,9. Angka 14,5 adalah jumlah, bukan rata-rata.
+- prompt: Model pada pelajaran menambah data latihnya dari 80 menjadi 320 pengantaran. Apa yang terjadi pada confidence interval 80% untuk rata-rata di 6 km dan pada prediction interval 80% untuk satu pengantaran?
+  options:
+  - Keduanya terpotong menjadi setengah
+  - Keduanya tetap sama
+  - Confidence interval terpotong menjadi setengah dan prediction interval nyaris tidak berubah
+  - Prediction interval terpotong menjadi setengah dan confidence interval nyaris tidak berubah
+  answer: 2
+  explanation: Confidence interval mengukur goyangan epistemic dan menjadi setengah, dari ± 0,6 menjadi ± 0,3. Prediction interval memuat sebaran aleatoric 4 menit, yang tidak dapat dikecilkan oleh data lebih banyak, sehingga hanya bergeser dari ± 5,2 menjadi ± 5,1.
+- prompt: Noise bertambah menurut jarak, dan simpangan baku sebuah pengantaran adalah 2,0 di 2 km dan 7,0 di 12 km. Satu pita 80% sebesar ± 5,8 menit dipakai untuk semua perjalanan. Apa yang salah dengannya?
+  options:
+  - Terlalu sempit di 2 km dan terlalu lebar di 12 km
+  - Terlalu lebar di 2 km dan terlalu sempit di 12 km, tempat hanya sekitar 59% pengantaran jatuh di dalamnya
+  - Benar di mana-mana, karena rata-rata ia memuat 80%
+  - Terlalu lebar di mana-mana, karena noise lebih kecil dari 5,8
+  answer: 1
+  explanation: Satu lebar saja mengabaikan noise yang heteroscedastic. Di 2 km pita itu jauh lebih lebar dari yang diperlukan (99,6% di dalam) dan di 12 km terlalu sempit (59%). Coverage rata-rata yang dekat dengan 80% dapat menyembunyikan hal ini.
+- prompt: Bagaimana sebuah model dapat memberi interval 80% untuk satu pengantaran dengan quantile regression?
+  options:
+  - Fit satu model untuk τ = 0,1 dan satu untuk τ = 0,9, lalu pakai prediksi keduanya sebagai kedua ujung
+  - Fit satu model untuk τ = 0,5 dan tambahkan 80% pada prediksinya
+  - Fit satu model dengan squared loss dan pakai prediksinya dua kali
+  - Fit satu model untuk τ = 0,8 dan pakai sebagai ujung atas saja
+  answer: 0
+  explanation: Quantile 0,1 memiliki 10% hasil di bawahnya dan quantile 0,9 memiliki 10% di atasnya, sehingga yang berada di antaranya memuat 80%. Setiap model di-fit dengan pinball loss untuk τ-nya sendiri.

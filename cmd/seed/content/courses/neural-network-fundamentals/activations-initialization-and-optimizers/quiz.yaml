@@ -1,0 +1,80 @@
+- prompt: A network has two layers with no activation function. The first multiplies by 2 and the second by 3. For an input x = 1.5, what does it output, and what does that show?
+  options:
+  - 7.5, because the layers add their weights
+  - 9, the same as a single weight of 6 would give
+  - 4.5, because only the last layer counts
+  - Nothing, because a network needs an activation function to run
+  answer: 1
+  explanation: The output is 3 × (2 × 1.5) = 9, which is 6 × 1.5. Two linear layers collapse into one linear map, so the activation function must bend the score between them.
+- prompt: In a deep network of sigmoid units with every weight equal to 1, the sigmoid's slope is at most 0.25. How much of the last layer's gradient reaches a layer 4 layers back at best?
+  options:
+  - 0.25, because the slope is applied once
+  - 1, because the weights are 1
+  - 0.0625, because 0.25 is squared
+  - About 0.0039, because 0.25 is multiplied in 4 times
+  answer: 3
+  explanation: Each layer the gradient passes through multiplies it by at most 0.25, so after 4 layers the factor is 0.25^4 = 0.0039. This shrinking product is the vanishing gradient problem.
+- prompt: A ReLU unit gets a negative score for every example in the training set. With no weight decay, what happens to its weights?
+  options:
+  - They grow, because the loss is still large
+  - They move toward zero, because the unit is inactive
+  - They keep changing, but the unit's output stays 0
+  - They stop changing, because the slope is 0 and no gradient arrives
+  answer: 3
+  explanation: The slope of ReLU is 0 for a negative score, so the gradient to this unit's weights is 0 and an update changes nothing. The unit is dead until something else moves its score above zero.
+- prompt: Every weight in a network starts at the same value, such as 0.5 or 0. What is the problem?
+  options:
+  - The loss is too large to be reduced
+  - Units in a layer get identical gradients, so they stay identical and the layer acts like one unit
+  - The gradients become too large and explode
+  - The network cannot compute a prediction at all
+  answer: 1
+  explanation: Equal weights give equal outputs and equal gradients, so each update keeps the units equal. Random starting weights break the symmetry so units can learn different features.
+- prompt: A ReLU layer has 200 inputs. Which standard deviation does He scaling give for its starting weights, using the variance 2 / n_in?
+  options:
+  - 0.1
+  - 0.0707
+  - 0.01
+  - 1
+  answer: 0
+  explanation: The variance is 2 / 200 = 0.01, so the standard deviation is the square root of 0.01, which is 0.1. The value 0.0707 would come from 1 / 200, without the factor 2 that makes up for ReLU zeroing about half the scores.
+- prompt: On its very first step, Adam with a learning rate of 0.01 sees a gradient of 40 for one weight. About how far does it move that weight?
+  options:
+  - 0.4, the same as SGD
+  - 40
+  - 0.0004
+  - 0.01, about the learning rate
+  answer: 3
+  explanation: On the first step the corrected averages give 40 for the gradient and 1600 for its square, so the step is 0.01 × 40 / √1600 = 0.01. SGD would move the weight by 0.01 × 40 = 0.4. Adam scales each weight's step by its own gradient size.
+- prompt: A weight is 2, its gradient is 0, the learning rate is 0.1 and the weight decay penalty is λ × w² with λ = 0.25. What is the weight after one update?
+  options:
+  - 2, because the gradient is 0
+  - 1.95
+  - 1.9
+  - 1.5
+  answer: 2
+  explanation: The penalty adds a slope of 2 × 0.25 × 2 = 1, so the update is 2 - 0.1 × 1 = 1.9. Each step multiplies the weight by 1 - 0.1 × 2 × 0.25 = 0.95 when the gradient is 0.
+- prompt: A network is trained with dropout at probability 0.5, scaling the survivors by 2 during training. What should it do when it makes predictions?
+  options:
+  - Drop half of the units again, as in training
+  - Drop no units and halve every weight
+  - Drop no units and use all of them with no extra scaling
+  - Keep the same random mask that it used at the last training step
+  answer: 2
+  explanation: Because the survivors were doubled in training, the average output already matches what every unit gives together. At prediction time all units are used and nothing is scaled again.
+- prompt: With patience 2, a run has validation losses 0.52, 0.41, 0.39, 0.40, 0.42 and 0.45 in epochs 1 to 6. When does early stopping stop, and which weights does it keep?
+  options:
+  - It stops after epoch 5 and keeps the weights from epoch 3
+  - It stops after epoch 6 and keeps the weights from epoch 6
+  - It stops after epoch 3 and keeps the weights from epoch 3
+  - It stops after epoch 4 and keeps the weights from epoch 4
+  answer: 0
+  explanation: The best loss, 0.39, comes in epoch 3. Epochs 4 and 5 do not improve on it, which uses up the patience of 2, so training stops after epoch 5 and the weights from epoch 3 are restored.
+- prompt: Training loss keeps falling, but validation loss has been rising since epoch 8. Which response fits best?
+  options:
+  - Raise the learning rate, to make training loss fall faster
+  - Start again with every weight at zero
+  - Add weight decay or dropout, or stop early
+  - Switch every unit to the sigmoid
+  answer: 2
+  explanation: A training loss that falls while the validation loss rises is the signature of overfitting, and weight decay, dropout and early stopping all hold the network back. A higher rate, zero weights or sigmoid units would not address it.

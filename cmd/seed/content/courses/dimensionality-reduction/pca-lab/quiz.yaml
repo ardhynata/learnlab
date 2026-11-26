@@ -1,0 +1,72 @@
+- prompt: In the PCA lab the axis is at 0° and the status line says it keeps 3.15 of the 4.90 total variance. About how much information is lost?
+  options:
+  - About 0.4
+  - About 1.7
+  - About 3.2
+  - About 4.9
+  answer: 1
+  explanation: Variance kept plus information lost is the total, 4.90, so the loss is 4.90 - 3.15 = 1.75, and the lab shows 1.74 because of rounding. It is not 3.15, which is the part that was kept.
+- prompt: For the lab's cloud, c11 = 3.15, c22 = 1.74 and c12 = 1.97. At 45° the variance kept is (c11 + c22) / 2 + c12. What is it, and what is the information lost?
+  options:
+  - Kept 6.9, lost -2.0
+  - Kept 2.4, lost 2.5
+  - Kept 4.4, lost 0.5
+  - Kept 3.2, lost 1.7
+  answer: 2
+  explanation: (3.15 + 1.74) / 2 + 1.97 is about 4.41, and the total is 3.15 + 1.74 = 4.89, so the loss is about 0.48. A loss can never be negative, and the kept part can never be above the total.
+- prompt: You press Snap to the first principal component and then Turn the axis by 90°. The status line goes from "keeps 4.54, loses 0.36" to what?
+  options:
+  - Keeps 0.36, loses 4.54
+  - Keeps 4.54, loses 0.36, because the axis is the same line
+  - Keeps 2.45, loses 2.45
+  - Keeps 0.36, loses 0.36
+  answer: 0
+  explanation: The axis at a right angle to the best one is PC2. It keeps the second eigenvalue, 0.36, and the rest of the 4.90 total is lost. Kept plus lost must still add up to the total.
+- prompt: In the lab you pick Round (no correlation) and press Snap to the first principal component. What does the lab show for the variance kept at different angles?
+  options:
+  - The best axis keeps 100% and the others keep nothing
+  - The best axis keeps about 92% of the variance, as in the strong cloud
+  - It keeps nothing at any angle, because the points are random
+  - Every angle keeps the same 50.0%, so no axis is better
+  answer: 3
+  explanation: A round cloud has the same spread in every direction, so every axis keeps half of the total in 2-D. PCA finds a good first component only when the features share information.
+- prompt: The scree plot of the 8-feature table explains 65.4% and 25.1% for the first two components, then 2.0%, 1.8%, 1.7%, 1.6%, 1.3% and 1.1%. You keep 3 components. How much variance do you lose?
+  options:
+  - About 2.0%
+  - About 7.5%
+  - About 9.5%
+  - About 92.5%
+  answer: 1
+  explanation: Three components keep 65.4 + 25.1 + 2.0 = 92.5%, so you lose 100 - 92.5 = 7.5%. The 92.5% is what you keep, and 9.5% is the loss for only two components.
+- prompt: A scree plot drops steeply for two components and then goes flat. Which choice follows the course's advice from the earlier lessons and this one?
+  options:
+  - Keep all components, because each one adds something
+  - Keep only one, because the bars always shrink
+  - Keep about two, and check how much variance the elbow keeps and whether the task still works
+  - Keep the flat ones, because they hold the noise you want to study
+  answer: 2
+  explanation: The steep part is where most of the information sits, and the tail adds little. There is no single right k. Look at the elbow and the share kept (here 90.5% for two), then check that the task still works.
+- prompt: In the lab you set Data to Penguins (real) and turn off Standardise the measurements. PC1 explains about 100% of the variance. What is the best explanation?
+  options:
+  - Body mass is in grams, so its huge numbers hold almost all of the variance
+  - The penguins really do vary in only one direction
+  - PCA always puts everything on PC1 when there are four columns
+  - Turning off standardising removes the species from the data
+  answer: 0
+  explanation: Variance depends on units. Body mass has a variance of about 641,000 against about 197 for flipper length, so PC1 is almost the mass axis alone. With standardising on, PC1 explains 68.8%.
+- prompt: The best axis kept 92.7%, 93.7%, 93.3%, 92.5%, 93.8% and 93.0% of the variance in six samples of the strong cloud. What do you conclude?
+  options:
+  - The result is wrong, because the numbers are not identical
+  - Six samples prove that every cloud keeps about 93%
+  - The first sample is the right one and the others are noise
+  - The pattern holds, since the best axis keeps about 93% each time, and the exact figure moves a little
+  answer: 3
+  explanation: The numbers vary a little from sample to sample, which is normal, and they stay in a narrow range. Six samples of one cloud is a small check, and it says nothing about a noisy cloud, which kept 63.7% to 69.0%.
+- prompt: In 3-D the best single axis of the lab's strong cloud keeps 81.0%, and the second component adds 14.4%. How much do the two components keep together?
+  options:
+  - 81.0%, because the second axis only repeats the first
+  - About 95.4%
+  - 100%, because two components always keep everything
+  - About 66.6%
+  answer: 1
+  explanation: The components are at right angles, so their explained variance adds up, 81.0 + 14.4 = 95.4%. The remaining 4.6% sits on the third component.

@@ -1,0 +1,80 @@
+- prompt: Bagaimana satu bootstrap sample dari 200 penguin training dibangun untuk bagging?
+  options:
+  - Ambil 100 penguin dan sisihkan 100 lainnya
+  - Ambil 200 penguin tanpa pengembalian, dengan urutan baru
+  - Ambil 200 penguin dengan pengembalian, sehingga sebagian terambil dua kali dan sebagian tidak terambil sama sekali
+  - Pertahankan semua 200 penguin dan tambahkan noise acak pada ukurannya
+  answer: 2
+  explanation: Sebuah bootstrap sample memiliki baris sebanyak training set dan diambil dengan pengembalian. Karena itulah satu sampel hanya memuat sekitar 63% penguin yang berbeda, dan setiap tree melihat bagian data yang berbeda.
+- prompt: Lima tree memberi vote pada satu penguin. Tiga menjawab betina dan dua menjawab jantan. Apa jawaban forest, dan berapa porsi tree yang menjawab jantan?
+  options:
+  - Betina, dan 0,4 dari tree menjawab jantan
+  - Jantan, dan 0,4 dari tree menjawab jantan
+  - Betina, dan 0,6 dari tree menjawab jantan
+  - Jantan, dan 0,6 dari tree menjawab jantan
+  answer: 0
+  explanation: Mayoritas menjawab betina, 3 dari 5. Porsi tree yang menjawab jantan adalah 2 / 5 = 0,4. Porsi sedekat ini dengan setengah menandakan penguin yang berada dekat batas.
+- prompt: Dalam pelajaran, 353 dari 400 tree hasil bagging menanyakan body mass lebih dulu. Apa yang diubah oleh random forest agar tree-nya kurang mirip?
+  options:
+  - Ia menumbuhkan setiap tree pada penguin yang lebih sedikit daripada isi training set
+  - Ia menghentikan setiap tree setelah satu pertanyaan
+  - Ia melatih setiap tree pada test set yang berbeda
+  - Di setiap split, setiap tree hanya boleh melihat subset acak dari feature
+  answer: 3
+  explanation: Pada bagging saja, setiap split boleh memakai semua feature, sehingga feature terkuat menang hampir di mana-mana. Subset acak di setiap split membuat body mass tidak tersedia pada beberapa split, sehingga feature lain mendapat giliran dan tree-nya menjadi lebih berbeda.
+- prompt: Mengapa vote dari banyak tree sering mendapat skor lebih baik daripada satu tree yang ditumbuhkan penuh?
+  options:
+  - Setiap tree kurang akurat, dan vote menyembunyikan hal itu
+  - Tree-tree membuat kesalahan di tempat yang berbeda, dan vote meniadakan kesalahan yang hanya dibuat oleh sebagian tree
+  - Rata-rata menghilangkan kesalahan yang dibuat oleh setiap tree
+  - Setiap tree melihat penguin validation, sehingga vote dilatih pada penguin itu
+  answer: 1
+  explanation: Satu tree penuh memiliki varians tinggi, dan tree yang dilatih pada bootstrap sample berbeda membuat kesalahan di tempat yang berbeda. Rata-rata meniadakan perbedaan itu. Rata-rata tidak dapat meniadakan kesalahan yang dimiliki semua tree, dan tidak ada tree yang dilatih pada penguin validation.
+- prompt: Sebuah forest memiliki 40 tree, dan setiap bootstrap sample melewatkan seekor penguin tertentu dengan probabilitas 0,367. Sekitar berapa dari 40 tree itu yang belum pernah melihat penguin tersebut?
+  options:
+  - Sekitar 40, karena setiap tree melewatkannya
+  - Sekitar 25
+  - Sekitar 15
+  - Sekitar 4
+  answer: 2
+  explanation: 40 x 0,367 = 14,7, sehingga sekitar 15 tree tidak melihat penguin itu. Tree-tree itulah yang vote-nya dihitung untuk skor out-of-bag penguin tersebut.
+- prompt: Sebuah forest benar pada 200 dari 200 penguin training-nya sendiri, tetapi out-of-bag error-nya 9,0%. Angka mana yang merupakan perkiraan lebih baik untuk error-nya pada penguin baru?
+  options:
+  - 9,0%, karena setiap vote berasal dari tree yang belum pernah melihat penguin itu
+  - 0%, karena forest mengenal penguin training
+  - Keduanya sama baiknya, karena sama-sama memakai 200 penguin yang sama
+  - Tidak ada, karena hanya validation set yang boleh dipakai
+  answer: 0
+  explanation: Skor training terlalu menyenangkan, karena tree dilatih pada penguin itu sendiri. Vote out-of-bag hanya memakai tree yang belum melihat penguin itu, sehingga bekerja seperti data yang disisihkan. Angka itu tetap sebuah perkiraan, dengan standard error sekitar 2 poin di sini.
+- prompt: Pada forest dengan 100 tree, mengacak bill depth menurunkan skor validation sebesar 20,53 penguin benar dari 67, dan mengacak flipper length menurunkannya sebesar 0,27. Apa kesimpulan yang wajar?
+  options:
+  - Flipper length tidak berhubungan dengan jenis kelamin pada penguin
+  - Bill depth menyebabkan jenis kelamin penguin
+  - Forest harus dilatih ulang dengan 20,53 tree tambahan
+  - Forest ini bersandar pada bill depth jauh lebih besar daripada pada flipper length
+  answer: 3
+  explanation: Permutation importance menggambarkan apa yang dipakai oleh model ini. Flipper length bergerak bersama body mass (r = 0,87), sehingga tree dapat memakai body mass sebagai gantinya. Penurunan mendekati nol tidak berarti feature itu tidak berhubungan dengan label, dan importance tidak menunjukkan sebab-akibat.
+- prompt: Tabel pelajaran menunjukkan simpangan baku skor validation turun dari 2,10 dengan 1 tree menjadi 0,57 dengan 100 tree, sementara rata-ratanya mendatar di dekat 58 benar. Apa yang ditunjukkan hal ini?
+  options:
+  - Makin banyak tree membuat skor makin sedikit naik-turun dari satu forest ke forest berikutnya
+  - Makin banyak tree terus menaikkan rata-rata skor tanpa batas
+  - Setiap tree tambahan membuat forest makin menghafal
+  - Forest 100 tree mendapat skor 0,57 pada setiap penguin validation
+  answer: 0
+  explanation: Sebaran antar-seed menyusut ketika tree ditambah, dan itulah arti varians turun. Rata-ratanya berhenti naik setelah beberapa puluh tree, sehingga tambahan tree membeli kestabilan, bukan accuracy tanpa batas.
+- prompt: Dari 30 pembagian data, 25 tree random forest rata-rata benar 60,1 dari 67 penguin validation dan 25 tree hasil bagging 59,5. Bagaimana kamu membaca selisih itu?
+  options:
+  - Forest lebih baik 0,6 penguin, kemenangan yang jelas
+  - Hampir seri, karena 0,6 penguin jauh di bawah satu penguin
+  - Bagging lebih baik, karena tree tunggal forest mendapat skor lebih rendah
+  - Selisih itu membuktikan bahwa forest selalu mengalahkan bagging
+  answer: 1
+  explanation: Pelajaran sebelumnya mengajarkan bahwa selisih satu atau dua penguin pada validation set yang kecil adalah seri. Keunggulan nyata forest di sini adalah skor yang lebih stabil antar-seed, bukan rata-ratanya.
+- prompt: Setiap tree dalam sebuah forest terlalu dangkal untuk menangkap pola dalam data. Apa yang dilakukan oleh rata-rata dari banyak tree itu?
+  options:
+  - Masalahnya hilang, karena kesalahan selalu saling meniadakan
+  - Masalahnya makin buruk, karena tree-nya menjadi berkorelasi
+  - Kesalahan yang dimiliki bersama tetap ada, karena semua tree membuatnya
+  - Tree dangkal itu berubah menjadi tree yang dalam
+  answer: 2
+  explanation: Rata-rata meniadakan kesalahan yang berbeda antar-tree. Kesalahan yang dibuat oleh setiap tree, seperti pertanyaan yang tidak ada, bertahan dalam vote. Memperbaiki jenis kesalahan itu adalah tempat boosting, pada pelajaran berikutnya, berperan.

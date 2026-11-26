@@ -1,0 +1,72 @@
+- prompt: Pada cluster bawaan, skor lab naik dari 34 dari 40 pada k = 3 menjadi 38 dari 40 pada k = 15. Berapa poin persentase kenaikannya?
+  options:
+  - 4 poin persentase
+  - 10 poin persentase
+  - 2,5 poin persentase
+  - 38 poin persentase
+  answer: 1
+  explanation: Satu test point adalah 1 ÷ 40 = 2,5 poin persentase, sehingga 4 titik tambahan berarti 4 × 2,5 = 10. Itu berarti 85% naik menjadi 95%. Angka 4 menghitung test point, bukan poin persentase.
+- prompt: Mengapa 40 test point tidak boleh ikut vote di lab?
+  options:
+  - Vote dari 40 titik tambahan membuat plot terlalu penuh untuk dibaca
+  - Mereka akan memaksa nilai k menjadi lebih besar dari 15
+  - Mereka baru mendapat label kelas setelah skor dihitung
+  - Test point menjadi neighbor bagi dirinya sendiri, sehingga skor menghargai hafalan
+  answer: 3
+  explanation: Titik yang memilih dirinya sendiri selalu benar pada k = 1. Dengan test point di luar vote, setiap test point diklasifikasikan oleh titik latih yang belum pernah melihatnya, seperti contoh baru.
+- prompt: Pada Cincin konsentris kamu menyimpan boundary pada k = 3 (40 dari 40 benar), lalu menyeret k ke 15. Lab menunjukkan 26 dari 40 sekarang. Apa yang ditampilkan di dalam tanda kurung?
+  options:
+  - −14
+  - +14
+  - −26
+  - −40
+  answer: 0
+  explanation: "Angka itu adalah perubahan dari skor yang disimpan, 26 − 40 = −14. Skor turun 14 test point. −26 hanyalah skor itu sendiri dengan tanda."
+- prompt: Sebuah query punya dua kandidat neighbor terdekat. Titik P berjarak 0,6 ke samping dan 0,8 ke atas darinya. Titik R berjarak 0 ke samping dan 1,2 ke atas. Kamu meregangkan feature horizontal 5 kali. Titik mana yang lebih dekat sesudahnya?
+  options:
+  - P, karena peregangan tidak pernah mengubah siapa yang terdekat
+  - P, karena jaraknya sesudah peregangan masih 1,0
+  - R, karena jaraknya tetap 1,2 sementara jarak P naik menjadi sekitar 3,10
+  - Tidak ada, karena keduanya seri
+  answer: 2
+  explanation: Sebelum peregangan P lebih dekat, 1,0 berbanding 1,2. Sesudahnya, selisih P ke samping menjadi 3, sehingga jaraknya akar dari (9 + 0,64), sekitar 3,10. R tidak punya selisih ke samping, sehingga tetap 1,2. Urutannya terbalik.
+- prompt: Sebuah neighbor penguin berbeda dari query sebesar 10 mm panjang sirip dan 100 g massa tubuh. Kamu meregangkan panjang sirip 10 kali. Berapa jaraknya sekarang?
+  options:
+  - 110, jumlah dari 100 dan 10
+  - Sekitar 141,4, akar dari (100² + 100²)
+  - Sekitar 100,5
+  - 200
+  answer: 1
+  explanation: Selisih 10 mm menjadi 100, sehingga jaraknya akar dari (100² + 100²) = 141,4. Sebelum peregangan jaraknya akar dari (10² + 100²) = 100,5, yang hampir seluruhnya berasal dari selisih massa.
+- prompt: Tanpa peregangan, massa tubuh mendominasi neighbor pada data penguin. Mengapa?
+  options:
+  - Massa tubuh adalah feature yang jauh lebih penting untuk membedakan spesies
+  - Lab memberi bobot ekstra pada feature vertikal sebelum jarak dihitung
+  - Jarak Euclidean mengabaikan feature horizontal saat satuannya berbeda
+  - Selisih dalam gram secara numerik jauh lebih besar daripada selisih dalam milimeter
+  answer: 3
+  explanation: Jarak menjumlahkan selisih sebagai angka mentah, sehingga feature dengan angka lebih besar yang menentukan. Tidak ada yang menyatakan feature itu lebih berguna. Simpangan baku massa tubuh sekitar 800 g, berbanding sekitar 14 mm untuk panjang sirip, selisih sekitar 57 kali.
+- prompt: Seorang teman berkata "meregangkan feature selalu menaikkan skor, karena feature itu jadi lebih berpengaruh". Hasil mana di lab yang membantahnya?
+  options:
+  - Pada Cincin konsentris skor turun dari 40 ke 35 dari 40 pada ×5
+  - Pada cluster bawaan skor naik dari 34 ke 36 dari 40
+  - Pada penguin skor naik dari 51 ke 53 dari 69
+  - Pada Papan catur skor pada k = 3 adalah 39 dari 40
+  answer: 0
+  explanation: Pada cincin, kelas bergantung pada jarak ke segala arah, sehingga peregangan merusak strukturnya dan skor turun. Hasil lainnya berupa kenaikan atau tidak berkaitan dengan peregangan. Peregangan hanya membantu jika feature yang diregangkan membawa kelas.
+- prompt: Pada pengambilan penguin bersama, panjang sirip pada ×10 menambah 1 test point pada k = 3. Apa langkah berikutnya yang masuk akal?
+  options:
+  - Menyimpulkan bahwa peregangan hampir tidak berpengaruh pada penguin
+  - Menyimpulkan bahwa peregangan berhasil, dan melaporkan 1 poin sebagai kenaikannya
+  - Menekan Acak ulang beberapa kali dan membandingkan ×1 dengan ×10 pada tiap pengambilan
+  - Menaikkan k ke 15 sampai angkanya tampak lebih besar
+  answer: 2
+  explanation: Satu pengambilan hanyalah satu sampel, dan perubahan 1 dari 69 masih dalam batas noise ke arah mana pun. Pada 1.000 pengambilan acak, peregangan rugi pada sekitar 4% dan rata-rata naik sekitar 4 test point, sehingga satu pengambilan saja dapat meremehkan efeknya.
+- prompt: Pada Cincin konsentris dengan k = 15 skornya 26 dari 40 dan semua kesalahan ada di cincin luar. Apa yang menjelaskannya?
+  options:
+  - k = 15 mengganti jarak menjadi Manhattan
+  - 15 neighbor dari titik di cincin luar menjangkau cincin dalam dan mengalahkan cincinnya sendiri
+  - Test point berpindah ke cincin dalam
+  - Cincin dalam punya terlalu sedikit titik untuk vote apa pun
+  answer: 1
+  explanation: k yang besar tidak lagi bersifat lokal. Untuk query di cincin luar, 15 titik terdekat mencakup titik cincin dalam, yang dapat mengalahkan cincin milik query itu, sedangkan query di cincin dalam masih menemukan sebagian besar titik dalam.

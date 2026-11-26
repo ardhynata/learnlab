@@ -1,0 +1,10 @@
+slug: beginner
+title: "Level 1: Beginner"
+summary: "Train a baseline, evaluate regression and classification models on unseen data, and explain what a clustering algorithm found."
+level: beginner
+position: 1
+requires: []
+translations:
+  id:
+    title: "Level 1: Pemula"
+    summary: "Latih sebuah baseline, evaluasi model regresi dan klasifikasi pada data yang belum pernah dilihat, dan jelaskan apa yang ditemukan oleh algoritma clustering."

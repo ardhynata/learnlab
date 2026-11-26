@@ -1,0 +1,80 @@
+- prompt: Pada contoh enam penguin, berapa prediksi model boosting untuk setiap penguin sebelum ada tree yang ditambahkan?
+  options:
+  - 0 kg, karena tree pertama harus membangun semuanya
+  - 4,50 kg, rata-rata keenam massa
+  - 4,55 kg, nilai tengah massa yang sudah diurutkan
+  - 3,75 kg, massa penguin pertama
+  answer: 1
+  explanation: Alurnya dimulai dengan setiap baris berada di rata-rata target, (3,75 + 3,35 + 4,30 + 4,80 + 5,20 + 5,60) / 6 = 27,00 / 6 = 4,50 kg. Residual yang dipelajari tree 1 diukur dari titik awal ini.
+- prompt: Sebuah leaf regression tree berisi tiga penguin dengan massa 3,75, 3,35, dan 4,30 kg. Apa yang diprediksi tree untuk penguin baru yang jatuh ke leaf ini?
+  options:
+  - 3,35 kg, massa terkecil di leaf
+  - 3,75 kg, massa tengah di leaf
+  - 3,80 kg, rata-rata ketiga massa
+  - 11,40 kg, jumlah ketiga massa
+  answer: 2
+  explanation: Leaf regresi memprediksi rata-rata target yang sampai ke sana, 11,40 / 3 = 3,80 kg. Jumlah bukan sebuah prediksi, dan nilai tengah adalah median, yang tidak dipakai tree.
+- prompt: Setelah tree 1 dengan learning rate 0,5, model memprediksi 4,15 kg untuk penguin bersirip 195 mm dengan massa 4,30 kg. Berapa residual yang diterima tree 2 untuk penguin ini?
+  options:
+  - "+0,15 kg"
+  - "-0,15 kg"
+  - "-0,20 kg"
+  - "+0,30 kg"
+  answer: 0
+  explanation: Residual adalah nilai sebenarnya dikurangi prediksi saat ini, 4,30 - 4,15 = +0,15 kg. Angka -0,20 adalah residualnya terhadap nilai awal 4,50, sebelum tree 1 ditambahkan.
+- prompt: Sebuah penguin baru punya sirip 200 mm. Tree 1 mengirimnya ke kiri (output -0,70) dan tree 2 mengirimnya ke kanan (output +0,30), dengan nilai awal 4,50 dan learning rate 0,5. Berapa prediksinya?
+  options:
+  - 4,10 kg
+  - 4,15 kg
+  - 5,00 kg
+  - 4,30 kg
+  answer: 3
+  explanation: Prediksinya 4,50 + 0,5 × (-0,70) + 0,5 × 0,30 = 4,50 - 0,35 + 0,15 = 4,30 kg. Jika learning rate terlupa, hasilnya 4,10, dan 4,15 mengabaikan tree 2.
+- prompt: Dibandingkan dengan learning rate 0,5, apa yang dilakukan learning rate 0,1 pada boosting?
+  options:
+  - Membuat setiap tree lebih dalam, sehingga tree yang dibutuhkan lebih sedikit
+  - Menggeser prediksi lebih sedikit pada setiap tree, sehingga butuh lebih banyak tree untuk mencocokkan data sebaik itu
+  - Menghilangkan kebutuhan memeriksa validation set
+  - Membuat galat training mencapai nol lebih cepat
+  answer: 1
+  explanation: Learning rate mengecilkan output setiap tree. Pada enam penguin, MSE setelah tree 2 adalah 0,45 pada rate 0,1 dan 0,12 pada 0,5, sehingga rate yang lebih kecil baru mencocokkan jauh lebih sedikit. Ia tidak menghilangkan kebutuhan akan validation.
+- prompt: Pada squared error, apa yang diberitahukan residual kepada tree berikutnya?
+  options:
+  - Feature mana yang harus dibuang dari data
+  - Berapa banyak tree yang seharusnya dimiliki model
+  - Baris mana yang harus dihapus sebagai outlier
+  - Ke arah mana, dan kira-kira seberapa jauh, setiap prediksi harus digeser agar loss turun
+  answer: 3
+  explanation: Gradient squared error terhadap sebuah prediksi adalah -2 × residual, sehingga residual menunjuk ke arah menurun (faktor 2 diserap oleh learning rate). Karena itulah boosting dianggap gradient descent pada prediksi.
+- prompt: Dengan learning rate 0,1, RMSE training adalah 182 g pada 300 tree, sedangkan RMSE validation adalah 345 g pada 45 tree dan 385 g pada 300 tree. Berapa tree yang kamu pertahankan?
+  options:
+  - 45, tempat galat validation paling rendah
+  - 300, tempat galat training paling rendah
+  - 100, di tengah antara keduanya
+  - Berapa pun, karena kedua galat masih jauh di atas nol
+  answer: 0
+  explanation: Early stopping mempertahankan jumlah tree dengan galat validation terendah. Galat training terus turun karena tree tambahan mencocokkan noise, sehingga ia tidak dapat dipakai untuk memilih jumlahnya.
+- prompt: Satu tree berkedalaman 2 mendapat RMSE validation 391 g dan RMSE training 391 g. Apa yang ditunjukkan hal ini, dan apa yang membantu?
+  options:
+  - Varians tinggi; solusinya merata-ratakan banyak tree seperti itu pada bootstrap sample
+  - Varians tinggi; solusinya mengecilkan learning rate
+  - Bias tinggi; solusinya menambahkan tree kecil yang mencocokkan sisa kesalahan, yaitu boosting
+  - Tidak ada, karena kedua skor sama
+  answer: 2
+  explanation: Galat training dan validation yang sama-sama tinggi berarti tree terlalu kaku, itulah bias. Boosting menambah tree yang memperbaiki sisa kesalahan. Di pelajaran ini, 45 tree kedalaman 2 dengan boosting mencapai 286 g pada training dan 345 g pada validation.
+- prompt: Pernyataan mana yang menggambarkan bagging tetapi bukan boosting?
+  options:
+  - Setiap tree dilatih pada residual tree-tree sebelumnya
+  - Tree-nya dijaga tetap kecil, sering kali hanya stump
+  - Output akhirnya adalah jumlah output tree yang sudah dikecilkan
+  - Tree dibangun secara independen satu sama lain pada bootstrap sample lalu dirata-ratakan
+  answer: 3
+  explanation: Bagging melatih setiap tree yang dalam pada bootstrap sample-nya sendiri, sehingga tree tidak saling bergantung dan dirata-ratakan. Tiga pernyataan lainnya menggambarkan boosting.
+- prompt: RMSE validation terbaik, 345 g, ditemukan pada 45 tree di penguin validation. Mengapa skor akhir sebaiknya dilaporkan pada test set?
+  options:
+  - Penguin test selalu lebih mudah daripada penguin validation
+  - Validation set yang memilih jumlah tree, sehingga galatnya pada jumlah itu sedikit terlalu bagus
+  - Test set diperlukan untuk melatih tree itu sendiri
+  - Galat validation tidak dapat dihitung untuk model boosting
+  answer: 1
+  explanation: Memilih skor validation terbaik dari banyak skor cenderung memilih yang kebetulan bagus, sehingga skor itu sedikit terlalu optimistis. Penguin test tidak ikut dalam pemilihan, sehingga skornya adalah perkiraan yang jujur.

@@ -1,0 +1,80 @@
+- prompt: Two columns in a table have a correlation of r = 0.99. What will PCA on these two standardized columns show?
+  options:
+  - PC1 and PC2 each explain about half of the variance
+  - PC2 explains almost all of the variance
+  - PC1 explains almost all of it, so one column is nearly redundant
+  - PCA cannot be run on correlated columns
+  answer: 2
+  explanation: With two standardized columns the eigenvalues are 1 + r and 1 - r, here 1.99 and 0.01, so PC1 explains 99.5%. The second column adds almost nothing once the first is known.
+- prompt: What is the first principal component (PC1)?
+  options:
+  - The direction in which the centered points are most spread out
+  - The original column with the largest mean
+  - The direction in which the points are closest together
+  - The line that best predicts the label
+  answer: 0
+  explanation: PC1 is the direction of greatest variance of the projected points. PCA never uses a label, and the mean plays no part because the data is centered first.
+- prompt: The covariance matrix of some centered data has eigenvalues 3.6 and 0.4. What share of the variance does PC1 explain?
+  options:
+  - 3.6%
+  - 40%
+  - 36%
+  - 90%
+  answer: 3
+  explanation: The explained variance ratio is the eigenvalue divided by the sum of all eigenvalues, 3.6 / (3.6 + 0.4) = 0.90. PC2 explains the other 10%.
+- prompt: A centered point is (-2, -1) and PC1 is the unit vector (0.707, 0.707). What is the point's PC1 score?
+  options:
+  - -3.00
+  - -2.12
+  - -1.50
+  - 2.12
+  answer: 1
+  explanation: The score is the dot product, -2 · 0.707 + -1 · 0.707 = -2.12. The point lies on the negative side of PC1, so the score is negative.
+- prompt: For four standardized penguin columns, PC1 explains 68.8% of the variance and PC2 explains 19.3%. Reading the running total in the lesson's table, how much do the first two components keep together?
+  options:
+  - 68.8%
+  - 79.1%
+  - 88.2%
+  - 97.3%
+  answer: 2
+  explanation: The running total column of the table gives 88.2% at PC2, the height of the line in the scree plot. Explained variance ratios add up, and the unrounded shares sum to slightly more than the rounded 68.8% + 19.3% = 88.1%.
+- prompt: On the raw penguin columns, flipper length in mm has variance 197.15 and body mass in g has variance 641,250.58, and PC1 explains 99.99%. What is the best reading?
+  options:
+  - Mass has far bigger numbers, so it takes over PC1; standardize first
+  - Body mass is the only useful penguin measurement
+  - Flipper length is almost constant across penguins
+  - PCA works best on raw columns
+  answer: 0
+  explanation: Variance depends on units, and grams are small units, so mass wins whatever the penguins are like. Standardizing gives every column variance 1 and removes the effect of units.
+- prompt: Two standardized columns have a correlation of r = 0.6. Which are the eigenvalues, and what does PC1 explain?
+  options:
+  - 1.6 and 0.4, with PC1 explaining 60%
+  - 1.6 and 0.4, with PC1 explaining 80%
+  - 0.6 and 0.4, with PC1 explaining 60%
+  - 1.0 and 1.0, with PC1 explaining 50%
+  answer: 1
+  explanation: For two standardized columns the eigenvalues are 1 + r = 1.6 and 1 - r = 0.4. They add up to 2, so PC1 explains 1.6 / 2 = 80%.
+- prompt: Five columns are each standardized, and PCA is run on them. What do the five eigenvalues add up to?
+  options:
+  - 1, because the ratios add up to 1
+  - 0, because the data is centered
+  - 4, because one component is dropped
+  - 5, because each column has variance 1
+  answer: 3
+  explanation: The eigenvalues add up to the total variance, which is 1 for each standardized column, so 5 here. The explained variance ratios are those eigenvalues divided by 5, and they add up to 1.
+- prompt: One program reports PC1 as (0.71, 0.71) and another reports (-0.71, -0.71) for the same data. What does that mean?
+  options:
+  - One of the programs has made an error
+  - The two programs found different directions of greatest variance
+  - It is the same axis pointing the other way, so the scores only change sign
+  - The data was standardized in one and not in the other
+  answer: 2
+  explanation: An eigenvector has no fixed sign. Both vectors lie on the same line, so the explained variance is the same and only the sign of every PC1 score flips.
+- prompt: A small-variance direction in the data is exactly the one that separates two classes. What can PCA do to it?
+  options:
+  - Nothing, because PCA always keeps the most useful direction
+  - It can be dropped, because PCA ranks directions by variance and never sees labels
+  - It becomes PC1, because separation is a kind of variance
+  - It is moved into PC1 once the data is standardized
+  answer: 1
+  explanation: PCA is unsupervised, so variance is its only measure. A direction that matters for the label but varies little ranks late and may be dropped when you keep only the first components.

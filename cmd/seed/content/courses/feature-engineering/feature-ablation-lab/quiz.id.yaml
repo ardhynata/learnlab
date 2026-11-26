@@ -1,0 +1,80 @@
+- prompt: "Pada satu split dengan 120 baris uji, x1 saja benar pada 84 baris dan x1 ditambah kolom noise z1 benar pada 89 baris. Pada cross-validation 5 fold, peningkatannya +2,0 poin dan sebaran fold-nya 3,0. Apa kesimpulan yang wajar?"
+  options:
+  - z1 membantu, karena single split menunjukkan peningkatan 4,2 poin
+  - z1 membantu, karena ia tidak kalah di fold mana pun
+  - z1 belum terbukti membantu, karena peningkatan cross-validation-nya masih di dalam sebaran dan peningkatan single split-nya hanya 5 baris
+  - z1 merugikan, karena kolom noise tidak pernah dapat menaikkan skor
+  answer: 2
+  explanation: 89 - 84 = 5 baris dari 120, yaitu 4,2 poin, tetapi itu hanya satu undian baris uji. Peningkatan cross-validation 2,0 lebih kecil daripada sebaran 3,0, sehingga lab tidak menghitungnya. Kolom noise dapat menang beberapa baris karena kebetulan; ia tidak selalu kalah.
+- prompt: Sebuah single split punya 120 baris uji, dan model dengan satu feature tambahan benar pada 3 baris lebih banyak. Berapa poin persentase peningkatan itu?
+  options:
+  - Sekitar 2,5
+  - Sekitar 3,0
+  - Sekitar 0,8
+  - Sekitar 4,2
+  answer: 0
+  explanation: Peningkatannya 3 baris, dan 3 / 120 = 0,025, yaitu sekitar 2,5 poin. Satu baris bernilai 1 / 120, sekitar 0,8 poin, sehingga beberapa baris yang beruntung menggeser skor cukup jauh pada split sekecil ini.
+- prompt: Dengan x1 saja, lima fold yang masing-masing 80 baris benar pada 54, 58, 55, 55, dan 58 baris. Berapa rata-rata dan sebaran (simpangan baku, dibagi n - 1) skor fold-nya?
+  options:
+  - Rata-rata 70,0%, sebaran 2,1 poin
+  - Rata-rata 70,0%, sebaran 2,3 poin
+  - Rata-rata 72,5%, sebaran 5,0 poin
+  - Rata-rata 68,8%, sebaran 2,3 poin
+  answer: 1
+  explanation: Rata-ratanya 56 / 80 = 70,0%. Selisih dari 56 adalah -2, +2, -1, -1, dan +2 baris, dengan jumlah kuadrat 14. Bagi 4 untuk mendapat 3,5, akarkan menjadi 1,87 baris, lalu bagi 80 untuk mendapat 2,3 poin. Jika dibagi 5, hasilnya 2,1.
+- prompt: Menambahkan u × v menggeser skor cross-validation dari 73,0% ke 79,3%, peningkatan 6,3 poin, dan sebaran barunya 5,2 poin. Apa kata aturan lab?
+  options:
+  - Tidak ada apa-apa, karena sebarannya lebih besar daripada 5 poin
+  - Tidak ada apa-apa, karena satu feature tidak pernah dapat menggeser skor sebanyak itu
+  - Itu peningkatan hanya jika single split sependapat, dan fold tidak diperlukan
+  - Ia bertahan di semua fold, karena peningkatannya lebih besar daripada sebaran, meskipun hanya dengan selisih tipis
+  answer: 3
+  explanation: Aturannya membandingkan peningkatan cross-validation dengan sebaran fold. 6,3 lebih besar daripada 5,2, jadi langkah itu bertahan. Selisihnya tipis, dan itu alasan untuk mengulang cross-validation dengan pengacakan berbeda sebelum mengandalkannya.
+- prompt: Menambahkan x2, feature dengan informasi nyata tetapi lemah, mengubah skor cross-validation sebesar -1,0 poin, terhadap sebaran 6,9. Apa yang ditunjukkan ini?
+  options:
+  - Bahwa x2 merugikan model dan harus segera dibuang
+  - Bahwa x2 tidak membawa informasi
+  - Bahwa tabel ini tidak dapat membuktikan peningkatan dari x2; perubahannya masih di dalam noise
+  - Bahwa single split pasti salah
+  answer: 2
+  explanation: Perubahan yang lebih kecil daripada sebaran bukan bukti ke arah mana pun. Dengan 400 baris, feature yang lemah dapat berada di dalam noise. Dalam rentang noise berarti belum terbukti, bukan terbukti tidak ada.
+- prompt: Pada ablation delapan feature, model penuh mendapat 78,8% ± 4,8. Membuang x1 menurunkan 9,5 poin, u × v 6,3, dan x2 3,5. Feature mana yang layak dipertahankan?
+  options:
+  - Ketiganya, karena setiap penurunan di atas nol
+  - x1 dan u × v, karena hanya penurunan mereka yang lebih besar daripada sebaran 4,8
+  - Hanya x1, karena penurunannya terbesar
+  - x2 dan u × v, karena penurunan mereka lebih kecil
+  answer: 1
+  explanation: Penurunan membuat sebuah feature layak dipertahankan jika lebih besar daripada sebaran antar fold. 9,5 dan 6,3 lebih besar daripada 4,8, sedangkan 3,5 tidak. Berada di atas nol saja tidak cukup, karena penurunan beberapa poin dapat terjadi secara kebetulan.
+- prompt: Setelah u × v masuk ke model, membuang u atau v menurunkan skor antara -1,0 dan 0,0 poin. Mengapa?
+  options:
+  - Hasil kali itu sudah membawa apa yang dibawa u dan v bersama, sehingga mereka tidak menambah hal baru
+  - u dan v adalah kolom noise murni
+  - Membuang sebuah feature tidak pernah menimbulkan kerugian dalam ablation
+  - Hasil kali itu hanya bekerja ketika u dan v dibuang
+  answer: 0
+  explanation: Target bergantung pada apakah u dan v bertanda sama, dan itulah yang diperlihatkan u × v. Bagian-bagiannya menjadi berlebihan setelah hasil kalinya ada. Mereka tampak tidak berguna ketika ditambahkan sendirian karena sendirian mereka tidak membawa apa pun yang dapat dipakai sebuah garis.
+- prompt: Dengan region di-encode out-of-fold, skornya 79,8% ± 5,0. Di-encode secara naive, skornya 87,3% ± 1,6. Apa 7,5 poin tambahan itu?
+  options:
+  - Informasi baru di region yang disia-siakan encoding yang jujur
+  - Pengaruh sebaran yang lebih kecil, 1,6
+  - Tanda bahwa encoding naive adalah metode yang lebih baik
+  - Label setiap baris sendiri yang bocor ke feature-nya sendiri, yang tidak berlaku untuk baris baru
+  answer: 3
+  explanation: Encoding naive menghitung label setiap baris, sebelum fold dipotong, di feature baris yang sama. Dengan sekitar dua baris per nilai, encoding-nya hampir sama dengan label baris itu. Baris uji lalu membawa jawabannya sendiri, sesuatu yang tidak dimiliki baris baru.
+- prompt: Mengapa cross-validation tidak menangkap target encoding yang naive, bahkan menyatakan Bertahan di semua fold?
+  options:
+  - Fold-nya terlalu kecil untuk memperlihatkan kebocoran
+  - Encoding-nya dibangun dari semua label sebelum fold dipotong, sehingga label setiap baris uji sudah ada di dalam feature-nya
+  - Cross-validation hanya mengukur kolom noise
+  - Kebocoran itu hanya ada pada single split
+  answer: 1
+  explanation: Cross-validation hanya melindungi apa yang dikerjakan di dalam tiap fold. Langkah yang membaca label sebelum split, seperti target encoding naive, memberi setiap baris uji jawabannya. Perbaikannya adalah membangun encoding di dalam setiap putaran, hanya dari fold latih.
+- prompt: Pada penguin, Panjang sirip menambah 18,3 poin ketika ditambahkan lebih awal, tetapi membuangnya dari model penuh yang berisi sembilan feature hanya menurunkan skor 0,3. Apa penjelasan yang terbaik?
+  options:
+  - Peningkatan 18,3 adalah kesalahan di tabel
+  - Ablation hanya bekerja pada data buatan
+  - Feature lain membawa banyak informasi yang sama, sehingga model nyaris tidak kehilangannya
+  - Panjang sirip tidak lagi berguna sebagai pengukuran
+  answer: 2
+  explanation: Menambah mengukur apa yang dibawa sebuah feature dengan feature yang sudah ada. Ablation mengukur apa yang hilang dengan feature yang tersisa. Ketika feature lain tumpang tindih, membuang salah satunya hanya sedikit merugikan karena yang lain menggantikannya. Tidak ada satu angka pun yang berarti feature itu tidak berguna.

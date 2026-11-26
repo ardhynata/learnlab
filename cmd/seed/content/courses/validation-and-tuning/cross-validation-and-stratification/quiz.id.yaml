@@ -1,0 +1,72 @@
+- prompt: Model 5-neighbor yang sama dinilai pada 20 hold-out berbeda yang masing-masing berisi 50 penguin dari satu pool, dan jumlah jawaban benarnya bergerak dari 40 sampai 49. Apa penjelasan terbaik?
+  options:
+  - Modelnya berubah dari satu percobaan ke percobaan berikutnya.
+  - Penguin di dalam pool berubah dari satu percobaan ke percobaan berikutnya.
+  - Setiap hold-out berisi 50 penguin yang berbeda, dan 50 baris adalah sampel yang kecil.
+  - Accuracy tidak dapat diukur pada penguin.
+  answer: 2
+  explanation: Tidak ada yang berubah pada model maupun pool. Hanya acakannya, dan skor dari 50 baris banyak bergeser menurut baris mana yang masuk. Inilah sebabnya satu validation split adalah juri yang noisy.
+- prompt: Lima skor fold adalah 72, 80, 84, 76 dan 88. Berapa rata-ratanya?
+  options:
+  - 78
+  - 80
+  - 82
+  - 84
+  answer: 1
+  explanation: Jumlah skornya 72 + 80 + 84 + 76 + 88 = 400, dan 400 / 5 = 80.
+- prompt: Kelima skor fold yang sama, 72, 80, 84, 76 dan 88, memiliki rata-rata 80. Berapa sebarannya, yaitu simpangan baku dengan pembagi n - 1?
+  options:
+  - 5,7
+  - 8,0
+  - 40
+  - 6,3
+  answer: 3
+  explanation: Selisih dari 80 adalah -8, 0, 4, -4 dan 8, sehingga kuadratnya 64, 0, 16, 16 dan 64, yang berjumlah 160. Bagi dengan 4 untuk mendapat 40, lalu akarnya 6,3. Nilai 40 adalah varians, dan 5,7 berasal dari pembagian dengan 5.
+- prompt: Model A memiliki rata-rata 5-fold 88,0 dengan SD 4,7. Model B memiliki rata-rata 88,6 dengan SD 4,5. Bagaimana pembacaan yang adil?
+  options:
+  - Keduanya seri, karena selisih 0,6 poin jauh lebih kecil daripada sebaran fold.
+  - B lebih baik, karena rata-ratanya lebih tinggi.
+  - A lebih baik, karena SD-nya lebih besar.
+  - Belum ada yang dapat dikatakan sampai test set dinilai.
+  answer: 0
+  explanation: Selisih 0,6 poin sangat kecil dibanding sebaran antar-fold sekitar 4,5. Membandingkan fold demi fold atau mengulang cross-validation dapat memberi jawaban lebih jelas. Test set tidak boleh dipakai untuk memilih antara A dan B.
+- prompt: Sebuah dataset berisi 200 baris, 10 di antaranya positif. Kamu memotong 5 fold stratified yang masing-masing berisi 40 baris. Berapa baris positif di setiap fold?
+  options:
+  - 1
+  - 4
+  - 2
+  - Antara 0 sampai 4, tergantung acakannya
+  answer: 2
+  explanation: Stratifikasi membagikan 10 positif secara merata, sehingga setiap dari 5 fold mendapat 10 / 5 = 2 positif dan 38 negatif. Fold acak biasa yang dapat tidak berisi satu pun.
+- prompt: Sebuah fold biasa tidak berisi baris positif sama sekali. Mengapa itu masalah?
+  options:
+  - Fold itu punya terlalu sedikit baris untuk dinilai.
+  - Recall pada fold itu 0 / 0, tidak terdefinisi, dan accuracy-nya hanya mencerminkan kelas mayoritas.
+  - Model dilatih dengan terlalu banyak positif pada ronde itu.
+  - Ukuran fold tidak lagi sama.
+  answer: 1
+  explanation: Recall dibagi dengan jumlah positif yang sebenarnya, yang di sini nol. Accuracy fold seperti itu tidak memberi tahu apa pun tentang kelas yang kamu pedulikan. Fold stratified menghindarinya.
+- prompt: Apa yang berkurang ketika 5-fold cross-validation diulang dengan acakan baru?
+  options:
+  - Noise karena data hanya berisi kumpulan penguin ini dan bukan yang lain.
+  - Kebutuhan akan test set.
+  - Jumlah model yang harus di-fit.
+  - Ketergantungan hasil pada satu acakan tertentu menjadi fold.
+  answer: 3
+  explanation: Merata-ratakan beberapa acakan menstabilkan bagian noise yang berasal dari cara baris dibagikan ke fold. Jumlah penguin tidak bertambah, biaya fit menjadi lebih banyak, dan test set tetap dibutuhkan.
+- prompt: Setelah memilih 15 neighbor dengan cross-validation, kamu juga menilai 5 neighbor pada test set "sekadar memeriksa" lalu menyimpan yang lebih baik. Apa yang salah?
+  options:
+  - Test set dipakai untuk memilih, sehingga menjadi validation set dan skornya optimistis.
+  - Tidak ada, karena test set memang untuk membandingkan model.
+  - Test set seharusnya dipakai di dalam setiap fold.
+  - Test set terlalu kecil untuk menilai satu model pun.
+  answer: 0
+  explanation: Test set hanya memberi laporan yang jujur jika tidak ada pilihan yang bergantung padanya. Begitu kamu memilih model yang lebih baik dari skor test-nya, skor itu menjadi skor pemenang, seperti skor validasi.
+- prompt: Kamu membandingkan 4 pengaturan, masing-masing dengan 5-fold cross-validation yang diulang 3 kali. Berapa model yang di-fit untuk perbandingan itu, tidak termasuk fit ulang terakhir?
+  options:
+  - 20
+  - 15
+  - 60
+  - 12
+  answer: 2
+  explanation: Satu pengaturan membutuhkan 5 fold x 3 ulangan = 15 fit. Empat pengaturan membutuhkan 4 x 15 = 60 fit. Fit ulang terakhir pada seluruh pool menambah satu lagi.

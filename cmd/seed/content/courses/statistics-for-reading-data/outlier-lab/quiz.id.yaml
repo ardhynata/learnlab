@@ -1,0 +1,72 @@
+- prompt: Pada kumpulan titik bawaan lab, kamu menambahkan satu outlier di x 5, y 9,3. Rata-rata y berubah dari 5,18 menjadi 5,43 dan median y dari 5,02 menjadi 5,13. Apa yang ditunjukkan hal ini?
+  options:
+  - Median sama sekali tidak terpengaruh oleh outlier
+  - Rata-rata bergeser kira-kira dua kali lebih jauh daripada median, karena rata-rata memakai ukuran outlier
+  - Median bergeser lebih jauh, karena letaknya di tengah kumpulan titik
+  - Rata-rata dan median bergeser sama jauh
+  answer: 1
+  explanation: Rata-rata bergeser +0,26 dan median +0,12. Rata-rata menambahkan seluruh ukuran outlier ke dalam jumlah, sedangkan median hanya menghitung bahwa ada satu nilai lagi di atasnya. Median tidak beku, tetapi ia tidak memedulikan seberapa jauh outlier itu.
+- prompt: Ke-15 nilai y memiliki rata-rata 5,18. Kamu menambahkan satu nilai, 9,3. Dengan rumus (nilai baru - rata-rata lama) / (banyak nilai setelah penambahan), seberapa jauh rata-rata bergeser?
+  options:
+  - Sekitar 0,04
+  - Sekitar 0,59
+  - Sekitar 0,26
+  - Sekitar 4,12
+  answer: 2
+  explanation: (9,3 - 5,18) / 16 = 4,12 / 16, yaitu sekitar 0,26. Selisihnya 4,12, tetapi dibagi di antara 16 nilai. Jika dibagi 7, bukan 16, hasilnya 0,59.
+- prompt: Dengan satu outlier di y 9,3, kamu menggesernya turun sampai sekitar y 8, yang masih di atas semua titik lain. Apa yang terjadi pada rata-rata dan median y?
+  options:
+  - Rata-rata turun dari 5,43 menjadi sekitar 5,35 dan median tetap di sekitar 5,13
+  - Keduanya tetap seperti semula, karena outlier masih berada di atas kumpulan titik
+  - Median turun bersama rata-rata, karena keduanya bereaksi pada posisi outlier
+  - Rata-rata tetap di tempatnya dan median turun menjadi sekitar 5,05
+  answer: 0
+  explanation: Rata-rata memakai ukuran outlier, sehingga bergeser sekitar (8 - 9,3) / 16 = -0,08. Median adalah rata-rata nilai ke-8 dan ke-9 dalam urutan, dan outlier masih yang terbesar, sehingga urutan dan median tidak berubah.
+- prompt: Menambahkan titik di x 9,5, y 9,5 membuat r naik dari 0,87 menjadi 0,93. Mengapa r naik?
+  options:
+  - Outlier selalu menaikkan r, karena ia melebarkan rentang x dan y
+  - Titik yang jauh dari kumpulan pasti menurunkan r, sehingga lab ini punya bug dalam menghitung r
+  - r hanya berubah jika median x atau y berubah, dan median berubah di sini
+  - Titik itu jauh dari tengah tetapi dekat garis tren, sehingga titik-titik mengikuti garis lebih rapat
+  answer: 3
+  explanation: r mengukur seberapa rapat titik-titik mengikuti garis lurus. Titik yang jauh di sepanjang tren yang ada memperkuat pola itu. Titik yang jauh di luar tren, seperti x 5, y 9,3, menurunkan r menjadi 0,61.
+- prompt: Kamu menyeret titik tambahan ke tengah kumpulan titik, sekitar x 5 dan y 5. Apa yang kamu harapkan?
+  options:
+  - r turun tajam, karena setiap titik tambahan adalah outlier
+  - r tetap dekat 0,87 dan rata-rata nyaris tidak bergeser
+  - Median y bergeser lebih dari 1
+  - Garis tren berbalik turun
+  answer: 1
+  explanation: Titik di dalam kumpulan mengikuti pola yang sudah ditunjukkan titik-titik lain. Lab memberi r 0,87 dan rata-rata yang berubah 0,02 atau kurang, sehingga outlier ditentukan oleh letaknya, bukan karena ia ditambahkan.
+- prompt: Outlier yang sama di x 5, y 9,3 menurunkan r dari 0,87 menjadi 0,61 dengan 15 titik, tetapi hanya dari 0,86 menjadi 0,83 dengan 200 titik. Apa yang menjelaskan pengaruh yang lebih kecil ini?
+  options:
+  - Dengan titik lebih banyak, outlier bergerak mendekati tren
+  - Dengan titik lebih banyak, median mengambil alih dari rata-rata
+  - Satu titik di antara 201 hanya memiliki bagian kecil dalam jumlah yang menjadi dasar rata-rata dan r
+  - r mengabaikan outlier jika titiknya lebih dari 100
+  answer: 2
+  explanation: Rata-rata bergeser sekitar (9,3 - 5,11) / 201 = 0,02. Alasan bagian kecil yang sama berlaku untuk r. Outlier paling berpengaruh ketika data sedikit.
+- prompt: Dengan tiga outlier bawaan, r berubah dari 0,87 menjadi 0,61, 0,07, lalu -0,18. Apa yang ditunjukkan hal ini?
+  options:
+  - Beberapa titik yang ditempatkan dengan tepat dapat mengubah tren naik yang kuat menjadi tren turun yang lemah
+  - r bukan angka yang andal untuk data apa pun
+  - Outlier hanya mengubah r jika jumlahnya lebih dari tiga
+  - Garis tren tidak terpengaruh oleh outlier, hanya r yang terpengaruh
+  answer: 0
+  explanation: Tiga titik yang ditambahkan ke 15 titik mengubah tanda r, dan garis tren pink ikut miring ke bawah. Pelajarannya bukan bahwa r tidak berguna, melainkan bahwa kamu perlu memeriksa scatterplot dan membandingkan r dengan dan tanpa titik yang dicurigai.
+- prompt: Pada penguin, outlier yang sama menurunkan r dari 0,65 menjadi 0,51 pada satu sampel berisi 15 penguin dan dari 0,94 menjadi 0,76 pada sampel lain. Kesimpulan mana yang paling didukung angka-angka ini?
+  options:
+  - r sebenarnya dari semua penguin adalah 0,65, karena itu sampel pertama yang kamu ambil
+  - Sampel kedua pasti salah, karena r seharusnya tidak berbeda sejauh itu antara dua sampel penguin yang sama
+  - Outlier adalah penyebab kedua sampel memiliki nilai r yang berbeda, karena ia ditambahkan ke keduanya
+  - Outlier menurunkan r di kedua sampel, tetapi r sangat bervariasi pada sampel kecil, sehingga bandingkan pada sampel yang sama
+  answer: 3
+  explanation: Outlier bukan penyebab selisih antara 0,65 dan 0,94. Selisih itu sudah ada sebelum outlier ditambahkan, karena sampel kecil bervariasi. Pada ke-342 penguin, r sekitar 0,87. Perbandingan yang adil adalah sebelum dan sesudah pada sampel yang sama.
+- prompt: Kamu memprediksi median akan bergeser lebih jauh, tetapi lab menunjukkan rata-ratanya yang bergeser lebih jauh. Apa langkah berikutnya yang paling berguna?
+  options:
+  - Abaikan saja, karena putusannya hanya berlaku untuk rata-rata
+  - Tekan Reset dan pilih jawaban yang diberikan lab
+  - Baca kolom Perubahan, jelaskan mengapa rata-rata memakai ukuran outlier, lalu prediksi lagi untuk posisi yang baru
+  - Tambahkan tiga outlier lagi sampai median menyusul
+  answer: 2
+  explanation: Prediksi yang salah menunjukkan bagian gambaranmu tentang statistik itu yang keliru. Membandingkan kedua perubahan di tabel dan menjelaskannya adalah langkah belajarnya, dan prediksi baru untuk posisi berbeda menguji gambaran yang baru.

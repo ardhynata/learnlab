@@ -1,0 +1,31 @@
+slug: intermediate-capstone
+title: "Intermediate capstone"
+summary: "Reproducible pipelines, tuning, uncertainty, and threshold selection."
+topic: Machine learning
+level: intermediate
+path: intermediate
+position: 12
+translations:
+  id:
+    title: "Capstone menengah"
+    summary: "Pipeline yang reproducible, tuning, ketidakpastian, dan pemilihan threshold."
+modules:
+- slug: core-ideas
+  title: Core ideas
+  summary: "The concepts, in the order the lab uses them."
+  lessons:
+  - defensible-evaluation
+  - reproducible-pipelines
+  translations:
+    id:
+      title: "Ide inti"
+      summary: "Konsep-konsepnya, sesuai urutan yang dipakai lab."
+- slug: project
+  title: Project
+  summary: "Build it yourself, step by step, then rate your own work."
+  lessons:
+  - intermediate-capstone-project
+  translations:
+    id:
+      title: "Proyek"
+      summary: "Kerjakan sendiri, langkah demi langkah, lalu nilai hasil kerjamu."

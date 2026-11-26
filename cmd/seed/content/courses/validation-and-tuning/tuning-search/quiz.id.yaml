@@ -1,0 +1,72 @@
+- prompt: Mana yang merupakan hyperparameter sebuah decision tree?
+  options:
+  - Feature yang dipakai untuk pertanyaan pertama
+  - Jenis kelamin yang diprediksi sebuah leaf
+  - Kedalaman maksimum
+  - Threshold yang dipilih untuk pertanyaan pertama
+  answer: 2
+  explanation: Kedalaman maksimum kamu tetapkan sebelum training. Feature, threshold, dan label leaf adalah parameter, yang ditemukan training dari data.
+- prompt: Sebuah grid search mencoba kedalaman maksimum 1, 2, 3, dan 4 dengan ukuran leaf minimum 1, 5, dan 10, dan menilai masing-masing dengan cross-validation lima fold. Berapa tree yang dilatih?
+  options:
+  - 12
+  - 60
+  - 17
+  - 20
+  answer: 1
+  explanation: Ada 4 x 3 = 12 konfigurasi, dan masing-masing butuh 5 fit, sehingga 12 x 5 = 60. Angka 12 menghitung konfigurasi, bukan fit.
+- prompt: Hanya satu dari dua pengaturan yang benar-benar berpengaruh. Grid 3 x 3 dan random search dengan 9 pengambilan punya budget yang sama. Berapa nilai berbeda dari pengaturan penting itu yang dapat dicoba masing-masing?
+  options:
+  - 9 untuk grid dan 3 untuk random search
+  - 3 untuk keduanya, karena budget-nya sama
+  - 9 untuk keduanya, karena setiap percobaan berbeda
+  - 3 untuk grid dan hingga 9 untuk random search
+  answer: 3
+  explanation: Grid memakai ulang tiap nilai pengaturan penting itu untuk 3 percobaan, sehingga hanya mencoba 3 nilai. Pengambilan acak dapat jatuh pada hingga 9 nilai berbeda darinya.
+- prompt: Pada grid sembilan konfigurasi, kedalaman 6 dengan ukuran leaf 1 memperoleh 233 dari 267 benar dan kedalaman 4 dengan ukuran leaf 1 memperoleh 232 dari 267. Apa kesimpulannya?
+  options:
+  - Keduanya praktis seri, karena satu penguin sekitar 0,4 poin dan noise-nya sekitar 2 poin
+  - Kedalaman 6 jelas lebih baik, karena 233 lebih tinggi daripada 232
+  - Kedalaman 4 lebih baik, karena tree yang lebih kecil selalu lebih akurat
+  - Tidak ada hasil yang bermakna, karena cross-validation tidak dapat membandingkan pengaturan
+  answer: 0
+  explanation: Satu penguin dari 267 sekitar 0,4 poin, dan standard error skor 88% pada 267 penguin sekitar 2 poin. Selisih satu penguin jauh di dalam noise itu.
+- prompt: Kamu menilai 20 penebak pelempar koin pada 50 contoh yang sama, dan yang terbaik memperoleh 64% benar. Berapa perkiraan terbaik accuracy penebak itu pada contoh baru?
+  options:
+  - 64%, karena itulah skornya
+  - Di antara 50% dan 64%
+  - Sekitar 50%, karena setiap penebak hanyalah lemparan koin
+  - Di bawah 50%, karena pemenangnya sudah menghabiskan keberuntungannya
+  answer: 2
+  explanation: Para penebak tidak punya kemampuan, jadi pemenangnya hanyalah yang paling beruntung. Skor terbaik yang diharapkan dari 20 penebak pada 50 contoh adalah 63,1%, dan accuracy sebenarnya 50%.
+- prompt: Kamu mencoba 30 konfigurasi dan mempertahankan yang skor test set-nya paling baik. Apa yang ditunjukkan skor test itu?
+  options:
+  - Accuracy tepat yang akan dimiliki model pada data baru
+  - Angka yang terlalu optimistis, karena test set ikut memilih pemenang
+  - Tidak ada, karena test set hanya boleh dipakai untuk training
+  - Angka yang pesimistis, karena test set tidak dipakai untuk fitting
+  answer: 1
+  explanation: Memilih berdasarkan skor test berarti memilih konfigurasi yang paling beruntung pada baris-baris itu, sehingga skornya terlalu bagus. Lakukan tuning dengan cross-validation, lalu pakai test set satu kali.
+- prompt: Nested cross-validation memakai 5 fold luar, dan setiap putaran luar menjalankan search atas 9 konfigurasi dengan cross-validation dalam 4 fold. Berapa fit dalam yang dilakukan, tidak termasuk refit akhir?
+  options:
+  - 45
+  - 100
+  - 144
+  - 180
+  answer: 3
+  explanation: Setiap putaran luar melatih 9 x 4 = 36 tree, dan ada 5 putaran, sehingga 5 x 36 = 180. Satu tingkat cross-validation 5 fold atas 9 konfigurasi yang sama hanya butuh 45.
+- prompt: Pada nested cross-validation, apa yang diukur oleh skor pada fold luar yang disisihkan?
+  options:
+  - Seberapa baik seluruh resep, termasuk search, pada penguin yang tidak pernah dilihat search
+  - Seberapa baik satu konfigurasi terbaik pada data tempat ia disetel
+  - Seberapa baik model mencocokkan baris training
+  - Konfigurasi mana yang terbaik untuk model akhir
+  answer: 0
+  explanation: Setiap putaran menjalankan search-nya sendiri dan memilih pemenangnya sendiri, sehingga skor luar menilai resepnya. Model akhir berasal dari menjalankan search sekali lagi pada seluruh data tuning.
+- prompt: Dua orang menjalankan grid search yang sama pada data penguin yang sama dengan cross-validation lima fold, dan mendapatkan pemenang yang berbeda. Apa penyebab yang paling mungkin?
+  options:
+  - Salah satunya memakai komputer yang berbeda
+  - Cross-validation tidak dapat diulang
+  - Mereka memakai seed yang berbeda untuk mengacak fold
+  - Grid search memilih konfigurasi secara acak
+  answer: 2
+  explanation: Fold bergantung pada seed pengacakan, dan tabel di pelajaran menunjukkan pemenang berpindah mengikutinya, dari kedalaman 7 dan leaf 3 pada seed 1 ke kedalaman 5 dan leaf 1 pada seed 3. Catat seed-nya.

@@ -1,0 +1,31 @@
+slug: probability-and-uncertainty
+title: "Probability and statistical uncertainty"
+summary: "Conditional probability, Bayes' rule, sampling variability, and bootstrap confidence intervals."
+topic: Machine learning
+level: intermediate
+path: intermediate
+position: 1
+translations:
+  id:
+    title: "Probabilitas dan ketidakpastian statistik"
+    summary: "Probabilitas bersyarat, aturan Bayes, variabilitas sampling, dan confidence interval bootstrap."
+modules:
+- slug: core-ideas
+  title: Core ideas
+  summary: "The concepts, in the order the lab uses them."
+  lessons:
+  - conditional-probability-and-bayes
+  - sampling-variability-and-bootstrap
+  translations:
+    id:
+      title: "Ide inti"
+      summary: "Konsep-konsepnya, sesuai urutan yang dipakai lab."
+- slug: lab
+  title: Lab
+  summary: "Run the idea yourself, then check what you learned."
+  lessons:
+  - bootstrap-lab
+  translations:
+    id:
+      title: "Lab"
+      summary: "Jalankan idenya sendiri, lalu periksa apa yang sudah kamu pelajari."

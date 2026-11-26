@@ -1,0 +1,80 @@
+- prompt: A classifier gives a case the score 1.8, and the threshold is 2.0. You lower the threshold to 1.5. What happens to the answer for that case?
+  options:
+  - It was yes and stays yes
+  - It was no and becomes yes
+  - It was yes and becomes no
+  - It stays no, because the score itself changed
+  answer: 1
+  explanation: A score at or above the threshold is answered yes. 1.8 is below 2.0, so it was no. It is above 1.5, so it becomes yes. The score does not change; only the cut does.
+- prompt: A test set has 4,000 cases and 80 of them are positive. A classifier answers no to every case. What are its accuracy and recall?
+  options:
+  - Accuracy 98 percent, recall 98 percent
+  - Accuracy 2 percent, recall 100 percent
+  - Accuracy 50 percent, recall 0 percent
+  - Accuracy 98 percent, recall 0 percent
+  answer: 3
+  explanation: It is right on all 3,920 negatives, so accuracy is 3,920 / 4,000 = 0.98. It finds none of the 80 positives, so recall is 0. That is the accuracy trap, and 0.98 is the baseline any real classifier has to beat.
+- prompt: "In the lab, threshold 2.5 gives TP = 36, FP = 5, FN = 64, and threshold 1.0 gives TP = 87, FP = 300, FN = 13. What happens when the threshold moves from 2.5 down to 1.0?"
+  options:
+  - Recall rises from 36 to 87 percent, and precision falls from 87.8 to 22.5 percent
+  - Recall and precision both rise
+  - Recall falls and precision rises, because the cut is stricter
+  - Recall stays the same and only precision changes
+  answer: 0
+  explanation: Recall is TP / (TP + FN), which goes from 36 / 100 to 87 / 100. Precision is TP / (TP + FP), which goes from 36 / 41 to 87 / 387. A lower cut catches more positives and also flags far more negatives.
+- prompt: "A classifier is tested on 1,000 cases and gets TP = 20, FP = 80, TN = 895, FN = 5. What is its F1?"
+  options:
+  - 0.92
+  - 0.50
+  - 0.32
+  - 0.20
+  answer: 2
+  explanation: F1 = 2 x TP / (2 x TP + FP + FN) = 40 / 125 = 0.32. Precision is 20 / 100 = 0.20 and recall is 20 / 25 = 0.80. Their plain average, 0.50, hides the weak precision, and 0.92 is the accuracy rounded (915 / 1,000 = 0.915).
+- prompt: On the lab's ROC curve, the dot sits at false-positive rate 0.158 and true-positive rate 0.87. What does that say?
+  options:
+  - 87 percent of the yes answers are right
+  - The classifier is 87 percent accurate
+  - The threshold is 0.87
+  - At that threshold it catches 87 percent of the real positives and flags 15.8 percent of the real negatives
+  answer: 3
+  explanation: The vertical axis is recall, the share of real positives caught. The horizontal axis is the share of real negatives wrongly flagged. Neither is precision or accuracy, and the threshold is not shown on the axes.
+- prompt: In the lab you drag the threshold from 1.0 up to 2.5 and leave everything else alone. What happens to the AUC?
+  options:
+  - It rises, because precision rises
+  - It does not change, because the dot only slides along the same ROC curve
+  - It falls, because recall falls
+  - It becomes 0.5, because fewer cases are flagged
+  answer: 1
+  explanation: The ROC curve is built from all thresholds at once, so one threshold cannot change it. Only a change to the scores themselves, such as more separation, bends the curve and changes AUC.
+- prompt: At threshold 1.0 you raise Separation from 2 to 4. Recall rises from 87 to 100 percent, but the false-positive rate stays at 15.8 percent. Why?
+  options:
+  - The false-positive rate only looks at the negative cases, and their scores did not move
+  - The false-positive rate is fixed by the threshold alone, so no change to the scores can move it
+  - Raising the separation moves the negatives up by the same amount as the positives
+  - The false-positive rate is only updated when you press New sample
+  answer: 0
+  explanation: Negatives still center on 0, so the same share of them lies above 1.0. Raising Separation only moves the positives away, which lifts recall.
+- prompt: A miss costs 10 and a false alarm costs 1. Cut A gives FN = 20 and FP = 100. Cut B gives FN = 40 and FP = 20. Which cut costs less in total?
+  options:
+  - B, because it has fewer false alarms
+  - Neither, because their totals are equal
+  - A, with a total cost of 300 against 420
+  - B, because it has fewer total errors
+  answer: 2
+  explanation: Cost = 10 x FN + FP. A costs 10 x 20 + 100 = 300 and B costs 10 x 40 + 20 = 420. B has fewer total errors, 60 against 120, but its errors are the expensive kind.
+- prompt: Model A catches 90 percent of positives at a threshold of 0.3. Model B catches 70 percent of positives at a threshold of 0.6. A teammate says A has the better scores. What is the fair reply?
+  options:
+  - Agreed, because higher recall always means better scores
+  - They used different thresholds, so compare them at the same threshold or compare their whole ROC curves
+  - B is better, because a higher threshold is a stricter classifier
+  - Neither can ever be compared, because recall depends on the data
+  answer: 1
+  explanation: A lower threshold raises recall by itself, so the two numbers differ for two reasons at once. Compare at the same threshold, or compare whole ROC curves, which show every threshold.
+- prompt: In the lab, the AUC is 0.931, yet at threshold 1.0 only 22.5 percent of the yes answers are real positives. Why is that not a contradiction?
+  options:
+  - AUC is computed only from the negative cases
+  - A precision of 22.5 percent means the AUC is really 0.225
+  - The lab shows a mistake, because a high AUC forces a high precision
+  - AUC judges how well the scores rank over all thresholds, while precision describes one cut and depends on how rare the positives are
+  answer: 3
+  explanation: AUC measures ranking over every threshold. Precision describes one threshold and, with 5 percent positives, the many negatives produce many false alarms next to the true catches.

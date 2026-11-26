@@ -1,0 +1,26 @@
+entity: LessonText
+context: ""
+display_field: title
+fields:
+  - name: id
+    type: string
+    auto: true
+  - name: lesson_id
+    type: string
+    required: true
+    ref: Lesson
+    on_delete: cascade
+  - name: locale
+    type: string
+    required: true
+    max_length: 8
+  - name: title
+    type: string
+    required: true
+    max_length: 140
+  - name: body
+    type: string
+    max_length: 30000
+operations: [Create, GetByID, List, Update, Delete]
+transports: [rest]
+repository: postgresql

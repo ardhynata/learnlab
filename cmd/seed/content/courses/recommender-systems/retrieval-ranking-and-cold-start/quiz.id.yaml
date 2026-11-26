@@ -1,0 +1,80 @@
+- prompt: Mengapa recommender besar tidak langsung memberi skor setiap judul dengan model terkayanya untuk setiap pengguna?
+  options:
+  - Model terkaya selalu kurang akurat daripada model murah
+  - Memberi skor seluruh katalog untuk tiap pengguna memakan waktu terlalu lama, sehingga tahap murah mempersempitnya lebih dulu
+  - Model yang kaya tidak dapat memakai riwayat pengguna
+  - Retrieval membuat tahap ranking tidak diperlukan
+  answer: 1
+  explanation: Dua tahap itu ada karena biaya. Retrieval yang murah memilih beberapa ratus kandidat, dan model yang lebih kaya hanya mengurutkan kandidat itu. Retrieval tidak menggantikan ranking, dan model yang kaya biasanya justru lebih akurat.
+- prompt: 300 kandidat dari retrieval memuat 3 dari 6 judul yang kelak disukai seorang pengguna. Berapa recall tertinggi yang dapat dicapai daftar akhir?
+  options:
+  - 1, karena ranker yang sempurna akan menemukan tiga judul lainnya
+  - 0,01, karena 3 dari 300 kandidat relevan
+  - 0,5, karena hanya 3 dari 6 judul yang sampai ke ranker
+  - 0,3, karena 300 kandidat diambil
+  answer: 2
+  explanation: Ranker hanya dapat mengurutkan apa yang diteruskan retrieval, jadi paling banyak 3 dari 6 judul relevan yang dapat ditampilkan, dan recall-nya 3 / 6 = 0,5. Porsi judul relevan di antara kandidat (3 / 300) adalah angka yang lain.
+- prompt: Sebuah judul yang benar-benar baru belum punya interaksi sama sekali. Cadangan mana yang tetap dapat menempatkannya dalam daftar?
+  options:
+  - Membandingkan fitur kontennya, seperti genre dan tag, dengan judul yang disukai pengguna
+  - Membaca kolomnya di tabel interaksi, seperti untuk judul lain
+  - Mengurutkan judul itu menurut jumlah popularitasnya, yang pasti tinggi
+  - Mengeluarkannya dari katalog sampai punya banyak interaksi
+  answer: 0
+  explanation: Fitur konten sudah ada sebelum ada yang menonton judul itu. Kolomnya di tabel masih kosong, sehingga collaborative filtering tidak punya bahan, dan jumlah popularitasnya nol.
+- prompt: Daftar 4 teratas punya judul relevan di rank 2 dan 3, dan pengguna punya 5 judul relevan seluruhnya. Berapa precision@4 dan recall@4?
+  options:
+  - Precision 0,4 dan recall 0,5
+  - Precision 0,5 dan recall 0,5
+  - Precision 0,2 dan recall 0,5
+  - Precision 0,5 dan recall 0,4
+  answer: 3
+  explanation: Precision adalah hit dibagi slot, 2 / 4 = 0,5. Recall adalah hit dibagi semua judul relevan milik pengguna, 2 / 5 = 0,4. Kedua penyebutnya berbeda, itulah sebabnya angkanya berbeda.
+- prompt: Seorang pengguna punya tepat satu judul relevan, dan model menaruhnya di rank 3. Berapa NDCG@5 untuk daftar ini?
+  options:
+  - 0,33
+  - 0,5
+  - 0,63
+  - 1
+  answer: 1
+  explanation: Diskon di rank 3 adalah 1 / log2(4) = 0,5, sehingga DCG-nya 0,5. Daftar ideal menaruh satu-satunya judul relevan di rank 1, yang memberi 1, sehingga NDCG-nya 0,5 / 1 = 0,5.
+- prompt: Lima pengguna masing-masing mendapat 3 judul dari katalog 20 judul, dan 6 judul berbeda muncul di semua daftar. Berapa catalog coverage-nya?
+  options:
+  - 6 / 20 = 0,3
+  - 6 / 15 = 0,4
+  - 3 / 20 = 0,15
+  - 6 / 3 = 2
+  answer: 0
+  explanation: Coverage menghitung judul berbeda yang ditampilkan kepada siapa pun lalu membaginya dengan ukuran katalog, 6 / 20 = 0,3. Angka 15 slot bukan penyebutnya, karena judul yang sama dapat mengisi beberapa slot.
+- prompt: Mengapa pembagian acak atas interaksi menjadi masalah bagi recommender?
+  options:
+  - Data ujinya menjadi terlalu kecil untuk dipakai
+  - Pengguna yang hanya punya satu interaksi terbuang
+  - Ia dapat melatih dengan kejadian terbaru pengguna untuk menebak kejadian yang lebih lama, sehingga masa depan bocor
+  - Ia memberi pengguna cold keuntungan yang tidak adil
+  answer: 2
+  explanation: Recommender sungguhan menebak apa yang terjadi berikutnya. Pembagian acak mencampur kejadian yang lebih baru ke data latih, sehingga model belajar dari masa depan. Leave-last-out menyisihkan kejadian paling akhir.
+- prompt: Pada uji leave-last-out dengan 4 pengguna, judul yang disisihkan jatuh pada rank 1, 3, 12, dan 6 di daftar mereka. Berapa hit rate@5?
+  options:
+  - 0,25
+  - 0,75
+  - 1
+  - 0,5
+  answer: 3
+  explanation: Hanya rank 1 dan 3 yang berada di 5 teratas, sehingga hit rate-nya 2 / 4 = 0,5. Rank 6 hanya terlewat tipis, dan rank 12 jauh di luar.
+- prompt: Sebuah recommender menampilkan judul paling populer, sehingga judul itu mendapat lebih banyak klik, sehingga tampak makin populer dan makin sering ditampilkan. Apa ini, dan apa yang dirugikan?
+  options:
+  - Cold start, yang dapat diatasi dengan melatih ulang lebih sering
+  - Feedback loop, karena pilihan sistem sendiri membentuk datanya dan judul yang tidak pernah ditampilkan tetap tak terlihat
+  - Leakage, yang akan dicegah oleh random split
+  - Overfitting, yang dapat diatasi dengan lebih banyak kandidat
+  answer: 1
+  explanation: Keluaran sistem menjadi masukannya berikutnya. Judul populer mendapat lebih banyak eksposur, dan judul yang tidak pernah ditampilkan tidak pernah mengumpulkan klik. Memantau coverage dan diversity dari waktu ke waktu membantu menyadarinya.
+- prompt: Sebuah recommender baru mendapat skor offline lebih rendah daripada yang lama tetapi menang pada A/B test. Apa alasan yang mungkin?
+  options:
+  - Metrik offline hanya berlaku untuk model lama
+  - A/B test mengabaikan klik
+  - Log tidak memuat reaksi terhadap judul yang tidak pernah ditampilkan sistem lama, sehingga penilaian offline menganggapnya meleset
+  - Uji online mengukur precision@k dan uji offline tidak
+  answer: 2
+  explanation: Data log hanya memuat reaksi terhadap apa yang ditampilkan sistem lama. Model yang menampilkan judul lain dinilai salah secara offline, sedangkan pengguna sungguhan dalam A/B test dapat bereaksi terhadapnya.

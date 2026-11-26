@@ -1,0 +1,80 @@
+- prompt: Sebuah classifier memberi skor 1,8 pada sebuah kasus, dan threshold-nya 2,0. Kamu menurunkan threshold menjadi 1,5. Apa yang terjadi pada jawaban untuk kasus itu?
+  options:
+  - Tadinya ya dan tetap ya
+  - Tadinya tidak dan menjadi ya
+  - Tadinya ya dan menjadi tidak
+  - Tetap tidak, karena skornya sendiri yang berubah
+  answer: 1
+  explanation: Skor yang sama dengan threshold atau di atasnya dijawab ya. Skor 1,8 berada di bawah 2,0, karena itu tadinya tidak. Skor itu berada di atas 1,5, sehingga sekarang menjadi ya. Skornya tidak berubah; yang berubah hanya cut-nya.
+- prompt: Sebuah test set berisi 4.000 kasus dan 80 di antaranya positif. Sebuah classifier menjawab tidak untuk setiap kasus. Berapa accuracy dan recall-nya?
+  options:
+  - Accuracy 98 persen, recall 98 persen
+  - Accuracy 2 persen, recall 100 persen
+  - Accuracy 50 persen, recall 0 persen
+  - Accuracy 98 persen, recall 0 persen
+  answer: 3
+  explanation: Ia benar pada seluruh 3.920 negatif, sehingga accuracy-nya 3.920 / 4.000 = 0,98. Ia tidak menemukan satu pun dari 80 positif, sehingga recall-nya 0. Itulah jebakan accuracy, dan 0,98 adalah baseline yang harus dikalahkan classifier yang sebenarnya.
+- prompt: "Di lab, threshold 2,5 memberi TP = 36, FP = 5, FN = 64, dan threshold 1,0 memberi TP = 87, FP = 300, FN = 13. Apa yang terjadi ketika threshold turun dari 2,5 ke 1,0?"
+  options:
+  - Recall naik dari 36 ke 87 persen, dan precision turun dari 87,8 ke 22,5 persen
+  - Recall dan precision sama-sama naik
+  - Recall turun dan precision naik, karena cut-nya lebih ketat
+  - Recall tetap sama dan hanya precision yang berubah
+  answer: 0
+  explanation: Recall adalah TP / (TP + FN), yang berubah dari 36 / 100 menjadi 87 / 100. Precision adalah TP / (TP + FP), yang berubah dari 36 / 41 menjadi 87 / 387. Cut yang lebih rendah menangkap lebih banyak positif, tetapi juga menandai jauh lebih banyak negatif.
+- prompt: "Sebuah classifier diuji pada 1.000 kasus dan mendapat TP = 20, FP = 80, TN = 895, FN = 5. Berapa F1-nya?"
+  options:
+  - 0,92
+  - 0,50
+  - 0,32
+  - 0,20
+  answer: 2
+  explanation: F1 = 2 x TP / (2 x TP + FP + FN) = 40 / 125 = 0,32. Precision-nya 20 / 100 = 0,20 dan recall-nya 20 / 25 = 0,80. Rata-rata biasa keduanya, 0,50, menyembunyikan precision yang lemah, dan 0,92 adalah accuracy-nya yang dibulatkan (915 / 1.000 = 0,915).
+- prompt: Pada kurva ROC di lab, titiknya berada di false-positive rate 0,158 dan true-positive rate 0,87. Apa artinya?
+  options:
+  - 87 persen jawaban ya-nya benar
+  - Classifier-nya 87 persen akurat
+  - Threshold-nya 0,87
+  - Pada threshold itu, ia menangkap 87 persen positif sebenarnya dan menandai 15,8 persen negatif sebenarnya
+  answer: 3
+  explanation: Sumbu vertikal adalah recall, yaitu proporsi positif sebenarnya yang tertangkap. Sumbu horizontal adalah proporsi negatif sebenarnya yang salah ditandai. Keduanya bukan precision atau accuracy, dan threshold tidak ditampilkan pada sumbu.
+- prompt: Di lab, kamu menyeret threshold dari 1,0 naik ke 2,5 dan tidak mengubah apa pun yang lain. Apa yang terjadi pada AUC?
+  options:
+  - AUC naik, karena precision naik
+  - AUC tidak berubah, karena titiknya hanya bergeser di sepanjang kurva ROC yang sama
+  - AUC turun, karena recall turun
+  - AUC menjadi 0,5, karena lebih sedikit kasus yang ditandai
+  answer: 1
+  explanation: Kurva ROC dibangun dari semua threshold sekaligus, sehingga satu threshold tidak dapat mengubahnya. Hanya perubahan pada skornya sendiri, misalnya jarak antarkelas yang lebih besar, yang membengkokkan kurva dan mengubah AUC.
+- prompt: Pada threshold 1,0 kamu menaikkan Jarak antarkelas dari 2 ke 4. Recall naik dari 87 ke 100 persen, tetapi false-positive rate tetap 15,8 persen. Mengapa?
+  options:
+  - False-positive rate hanya melihat kasus negatif, dan skor mereka tidak bergerak
+  - False-positive rate ditentukan oleh threshold saja, sehingga perubahan skor tidak dapat menggesernya
+  - Menaikkan jarak menggeser negatif ke atas sebesar yang sama dengan positif
+  - False-positive rate hanya diperbarui ketika kamu menekan Sampel baru
+  answer: 0
+  explanation: Negatif masih berpusat di 0, sehingga proporsi yang sama dari mereka berada di atas 1,0. Menaikkan Jarak antarkelas hanya menggeser positif menjauh, dan itu menaikkan recall.
+- prompt: Satu kasus yang terlewat berbiaya 10 dan satu alarm palsu berbiaya 1. Cut A memberi FN = 20 dan FP = 100. Cut B memberi FN = 40 dan FP = 20. Cut mana yang total biayanya lebih rendah?
+  options:
+  - B, karena alarm palsunya lebih sedikit
+  - Tidak ada, karena total keduanya sama
+  - A, dengan total biaya 300 dibanding 420
+  - B, karena total kesalahannya lebih sedikit
+  answer: 2
+  explanation: Biaya = 10 x FN + FP. A berbiaya 10 x 20 + 100 = 300 dan B berbiaya 10 x 40 + 20 = 420. B punya total kesalahan yang lebih sedikit, 60 dibanding 120, tetapi kesalahannya jenis yang mahal.
+- prompt: Model A menangkap 90 persen positif pada threshold 0,3. Model B menangkap 70 persen positif pada threshold 0,6. Seorang rekan mengatakan A punya skor yang lebih baik. Apa tanggapan yang adil?
+  options:
+  - Setuju, karena recall yang lebih tinggi selalu berarti skor yang lebih baik
+  - Threshold mereka berbeda, karena itu bandingkan pada threshold yang sama atau bandingkan seluruh kurva ROC-nya
+  - B lebih baik, karena threshold yang lebih tinggi berarti classifier yang lebih ketat
+  - Keduanya tidak akan pernah bisa dibandingkan, karena recall bergantung pada datanya
+  answer: 1
+  explanation: Threshold yang lebih rendah dengan sendirinya menaikkan recall, sehingga kedua angka itu berbeda karena dua sebab sekaligus. Bandingkan pada threshold yang sama, atau bandingkan seluruh kurva ROC, yang menampilkan semua threshold.
+- prompt: Di lab, AUC-nya 0,931, tetapi pada threshold 1,0 hanya 22,5 persen jawaban ya yang benar-benar positif. Mengapa ini bukan kontradiksi?
+  options:
+  - AUC dihitung hanya dari kasus negatif
+  - Precision 22,5 persen berarti AUC sebenarnya 0,225
+  - Lab menampilkan kesalahan, karena AUC yang tinggi memaksa precision yang tinggi
+  - AUC menilai seberapa baik skor mengurutkan di semua threshold, sedangkan precision menggambarkan satu cut dan bergantung pada seberapa jarang positifnya
+  answer: 3
+  explanation: AUC mengukur pengurutan di semua threshold. Precision menggambarkan satu threshold, dan dengan 5 persen positif, banyaknya negatif menghasilkan banyak alarm palsu di samping tangkapan yang benar.

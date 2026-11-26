@@ -1,0 +1,72 @@
+- prompt: Sebuah email memang spam (label 1) dan model memberinya p = 0,5. Berapa log loss dari contoh ini?
+  options:
+  - 0
+  - 0,5
+  - 0,693
+  - 1
+  answer: 2
+  explanation: Loss-nya -ln(0,5) = 0,693. Nilainya sama untuk label mana pun ketika model menjawab 0,5, dan baru 0 ketika model memberikan probabilitas 1 untuk kebenaran.
+- prompt: Sebuah email asli yang bukan spam (label 0) dinyatakan spam oleh dua model. Yang satu memberinya p = 0,6, yang lain p = 0,99. Bagaimana perbandingan loss keduanya?
+  options:
+  - Model 0,99 membayar jauh lebih mahal, 4,605 dibandingkan 0,916
+  - Keduanya membayar sama, karena keduanya salah
+  - Model 0,6 membayar lebih mahal, karena lebih dekat ke 0,5
+  - Keduanya membayar sama, karena keduanya di atas 0,5
+  answer: 0
+  explanation: Untuk label benar 0, loss-nya -ln(1 - p), yaitu -ln(0,4) = 0,916 dan -ln(0,01) = 4,605. Log loss menghukum kesalahan yang yakin jauh lebih berat daripada kesalahan yang ragu-ragu.
+- prompt: Sebuah model memberi probabilitas 0,1 untuk label yang benar, dengan loss 2,303. Kalau ia memberi 0,01 untuk kebenaran, berapa loss-nya?
+  options:
+  - Sekitar 0,230
+  - Sekitar 2,303, sama saja
+  - Sekitar 3,000
+  - Sekitar 4,605
+  answer: 3
+  explanation: -ln(0,01) = 4,605. Setiap kali probabilitas untuk kebenaran mengecil sepuluh kali lipat, loss naik sekitar 2,3.
+- prompt: Dua model sama-sama punya accuracy 3 dari 4 pada data yang sama. Model A punya rata-rata log loss 0,463 dan model B 1,385. Apa penjelasan yang paling mungkin?
+  options:
+  - B salah pada lebih banyak contoh daripada A
+  - B membuat satu kesalahan yang yakin dan harganya mahal
+  - B memberi sekitar 0,5 untuk setiap contoh
+  - A dan B dinilai pada data yang berbeda
+  answer: 1
+  explanation: Accuracy yang sama berarti jumlah jawaban salah yang sama, sehingga selisihnya berasal dari seberapa yakin tiap model. Satu kesalahan yang yakin, seperti p = 0,99 pada label 0 (loss 4,605), dapat mengangkat rata-rata sebanyak itu.
+- prompt: Model yang menjawab 0,5 untuk setiap contoh punya rata-rata log loss 0,693. Model lain punya rata-rata log loss 1,385. Apa artinya?
+  options:
+  - Model kedua lebih baik, karena loss-nya lebih besar
+  - Kedua model tidak dapat dibandingkan
+  - Model kedua lebih buruk daripada model yang selalu menjawab 0,5
+  - Model kedua dua kali lebih akurat
+  answer: 2
+  explanation: Log loss yang lebih rendah lebih baik, dan selalu menjawab 0,5 adalah baseline yang harus dikalahkan. Rata-rata 1,385 berarti kesalahannya yang disertai keyakinan menelan biaya lebih besar daripada keuntungan yang diperolehnya.
+- prompt: Untuk label benar 1, sebuah model menjawab p = 0,01. Squared error memberi (1 - 0,01)² = 0,980, sedangkan log loss memberi 4,605. Mengapa log loss menghukum kesalahan ini jauh lebih berat?
+  options:
+  - Squared error dibatasi di sekitar 1 untuk probabilitas, sedangkan log loss tidak punya batas atas
+  - Log loss mengkuadratkan selisihnya dua kali
+  - Squared error mengabaikan label yang benar
+  - Log loss hanya menghitung contoh yang dijawab benar oleh model
+  answer: 0
+  explanation: Selisih kuadrat dari sebuah probabilitas tidak pernah melebihi 1, sehingga kesalahan dengan keyakinan 99 persen berbiaya hampir sama dengan kesalahan dengan keyakinan 90 persen. -ln(p) bertambah tanpa batas saat p menuju 0.
+- prompt: Gradient log loss untuk sebuah bobot adalah rata-rata dari (p - y) × x. Satu contoh punya x = 2, label benar 0, dan p = 0,9. Berapa yang ia sumbangkan sebelum dirata-ratakan?
+  options:
+  - 0,2
+  - -1,8
+  - 0,9
+  - 1,8
+  answer: 3
+  explanation: (0,9 - 0) × 2 = 1,8. Gradient yang positif berarti menaikkan w menaikkan loss, sehingga langkah berlawanan arah menurunkan w, dan model menjawab kurang dari 0,9 untuk x ini.
+- prompt: Pada contoh di pelajaran, gradient untuk w di awal adalah -1 dan learning rate-nya 0,5. Mulai dari w = 0, berapa w setelah satu langkah?
+  options:
+  - -0,5
+  - 0,5
+  - -1
+  - 1
+  answer: 1
+  explanation: Pembaruannya w = 0 - 0,5 × (-1) = 0,5. Gradient yang negatif berarti menaikkan w menurunkan loss, sehingga bobotnya naik.
+- prompt: Selama gradient descent, rata-rata log loss berjalan 0,693, 0,338, 0,249. Bagaimana cara membacanya dengan benar?
+  options:
+  - Model semakin memburuk
+  - Langkah harus membesar saat loss turun
+  - Tiap langkah menurunkan loss, tetapi makin sedikit, karena gradient-nya mengecil
+  - Proses belajar sudah selesai setelah langkah pertama
+  answer: 2
+  explanation: Penurunannya sekitar 0,36 lalu sekitar 0,09. Gradient-nya makin kecil (-1, -0,462), sehingga setiap langkah menggeser w lebih sedikit. Loss masih turun, maka fitting belum selesai.

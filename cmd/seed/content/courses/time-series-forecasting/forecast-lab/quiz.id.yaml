@@ -1,0 +1,72 @@
+- prompt: Pada seri yang tenang, tabel menunjukkan MASE rata-rata 0,45 untuk model lag terlatih dan 1,07 untuk seasonal naive. Apa arti 0,45?
+  options:
+  - Forecast model terlatih salah 45% dari waktu, sebagai porsi dari semua nilai yang diramal
+  - Galatnya sekitar 0,45 kali galat seasonal naive di slice training-nya
+  - Model terlatih mengalahkan seasonal naive sebesar 0,45 satuan di setiap window dari 8 window
+  - Model terlatih menjelaskan 45% variasi dalam seluruh seri buatan yang dibuat lab
+  answer: 1
+  explanation: MASE membagi galat sebuah window dengan galat yang dibuat seasonal naive pada slice training window itu sendiri, jadi 0,45 berarti kurang dari setengah patokan tersebut. Ia bukan persentase forecast yang salah, dan tidak punya satuan.
+- prompt: Seri punya tren +0,10 per langkah dan musim 12 langkah. Untuk langkah ke-18 ke depan, seasonal naive hanya dapat menyalin nilai 24 langkah sebelumnya. Berapa banyak tren yang diabaikan salinan itu?
+  options:
+  - 0,6 satuan
+  - 1,2 satuan
+  - 2,4 satuan
+  - 1,8 satuan
+  answer: 2
+  explanation: 24 langkah tren pada 0,10 per langkah adalah 24 x 0,10 = 2,4 satuan, dua kali lipat 12 x 0,10 = 1,2 yang diabaikan salinan satu musim. Penggandaan itulah yang membuat MASE rata-rata seasonal naive naik dari 1,02 menjadi 2,00 setelah langkah 12.
+- prompt: Dengan Lag yang dipakai diatur ke 1 dan penanda musim mati, model terlatih mendapat MASE rata-rata 1,94, lebih buruk daripada seasonal naive yang 1,07. Mengapa?
+  options:
+  - Ia hanya melihat nilai terakhir dan sebuah tren, sehingga tidak dapat membedakan puncak dari lembah
+  - Lag yang lebih sedikit selalu menghasilkan model yang lebih buruk, jadi model dengan satu lag tidak dapat mengalahkan baseline mana pun
+  - Model terlatih sama sekali tidak dapat menyesuaikan tren ketika hanya diberi kurang dari 12 lag riwayat
+  - Seasonal naive memakai nilai test, sehingga punya keuntungan yang tidak adil dibanding model terlatih
+  answer: 0
+  explanation: Musim harus masuk lewat suatu jalur, entah lewat 12 lag atau lewat penanda. Tanpa keduanya, model mendekati naive (1,88). Menyalakan penanda membawanya ke 0,75, jadi lag bukan satu-satunya jalan masuk, dan seasonal naive tidak melihat nilai test.
+- prompt: Setelah shift +6, MASE rata-rata model terlatih naik dari 0,46 menjadi 1,69. Berapa kali lipat kenaikannya?
+  options:
+  - Sekitar 1,2 kali
+  - Sekitar 0,3 kali
+  - Sekitar 1,7 kali
+  - Sekitar 3,7 kali
+  answer: 3
+  explanation: 1,69 / 0,46 kira-kira 3,7. Kenaikannya 1,69 - 0,46 = 1,23, yang merupakan angka lain, dan 0,46 / 1,69 kira-kira 0,27, rasio yang terbalik. Seasonal naive, dari 1,04 ke 1,61, tumbuh dengan faktor yang jauh lebih kecil.
+- prompt: Mengapa model terlatih kehilangan lebih banyak akurasi, dengan faktor lebar, daripada seasonal naive setelah shift?
+  options:
+  - Seasonal naive dilatih ulang di setiap window pada seluruh riwayat, sedangkan model terlatih hanya dilatih sekali di awal
+  - Ia dilatih terutama pada riwayat pra-shift, sehingga terus memakai pola lama sampai nilai pasca-shift mengisi lag-nya
+  - Shift menghilangkan musim dari seri, dan hanya model terlatih yang membutuhkan musim agar dapat meramalkan dengan baik
+  - Model mana pun yang memakai lag gagal setiap kali level seri berubah, seberapa banyak pun data yang pernah dilihatnya
+  answer: 1
+  explanation: Seasonal naive hanya salah selama satu musim, karena ia menyalin satu nilai dari regime lama, lalu menyalin nilai pasca-shift. Model terlatih mempelajari hubungan yang lama dan membutuhkan nilai baru di lag-nya untuk pulih. Ia memang pulih di window 7 dan 8.
+- prompt: Pada window 6, MAE model terlatih adalah 6,90 dan galat seasonal naive in-sample pada slice training-nya (skala MASE) adalah 2,42. Berapa MASE-nya?
+  options:
+  - 9,32
+  - 4,48
+  - 0,35
+  - 2,85
+  answer: 3
+  explanation: MASE = MAE / skala = 6,90 / 2,42, yaitu sekitar 2,85. Menjumlahkan atau mengurangkan kedua angka itu, atau membaginya dengan arah terbalik, menghasilkan 9,32, 4,48, atau 0,35, yang tak satu pun merupakan rasio galat terhadap patokannya.
+- prompt: Kamu ingin membandingkan backtest sliding dan expanding pada forecast yang sama. Mengapa Ukuran galat perlu diganti ke MAE lebih dulu?
+  options:
+  - MAE selalu menjadi ukuran yang lebih baik untuk forecast, sehingga MASE tidak pernah boleh dipakai untuk membandingkan apa pun
+  - MASE tidak dapat dihitung untuk sliding window, karena slice-nya terlalu pendek untuk memberi skala
+  - Skala MASE tiap window berasal dari slice training-nya, sehingga satu forecast mendapat skor berbeda di tiap gaya
+  - MAE mengabaikan regime shift, sehingga dengannya perbandingan antara kedua gaya menjadi adil
+  answer: 2
+  explanation: Forecast seasonal naive di window 6 identik pada kedua gaya, tetapi MASE-nya 0,61 dengan sliding dan 0,93 dengan expanding karena skalanya berbeda (2,42 dibanding 1,60). MAE (1,49 di keduanya) memakai satuan seri itu sendiri dan tidak berubah menurut slice.
+- prompt: Dengan shift, band 80% menampung 53% nilai sebenarnya secara keseluruhan dan hanya 1 dari 12 di window 5. Apa penjelasan terbaiknya?
+  options:
+  - Target coverage 80% terlalu tinggi untuk model terlatih, sehingga band-nya selalu meleset ketika level seri bergerak
+  - Delapan window terlalu sedikit agar interval mana pun dapat bekerja, sehingga angka coverage dari window itu tidak berarti
+  - Band dipotong sekali dari riwayat tenang dan tak pernah diperbarui, sehingga tak dapat mengikuti level yang bergerak
+  - Forecast model terlatih menjadi acak setelah shift, sehingga tidak ada band yang mampu menampungnya
+  answer: 2
+  explanation: Tanpa shift, band yang sama menampung 80%. Lebar band berasal dari galat sebelum window pertama, dan lompatan level membuat setiap galat berikutnya lebih besar dan searah. Perbaikannya adalah kalibrasi ulang pada galat terbaru.
+- prompt: Pada seed 2 sampai 7, model terlatih menang di semua 8 window pada seri yang tenang dan kehilangan akurasi dengan faktor lebih lebar setelah shift setiap kali. Apa yang ditambahkan oleh hasil ini, dan apa yang tidak?
+  options:
+  - Ia membuktikan model terlatih mengalahkan seasonal naive pada seri nyata mana pun yang kamu temui, karena ia menang di setiap seed
+  - Ia menunjukkan temuan itu bukan kebetulan satu seed, tetapi semua seri dibuat lab, sehingga data nyata belum teruji
+  - Ia menunjukkan bahwa seed tidak berpengaruh pada seri, karena temuannya bertahan pada semuanya
+  - Ia menunjukkan bahwa model terlatih tidak pernah membutuhkan baseline di sampingnya, karena menang di setiap window pada setiap seed
+  answer: 1
+  explanation: Seed baru mengubah noise dan menguji terhadap satu sampel noise yang kebetulan beruntung. Ia tidak dapat menguji jenis data yang berbeda, dan kursus ini tidak punya time series nyata untuk lab. Jalankan baseline dan backtest pada seri nyata sebelum kamu mempercayai sebuah model.

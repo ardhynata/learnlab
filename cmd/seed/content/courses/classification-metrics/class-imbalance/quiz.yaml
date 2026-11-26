@@ -1,0 +1,72 @@
+- prompt: A payment service has 2,000 payments, and 40 of them are fraud. A model that answers "honest" every time is run on them. What is its accuracy?
+  options:
+  - 2 percent
+  - 50 percent
+  - 98 percent
+  - 40 percent
+  answer: 2
+  explanation: It is right on all 1,960 honest payments, so accuracy is 1,960 / 2,000 = 0.98. It misses all 40 frauds, so its recall is 0. That 98 percent is the majority-class baseline.
+- prompt: In a test set 96 percent of the cases are negative. A model reports 95 percent accuracy. What should you conclude?
+  options:
+  - It is a strong model, because 95 percent is high
+  - It does worse than the majority-class baseline of 96 percent
+  - It matches the baseline exactly
+  - Nothing can be said without the confusion matrix
+  answer: 1
+  explanation: Always answering no scores 96 percent here, so 95 percent is below doing nothing. A high accuracy means little until you compare it with the baseline, which is 1 minus the positive rate.
+- prompt: "A spam filter is tested on 1,000 messages, 50 of them spam. It gets TP = 30, FP = 10, FN = 20, TN = 940. What is its precision?"
+  options:
+  - 0.60
+  - 0.97
+  - 0.03
+  - 0.75
+  answer: 3
+  explanation: Precision is TP / (TP + FP) = 30 / 40 = 0.75. The recall is 30 / 50 = 0.60, and 0.97 is the accuracy, which is close to the 0.95 baseline and so says little.
+- prompt: For the same spam filter (TP = 30, FP = 10, FN = 20, TN = 940), what is the F1?
+  options:
+  - 0.67
+  - 0.75
+  - 0.60
+  - 0.97
+  answer: 0
+  explanation: F1 = 2 x TP / (2 x TP + FP + FN) = 60 / (60 + 10 + 20) = 60 / 90 = 0.67. It sits between the precision 0.75 and the recall 0.60, and the 940 true negatives do not enter it.
+- prompt: A model keeps the same recall and the same number of false alarms, but the test data now contains many more positive cases. What happens to its precision?
+  options:
+  - It falls, because more positives mean more mistakes
+  - It stays the same, because the model did not change
+  - It rises, because the same false alarms now sit beside more true positives
+  - It cannot be computed without the baseline
+  answer: 2
+  explanation: Precision is TP / (TP + FP). With the same recall there are more true positives, while FP stays put, so precision rises. Precision depends on the positive rate, not only on the model.
+- prompt: Which statement describes class weights?
+  options:
+  - Repeat the rare cases until both classes have the same size
+  - Delete common cases until both classes have the same size
+  - Rebuild the test set so that it is balanced
+  - Make a mistake on a rare case cost more while the model is trained
+  answer: 3
+  explanation: Class weights leave the data alone and change how much each case counts in the loss. The first two options are oversampling and undersampling, which are resampling.
+- prompt: A team oversamples the fraud cases until the data is 50 percent fraud, and then measures precision 0.98 on that oversampled data. What is wrong with reporting it?
+  options:
+  - Oversampling always lowers precision
+  - Real payments are still mostly honest, so precision at the real rate would be much lower
+  - Precision can only be measured on training data
+  - Oversampling removes the false alarms
+  answer: 1
+  explanation: Resampling is for training. The test set should keep the real positive rate, because the number of false alarms per real catch depends on it. On balanced data precision looks better than it will be in use.
+- prompt: An "always flag fraud" model is run on 10,000 payments, 100 of them fraud. What is its precision?
+  options:
+  - 0.01
+  - 1.00
+  - 0.50
+  - 0.99
+  answer: 0
+  explanation: It flags all 10,000 payments, and only the 100 frauds are right, so precision is 100 / 10,000 = 0.01. Its recall is 1, which shows how recall alone can also be fooled.
+- prompt: A training set has 950 honest payments and 50 fraud. If an honest payment has weight 1, what weight gives the fraud class the same total influence?
+  options:
+  - 10
+  - 19
+  - 20
+  - 50
+  answer: 1
+  explanation: The honest class has a total weight of 950 x 1 = 950. Fifty frauds must add up to the same 950, so each weighs 950 / 50 = 19.

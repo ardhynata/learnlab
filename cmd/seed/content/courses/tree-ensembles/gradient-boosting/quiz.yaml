@@ -1,0 +1,80 @@
+- prompt: In the six-penguin example, what does the boosted model predict for every penguin before any tree is added?
+  options:
+  - 0 kg, because the first tree has to build everything
+  - 4.50 kg, the mean of the six masses
+  - 4.55 kg, the middle of the sorted masses
+  - 3.75 kg, the mass of the first penguin
+  answer: 1
+  explanation: The loop starts every row at the mean of the targets, (3.75 + 3.35 + 4.30 + 4.80 + 5.20 + 5.60) / 6 = 27.00 / 6 = 4.50 kg. The residuals that tree 1 learns from are measured from that start.
+- prompt: A leaf of a regression tree holds three penguins with masses 3.75, 3.35 and 4.30 kg. What does the tree predict for a new penguin that lands in this leaf?
+  options:
+  - 3.35 kg, the smallest mass in the leaf
+  - 3.75 kg, the middle mass in the leaf
+  - 3.80 kg, the mean of the three masses
+  - 11.40 kg, the sum of the three masses
+  answer: 2
+  explanation: A regression leaf predicts the mean of the targets that reach it, 11.40 / 3 = 3.80 kg. The sum is not a prediction, and the middle value is a median, which is not what the tree uses.
+- prompt: After tree 1 with a learning rate of 0.5, the model predicts 4.15 kg for the penguin with a 195 mm flipper and a mass of 4.30 kg. What residual does tree 2 get for this penguin?
+  options:
+  - "+0.15 kg"
+  - "-0.15 kg"
+  - "-0.20 kg"
+  - "+0.30 kg"
+  answer: 0
+  explanation: The residual is the actual value minus the current prediction, 4.30 - 4.15 = +0.15 kg. The -0.20 is its residual from the start value 4.50, before tree 1 was added.
+- prompt: A new penguin has a flipper of 200 mm. Tree 1 sends it left (output -0.70) and tree 2 sends it right (output +0.30), with a start value of 4.50 and a learning rate of 0.5. What is the prediction?
+  options:
+  - 4.10 kg
+  - 4.15 kg
+  - 5.00 kg
+  - 4.30 kg
+  answer: 3
+  explanation: The prediction is 4.50 + 0.5 × (-0.70) + 0.5 × 0.30 = 4.50 - 0.35 + 0.15 = 4.30 kg. Forgetting the learning rate gives 4.10, and 4.15 ignores tree 2.
+- prompt: Compared with a learning rate of 0.5, what does a learning rate of 0.1 do in boosting?
+  options:
+  - It makes every tree deeper, so fewer trees are needed
+  - It moves the predictions less with each tree, so more trees are needed to fit the same way
+  - It removes the need to check a validation set
+  - It makes the training error reach zero sooner
+  answer: 1
+  explanation: The learning rate scales each tree's output. On the six penguins the MSE after tree 2 is 0.45 at a rate of 0.1 and 0.12 at 0.5, so the smaller rate has fitted far less. It does not remove the need for validation.
+- prompt: For squared error, what do the residuals tell the next tree?
+  options:
+  - Which feature to remove from the data
+  - How many trees the model should have
+  - Which rows to delete as outliers
+  - In which direction, and roughly how far, to move each prediction to lower the loss
+  answer: 3
+  explanation: The gradient of the squared error with respect to a prediction is -2 × residual, so the residual points downhill (the factor 2 is absorbed by the learning rate). That is why boosting counts as gradient descent on the predictions.
+- prompt: With a learning rate of 0.1, the training RMSE is 182 g at 300 trees, and the validation RMSE is 345 g at 45 trees and 385 g at 300 trees. How many trees do you keep?
+  options:
+  - 45, where the validation error is lowest
+  - 300, where the training error is lowest
+  - 100, halfway between the two
+  - Any number, because both errors are far above zero
+  answer: 0
+  explanation: Early stopping keeps the number of trees with the lowest validation error. The training error keeps falling because the extra trees fit noise, so it cannot choose the number.
+- prompt: A single depth-2 tree scores a validation RMSE of 391 g and a training RMSE of 391 g. What does this suggest, and what helps?
+  options:
+  - High variance, so average many such trees on bootstrap samples
+  - High variance, so make the learning rate smaller
+  - High bias, so add small trees that fit what is left, which is boosting
+  - Nothing, because the two scores match
+  answer: 2
+  explanation: Equal training and validation errors that are both high mean the tree is too rigid, which is bias. Boosting adds trees that correct what is left. In this lesson, 45 boosted depth-2 trees reach 286 g on training and 345 g on validation.
+- prompt: Which statement describes bagging but not boosting?
+  options:
+  - Each tree is fitted to the residuals of the trees before it
+  - The trees are kept small, often stumps
+  - The final output is a sum of shrunk tree outputs
+  - The trees are built independently of each other on bootstrap samples and averaged
+  answer: 3
+  explanation: Bagging fits each deep tree on its own bootstrap sample, so the trees do not depend on each other and are averaged. The other three statements describe boosting.
+- prompt: The best validation RMSE, 345 g, was found at 45 trees on the validation penguins. Why report the final score on the test set instead?
+  options:
+  - Test penguins are always easier than validation penguins
+  - The validation set chose the number of trees, so its error at that number is a little flattered
+  - A test set is needed to fit the trees themselves
+  - Validation error cannot be computed for boosted models
+  answer: 1
+  explanation: Picking the best of many validation scores favors a lucky one, so that score is a little optimistic. The test penguins played no part in the choice, so their score is an honest estimate.

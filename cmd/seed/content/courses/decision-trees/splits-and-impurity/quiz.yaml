@@ -1,0 +1,72 @@
+- prompt: What makes a split in a decision tree axis-aligned?
+  options:
+  - It tests a combination of several features at once
+  - It always cuts a group into two equal halves
+  - It is chosen at random from the available features
+  - It asks about one feature, so the cut is parallel to an axis
+  answer: 3
+  explanation: A split compares a single feature with a threshold. In a plot of two features that is a vertical or horizontal line. Slanted cuts would need a combination of features.
+- prompt: A group has 3 Adelie penguins and 1 Chinstrap. What is its Gini impurity?
+  options:
+  - 0.25
+  - 0.375
+  - 0.5
+  - 0.75
+  answer: 1
+  explanation: The shares are 3/4 and 1/4, so Gini = 1 - (9/16 + 1/16) = 1 - 10/16 = 0.375. A 50/50 group would give 0.5.
+- prompt: A leaf holds 5 Adelie and 2 Chinstrap training penguins. What does the tree predict for a new penguin that reaches it?
+  options:
+  - Adelie, the majority class in the leaf
+  - Chinstrap, the class with the higher impurity
+  - A 50/50 guess between the two species
+  - Nothing, because the leaf is not pure
+  answer: 0
+  explanation: A leaf predicts the most common label among its training cases. It does not have to be pure to make a prediction.
+- prompt: A split divides ten penguins into a group of 6 penguins with a Gini of about 0.44 and a group of 4 penguins with a Gini of 0.375. What is the weighted Gini of the split, roughly?
+  options:
+  - 0.20
+  - 0.50
+  - 0.81
+  - 0.41
+  answer: 3
+  explanation: Weight each child by its size, 6/10 × 0.44 + 4/10 × 0.375 = 0.264 + 0.15, about 0.41. The plain average of 0.44 and 0.375 would ignore the group sizes.
+- prompt: A group is 50/50, and a split sends half of each class to each side, so both children are also 50/50. What is the impurity decrease?
+  options:
+  - 0
+  - 0.25
+  - 0.5
+  - 1
+  answer: 0
+  explanation: Both children have a Gini of 0.5, so the weighted Gini after the split is 0.5, the same as before. The decrease is 0.5 - 0.5 = 0, so the question taught the tree nothing.
+- prompt: One Adelie and one Chinstrap penguin both have a flipper length of 193 mm. What does that mean for splits on flipper length?
+  options:
+  - The tree can separate them with a cut at 192 mm
+  - The tree can separate them if it cuts exactly at 193 mm
+  - A flipper cut can never separate them
+  - They must belong to the same species
+  answer: 2
+  explanation: A cut sends every penguin with the same value to the same side. To separate these two, the tree needs another feature, such as bill length.
+- prompt: For the ten penguins, a flipper cut at 195.5 mm lowers the Gini by about 0.21, and a bill-length cut at 43 mm lowers it by 0.50. Which split does the tree choose first?
+  options:
+  - The flipper cut, because flipper length comes earlier in the data
+  - The bill cut, because it has the larger impurity decrease
+  - Either one, chosen at random
+  - Neither, because neither makes every group pure
+  answer: 1
+  explanation: The builder keeps the candidate with the largest decrease across all features. The bill cut makes both groups pure, so it wins.
+- prompt: Which statement about Gini and entropy is correct?
+  options:
+  - Both are 0 for a pure group and highest for an even mix, but their scales differ
+  - Both are 0 for a pure group, and a gain from one can be compared directly with a gain from the other
+  - Entropy is 0 for a pure group, but Gini is 1
+  - Entropy is only used for groups with three or more classes
+  answer: 0
+  explanation: Both are 0 when the group is pure and largest for a 50/50 mix. With two classes Gini tops out at 0.5 and entropy at 1, so compare splits only within one measure.
+- prompt: Two classes are separated by a slanted straight line in a plot of two features. How does a decision tree approximate that line?
+  options:
+  - With one slanted split
+  - By averaging the two features first
+  - With many small axis-aligned splits that form a staircase
+  - It cannot make any prediction there
+  answer: 2
+  explanation: Every split is vertical or horizontal, so a diagonal edge has to be traced by a series of steps. This is one reason a tree can need many splits for a simple slanted boundary.

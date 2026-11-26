@@ -1,0 +1,80 @@
+- prompt: Sebuah model memberi probabilitas 0,62 pada sebuah contoh. Diprediksi sebagai apa contoh itu pada threshold 0,5 dan pada threshold 0,7?
+  options:
+  - Positif pada kedua threshold
+  - Positif pada 0,5 dan negatif pada 0,7
+  - Negatif pada kedua threshold
+  - Negatif pada 0,5 dan positif pada 0,7
+  answer: 1
+  explanation: Sebuah contoh diprediksi positif bila probabilitasnya sama dengan atau lebih besar dari threshold. 0,62 lebih besar dari 0,5 tetapi lebih kecil dari 0,7. Model dan probabilitasnya tidak berubah, hanya aturannya yang berganti.
+- prompt: Pada data awal lab, kamu menurunkan threshold dari 0,5 ke 0,2. False positive naik dari 6 ke 22 dan false negative turun dari 10 ke 2. Mengapa ini terjadi?
+  options:
+  - Modelnya menjadi lebih buruk, sehingga ia membuat lebih banyak kesalahan dari kedua jenis
+  - Probabilitasnya turun, sehingga lebih sedikit contoh yang diprediksi positif
+  - Kelompok positif bergeser mendekati kelompok negatif
+  - Lebih banyak contoh diprediksi positif, sehingga alarm palsu naik dan kasus terlewat turun
+  answer: 3
+  explanation: Pada 0,2 ada 60 contoh yang diprediksi positif, bukan 36. Setiap contoh yang sebelumnya diprediksi positif tetap positif, sehingga false positive tidak mungkin turun, dan sebagian positif yang tadinya terlewat kini ditemukan. Model dan probabilitasnya tidak berubah.
+- prompt: Pada threshold 0,5 lab menunjukkan 30 true positive, 6 false positive, dan 10 false negative. Berapa precision-nya?
+  options:
+  - 30 / 36, yaitu 83,3%
+  - 30 / 40, yaitu 75,0%
+  - 30 / 100, yaitu 30,0%
+  - 6 / 36, yaitu 16,7%
+  answer: 0
+  explanation: Precision adalah true positive dibagi semua yang diprediksi positif, yaitu 30 + 6 = 36. 30 / 40 adalah recall, yang dibagi semua positif sebenarnya (30 + 10).
+- prompt: Pada penguin dengan threshold 0,5, lab menunjukkan 108 true positive, 13 false positive, 15 false negative, dan 206 true negative. Berapa recall-nya?
+  options:
+  - 108 / 121, yaitu 89,3%
+  - 108 / 342, yaitu 31,6%
+  - 108 / 123, yaitu 87,8%
+  - 15 / 123, yaitu 12,2%
+  answer: 2
+  explanation: Recall adalah true positive dibagi semua positif sebenarnya. Ada 108 + 15 = 123 penguin Gentoo, jadi recall-nya 108 / 123, sekitar 87,8%. 108 / 121 adalah precision, karena 121 penguin diprediksi positif.
+- prompt: Kamu menyeret threshold dari 0,05 ke 0,95 sambil memperhatikan baris Log loss pada tabel. Apa yang kamu lihat?
+  options:
+  - Nilainya naik, karena threshold makin ketat
+  - Nilainya turun, karena makin sedikit contoh yang diprediksi positif
+  - Nilainya turun lalu naik, dengan nilai terendah pada 0,5
+  - Nilainya tetap 0,352, karena threshold tidak mengubah probabilitasnya
+  answer: 3
+  explanation: Model dan probabilitasnya tetap. Threshold hanya menentukan bagaimana probabilitas itu menjadi prediksi. Hitungan, precision, dan recall berubah mengikutinya; log loss tidak.
+- prompt: Pada threshold 0,9 lab memprediksi 13 contoh positif, dan ketiga belasnya positif sebenarnya, sehingga precision 100,0%. Recall-nya 32,5%. Apa artinya?
+  options:
+  - Modelnya hampir sempurna, karena setiap prediksinya benar
+  - Modelnya tidak membuat kesalahan, karena tidak punya false positive
+  - Hanya 13 dari 40 positif sebenarnya yang ditemukan
+  - Threshold-nya terlalu rendah, karena recall seharusnya tidak lebih rendah dari precision
+  answer: 2
+  explanation: Precision yang sempurna hanya berarti prediksi yang dibuat itu benar. Recall-nya 13 / 40 = 32,5%, sehingga 27 positif menjadi false negative. Threshold yang sangat tinggi dapat membeli precision dengan harga recall.
+- prompt: Threshold 0,8 pada probabilitas adalah potongan pada skor. Skor yang mana, bila skor = ln(p / (1 - p))?
+  options:
+  - 0,80
+  - 4,00
+  - Sekitar 1,39
+  - Sekitar -1,39
+  answer: 2
+  explanation: ln(0,8 / 0,2) = ln 4, yaitu sekitar 1,39. Sigmoid selalu naik, sehingga p paling sedikit 0,8 tepat ketika skor paling sedikit 1,39. Threshold 0,2 memberi -1,39 dan 0,5 memberi 0.
+- prompt: Kasus terlewat (false negative) berbiaya 5 dan alarm palsu (false positive) berbiaya 1. Lab menunjukkan 22 false positive dan 2 false negative pada threshold 0,2, 6 dan 10 pada 0,5, serta 1 dan 19 pada 0,8. Threshold mana yang total biayanya paling rendah?
+  options:
+  - 0,2, dengan biaya 22 + 5 × 2 = 32
+  - 0,5, dengan biaya 6 + 5 × 10 = 56
+  - 0,8, dengan biaya 1 + 5 × 19 = 96
+  - Ketiganya sama, karena modelnya sama
+  answer: 0
+  explanation: Kasus terlewat itu mahal, jadi threshold rendah, yang membuat sedikit kasus terlewat, menang, yaitu 32 dibandingkan 56 dan 96. Modelnya sama, tetapi kesalahan yang dibuatnya bergantung pada threshold.
+- prompt: Kamu menaikkan threshold dari 0,5 ke 0,8 pada model dan data yang sama. Hasil mana di bawah ini yang mustahil?
+  options:
+  - False positive turun dari 6 ke 1
+  - False negative naik dari 10 ke 19
+  - Jumlah yang diprediksi positif turun dari 36 ke 22
+  - False negative turun dari 10 ke 4
+  answer: 3
+  explanation: Menaikkan threshold hanya dapat memperkecil himpunan contoh yang diprediksi positif. Positif sebenarnya yang terlewat pada 0,5 tetap berada di bawah 0,8, sehingga false negative hanya bisa tetap atau naik.
+- prompt: Pada sampel buatan baru yang pertama, lab menunjukkan 5 false positive dan 4 false negative pada 0,40, 0,45, dan 0,50. Mengapa hitungannya tidak bergerak?
+  options:
+  - Kontrol threshold hanya bekerja di atas 0,5
+  - Tidak ada contoh dengan probabilitas di antara 0,40 dan 0,50, sehingga tidak ada yang berpindah sisi
+  - Hitungan hanya diperbarui ketika kamu menekan Sampel baru
+  - Log loss tetap sama, sehingga hitungannya tetap sama
+  answer: 1
+  explanation: Sebuah hitungan baru berubah saat threshold melewati probabilitas sebuah contoh. Karena tidak ada apa pun di antara 0,40 dan 0,50, contoh yang sama diprediksi positif pada ketiga threshold itu.

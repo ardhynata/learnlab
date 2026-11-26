@@ -1,0 +1,80 @@
+- prompt: Di Lab interval, split conformal punya 100 residual kalibrasi dan alpha-nya 0,1. Residual mana yang menjadi q?
+  options:
+  - Terkecil ke-90
+  - Terkecil ke-91
+  - Terkecil ke-92
+  - Yang terbesar, ke-100
+  answer: 1
+  explanation: Rank-nya ceil((n + 1)(1 - alpha)) = ceil(101 × 0,9) = ceil(90,9) = 91. Mengambil yang ke-90 berarti melewatkan "+ 1" yang menghitung kasus baru, dan band-nya akan sedikit terlalu sempit.
+- prompt: Nilai q di lab adalah 0,677 dan kurva hasil fit menunjukkan 1,52 pada x = 0,8. Berapa band split conformal di titik itu?
+  options:
+  - 0,84 sampai 1,52
+  - 1,52 sampai 2,20
+  - 0,84 sampai 2,20
+  - 0,17 sampai 2,87
+  answer: 2
+  explanation: Band-nya adalah nilai fit dikurangi dan ditambah q, sehingga 1,52 - 0,677 = 0,84 dan 1,52 + 0,677 = 2,20. Band 0,17 sampai 2,87 keliru karena menambah dan mengurangkan seluruh lebar, 1,35, bukan q.
+- prompt: Pada shift 40% lab menunjukkan coverage split conformal 66,5% terhadap target 90%. Apa yang dikatakan kolom "Gap ke target"?
+  options:
+  - -23,5 poin
+  - -33,5 poin
+  - +23,5 poin
+  - -2,35 poin
+  answer: 0
+  explanation: Gap adalah coverage dikurangi target, 66,5 - 90 = -23,5 poin persentase. Tanda negatif berarti band memuat nilai yang benar lebih jarang daripada yang dijanjikannya.
+- prompt: Tanpa shift, band bootstrap ensemble hanya mencakup 17,5% titik uji pada target 90%. Apa artinya?
+  options:
+  - Calibration set terlalu kecil, sehingga band-nya terlalu sempit
+  - Kode bootstrap-nya punya bug, sehingga band salah dihitung
+  - Shift-nya diatur terlalu tinggi, sehingga titik jatuh di luar band
+  - Band itu hanya memuat ketidakpastian model, bukan noise pada setiap y
+  answer: 3
+  explanation: Sebaran ensemble menunjukkan seberapa ragu model terhadap kurvanya, yang di sini kecil, sehingga band-nya hanya setinggi 0,15. Satu nilai y masih tersebar sebesar noise, dan itu tidak ada di band tersebut. Band ini menjawab pertanyaan yang lain.
+- prompt: Mengapa coverage split conformal turun saat input uji bergeser menjauh dari input latih?
+  options:
+  - Alpha membesar saat shift membesar, sehingga band boleh lebih sering meleset
+  - Kasus baru tidak lagi mirip dengan kasus kalibrasi, sehingga janjinya gugur
+  - Residual kalibrasi mengecil seiring shift, sehingga q ikut mengecil
+  - Test set mengecil seiring shift, sehingga coverage lebih berfluktuasi
+  answer: 1
+  explanation: Jaminannya mensyaratkan kasus baru dapat dipertukarkan dengan kasus kalibrasi. Setelah shift, input berada di luar rentang tempat model dan residual berasal, dan kurva kubik menjauh dari kebenaran (pada x = 1,8 kurva menunjukkan -9,09 padahal nilai sebenarnya -1,47), sehingga q yang sama tidak cukup.
+- prompt: Saat shift naik dari 0% ke 100%, lebar rata-rata band split conformal tetap 1,35. Mengapa?
+  options:
+  - Lebar band ketiga metode tetap sama saat shift membesar
+  - Band hanya melebar bila kurva hasil fit salah, dan di sini tidak
+  - Satu q, yang ditetapkan dari residual kalibrasi, dipakai untuk semua input uji
+  - Shift membuat calibration set lebih besar, sehingga q tetap
+  answer: 2
+  explanation: Split conformal memakai satu q untuk setiap input, yang diambil dari residual kalibrasi. Ia tidak dapat mengetahui bahwa input baru berbeda. Quantile regression (0,87 sampai 3,57) dan band bootstrap (0,15 sampai 6,01) melebar, tetapi tetap meleset.
+- prompt: Tanpa shift, kamu menaikkan alpha dari 0,1 ke 0,3. Apa yang kamu harapkan dari split conformal?
+  options:
+  - Band yang lebih sempit, karena rank turun dari 91 ke 71 dan q mengecil
+  - Band yang sama, karena alpha hanya mengubah label dari targetnya
+  - Band yang lebih lebar, karena alpha yang lebih besar meminta batas aman lebih besar
+  - Band tak terhingga, karena alpha yang lebih besar butuh lebih banyak titik kalibrasi
+  answer: 0
+  explanation: Rank-nya ceil(101 × 0,7) = ceil(70,7) = 71, bukan 91, sehingga q lebih kecil. Di lab lebarnya turun dari 1,35 ke 0,68 dan coverage turun ke 72,5%, dekat dengan target 70%.
+- prompt: Kamu mengatur alpha ke 0,05 dan ukuran calibration set ke 15. Apa yang diberikan split conformal?
+  options:
+  - Band dengan q sama dengan residual ke-15 dan coverage 95%
+  - Pesan galat, dan tidak ada band yang digambar sama sekali di plot
+  - Band dengan coverage 95%, tetapi sedikit lebih lebar daripada pada 20 titik
+  - Band tak terhingga yang mencakup semuanya dan tidak memberi tahu apa-apa
+  answer: 3
+  explanation: Rank-nya ceil(16 × 0,95) = ceil(15,2) = 16, lebih besar dari 15 residual yang ada. Secara umum kamu butuh setidaknya 1 / alpha - 1 = 19 titik, sehingga lab menampilkan lebar ∞ sampai ukurannya mencapai 20.
+- prompt: Pada penguin nyata, lab menahan satu spesies. Mengapa coverage tetap dekat 90% saat Chinstrap ditahan tetapi turun saat Gentoo?
+  options:
+  - Penguin Chinstrap lebih ringan daripada penguin Gentoo, sehingga garisnya cocok
+  - Semua sirip Chinstrap ada di dalam rentang latih; sirip Gentoo sebagian besar tidak
+  - Calibration set lebih besar saat Chinstrap menjadi spesies yang ditahan
+  - Gentoo punya lebih banyak missing value, sehingga titik ujinya kurang andal
+  answer: 1
+  explanation: Pada sampel pertama, 100% sirip Chinstrap di test set berada di dalam rentang tempat garis di-fit, sehingga test set masih mirip calibration set dan coverage tetap dekat 90%. Hanya 21,7% sirip Gentoo yang demikian, dan coverage turun ke 56,7%.
+- prompt: Pada sepuluh sampel segar tanpa shift, split conformal dengan target 90% mencakup antara 86,0% dan 94,0% dengan rata-rata 89,9%. Apa kesimpulanmu?
+  options:
+  - Janjinya gagal, karena banyak sampel berada di bawah 90%
+  - Alpha harus diubah ke 0,14 agar coverage naik ke 90%
+  - Janji itu berlaku secara rata-rata, dan 89,9% dekat dengan 90%
+  - Test set-nya bergeser, sehingga coverage bervariasi antarsampel
+  answer: 2
+  explanation: Conformal menjanjikan paling sedikit 1 - alpha secara rata-rata atas calibration set dan kasus baru, bukan pada setiap sampel. Satu sampel dengan 100 titik kalibrasi bervariasi beberapa poin ke kedua arah, dan rata-rata sepuluh sampel adalah 89,9%, dekat dengan 90%.

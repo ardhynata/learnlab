@@ -1,0 +1,72 @@
+- prompt: Sebuah classifier penguin tiga spesies mendapat skor 40% pada validation set. Selalu menjawab "Adelie" mendapat 43,5% di sana. Apa artinya?
+  options:
+  - Model ini awal yang baik, karena 40% jauh di atas nol
+  - Model ini membutuhkan lebih banyak data test sebelum ada yang dapat menilainya
+  - Model ini lebih buruk daripada aturan yang tidak pernah melihat feature
+  - Model ini baik-baik saja, sebab accuracy di bawah 50% wajar untuk tiga kelas
+  answer: 2
+  explanation: Baseline menetapkan batas. Menjawab "Adelie" terus-menerus mengalahkan 40%, sehingga model ini belum mempelajari hal yang berguna. Dengan tiga kelas, angka yang harus dilampaui di sini adalah 43,5%, bukan 50%.
+- prompt: Manakah baseline yang lazim untuk masalah regression seperti memprediksi massa tubuh?
+  options:
+  - Beri setiap baris rata-rata target pada data training
+  - Beri setiap baris angka acak dari rentang feature
+  - Beri setiap baris target terbesar di training set
+  - Fit model paling fleksibel yang dapat kamu temukan
+  answer: 0
+  explanation: Prediksi konstan, biasanya rata-rata training, mengabaikan semua feature dan tidak butuh biaya hitung. Sebuah model harus mengalahkannya agar layak dipakai.
+- prompt: Sebuah baseline rata-rata di-fit pada penguin 1 sampai 4 (3.750, 3.250, 3.500, dan 3.900 g). Baseline itu dinilai pada penguin 5 dan 6 yang disisihkan (4.500 dan 5.700 g). Berapa mean absolute error-nya?
+  options:
+  - 900 g
+  - 1.500 g
+  - 2.100 g
+  - 3.000 g
+  answer: 1
+  explanation: Rata-rata training adalah 14.400 / 4 = 3.600 g. Selisihnya 900 dan 2.100 g, dan rata-ratanya 1.500 g. Menjumlahkannya menghasilkan 3.000, yaitu total, bukan rata-rata.
+- prompt: Sebuah model yang menyimpan seluruh tabel training dan menjawab dengan mencarinya kembali mendapat error 0 pada baris training. Mengapa itu bukan kabar baik?
+  options:
+  - Error nol mustahil, sehingga skornya pasti keliru
+  - Training error selalu lebih tinggi daripada validation error
+  - Model itu pasti di-fit pada test set
+  - Itu tidak mengatakan apa pun tentang baris baru, yang tidak pernah dipelajari model untuk ditangani
+  answer: 3
+  explanation: Menghafal membuat training error nol tanpa mempelajari pola. Hanya baris yang disisihkan yang menunjukkan perilaku model pada data baru. Dalam pelajaran, memorizer meleset 391 g pada penguin validation.
+- prompt: Kamu memilih antara garis dan kurva yang lebih fleksibel untuk data yang sama. Set manakah yang harus menentukan?
+  options:
+  - Training set, karena model di-fit di sana
+  - Validation set, karena tidak ada model yang di-fit padanya
+  - Test set, karena paling dapat dipercaya
+  - Set mana pun yang memberi error terendah
+  answer: 1
+  explanation: Training error menguntungkan model yang paling pas dengan baris training, dan itu bisa berarti menghafalnya. Test set harus tidak dipakai sampai laporan akhir, karena itu memilih model adalah tugas validation set.
+- prompt: Kamu membandingkan lima model pada validation set dan memilih yang terbaik. Apa yang sebaiknya kamu laporkan sebagai hasil akhir?
+  options:
+  - Skor validation terbaik, karena sudah kamu miliki
+  - Rata-rata dari kelima skor validation
+  - Skor model terpilih pada test set, diukur sekali saja
+  - Skor training terbaik, karena model itu pas dengan datanya
+  answer: 2
+  explanation: Kamu memilih pemenang karena skor validation-nya bagus, sehingga skor itu agak optimistis. Test set tidak pernah dipakai untuk memilih apa pun, sehingga memberi perkiraan yang jujur.
+- prompt: Sebuah tabel terurut menurut spesies, dan seseorang menyisihkan 20% baris terakhirnya sebagai validation set. Apa yang salah?
+  options:
+  - Validation set berisi sebagian besar satu spesies, yang nyaris tidak dilihat model saat training
+  - Tidak ada masalah, karena semua baris berlabel
+  - Model berlatih pada terlalu banyak baris
+  - Validation set menjadi lebih besar daripada training set
+  answer: 0
+  explanation: Tabel yang terurut menghasilkan pembagian yang timpang. Acak baris lebih dulu agar setiap set menjadi sampel yang adil dari keseluruhan data.
+- prompt: Pembagian acak biasa menyisakan 5 dari 69 penguin test sebagai Chinstrap (7,2%), padahal Chinstrap adalah 19,9% dari semua penguin. Apa yang dilakukan split stratified terhadap hal ini?
+  options:
+  - Membuat test set lebih besar
+  - Membuang penguin Chinstrap agar set-set itu seragam
+  - Memakai ulang baris test dalam training
+  - Memotong tiap spesies secara terpisah, sehingga setiap set mempertahankan komposisi yang kurang lebih sama
+  answer: 3
+  explanation: Stratify membagi tiap kelas sendiri-sendiri, sehingga di sini setiap set berisi sekitar 20% Chinstrap. Test set dengan terlalu sedikit penguin Chinstrap tidak banyak mengatakan tentang kelas itu.
+- prompt: Manakah yang merupakan data leakage?
+  options:
+  - Mem-fit model pada training set
+  - Menghitung rata-rata untuk baseline rata-rata dari semua baris sebelum pembagian
+  - Mengacak baris sebelum pembagian
+  - Menilai model pada validation set
+  answer: 1
+  explanation: Rata-rata semua baris mencakup baris yang disisihkan, sehingga baris itu ikut membangun baseline. Fit apa pun yang dipelajari dari data hanya pada baris training, lalu terapkan ke baris lainnya.

@@ -1,0 +1,32 @@
+entity: ModuleText
+fields:
+    - name: id
+      type: string
+      required: true
+      auto: true
+    - name: module_id
+      type: string
+      required: true
+      ref: Module
+      on_delete: cascade
+    - name: locale
+      type: string
+      required: true
+      max_length: 8
+    - name: title
+      type: string
+      required: true
+      max_length: 120
+    - name: summary
+      type: string
+      max_length: 400
+operations:
+    - Create
+    - GetByID
+    - List
+    - Update
+    - Delete
+transports:
+    - rest
+repository: postgresql
+display_field: title

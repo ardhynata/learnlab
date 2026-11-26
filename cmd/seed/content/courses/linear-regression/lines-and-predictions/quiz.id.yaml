@@ -1,0 +1,72 @@
+- prompt: Aturan taksi adalah fare = 2 × km + 3. Berapa tarif yang diprediksi untuk perjalanan 4 km?
+  options:
+  - "8"
+  - "11"
+  - "14"
+  - "24"
+  answer: 1
+  explanation: Masukkan 4 sebagai pengganti km, 2 × 4 + 3 = 11. Nilai 8 melupakan biaya dasar 3, dan 14 mengalikan biaya dasar juga, yaitu 2 × (4 + 3).
+- prompt: Sebuah garis memprediksi mass = 50 × flipper - 5800, dengan massa dalam gram dan panjang flipper dalam milimeter. Dua penguin berbeda 10 mm pada panjang flipper-nya. Berapa gram lebih banyak yang diprediksi garis untuk penguin yang flipper-nya lebih panjang?
+  options:
+  - 50 g
+  - 10 g
+  - 500 g
+  - 5.800 g
+  answer: 2
+  explanation: Slope-nya 50 g untuk setiap milimeter, sehingga sepuluh milimeter menambah 10 × 50 = 500 g. Intercept, -5.800, tidak berpengaruh pada selisih dua prediksi karena saling meniadakan.
+- prompt: Apa yang dinyatakan oleh intercept sebuah garis?
+  options:
+  - Prediksi ketika x bernilai 0
+  - Seberapa besar prediksi berubah ketika x bertambah 1
+  - Selisih terbesar yang dibuat garis
+  - Nilai x tempat prediksinya 0
+  answer: 0
+  explanation: Masukkan x = 0 ke slope × x + intercept, dan yang tersisa hanyalah intercept. Perubahan prediksi ketika x bertambah 1 adalah slope, bukan intercept.
+- prompt: Sebuah garis adalah y = -3x + 20. Apa arti angka -3?
+  options:
+  - Garis dimulai dari -3 pada sumbu vertikal
+  - Prediksinya -3 ketika x bernilai 20
+  - Prediksi naik 3 ketika x bertambah 1
+  - Prediksi turun 3 ketika x bertambah 1
+  answer: 3
+  explanation: Slope adalah perubahan prediksi per satu langkah x, dan slope negatif berarti prediksi turun. Pada x = 2 garis memprediksi 14, dan pada x = 3 memprediksi 11.
+- prompt: Seekor penguin memiliki flipper 200 mm dan massa 3.975 g. Garis memprediksi 4.200 g untuknya. Berapa residual-nya?
+  options:
+  - +225 g
+  - -225 g
+  - -4.200 g
+  - +8.175 g
+  answer: 1
+  explanation: Residual adalah actual dikurangi predicted, 3.975 - 4.200 = -225 g. Titik itu berada di bawah garis, sehingga garis memprediksi terlalu tinggi. +225 g muncul jika pengurangannya dibalik.
+- prompt: Empat residual adalah +500, +300, -700 dan -400 g, dan jumlahnya -300 g. Mengapa jumlah itu skor yang buruk untuk garis tersebut?
+  options:
+  - Jumlahnya negatif, padahal skor harus positif
+  - Jumlah itu hanya menghitung tiga dari empat titik
+  - Selisih di atas dan di bawah garis saling meniadakan, sehingga garis yang sangat meleset dapat tampak hampir sempurna
+  - Residual tidak pernah boleh dijumlahkan
+  answer: 2
+  explanation: Setiap titik di sini berjarak paling sedikit 300 g dari garis, namun selisih bertandanya hampir saling meniadakan. Sebuah skor harus lebih dulu membuat setiap selisih menjadi positif. Pelajaran berikutnya melakukannya.
+- prompt: Garis kita dibuat dari data dengan panjang flipper 172 sampai 231 mm dan memprediksi 1.700 g untuk 150 mm. Bagaimana sebaiknya kamu memperlakukan angka itu?
+  options:
+  - Dengan hati-hati, karena 150 mm berada di luar rentang asal garis tersebut
+  - Sebagai angka yang andal, karena garis tepat pada setiap x
+  - Sebagai angka yang andal, karena garis sesuai dengan 342 penguin
+  - Sebagai angka yang salah hanya jika slope-nya positif
+  answer: 0
+  explanation: Garis berlanjut di luar data, tetapi tidak ada bukti bahwa penguin mengikutinya di sana. Memprediksi di luar rentang yang diukur adalah tebakan.
+- prompt: Kamu membuat plot residual sebuah garis pada 100 titik, dan 90 di antaranya negatif. Apa yang ditunjukkan hal ini?
+  options:
+  - Garis itu sempurna, karena residual negatif itu kecil
+  - Data memuat 90 outlier
+  - Slope-nya pasti nol
+  - Garis berada terlalu tinggi, dan menurunkannya akan mengecilkan banyak selisih
+  answer: 3
+  explanation: Residual negatif berarti titik berada di bawah garis. Jika hampir semua titik berada di bawahnya, seluruh garis berada di atas data, sehingga menggesernya turun membantu sebagian besar titik sekaligus.
+- prompt: Dua garis memiliki slope yang sama, 2, dan intercept 3 serta 6. Bagaimana perbandingannya?
+  options:
+  - Keduanya berpotongan di x = 0
+  - Keduanya sejajar, dan garis kedua lebih tinggi 3 daripada yang pertama pada setiap x
+  - Garis kedua lebih curam daripada yang pertama
+  - Keduanya berpotongan di x = 3
+  answer: 1
+  explanation: Slope menentukan kemiringan, sehingga slope yang sama berarti garis yang sejajar. Intercept menggeser garis ke atas atau ke bawah, dan 6 - 3 = 3 adalah jaraknya pada setiap x. Keduanya hanya akan berpotongan jika slope-nya berbeda.

@@ -1,0 +1,31 @@
+slug: ml-deployment-and-monitoring
+title: "ML deployment and monitoring"
+summary: "Batch and online inference, model versioning, training-serving skew, drift, delayed labels, and rollback."
+topic: Machine learning
+level: advanced
+path: advanced
+position: 10
+translations:
+  id:
+    title: "Deployment dan monitoring ML"
+    summary: "Inferensi batch dan online, versioning model, training-serving skew, drift, label yang terlambat, dan rollback."
+modules:
+- slug: core-ideas
+  title: Core ideas
+  summary: "The concepts, in the order the lab uses them."
+  lessons:
+  - serving-versioning-and-skew
+  - drift-alerts-and-rollback
+  translations:
+    id:
+      title: "Ide inti"
+      summary: "Konsep-konsepnya, sesuai urutan yang dipakai lab."
+- slug: lab
+  title: Lab
+  summary: "Run the idea yourself, then check what you learned."
+  lessons:
+  - monitoring-lab
+  translations:
+    id:
+      title: "Lab"
+      summary: "Jalankan idenya sendiri, lalu periksa apa yang sudah kamu pelajari."

@@ -1,0 +1,72 @@
+- prompt: Sebuah layanan pembayaran memiliki 2.000 pembayaran, dan 40 di antaranya penipuan. Sebuah model yang selalu menjawab "sah" dijalankan pada data itu. Berapa accuracy-nya?
+  options:
+  - 2 persen
+  - 50 persen
+  - 98 persen
+  - 40 persen
+  answer: 2
+  explanation: Model itu benar pada semua 1.960 pembayaran sah, sehingga accuracy-nya 1.960 / 2.000 = 0,98. Ia melewatkan semua 40 penipuan, sehingga recall-nya 0. Angka 98 persen itu adalah baseline majority class.
+- prompt: Pada sebuah test set, 96 persen kasusnya negatif. Sebuah model melaporkan accuracy 95 persen. Apa kesimpulanmu?
+  options:
+  - Modelnya kuat, karena 95 persen itu tinggi
+  - Ia lebih buruk daripada baseline majority class yang sebesar 96 persen
+  - Ia sama persis dengan baseline
+  - Tidak ada yang dapat disimpulkan tanpa confusion matrix
+  answer: 1
+  explanation: Selalu menjawab tidak sudah menghasilkan 96 persen di sini, maka 95 persen lebih rendah daripada tidak berbuat apa-apa. Accuracy yang tinggi baru berarti setelah dibandingkan dengan baseline, yaitu 1 dikurangi positive rate.
+- prompt: "Sebuah filter spam diuji pada 1.000 pesan, 50 di antaranya spam. Hasilnya TP = 30, FP = 10, FN = 20, TN = 940. Berapa precision-nya?"
+  options:
+  - 0,60
+  - 0,97
+  - 0,03
+  - 0,75
+  answer: 3
+  explanation: Precision adalah TP / (TP + FP) = 30 / 40 = 0,75. Recall-nya 30 / 50 = 0,60, dan 0,97 adalah accuracy, yang dekat dengan baseline 0,95 sehingga hampir tidak mengatakan apa-apa.
+- prompt: Untuk filter spam yang sama (TP = 30, FP = 10, FN = 20, TN = 940), berapa F1-nya?
+  options:
+  - 0,67
+  - 0,75
+  - 0,60
+  - 0,97
+  answer: 0
+  explanation: F1 = 2 x TP / (2 x TP + FP + FN) = 60 / (60 + 10 + 20) = 60 / 90 = 0,67. Nilainya berada di antara precision 0,75 dan recall 0,60, dan 940 true negative tidak ikut dihitung.
+- prompt: Sebuah model mempertahankan recall dan jumlah alarm palsu yang sama, tetapi data uji kini memuat jauh lebih banyak kasus positif. Apa yang terjadi pada precision-nya?
+  options:
+  - Turun, karena lebih banyak positif berarti lebih banyak kesalahan
+  - Tetap sama, karena modelnya tidak berubah
+  - Naik, karena alarm palsu yang sama kini berdampingan dengan lebih banyak true positive
+  - Tidak dapat dihitung tanpa baseline
+  answer: 2
+  explanation: Precision adalah TP / (TP + FP). Dengan recall yang sama, true positive bertambah sedangkan FP tetap, sehingga precision naik. Precision bergantung pada positive rate, tidak hanya pada modelnya.
+- prompt: Pernyataan mana yang menggambarkan class weights?
+  options:
+  - Mengulang kasus langka sampai kedua kelas berukuran sama
+  - Menghapus kasus umum sampai kedua kelas berukuran sama
+  - Menyusun ulang test set agar seimbang
+  - Membuat kesalahan pada kasus langka berbiaya lebih besar selama model dilatih
+  answer: 3
+  explanation: Class weights membiarkan datanya apa adanya dan mengubah seberapa besar tiap kasus diperhitungkan dalam loss. Dua opsi pertama adalah oversampling dan undersampling, yang termasuk resampling.
+- prompt: Sebuah tim melakukan oversampling pada kasus penipuan sampai datanya 50 persen penipuan, lalu mengukur precision 0,98 pada data hasil oversampling itu. Apa yang salah jika angka itu dilaporkan?
+  options:
+  - Oversampling selalu menurunkan precision
+  - Pembayaran nyata masih didominasi pembayaran sah, sehingga precision pada rate yang sebenarnya akan jauh lebih rendah
+  - Precision hanya dapat diukur pada data training
+  - Oversampling menghilangkan alarm palsu
+  answer: 1
+  explanation: Resampling hanya untuk training. Test set harus mempertahankan positive rate yang sebenarnya, karena jumlah alarm palsu per tangkapan yang benar bergantung padanya. Pada data seimbang, precision tampak lebih baik daripada yang akan dicapai saat dipakai.
+- prompt: Sebuah model "selalu tandai penipuan" dijalankan pada 10.000 pembayaran, 100 di antaranya penipuan. Berapa precision-nya?
+  options:
+  - 0,01
+  - 1,00
+  - 0,50
+  - 0,99
+  answer: 0
+  explanation: Model itu menandai semua 10.000 pembayaran, dan hanya 100 penipuan yang benar, sehingga precision-nya 100 / 10.000 = 0,01. Recall-nya 1, yang menunjukkan bahwa recall saja pun dapat menipu.
+- prompt: Sebuah training set berisi 950 pembayaran sah dan 50 penipuan. Jika pembayaran sah berbobot 1, berapa bobot yang membuat kelas penipuan memiliki pengaruh total yang sama?
+  options:
+  - 10
+  - 19
+  - 20
+  - 50
+  answer: 1
+  explanation: Kelas sah memiliki bobot total 950 x 1 = 950. Lima puluh penipuan harus berjumlah sama dengan 950, sehingga masing-masing berbobot 950 / 50 = 19.

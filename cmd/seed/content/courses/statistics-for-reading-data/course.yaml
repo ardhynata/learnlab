@@ -1,0 +1,31 @@
+slug: statistics-for-reading-data
+title: "Statistics for reading data"
+summary: "Mean, median, variance, distributions, outliers, scatterplots and correlation."
+topic: Machine learning
+level: beginner
+path: beginner
+position: 2
+translations:
+  id:
+    title: "Statistik untuk membaca data"
+    summary: "Mean, median, varians, distribusi, outlier, scatterplot, dan korelasi."
+modules:
+- slug: core-ideas
+  title: Core ideas
+  summary: "The concepts, in the order the lab uses them."
+  lessons:
+  - center-and-spread
+  - outliers-and-correlation
+  translations:
+    id:
+      title: "Ide inti"
+      summary: "Konsep-konsepnya, sesuai urutan yang dipakai lab."
+- slug: lab
+  title: Lab
+  summary: "Run the idea yourself, then check what you learned."
+  lessons:
+  - outlier-lab
+  translations:
+    id:
+      title: "Lab"
+      summary: "Jalankan idenya sendiri, lalu periksa apa yang sudah kamu pelajari."

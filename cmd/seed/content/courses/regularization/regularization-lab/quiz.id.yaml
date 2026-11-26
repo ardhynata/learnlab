@@ -1,0 +1,80 @@
+- prompt: Pada sampel bawaan, menaikkan λ dari 0,00001 ke 0,01 mengubah training error dari 0,11 menjadi 0,29 dan validation error dari 3,84 menjadi 0,48. Apa yang ditunjukkan hal ini?
+  options:
+  - Penalti membuat model lebih buruk, karena kedua error bergerak
+  - Model mem-fit titik bulat lebih buruk tetapi memprediksi titik baru jauh lebih baik, jadi penalti mengurangi overfitting
+  - Validation error turun, jadi training error pasti ikut turun
+  - Model mengalami underfitting pada λ = 0,00001 dan penalti memperbaikinya
+  answer: 1
+  explanation: 15 titik bulat di-fit kurang rapat (0,11 menjadi 0,29), tetapi 18 titik silang yang disisihkan diprediksi jauh lebih baik (3,84 menjadi 0,48). Itulah shrinkage yang menurunkan varians. Error yang bergerak ke arah yang salah adalah training error, dan itu memang wajar.
+- prompt: Dengan L2 (ridge) pada λ = 0,01, training error-nya 0,29, dan kuadrat kesembilan koefisien berjumlah 10,95. Berapa loss MSE + λ × penalti?
+  options:
+  - 0,11, karena hanya penalti yang dihitung
+  - 11,24, karena penalti ditambahkan tanpa λ
+  - Sekitar 0,40, karena 0,29 + 0,01 × 10,95 = 0,29 + 0,11
+  - 0,30, karena λ ditambahkan ke training error
+  answer: 2
+  explanation: λ mengalikan penalti sebelum ditambahkan. 0,01 × 10,95 = 0,1095, dan 0,29 + 0,1095 = 0,3995, sekitar 0,40. Angka 0,11 hanyalah suku penaltinya, dan 11,24 melupakan λ.
+- prompt: Di lab, training error paling rendah pada λ terkecil, yaitu 0,11, dan naik di setiap langkah. Mengapa training error terendah tidak dapat dipakai untuk memilih λ?
+  options:
+  - Ia selalu menunjuk λ terkecil, pengaturan yang paling overfitting, sehingga tidak pernah memilih penalti
+  - Ia tidak dapat diandalkan karena titik training berubah setiap kali slider digeser
+  - Nilainya sama di setiap λ, jadi tidak membawa informasi
+  - Ia akan memilih λ terbesar, yaitu model yang paling kaku
+  answer: 0
+  explanation: Penalti hanya dapat membuat fit ke titik bulat lebih buruk, jadi training error naik bersama λ dan selalu memilih tanpa penalti. Validation error, yang diukur pada titik silang yang disisihkan, adalah yang turun lalu naik.
+- prompt: 'Dengan L2 (ridge), koefisien terbesar adalah 14,81 pada λ = 0,00001, 2,61 pada λ = 0,01, dan 0,38 pada λ = 1, dan lab menulis "Tepat 0: 0 dari 9" setiap kali. Apa yang dilakukan ridge?'
+  options:
+  - Ia membuat koefisien terkecil tepat 0 dan mempertahankan yang besar
+  - Ia membuat koefisien lebih besar sehingga kurva lebih cocok dengan titik bulat
+  - Ia mematikan seluruh feature, itulah sebabnya lab menampilkan cincin
+  - Ia mengecilkan setiap koefisien ke arah 0 tanpa pernah mencapainya
+  answer: 3
+  explanation: Ridge menurunkan koefisien secara halus, sehingga nilainya menjadi kecil tetapi tetap bukan nol. Cincin pada grafik koefisien hanya muncul dengan L1 (lasso), yang dapat membuat koefisien tepat 0.
+- prompt: 'Dengan L1 (lasso), lab menulis "Tepat 0: 4 dari 9" pada λ = 0,01 dan "Tepat 0: 8 dari 9" pada λ = 1. Seperti apa kurva hasil fit pada λ = 1?'
+  options:
+  - Garis horizontal yang datar, karena sebagian besar koefisien bernilai 0
+  - Garis lurus yang tidak datar, karena koefisien pangkat 1 masih bukan nol
+  - Kurva derajat 9 yang berliku-liku itu juga, karena lasso mempertahankan bentuknya
+  - Parabola, karena dua koefisien tersisa
+  answer: 1
+  explanation: Delapan dari sembilan koefisien bernilai 0, dan yang tersisa adalah pangkat 1, jadi kurvanya berupa garis lurus yang punya kemiringan. Kurva baru datar ketika kesembilannya 0, yaitu pada λ = 2,5.
+- prompt: Lasso pada λ = 1 mempertahankan satu koefisien, -0,372, dengan training error 1,105. Jika semua koefisien dibuat 0, training error-nya 1,615. Mana yang punya loss lebih rendah, MSE + λ × jumlah nilai absolut, dan karena itu menang?
+  options:
+  - Mempertahankan koefisien, 1,105 + 0,372 = 1,477, melawan 1,615
+  - Membuat semuanya 0, karena penalti 0 selalu menang
+  - Mempertahankan koefisien, 1,105 - 0,372 = 0,733, melawan 1,615
+  - Seri, karena penalti dan error saling meniadakan
+  answer: 0
+  explanation: 'Penaltinya λ × |w| = 1 × 0,372 = 0,372, dan nilai itu ditambahkan: 1,105 + 0,372 = 1,477, di bawah 1,615. Koefisien itu sepadan karena mengurangi error lebih banyak daripada biayanya.'
+- prompt: Pada derajat 3, lab memberi training error 0,34 dan validation error 0,40 pada λ = 0,00001, serta 1,45 dan 2,84 pada λ = 10. Apa kesimpulanmu?
+  options:
+  - Penalti harus lebih besar lagi supaya membantu
+  - Derajat 3 mengalami overfitting, jadi ia memerlukan penalti yang lebih kuat
+  - Model yang tidak overfitting tidak mendapat apa-apa dari penalti, yang hanya menambah bias
+  - Validation error pasti salah, karena tidak pernah turun saat λ membesar
+  answer: 2
+  explanation: Derajat 3 tidak dapat banyak mengejar noise, jadi hanya ada sedikit varians yang bisa dihilangkan. λ yang lebih besar membuat kurva lebih kaku dan menaikkan kedua error. Regularisasi membantu model yang overfitting dan merugikan model yang tidak.
+- prompt: Dengan 8 titik training, validation error-nya 30,43 pada λ terkecil dan 0,71 pada λ terbaik. Dengan 42 titik, nilainya 0,33 dan 0,32. Apa yang ditunjukkan hal ini?
+  options:
+  - λ terbaik selalu sekitar 43 kali lebih baik daripada yang terkecil
+  - Data yang lebih banyak membuat validation error lebih buruk, jadi sebaiknya pakai lebih sedikit titik
+  - Validation error tidak dapat dibandingkan antar-ukuran training
+  - Penalti paling berarti saat data langka, dan dengan data yang banyak, λ yang kecil sudah cukup
+  answer: 3
+  explanation: 30,43 / 0,71 kira-kira 43 dengan 8 titik, tetapi 0,33 / 0,32 kira-kira 1 dengan 42 titik. Ke-18 titik silang validasi tidak pernah berubah, jadi angkanya dapat dibandingkan. Jika datanya cukup, data itu sendiri menjaga kurva tetap terkendali tanpa banyak bantuan.
+- prompt: Pada empat sampel penguin yang asli, λ ridge terbaik adalah 1,6, 0,063, 0,10, dan 0,025, dan validation error turun lalu naik setiap kali. Apa yang sebaiknya kamu simpulkan?
+  options:
+  - Penalti ridge tidak bekerja pada data nyata
+  - Bentuk U bertahan, tetapi λ terbaik bergantung pada sampel, jadi pilih λ pada data validasi setiap kali
+  - λ terbaik rata-rata 0,1, jadi pakai itu untuk dataset apa pun
+  - Sampel pertama salah, karena λ terbaiknya jauh dari yang lain
+  answer: 1
+  explanation: Setiap sampel menunjukkan bentuk U yang sama, jadi gagasannya bertahan, tetapi λ terbaik bergeser dengan faktor sekitar 60. Satu nilai yang diingat akan menjadi pilihan yang buruk. Empat sampel hanyalah pemeriksaan kecil, bukan bukti.
+- prompt: Pada sampel bawaan, menggeser λ dari 0,00001 ke 10 membawa model dari training error 0,11 dan validation error 3,84 ke 1,41 dan 2,85. Dalam istilah bias dan varians, ke mana arah geserannya?
+  options:
+  - Dari bias tinggi ke varians tinggi
+  - Dari varians rendah ke bias rendah
+  - Dari varians tinggi menuju bias tinggi
+  - Tetap di tempat yang sama, karena kedua error besar di kedua ujung
+  answer: 2
+  explanation: 'Pada λ kecil, training error sangat kecil dan validation error besar: selisihnya lebar, yaitu varians tinggi. Pada λ = 10 kedua error besar, dan selisihnya menyempit dari 3,7 menjadi 1,4, yaitu bias tinggi. Kedua ujung sama-sama buruk karena alasan yang berbeda, dan λ terbaik berada di antaranya.'

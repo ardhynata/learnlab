@@ -1,0 +1,80 @@
+- prompt: What is the mean of the values 2, 4 and 9?
+  options:
+  - 4
+  - 5
+  - 6
+  - 15
+  answer: 1
+  explanation: The sum is 2 + 4 + 9 = 15 and there are 3 values, so the mean is 15 / 3 = 5. The value 4 is the median, and 15 is only the sum.
+- prompt: What is the median of 9, 3, 10 and 4?
+  options:
+  - 6
+  - 7.5
+  - 6.5
+  - 9
+  answer: 2
+  explanation: Sorted, the values are 3, 4, 9, 10. With an even count you average the two middle values, (4 + 9) / 2 = 6.5. The mean of all four is 6.5 too, but only by chance here.
+- prompt: The largest value in a column is replaced by a number ten times bigger. Which summary does not change at all?
+  options:
+  - The mean
+  - The standard deviation
+  - The median
+  - The variance
+  answer: 2
+  explanation: The median uses only the order of the values, and the largest value is still the largest. The mean, the variance and the SD all use the size of every value, so they all grow.
+- prompt: A sixth penguin with a much longer flipper joins five similar ones. Why does the mean move more than the median?
+  options:
+  - The median is always rounded
+  - The mean counts how far the new value is, the median only that it is the largest
+  - The mean ignores the other five values
+  - The median is the first value after sorting
+  answer: 1
+  explanation: The mean adds up the sizes of all the values, so a far-away value pulls it. The median only depends on which value sits in the middle.
+- prompt: Why do we square each gap from the mean before averaging them to get the variance?
+  options:
+  - Squaring makes every value smaller
+  - Squared gaps are always in millimeters
+  - The mean must be a whole number
+  - Gaps above and below the mean would otherwise cancel out to 0
+  answer: 3
+  explanation: The raw gaps from the mean always add up to 0. Squaring makes them all positive, and it makes big gaps count more than small ones.
+- prompt: What is the variance of 1, 3, 5 and 7, dividing by the number of values?
+  options:
+  - 4
+  - 5
+  - 20
+  - 2.24
+  answer: 1
+  explanation: The mean is 4, the gaps are -3, -1, 1 and 3, and their squares are 9, 1, 1 and 9. The sum is 20 and 20 / 4 = 5. The value 20 is the sum before dividing, and 2.24 is the SD, the square root of 5.
+- prompt: Flipper lengths are measured in millimeters. In what unit is the variance of the lengths?
+  options:
+  - Square millimeters
+  - Millimeters
+  - No unit
+  - Percent
+  answer: 0
+  explanation: Variance averages squared gaps, so its unit is squared too (mm²). The standard deviation takes the square root and is back in millimeters.
+- prompt: The lists 8, 10, 12 and 2, 10, 18 both have a mean of 10. Which statement is correct?
+  options:
+  - Nothing is different about the lists
+  - The first list is more scattered than the second
+  - The second list has the larger standard deviation
+  - Both lists have the same standard deviation
+  answer: 2
+  explanation: The second list strays much further from 10 (an SD of about 6.5 against about 1.6), so it has the larger spread. The mean alone says nothing about spread.
+- prompt: A histogram of flipper lengths has two separate humps. What is the most sensible conclusion?
+  options:
+  - The data must contain a mistake
+  - The mean is the best summary of the column
+  - The standard deviation must be zero
+  - The rows probably come from groups with different typical values
+  answer: 3
+  explanation: Two humps usually mean a mix of groups, as with the shorter-flippered and the longer-flippered penguins. The mean can land in the valley between them, where few values lie.
+- prompt: Body mass has a long tail to the right. You want one number for a typical penguin. What does the lesson suggest?
+  options:
+  - Report the median, and say it is the median
+  - Report the largest value
+  - Report the mean, since it uses every value
+  - Report the variance
+  answer: 0
+  explanation: With a skewed column the long tail pulls the mean up, so the median describes a typical value better. In the penguin table the mean is about 4,202 g and the median 4,050 g.

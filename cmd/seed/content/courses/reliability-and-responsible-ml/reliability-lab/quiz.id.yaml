@@ -1,0 +1,80 @@
+- prompt: Pada baris test yang bersih di lab, kelompok A punya recall 97,2% dan kelompok C 58,3%. Berapa Selisih equal opportunity (recall), dan apa artinya?
+  options:
+  - 18,6 poin, karena itu selisih accuracy antar kelompok
+  - 38,9 poin, sehingga model menemukan jauh lebih sedikit kasus positif di C daripada di A
+  - 9,2 poin, karena model tidak pernah melihat kolom kelompok, maka selisih antar kelompok pasti kecil
+  - 155,5 poin, karena selisihnya adalah kedua recall yang dijumlahkan lalu dibaca sebagai total
+  answer: 1
+  explanation: Selisih adalah nilai terbesar dikurangi nilai terkecil, 97,2 - 58,3 = 38,9 poin. Selisih ini ada walau model tidak pernah melihat kolom kelompok, karena kelompok-kelompok itu berbeda dalam base rate, noise, dan skor kode pos.
+- prompt: Kamu mengatur Jenis stres ke Missing value dan Kekuatan stres ke 1. Setiap selisih fairness terbaca 0,0 dan accuracy turun dari 87% menjadi 54%. Apa yang terjadi?
+  options:
+  - Model menjadi sepenuhnya adil, maka lab boleh berhenti mengujinya dan model boleh dirilis
+  - Stres memperbaiki kalibrasi setiap kelompok, sehingga semua selisih menutup sekaligus
+  - Kelompok-kelompok menjadi identik, maka base rate dan tingkat galat mereka sekarang sama
+  - Setiap skor sama dan tidak ada yang ditandai, sehingga setiap recall dan false-positive rate adalah 0%
+  answer: 3
+  explanation: Ketika setiap sel kosong, model mengisinya dengan rata-rata data training, sehingga semua baris mendapat skor yang sama dan tidak ada yang ditandai. Semua rate adalah 0%, maka selisihnya 0,0, dan accuracy tiap kelompok hanyalah porsi kasus negatifnya. Selisih nol tidak mengatakan apa-apa tentang mutu.
+- prompt: Di bawah Distribution shift dengan kekuatan 0,4, selisih recall turun dari 38,9 menjadi 20,8 poin, selisih false-positive rate naik dari 9,2 menjadi 23,6, dan accuracy turun dari 87% menjadi 71%. Pembacaan mana yang paling tepat?
+  options:
+  - Model menjadi lebih buruk, dan selisih recall mengecil hanya karena sekarang lebih banyak kasus dari setiap kelompok ditandai
+  - Model menjadi lebih adil, karena selisih terbesarnya mengecil 18,1 poin dan tidak ada yang memburuk
+  - Tidak ada yang berubah bagi kelompok-kelompok, karena selisih hanyalah ringkasan dari seluruh test set
+  - Pergeseran hanya merugikan kelompok A, sehingga dua kelompok lainnya sama sekali tidak terpengaruh
+  answer: 0
+  explanation: 38,9 - 20,8 = 18,1, tetapi recall naik untuk setiap kelompok karena lebih banyak kasus ditandai, dan selisih false-positive rate melebar 14,4 poin. Baca selisih berdampingan dengan accuracy, yang turun 16 poin.
+- prompt: Dengan Threshold berbeda untuk tiap kelompok yang disamakan pada recall, selisih recall pada baris bersih turun dari 38,9 menjadi 8,1 poin, bukan 0. Mengapa bukan 0?
+  options:
+  - Lab selalu menyisakan selisih 8,1 poin dengan sengaja, untuk menunjukkan bahwa tidak ada metode yang sempurna
+  - Kelompok dengan threshold terendah memang tidak dapat mencapai recall dua kelompok lainnya
+  - Threshold disetel pada baris lain, sehingga pada baris test recall hanya sesuai secara kasar
+  - Equal opportunity tidak dapat disamakan lewat threshold, hanya demographic parity yang bisa disamakan
+  answer: 2
+  explanation: Lab menyetel threshold pada baris lain, sebagaimana seharusnya, agar baris test memberi hasil yang jujur. Kesesuaian pada baris setelan hanya menjadi kesesuaian kasar pada baris baru.
+- prompt: Kamu memakai satu threshold per kelompok yang disamakan pada recall. Pada baris bersih selisih recall adalah 8,1 poin. Setelah 40% sel kosong, tabel menampilkan 28,8 di bawah Sesudah. Apa yang ditunjukkan kolom Perubahan, dan apa artinya?
+  options:
+  - ▼ −20,7, maka stres membuat ketiga kelompok lebih mirip daripada sebelumnya
+  - ▲ +20,7, sehingga perbaikan yang disetel pada data bersih tidak bertahan terhadap stres
+  - ▲ +36,9, karena kolom Perubahan menjumlahkan kedua selisih
+  - 0,0, karena threshold tidak bergerak setelah disetel
+  answer: 1
+  explanation: 28,8 - 8,1 = 20,7, dan selisih yang melebar ditandai ▲. Threshold tidak bergerak, tetapi skor yang terkena stres bergerak, sehingga kesesuaian yang dibuat pada baris bersih tidak lagi berlaku.
+- prompt: Pada 40% sel kosong, Rentang tinjauan manusia awal (0,35 sampai 0,65) mengirim 236 dari 900 kasus ke seseorang. Jika satu tinjauan memakan 3 menit (sebuah asumsi), berapa lama antreannya?
+  options:
+  - Sekitar 4,8 jam, seperti pada baris bersih
+  - Sekitar 3,9 jam
+  - Sekitar 708 jam
+  - Sekitar 11,8 jam
+  answer: 3
+  explanation: 236 x 3 = 708 menit, dan 708 / 60 sekitar 11,8 jam. Pada baris bersih rentang itu hanya mengirim 96 kasus, 288 menit atau 4,8 jam. Stres mendorong skor masuk ke rentang, sehingga antrean tinjauan bertambah panjang.
+- prompt: Pada 40% sel kosong, Akurasi dengan peninjau terbaca 91% dan Akurasi tanpa tinjauan terbaca 79%. Apa yang diasumsikan angka 91%?
+  options:
+  - Peninjau selalu benar pada kasus di dalam rentang, yaitu kasus terbaik
+  - Peninjau menerima setiap saran model tanpa memeriksanya
+  - Peninjau setuju dengan model pada 8 dari 10 kasus di dalam rentang
+  - Rentang tidak berisi kasus, sehingga mesin memutuskan setiap kasus sendiri
+  answer: 0
+  explanation: Lab menghitung setiap kasus di dalam rentang sebagai benar. Peninjau yang menerima saran model (automation bias) akan membawa angkanya kembali ke arah 79%, maka 91% adalah batas atas.
+- prompt: Pada panel privasi, dengan Lebar rentang usia 10 dan Digit kode pos yang dipertahankan 3, kelompok terkecil berisi 15 orang dan k = 5 terpenuhi. Lalu kamu mencentang Jabatan dan kelompok terkecil menjadi 1 orang. Apa pelajarannya?
+  options:
+  - Laporan k-anonymity menjadi salah begitu kamu menambahkan satu kolom lagi
+  - Jabatan adalah nilai sensitif, dan sudah dihitung pada kelompok-kelompok pertama
+  - Setiap quasi-identifier tambahan memecah kelompok menjadi lebih kecil, sehingga k dapat gagal lagi
+  - Kelompok yang lebih kecil lebih aman, karena lebih sedikit orang yang bisa mengenali anggotanya
+  answer: 2
+  explanation: Lebih banyak kolom berarti lebih banyak kombinasi, dan setiap kombinasi berisi lebih sedikit orang. Di sini 27 orang (3%) kembali jatuh di bawah k = 5. Kelompok berisi 1 orang berarti barisnya dapat ditunjuk satu per satu.
+- prompt: Dengan Anggaran privasi ε (epsilon) pada 0,05, galat tipikal sebuah count yang dirilis adalah 1 / 0,05 = 20,0. Count kasus yang ditandai pada kelompok C adalah 55. Berapa besar galat itu relatif terhadap count-nya?
+  options:
+  - 4%, karena galatnya sama seperti pada ε = 0,5
+  - 36%, sehingga noise membuat count kelompok kecil jauh kurang berguna
+  - 20%, karena galatnya 20,0 dan lab membacanya sebagai persen
+  - 0%, karena lab membulatkan count yang dirilis ke bilangan bulat, yang menghapus noise
+  answer: 1
+  explanation: 20,0 / 55 sekitar 0,36. Semakin kecil ε, semakin besar privasi dan semakin besar noise, dan count yang kecil paling menderita. Pada ε = 0,5 galatnya 2,0, yaitu 4% dari 55.
+- prompt: Pada penguin, 40% sel kosong memangkas accuracy Gentoo sebesar 30,5 poin pada pembagian pertama dan 18,6 pada yang kedua, sementara kelompok terlemah pada baris bersih berganti dari Adelie ke Chinstrap. Apa yang dapat kamu simpulkan dari hal ini?
+  options:
+  - Hasilnya adalah bug, karena pembagian baru dari data yang sama harus memberi angka yang persis sama
+  - Stres tidak merugikan Gentoo, karena besar kehilangannya berubah di antara kedua pembagian
+  - Hanya accuracy bersih yang penting, karena stres seperti sel kosong itu buatan dan jarang terjadi
+  - Gentoo dua kali paling terpukul, tetapi besar kehilangan dan kelompok terlemah bergeser mengikuti pembagian
+  answer: 3
+  explanation: Memeriksa pada pembagian kedua itu murah dan menunjukkan apa yang stabil (Gentoo paling terpukul) dan apa yang noise (kelompok terlemah, besar kehilangan). Kelompok kecil (Chinstrap hanya punya 34 baris test) membuat angkanya kasar, sebagaimana seharusnya dikatakan model card.

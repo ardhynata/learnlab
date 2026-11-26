@@ -1,0 +1,80 @@
+- prompt: Di lab, kurva derajat 9 memiliki training error 0,04 dan validation error 3,59. Apa artinya paling mungkin?
+  options:
+  - Model mengalami underfitting, karena training error-nya tidak persis nol
+  - Model sangat baik, karena training error adalah angka yang menentukan
+  - Validation set mengandung kesalahan, sebab validation error tidak mungkin melebihi training error
+  - Model mengalami overfitting, karena sesuai dengan bulatan beserta noise-nya tetapi tidak dengan tanda silang
+  answer: 3
+  explanation: Training error yang sangat kecil di samping validation error yang besar adalah ciri khas overfitting. Validation error biasanya lebih tinggi daripada training error, dan training error saja tidak menjelaskan apa pun tentang titik baru.
+- prompt: Ketika derajat naik dari 1 sampai 12 pada satu sampel, bagaimana perilaku kedua error pada umumnya?
+  options:
+  - Training error turun; validation error turun lalu naik
+  - Kedua error turun terus sampai derajat 12
+  - Training error naik; validation error turun
+  - Kedua error turun lalu naik, dengan dasar pada derajat yang sama
+  answer: 0
+  explanation: Kurva yang lebih fleksibel selalu dapat mencocokkan titik training setidaknya sama baiknya, sehingga training error terus turun. Validation error berbentuk U karena fleksibilitas tambahan mula-mula membantu, lalu mulai mencocokkan noise.
+- prompt: Kamu sedang memilih derajat polinomial. Set mana yang harus menentukan?
+  options:
+  - Training set, karena model sudah mengenalnya
+  - Test set, karena paling dapat dipercaya
+  - Validation set, yang tidak dipakai untuk fit model
+  - Semua data digabung, agar tidak ada yang terbuang
+  answer: 2
+  explanation: Training error selalu memihak model yang paling fleksibel, dan test set harus tetap tidak tersentuh untuk laporan akhir. Validation set ada untuk memilih pengaturan seperti derajat.
+- prompt: Pada contoh hitungan, validation error adalah 0,201, 0,017, 0,026, dan 0,448 untuk derajat 1, 2, 3, dan 6. Derajat mana yang kamu pilih?
+  options:
+  - Derajat 6, karena training error-nya paling rendah
+  - Derajat 1, karena paling sederhana
+  - Derajat 3, karena training error-nya paling rendah di antara tiga derajat yang lebih kecil
+  - Derajat 2, karena validation error-nya paling rendah
+  answer: 3
+  explanation: Pilih berdasarkan validation error. Derajat 2 memiliki yang terendah, yaitu 0,017. Derajat 3 hampir sama, tetapi dengan hanya tiga titik validasi, selisihnya tidak dapat dipercaya, sehingga derajat 2 yang lebih sederhana adalah pilihan yang masuk akal.
+- prompt: Pada contoh hitungan, derajat 6 memiliki training error 0,000. Apa penjelasannya?
+  options:
+  - Derajat 6 adalah model terbaik untuk data ini
+  - Titik validasi dipakai untuk fit
+  - Ia memiliki 7 koefisien dan ada 7 titik training, sehingga kurvanya dapat melewati setiap titik
+  - Squared error tidak mungkin lebih besar dari 0,5
+  answer: 2
+  explanation: Polinomial derajat 6 memiliki tujuh koefisien, cukup untuk melewati ketujuh titik training beserta noise-nya. Menghafal itulah yang membuat validation error-nya sekitar 26 kali milik derajat 2.
+- prompt: Kamu mengatur Noise ke 0 di lab lalu menyapu derajatnya. Derajat terbaik naik ke 9. Mengapa derajat tinggi tidak lagi dihukum?
+  options:
+  - Tanpa noise, titik berada tepat di kurva asli, sehingga fit yang fleksibel tidak punya sesuatu yang menyesatkan untuk dikejar
+  - Training error naik seiring derajat ketika tidak ada noise
+  - Titik validasi diabaikan ketika noise 0
+  - Derajat di atas 9 tidak diizinkan ketika noise 0
+  answer: 0
+  explanation: Overfitting berarti mengejar noise. Tanpa noise, lekukan tambahan hanya dapat mengikuti pola yang sebenarnya, sehingga validation error tetap mendekati 0 untuk fit yang fleksibel.
+- prompt: Dengan 26 titik training, hanya ada 4 titik validasi. Pada 20 sampel, derajat terbaik berkisar dari 3 sampai 12, sedangkan dengan 14 titik training hanya dari 3 sampai 7. Apa penjelasan terbaiknya?
+  options:
+  - Titik training yang lebih banyak membuat model kurang fleksibel
+  - Validation set yang sangat kecil memberi jawaban yang berisik, sehingga titik terendah kurva berpindah-pindah antar sampel
+  - Lab memilih derajat secara acak ketika titik training banyak
+  - Validation error tidak dapat dihitung pada 4 titik
+  answer: 1
+  explanation: Empat tanda silang dapat memihak satu derajat secara kebetulan. Validation set yang lebih besar, eksperimen yang diulang, atau cross-validation memberi jawaban yang lebih stabil.
+- prompt: Pada data penguin, validation error di derajat terbaik adalah 0,73 dalam satuan plot. Massa tubuh diskalakan sehingga 3.600 g, dari 2.700 g sampai 6.300 g, mencakup 10 satuan plot. Kira-kira seberapa jauh sebuah penguin validasi meleset pada umumnya?
+  options:
+  - Sekitar 0,73 g
+  - Sekitar 300 g
+  - Sekitar 2.600 g
+  - Sekitar 0,85 g
+  answer: 1
+  explanation: Mean squared error dinyatakan dalam kuadrat satuan plot. Ambil akarnya, sekitar 0,85 satuan plot, lalu kalikan dengan 360 g per satuan plot, sehingga hasilnya kira-kira 300 g. Mengalikan 0,73 dengan 360, yang menghasilkan 263 g, melewatkan akar dan merupakan kekeliruan yang umum; 0,85 adalah angka yang benar tetapi dengan satuan yang keliru.
+- prompt: Mengapa test set hanya boleh dipakai satu kali, di bagian paling akhir?
+  options:
+  - Melihatnya lebih dari sekali merusak datanya
+  - Ukurannya jauh lebih kecil daripada set lain, sehingga cepat aus
+  - Model membutuhkannya untuk training yang kedua kali
+  - Setiap kali kamu melihatnya lalu mengubah sesuatu, ia berhenti menjadi data yang belum pernah dilihat dan skornya menjadi terlalu optimistis
+  answer: 3
+  explanation: Jika hasil test memandu pilihanmu, test set diam-diam berperan sebagai validation set. Akibatnya tidak ada lagi data independen yang memberi tahu seberapa baik model pada data baru.
+- prompt: Manakah yang termasuk data leakage?
+  options:
+  - Melakukan split lebih dulu, lalu menghitung rata-rata dan sebaran untuk scaling dari baris training saja
+  - Mengacak baris sebelum membaginya menjadi beberapa set
+  - Melakukan standardisasi pada semua baris sekaligus, baru kemudian membaginya menjadi training dan test set
+  - Melakukan fit model pada training set dan menilainya pada validation set
+  answer: 2
+  explanation: Angka scaling yang dihitung dari semua baris memuat informasi dari baris test, sehingga data test sudah memengaruhi persiapan data. Hitung angka itu dari baris training saja lalu terapkan pada set lainnya.

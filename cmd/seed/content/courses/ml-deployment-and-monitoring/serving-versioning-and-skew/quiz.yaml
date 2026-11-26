@@ -1,0 +1,80 @@
+- prompt: A card payment must be approved or declined while the customer waits at the checkout. Which way of serving the model fits?
+  options:
+  - Batch scoring every night, with the scores stored in a table
+  - Online inference that answers each request within a latency budget
+  - Batch scoring every hour, which is fresh enough for any product
+  - Either one, because latency and freshness do not affect the choice
+  answer: 1
+  explanation: Someone is waiting and the answer depends on this very payment, so the model must score one request at a time inside a latency budget. A stored score cannot know about a payment that had not happened when the job ran.
+- prompt: An invented service has 500,000 subscribers and about 10,000 open the app on a given day. A nightly batch job scores everyone, and opens are spread evenly over the day. How much extra work does batch do, and how old is the score a subscriber sees on average?
+  options:
+  - 5 times more predictions than used, and a score about 6 hours old
+  - 50 times more predictions than used, and a score about 24 hours old
+  - 50 times more predictions than used, and a score about 12 hours old
+  - 500 times more predictions than used, and a score about 12 hours old
+  answer: 2
+  explanation: 500,000 / 10,000 = 50. A score is refreshed every 24 hours, so its age runs from 0 to 24 hours, and with evenly spread opens the average is 12 hours. 24 hours is the worst case, not the average.
+- prompt: A customer bought on days 3, 8 and 12. The model predicts on day 10 from the feature "purchases this month", and the training table was built at the end of the month. What do the training row and the live request hold?
+  options:
+  - Training holds 3 and live holds 2, so the training row contains a purchase from the future
+  - Training holds 2 and live holds 3, so the live request sees more
+  - Both hold 3, because the purchases of the month are final
+  - Both hold 2, because the model only ever sees days up to the prediction
+  answer: 0
+  explanation: The table built at month end counts day 12, which has not happened when the prediction is made. Live, only days 3 and 8 are known. This is time travel, a leak in a feature, and a point-in-time join (events at or before the prediction time) removes it.
+- prompt: The registry lists v3 with accuracy 90.7% on last year's test set and v4 with 91.4% on a newer test set. What can you conclude?
+  options:
+  - v4 is better, because its number is higher
+  - v3 is better, because its test set is older and so more trusted
+  - The two are equal, because the gap is under one point
+  - Nothing firm, because the two scores come from different evaluation sets
+  answer: 3
+  explanation: Two scores are comparable only when they are measured on the same evaluation set. Write the set's name next to each metric, or evaluate both versions on one common set before you compare them.
+- prompt: What is the difference between a shadow release and a canary release?
+  options:
+  - Shadow sends 5% of the traffic to the new version, and canary sends all of it
+  - In shadow the new version sees every request but its answers are only logged, and in a canary a small share of users get its answers
+  - Shadow uses the old data snapshot, and canary uses the new one
+  - In shadow a rollback is impossible, and in a canary it is automatic
+  answer: 1
+  explanation: A shadow release hurts no user, since its answers are never used, and it shows how the new version behaves on real requests. A canary lets a small share of real users receive the new answers, so a bad version harms few of them.
+- prompt: A service gets 40,000 requests a day, and 5% go to the canary. In the live version 8% of requests run over the latency budget. How many requests reach the canary, and how many slow ones would you expect if it behaves the same?
+  options:
+  - 200 requests, with 16 slow
+  - 20,000 requests, with 1,600 slow
+  - 2,000 requests, with 160 slow
+  - 2,000 requests, with 1,600 slow
+  answer: 2
+  explanation: 5% of 40,000 = 2,000 requests, and 8% of 2,000 = 160 slow ones. A canary that shows 210 slow requests is 50 above what you expect, and that is the kind of gap a written trigger should catch.
+- prompt: Which situation is the biggest threat to a rollback?
+  options:
+  - The new version dropped a feature column, and the job that computes it for the old version was switched off
+  - The old version is still stored and loads without trouble
+  - The rollback trigger was written down before the launch
+  - Going back is one setting, and it was tried once in a rehearsal
+  answer: 0
+  explanation: Rollback readiness means the old version can start working again at once, and that needs its inputs. The other three are exactly what a ready rollback looks like.
+- prompt: A rule "Gentoo if flipper length is 207 mm or more" is right for 334 of 342 penguins. The service now receives the flipper length in centimeters (201 mm arrives as 20.1). What happens?
+  options:
+  - The service crashes, because 20.1 is outside the range seen in training
+  - It answers "Gentoo" for every penguin and is right for 123 of 342
+  - Nothing changes, because the rule only compares the value with a cutoff
+  - It answers "not Gentoo" for every penguin and is right for 219 of 342, which is 64.0%
+  answer: 3
+  explanation: Every value in centimeters is below 207, so the rule always says "not Gentoo", and that is right only for the 219 penguins of other species. No error appears, because 20.1 is a valid number, and accuracy falls by about 33.6 points.
+- prompt: You send last month's raw rows through the live serving path, and the features differ from the ones in the training table for the same rows. What is this?
+  options:
+  - Drift, because the world changed since training
+  - Training-serving skew, because the same raw rows give different features
+  - Concept shift, because the relationship between features and label moved
+  - Nothing to worry about, because old rows are not part of the live data
+  answer: 1
+  explanation: Old rows are fixed, so the world cannot have changed for them. If the live path computes other features than training did, the cause is in the feature code, units, missing-value handling or timing, which is skew. Drift would show only when today's rows differ while the features still match.
+- prompt: 'The feature "orders in the last 7 days" is refreshed by a nightly job at 02:00. A customer orders at 14:00, and a request comes in at 20:00. What does the model read?'
+  options:
+  - A value 6 hours old that already includes the order
+  - A value 18 hours old that already includes the order
+  - A value 18 hours old that does not include the order
+  - A value 12 hours old that does not include the order
+  answer: 2
+  explanation: The table was computed at 02:00, and 20:00 - 02:00 = 18 hours later it still holds the old count, because the order came at 14:00, after the job. If training used the exact count at prediction time, the service is skewed in freshness.

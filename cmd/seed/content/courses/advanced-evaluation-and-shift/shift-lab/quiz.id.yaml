@@ -1,0 +1,80 @@
+- prompt: Di lab, dengan Drift 0, kamu menaikkan Tingkat pergeseran pada Covariate shift. Perkiraan k-fold acak tetap 88% (rata-rata sepuluh sampel) sementara akurasi sebenarnya turun dari 86% ke 58%. Mengapa perkiraannya tidak bergerak?
+  options:
+  - Ia dihitung ulang hanya ketika kamu menekan Sampel baru
+  - Ia hanya membaca baris training, dan tanpa drift baris itu tidak bergantung pada shift
+  - Ia merata-ratakan akurasi sebenarnya dengan holdout bergeser
+  - k-fold acak dirancang agar tahan terhadap covariate shift
+  answer: 1
+  explanation: k-fold acak menyisihkan baris dari pool training, dan pool itu sama pada setiap Tingkat pergeseran. Test set, tempat shift berada, tidak pernah ikut dalam perkiraannya. Ketahanan tidak ada hubungannya dengan ini.
+- prompt: Sebuah setup memperkirakan 90% dan akurasi sebenarnya pada test set yang bergeser adalah 64%. Apa sebutan lab untuk ini?
+  options:
+  - Terlalu optimis 64 poin
+  - Terlalu pesimis 26 poin
+  - Dalam 5 poin, jadi setup itu mengantisipasi penurunannya
+  - Terlalu optimis 26 poin
+  answer: 3
+  explanation: Gap adalah perkiraan dikurangi akurasi sebenarnya, 90 - 64 = 26. Gap positif berarti perkiraannya terlalu tinggi, jadi terlalu optimis. Ia baru dihitung sebagai mengantisipasi bila gap-nya 5 poin atau kurang.
+- prompt: Pada Label shift dengan Tingkat pergeseran 0,8, sampel pertama punya akurasi sebenarnya 92% dan k-fold acak memperkirakan 86%. Porsi kelas 1 turun dari 48% ke 22%. Apa yang ditunjukkan ini?
+  options:
+  - Akurasinya tidak turun walaupun keseimbangan kelas berubah banyak, sehingga akurasi saja tidak akan mengungkap shift ini, sedangkan baris porsi kelas mengungkapnya
+  - Modelnya membaik, karena label shift memberinya data yang lebih bagus
+  - Perkiraannya 6 poin terlalu optimis, karena akurasi selalu turun saat ada shift
+  - Label shift tidak dapat diukur dengan akurasi, sehingga lab tidak menyertakannya
+  answer: 0
+  explanation: Gap-nya 86 - 92 = -6, jadi pada sampel ini perkiraannya rendah, tetapi itu undian yang beruntung. Dirata-ratakan pada sepuluh sampel, akurasinya 88,5% terhadap 88,1% tanpa shift, sementara porsi kelas 1 turun dari 48% ke 22%. Akurasi menyembunyikan shift ini, dan baris porsi kelas adalah yang menunjukkannya. Modelnya tidak membaik, dan anggapan bahwa akurasi selalu turun itu keliru.
+- prompt: Pada Concept shift dengan Tingkat pergeseran 0,8, akurasi sebenarnya 55%, k-fold acak menyebut 86%, PSI kedua fitur 0,04 dan 0,03, dan AUC domain classifier 0,49. Apa kesimpulan terbaik?
+  options:
+  - Inputnya bergeser, jadi beri bobot ulang pada baris lama
+  - Detektornya rusak, karena akurasinya turun
+  - Inputnya tampak sama tetapi aturan yang menghubungkannya dengan label kemungkinan berubah, dan hanya data baru yang berlabel yang dapat memastikannya
+  - Modelnya terlalu sederhana, jadi k yang lebih besar akan memperbaikinya
+  answer: 2
+  explanation: Detektor input yang tenang bersama skor yang jatuh menunjuk ke concept shift. Inputnya tidak bergeser, jadi pemberian bobot ulang tidak membantu, dan baris training mengikuti aturan lama, sehingga tak ada setup validasi yang dapat melihat perubahannya.
+- prompt: Di lab kamu menaikkan Drift yang sudah ada di data training ke 1,0 pada Concept shift. Pada sampel kelima, temporal split menyebut 77% dan akurasi sebenarnya 75%, sementara k-fold acak menyebut 84%. Mengapa temporal split dapat lebih baik di sini?
+  options:
+  - Ia membaca label test
+  - Blok-bloknya yang lebih akhir sudah mengikuti sebagian aturan baru, karena drift menggeser baris training yang lebih baru
+  - Ia memakai lebih banyak baris daripada k-fold acak
+  - Ia men-tuning k, dan tuning selalu memperbaiki drift
+  answer: 1
+  explanation: Drift membuat baris training yang lebih baru sudah memuat sebagian shift. Temporal split menilai pada baris yang lebih baru itu, sehingga perkiraannya turun. k-fold acak mencampur baris lama dan baru secara merata dan tetap tinggi. Temporal split tidak pernah membaca label test.
+- prompt: Setup Holdout bergeser menyisihkan 30% baris training yang paling dekat dengan input test. Apa yang dibacanya dari test set, dan mengapa hal itu diperbolehkan dalam praktik?
+  options:
+  - Label test, yang kamu dapatkan ketika model sudah dipakai
+  - Tidak ada sama sekali, ia hanya mengurutkan ulang baris training
+  - Akurasi test, yang lalu dikurangkan dari perkiraannya
+  - Hanya input test, yang sudah kamu miliki sebelum label mana pun tiba
+  answer: 3
+  explanation: Holdout bergeser memakai input test untuk memilih baris training mana yang disisihkan, dan tidak pernah memakai label test. Input baru biasanya tiba sebelum labelnya, jadi setup yang sama dapat dibangun sebelum model dipakai.
+- prompt: Lab menilai batang Nested CV terhadap akurasi model hasil tuning, yang ditandai model hasil tuning, dan bukan terhadap model k = 5. Mengapa?
+  options:
+  - Nested CV menilai sebuah resep yang mencakup pencarian k, dan model hasil tuning adalah yang dihasilkan resep itu
+  - Model k = 5 tidak boleh dinilai pada test set
+  - Nested CV selalu memilih k = 5, jadi keduanya sama
+  - Model hasil tuning dinilai karena akurasinya lebih tinggi
+  answer: 0
+  explanation: Seperti pada "Nested cross-validation", skor nested milik seluruh resep, termasuk pencariannya. Model yang diberikan resep itu setelah tuning adalah pembanding yang adil. Model mana yang skornya lebih tinggi pada test set tidak menentukan perbandingan ini.
+- prompt: Pada penguin di lab, Biscoe ditahan dengan k-NN. Akurasi sebenarnya 60% dan perkiraannya 80% sampai 86%, sementara porsi penguin jantan hanya bergeser dari 50% ke 51%. Apa penjelasan terbaik?
+  options:
+  - Label shift, karena keseimbangan kelas berubah
+  - Test set terlalu kecil untuk memberi akurasi yang andal
+  - Pulau itu memuat penguin Gentoo yang tidak ada di pulau training, jadi inputnya bergeser dan ukuran tubuh yang sama berarti lain untuk jenis kelamin
+  - k-fold acak rusak untuk data nyata
+  answer: 2
+  explanation: Test set Biscoe sebagian besar Gentoo, dan pulau training tidak punya satu pun. Inputnya bergeser (PSI 0,53 dan 1,60, AUC 0,87), dan Gentoo betina yang berat tampak seperti Adelie jantan. Keseimbangan kelas nyaris tidak berubah, jadi ini bukan label shift.
+- prompt: Dengan Dream ditahan dan Regresi logistik, k-fold berkelompok memperkirakan 57% dan akurasi sebenarnya 54%, jadi ia hijau. k-fold acak menyebut 61%. Pembacaan mana yang paling masuk akal?
+  options:
+  - k-fold berkelompok sudah membuktikan bahwa ia mendeteksi shift pulau
+  - Modelnya lemah di mana-mana, jadi bahkan k-fold acak hanya meleset 7 poin dan tidak banyak yang dapat hilang
+  - Test set sama dengan training set
+  - Regresi logistik kebal terhadap shift
+  answer: 1
+  explanation: k-fold acak sendiri berada di dekat 61%, jadi model memang sudah buruk dan tidak banyak yang dapat turun. Selisih kecil lalu bukan sebuah peringatan. k-NN milik lab pada Dream menunjukkan gambaran yang sebenarnya, dengan 81% diperkirakan dan 54% sebenarnya.
+- prompt: Dengan Jenis shift diatur ke Tidak ada, holdout bergeser memperkirakan 90% dan akurasi sebenarnya 85% (84,5% sebelum dibulatkan, gap 5,5 poin), sementara empat setup lain hijau. Apa yang harus kamu lakukan sebelum menyalahkan setup itu?
+  options:
+  - Menyimpulkan bahwa datanya bergeser, karena ada setup yang meleset
+  - Menaikkan Tingkat pergeseran sampai setup itu hijau
+  - Menekan Sampel baru dan melihat apakah ia meleset lagi, karena satu split dari sekitar 60 baris punya kumis sekitar 4 poin
+  - Beralih ke model dengan parameter yang lebih sedikit
+  answer: 2
+  explanation: Satu holdout dari sekitar 60 baris punya galat baku di dekat 4 poin, jadi meleset 5 atau 6 poin terjadi secara kebetulan. Di lab, pada sepuluh sampel tanpa shift, ia berada dalam 5 poin sebanyak tujuh kali. Ulangi sebelum kamu menyimpulkan.

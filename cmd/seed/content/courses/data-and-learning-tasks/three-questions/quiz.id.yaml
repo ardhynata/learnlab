@@ -1,0 +1,80 @@
+- prompt: Di lab kamu mengganti pertanyaan dari Classification ke Clustering, dengan panjang paruh di sumbu horizontal dan tebal paruh di sumbu vertikal. Informasi apa yang dipakai lab untuk membentuk kelompok?
+  options:
+  - Hanya dua kolom di sumbu
+  - Dua kolom itu dan spesies
+  - Hanya spesies
+  - Skor silhouette
+  answer: 0
+  explanation: Clustering tidak punya target. Spesies disembunyikan saat kelompok dibentuk, dan baru dibandingkan dengan kelompok sesudahnya, sebagai kecocokan dengan spesies.
+- prompt: Garis untuk 120 burung adalah tebal = 25,22 - 0,1805 × panjang. Berapa tebal yang diprediksi garis itu untuk burung dengan paruh sepanjang 40 mm?
+  options:
+  - 7,22 mm
+  - 32,44 mm
+  - 18,00 mm
+  - 25,22 mm
+  answer: 2
+  explanation: 0,1805 × 40 = 7,22, dan 25,22 - 7,22 = 18,00 mm. Angka 7,22 baru langkah pertama, dan 32,44 berasal dari menambahkan, bukan mengurangi.
+- prompt: Untuk burung #54, garis memprediksi tebal 19,14 mm, sedangkan tebal sebenarnya 18,4 mm. Bagaimana kamu membaca selisih itu?
+  options:
+  - Garis 0,74 mm terlalu rendah
+  - Garis tepat sampai ke milimeter
+  - Garis 18,4 mm terlalu tinggi
+  - Garis 0,74 mm terlalu tinggi
+  answer: 3
+  explanation: Prediksi dikurangi nilai sebenarnya adalah 19,14 - 18,4 = 0,74 mm, jadi garis melampaui burung ini sebesar 0,74 mm. Galat regression diukur dalam satuan yang sama dengan target.
+- prompt: Garis untuk tebal paruh memiliki R² sebesar 16%. Apa artinya?
+  options:
+  - Garis memprediksi tebal 16% burung dengan benar
+  - Garis menjelaskan 16% naik-turunnya tebal paruh
+  - Galat rata-rata adalah 16% dari tebal
+  - Kemiringan garis adalah 0,16
+  answer: 1
+  explanation: R² membandingkan garis dengan tebakan malas yang selalu menjawab rata-rata. Nilai 0% berarti tidak lebih baik daripada rata-rata dan 100% berarti tidak ada selisih. Sebuah regression tidak membuat burung "benar", ia hanya dekat atau jauh.
+- prompt: Garis itu meleset 1,79 mm rata-rata, sedangkan selalu menebak rata-rata tebal meleset 2,00 mm. Apa yang ditunjukkan hal ini?
+  options:
+  - Garis jauh lebih baik daripada tebakan malas
+  - Garis lebih buruk daripada tebakan malas
+  - Garis hanya sedikit lebih baik daripada tebakan malas
+  - Kedua angka itu tidak dapat dibandingkan karena dinyatakan dalam milimeter
+  answer: 2
+  explanation: Garis hanya memangkas galat rata-rata sebesar 0,21 mm, sehingga sebagai prediktor ia lemah. Kedua galat memakai satuan yang sama, dan karena itulah keduanya dapat dibandingkan.
+- prompt: Dengan tiga spesies yang sama banyaknya, sebuah pasangan kolom mendapat skor 66% pada Classification. Bagaimana perbandingannya dengan baseline?
+  options:
+  - Lebih buruk daripada selalu menebak satu spesies
+  - Kurang lebih sama dengan selalu menebak satu spesies
+  - Sempurna, karena di atas 50%
+  - Sekitar dua kali baseline 33%, tetapi sekitar sepertiga burung masih salah
+  answer: 3
+  explanation: Selalu menyebut satu spesies benar pada 40 dari 120 burung, yaitu 33%. Skor 66% adalah dua kali lipatnya, dan 34% burung sisanya masih diberi label yang salah.
+- prompt: Pada penguin nyata dengan label Jenis kelamin, sebuah pasangan kolom mendapat skor 52%. Apa kesimpulan yang tepat?
+  options:
+  - Skor itu bagus, karena jauh di atas 33%
+  - Skor itu nyaris tidak berguna, karena selalu menebak jenis kelamin yang lebih umum sudah benar sekitar 50% dari waktu
+  - Skor itu lumayan, karena lebih dari setengah penguin benar
+  - Skor itu tidak mungkin, karena classification memerlukan tiga kelas
+  answer: 1
+  explanation: Baseline 33% milik tiga spesies yang sama banyaknya. Dengan dua jenis kelamin, selalu menebak jantan benar pada 168 dari 333 penguin, sekitar 50%, sehingga 52% hanya mengalahkannya tipis.
+- prompt: Clustering 120 burung menjadi k = 2 kelompok menghasilkan kecocokan dengan spesies sebesar 67%. Mengapa angka itu tidak dapat jauh lebih tinggi?
+  options:
+  - Dua kelompok paling banyak memiliki dua spesies utama, sehingga 40 burung dari spesies ketiga selalu dihitung salah
+  - Silhouette terlalu rendah sehingga kecocokan tidak dapat naik
+  - Lab memilih kelompok secara acak
+  - Kecocokan tidak pernah dapat melebihi 67% untuk k berapa pun
+  answer: 0
+  explanation: Hanya spesies utama sebuah kelompok yang dihitung benar. Dua kelompok mencakup paling banyak dua spesies, sehingga kasus terbaiknya 80 dari 120, yaitu 67%. Dengan k = 3 kecocokannya mencapai 96%.
+- prompt: Pada 120 burung, k = 3 memberi silhouette 0,55 dan k = 4 memberi 0,46. Tanpa kolom spesies sama sekali, k mana yang kamu pilih, dan mengapa?
+  options:
+  - k = 4, karena kelompok yang lebih banyak selalu lebih sesuai
+  - Tidak keduanya, karena silhouette tidak dapat dibandingkan antarnilai k
+  - k = 3, karena silhouette-nya lebih tinggi, sehingga kelompoknya terpisah lebih jelas
+  - k = 3, karena kecocokannya dengan spesies lebih tinggi
+  answer: 2
+  explanation: Silhouette tidak memerlukan label, dan nilai yang lebih tinggi berarti kelompok yang lebih jelas. Tanpa kolom spesies kamu sama sekali tidak dapat menghitung kecocokan, dan k yang lebih besar hanya membuat kelompoknya semakin kecil.
+- prompt: Pada penguin nyata, garis untuk tebal paruh menurun di seluruh 342 penguin, tetapi naik di dalam tiap spesies. Apa penjelasan terbaiknya?
+  options:
+  - Pengukurannya pasti mengandung kesalahan
+  - Spesies berada di tempat yang berbeda, sehingga mencampurnya memiringkan awan titik ke arah sebaliknya
+  - Paruh yang lebih panjang membuat tebal paruh turun di setiap spesies
+  - R² sebesar 6% membuktikan bahwa tidak ada tren di dalam spesies mana pun
+  answer: 1
+  explanation: Penguin Adelie punya paruh pendek dan tebal, sedangkan Gentoo punya paruh panjang dan tipis. Bersama-sama keduanya membentuk awan yang menurun, walaupun di dalam tiap spesies paruh yang lebih panjang berjalan bersama paruh yang lebih tebal.

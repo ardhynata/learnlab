@@ -1,0 +1,10 @@
+slug: unsupervised
+title: Unsupervised learning
+summary: 'Find structure in data that has no labels: groups, density and how to judge them.'
+level: beginner
+position: 2
+requires: []
+translations:
+  id:
+    title: "Unsupervised learning"
+    summary: "Cari pola dalam data yang tidak punya label: kelompok, kepadatan, dan cara menilai hasilnya."

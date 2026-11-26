@@ -1,0 +1,80 @@
+- prompt: Tugas manakah yang merupakan clustering?
+  options:
+  - Memprediksi spesies penguin dari contoh yang berlabel
+  - Memprediksi massa penguin dengan sebuah garis regresi
+  - Memberi penguin kelompok hanya dengan memakai hasil pengukurannya
+  - Memeriksa seberapa sering sebuah classifier benar
+  answer: 2
+  explanation: Clustering bersifat unsupervised. Tidak ada kolom label untuk diprediksi, hanya hasil pengukuran yang dijadikan dasar pengelompokan.
+- prompt: Penguin A dan B berbeda 0,4 mm pada panjang paruh dan 1,3 mm pada kedalaman paruh. Berapa jarak Euclidean keduanya?
+  options:
+  - Sekitar 1,36 mm
+  - 1,70 mm
+  - 1,85 mm
+  - 0,52 mm
+  answer: 0
+  explanation: Kuadratkan selisihnya (0,16 dan 1,69), jumlahkan sehingga menjadi 1,85, lalu tarik akar kuadratnya, sekitar 1,36. Menjumlahkan selisihnya (1,70) memberi jarak yang berbeda, dan 1,85 melupakan akar kuadrat.
+- prompt: Sebuah metode menamai dua kelompok "kelompok 1" dan "kelompok 2". Jika namanya ditukar, apa yang berubah?
+  options:
+  - Jarak antartitik
+  - Tidak ada yang berubah pada titik mana yang sekelompok
+  - Kelompok mana yang benar
+  - Jumlah cluster
+  answer: 1
+  explanation: Nomor kelompok hanyalah nama. Yang penting adalah keanggotaannya, dan metode ini tidak tahu arti kelompok mana pun.
+- prompt: Fakta manakah dari contoh enam penguin yang paling mendukung kelompok {A, B, C} dan {D, E, F}?
+  options:
+  - Penguin A punya panjang paruh terkecil dari keenamnya, yang tidak menjelaskan kelompok
+  - Penguin F adalah titik terjauh dari A (11,45), yang tidak menjelaskan pasangan lain
+  - Penguinnya tepat berjumlah enam, dan enam bisa dibagi rata menjadi dua kelompok
+  - Jarak di dalam kelompok (paling besar 4,38) semuanya lebih kecil dari jarak antarkelompok (paling kecil 7,53)
+  answer: 3
+  explanation: Setiap pasangan di dalam kelompok lebih dekat daripada pasangan mana pun yang melintasi kelompok. Itulah yang membuat pembagian ini masuk akal.
+- prompt: Sebuah penguin baru berjarak 4,79 dari pusat kelompok 1 dan 4,88 dari pusat kelompok 2. Manakah deskripsi terbaik?
+  options:
+  - Ia jelas termasuk kelompok 2, karena 4,88 adalah jarak yang lebih besar
+  - Ia masuk kelompok 1, tetapi tipis, sehingga perubahan kecil dapat membaliknya
+  - Ia tidak dapat ditempatkan, karena kedua jaraknya terlalu mirip untuk dibedakan
+  - Ia membentuk kelompok baru sendiri, karena letaknya di antara kedua pusat
+  answer: 1
+  explanation: Ia lebih dekat ke kelompok 1, dengan selisih kurang dari 0,1. Perubahan kecil pada pengukuran atau pada jarak dapat memindahkannya ke kelompok lain.
+- prompt: Pusat {D, E, F} untuk panjang paruh adalah (46,1 + 48,7 + 50,0) / 3. Berapa nilainya?
+  options:
+  - 48,70
+  - 144,80
+  - 48,05
+  - 48,27
+  answer: 3
+  explanation: Pusat merata-ratakan setiap feature di seluruh kelompok, di sini 144,8 dibagi 3, sekitar 48,27. Nilai tengah 48,7 adalah median, dan 48,05 hanya merata-ratakan kedua ujungnya.
+- prompt: Dua penguin berbeda 16 mm pada panjang flipper dan 175 g pada massa. Ketika massa ditulis dalam kilogram, bukan gram, apa yang terjadi pada jarak keduanya?
+  options:
+  - Turun menjadi sekitar 16,0, karena sekarang panjang flipper yang menentukan
+  - Tetap sekitar 175,7, karena penguinnya tidak berpindah
+  - Turun menjadi sekitar 0,175, karena hanya selisih massa yang tersisa
+  - Naik, karena kilogram adalah satuan yang lebih besar daripada gram
+  answer: 0
+  explanation: Selisih 175 g sama dengan 0,175 kg, yang nyaris lenyap di samping 16 mm. Jaraknya menjadi sekitar 16,0, sehingga satuanlah yang menentukan feature mana yang berpengaruh.
+- prompt: Kamu melakukan clustering pelanggan berdasarkan pendapatan dalam dolar dan usia dalam tahun, tanpa scaling. Apa masalah yang mungkin muncul?
+  options:
+  - Usia menentukan sebagian besar jarak karena angkanya lebih kecil
+  - Tidak ada masalah, karena metodenya mengoreksi satuan
+  - Pendapatan mendominasi jarak dan usia hampir diabaikan
+  - Metodenya tidak dapat berjalan pada dua feature
+  answer: 2
+  explanation: Selisih pada kolom berskala besar menenggelamkan selisih pada kolom berskala kecil, sehingga pendapatan yang menentukan siapa yang dekat. Skalakan feature terlebih dahulu.
+- prompt: Sebuah metode mengembalikan tiga cluster yang rapi pada tabel berisi angka acak. Apa kesimpulanmu?
+  options:
+  - Datanya pasti memuat tiga kelompok sungguhan
+  - Metode itu telah membuktikan bahwa kelompoknya nyata
+  - Belum ada kesimpulan, karena metode selalu mengembalikan kelompok bahkan untuk noise
+  - Jaraknya pasti salah
+  answer: 2
+  explanation: Setiap metode mengembalikan kelompok. Apakah kelompok itu bermakna, kamu sendiri yang harus memeriksanya, dengan melihat, menjalankan ulang, dan menanyakan apakah hasilnya berguna.
+- prompt: Apa perbedaan cluster dengan kelas?
+  options:
+  - Cluster diusulkan oleh sebuah metode; kelas adalah label yang dituliskan seseorang
+  - Cluster selalu memiliki tepat tiga anggota, dan kelas selalu memiliki dua
+  - Kelas ditemukan oleh sebuah metode dari feature, dan cluster ditulis dengan tangan
+  - Keduanya sama, hanya dua nama untuk hal yang sama, sehingga pilihan katanya tidak penting
+  answer: 0
+  explanation: Cluster berasal dari jarak antartitik tanpa label dan bisa saja tidak sesuai dengan label mana pun. Kelas adalah label yang sudah diberikan.

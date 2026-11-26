@@ -1,0 +1,80 @@
+- prompt: In the lab, with Drift at 0, you raise Severity under Covariate shift. The random k-fold estimate stays at 88% (mean of ten samples) while the actual accuracy falls from 86% to 58%. Why does the estimate not move?
+  options:
+  - It is recomputed only when you press New sample
+  - It reads only training rows, and with no drift they do not depend on the shift
+  - It averages the actual accuracy with the shifted holdout
+  - Random k-fold is built to be robust to covariate shift
+  answer: 1
+  explanation: Random k-fold holds out rows from the training pool, and that pool is the same at every Severity. The test set, which is where the shift lives, never enters the estimate. Robustness has nothing to do with it.
+- prompt: A setup estimates 90% and the actual accuracy on the shifted test set is 64%. What does the lab call this?
+  options:
+  - 64 points too optimistic
+  - 26 points too pessimistic
+  - Within 5 points, so the setup anticipated the drop
+  - 26 points too optimistic
+  answer: 3
+  explanation: The gap is the estimate minus the actual accuracy, 90 - 64 = 26. A positive gap means the estimate was too high, so it is too optimistic. It would count as anticipated only if the gap were 5 points or less.
+- prompt: Under Label shift at Severity 0.8, the first sample has an actual accuracy of 92% and random k-fold estimated 86%. Share of class 1 goes from 48% to 22%. What does this show?
+  options:
+  - The accuracy did not fall although the class balance changed a lot, so accuracy alone would not reveal this shift and the class-share row does
+  - The model improved, because label shift gives it better data
+  - The estimate was 6 points too optimistic, because accuracy always falls under shift
+  - Label shift cannot be measured with accuracy, so the lab leaves it out
+  answer: 0
+  explanation: The gap is 86 - 92 = -6, so on this sample the estimate was low, but that is a lucky draw. Averaged over ten samples the accuracy is 88.5% against 88.1% with no shift, while the share of class 1 fell from 48% to 22%. Accuracy hides this shift, and the class-share row is the one that shows it. The model did not improve, and the claim that accuracy always falls is false.
+- prompt: Under Concept shift at Severity 0.8 the actual accuracy is 55%, random k-fold says 86%, the PSI of both features is 0.04 and 0.03, and the domain classifier AUC is 0.49. What is the best conclusion?
+  options:
+  - The inputs moved, so reweight the old rows
+  - The detectors are broken, because the accuracy fell
+  - The inputs look the same but the rule linking them to labels probably changed, which only labelled new data can confirm
+  - The model is too simple, so a larger k would fix it
+  answer: 2
+  explanation: Quiet input detectors together with a falling score point to concept shift. The inputs did not move, so reweighting does not help, and the training rows follow the old rule, so no validation setup can see the change.
+- prompt: In the lab you raise Drift already in the training data to 1.0 under Concept shift. On the fifth sample the temporal split says 77% and the actual accuracy is 75%, while random k-fold says 84%. Why can the temporal split do better here?
+  options:
+  - It reads the test labels
+  - Its later blocks already follow part of the new rule, because drift moved the later training rows
+  - It uses more rows than random k-fold
+  - It tunes k, and tuning always fixes drift
+  answer: 1
+  explanation: Drift lets the later training rows already contain part of the shift. A temporal split scores on those later rows, so its estimate falls. Random k-fold mixes old and new rows evenly and stays high. The temporal split never reads test labels.
+- prompt: The Shifted holdout setup holds out the 30% of training rows closest to the test inputs. What does it read from the test set, and why is that allowed in practice?
+  options:
+  - The test labels, which you get when the model is deployed
+  - Nothing at all, it only reorders the training rows
+  - The test accuracy, which is then subtracted from its estimate
+  - Only the test inputs, which you have before any label arrives
+  answer: 3
+  explanation: The shifted holdout uses the test inputs to pick which training rows to hold out and never uses a test label. New inputs usually arrive before their labels, so the same setup could be built before deployment.
+- prompt: The lab grades the Nested CV bar against the tuned model's accuracy, marked tuned model, and not against the k = 5 model. Why?
+  options:
+  - Nested CV scores a recipe that includes the search for k, and the tuned model is what that recipe produces
+  - The k = 5 model is not allowed to be scored on the test set
+  - Nested CV always picks k = 5, so the two are the same
+  - The tuned model is graded because it has a higher accuracy
+  answer: 0
+  explanation: As in "Nested cross-validation", the nested score belongs to the whole recipe, search included. The model the recipe hands you after tuning is the fair one to compare with. Which model scores higher on the test set does not decide the comparison.
+- prompt: In the lab's penguins, Biscoe is held out with k-NN. The actual accuracy is 60% and the estimates are 80% to 86%, while the share of male penguins goes only from 50% to 51%. What is the best explanation?
+  options:
+  - Label shift, because the class balance changed
+  - The test set is too small to give a reliable accuracy
+  - The island holds Gentoo penguins, which the training islands lack, so the inputs moved and the same size means something else for sex
+  - Random k-fold is broken for real data
+  answer: 2
+  explanation: Biscoe's test set is mostly Gentoo, and the training islands have none. The inputs moved (PSI 0.53 and 1.60, AUC 0.87), and a heavy Gentoo female looks like a male Adelie. The class balance barely changed, so it is not label shift.
+- prompt: With Dream held out and Logistic regression, grouped k-fold estimates 57% and the actual accuracy is 54%, so it is green. Random k-fold says 61%. Which reading is most reasonable?
+  options:
+  - Grouped k-fold has proved it detects island shift
+  - The model is weak everywhere, so even random k-fold is only 7 points off and little could be lost
+  - The test set is the same as the training set
+  - Logistic regression is immune to shift
+  answer: 1
+  explanation: Random k-fold is itself near 61%, so the model was already poor and there was little to fall from. A small gap is then not a warning. The lab's k-NN on Dream shows the real picture, with 81% estimated and 54% actual.
+- prompt: With Shift type set to None, the shifted holdout estimates 90% and the actual accuracy is 85% (84.5% unrounded, a gap of 5.5 points), while the other four setups are green. What should you do before blaming the setup?
+  options:
+  - Conclude the data shifted, since a setup was off
+  - Raise Severity until the setup is green
+  - Press New sample and see whether it misses again, because one split of about 60 rows has a whisker of about 4 points
+  - Switch to a model with fewer parameters
+  answer: 2
+  explanation: A single holdout of about 60 rows has a standard error near 4 points, so a miss of 5 or 6 happens by chance. In the lab, over ten samples with no shift, it was within 5 points in seven. Repeat before you conclude.

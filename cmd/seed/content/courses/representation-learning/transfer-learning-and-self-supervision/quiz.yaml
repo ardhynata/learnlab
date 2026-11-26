@@ -1,0 +1,80 @@
+- prompt: Which of these is a masking objective?
+  options:
+  - Rebuild the whole input from a small code
+  - Hide one part of the input and predict it from the rest
+  - Pull the codes of two views of one item together
+  - Predict a species name that a person wrote
+  answer: 1
+  explanation: Masking hides a part of the input and uses the rest to predict it, so the data supplies its own target. Rebuilding the whole input is reconstruction, pulling two views together is contrastive training, and a name written by a person is an ordinary label.
+- prompt: A photo and a cropped copy of it are two views of one item. What does contrastive training want from their codes?
+  options:
+  - The two codes should be far apart, so the encoder sees the difference
+  - The two codes should be identical to the pixels of the photo
+  - The two codes should be close together, and codes of different items far apart
+  - The two codes should predict the same species label
+  answer: 2
+  explanation: Contrastive training pulls views of the same item together and pushes different items apart. Pulling alone could give every input the same code, and no label is involved.
+- prompt: In the six-penguin example, predicting the hidden flipper length with the mean gives an average squared error of 279.14 mm², and the line from body mass gives 61.17 mm². What does the drop show?
+  options:
+  - Body mass carries information about flipper length that the mean ignores
+  - The line used the species of each penguin
+  - A pretext task always reaches an error near 0
+  - The mean 202.17 mm was computed wrongly
+  answer: 0
+  explanation: The line found a pattern in the data, heavier penguins have longer flippers, and it used no label at all. A fall to 61.17 is a gain, not a perfect fit, and the mean 202.17 is correct.
+- prompt: An encoder turns 4 measurements into a code of 2, with a bias for each code number. The head turns the code into one score, with 2 weights and 1 bias. How many numbers does fine-tuning fit compared with frozen training?
+  options:
+  - 3 for fine-tuning and 3 for frozen
+  - 10 for fine-tuning and 3 for frozen
+  - 13 for fine-tuning and 10 for frozen
+  - 13 for fine-tuning and 3 for frozen
+  answer: 3
+  explanation: The encoder has 4 x 2 = 8 weights and 2 biases, 10 numbers, and the head has 3. Frozen training fits only the head's 3 numbers, and fine-tuning fits all 13.
+- prompt: You have 10 labelled rows, and the pretraining data comes from your own domain. What is the safer first choice?
+  options:
+  - Fine-tune the whole encoder with a large learning rate
+  - Freeze the encoder and train only the head
+  - Train the encoder from scratch on the 10 rows
+  - Skip the labelled rows and use the pretext task alone
+  answer: 1
+  explanation: A frozen encoder leaves only a few numbers for 10 rows to fit, which keeps overfitting in check. Training everything, or the whole encoder from scratch, asks a tiny set to fix many numbers, and the pretext task alone never learns your downstream answer.
+- prompt: Which pair of conditions makes transfer most likely to help?
+  options:
+  - A large labelled set and an unrelated domain
+  - A large labelled set and a related domain
+  - A small labelled set and a related domain
+  - A small labelled set and an unrelated domain
+  answer: 2
+  explanation: With a small labelled set, features learned from it alone are shaky, so a representation from plenty of unlabelled rows has the most to add. It helps only if the domain is related, so that the same things matter.
+- prompt: A frozen pretrained representation gives a lower downstream score than the raw measurements would. What is this called?
+  options:
+  - Negative transfer
+  - Fine-tuning
+  - Contrastive collapse
+  - Reconstruction loss
+  answer: 0
+  explanation: Negative transfer means the pretrained representation makes the downstream result worse than not using it. It can come from a domain mismatch or from a pretext task that keeps the wrong information.
+- prompt: A teammate reports 90% for a pretrained code on one random split and 85% for the raw-feature baseline on another random split. What is wrong with the comparison?
+  options:
+  - Nothing, since 90% is higher than 85%
+  - The raw baseline should have been fine-tuned first
+  - Pretrained codes cannot be compared with raw features
+  - The two arms were scored on different rows, so the 5 points may come from the split
+  answer: 3
+  explanation: A fair comparison keeps the labelled rows, the test rows and the head the same, and repeats over many splits. With a small labelled set, the score can move by several points from one split to the next.
+- prompt: On Dream penguins the frozen same-domain code scored 83.8% and the raw measurements 83.4%, with a spread of about 10 points over 1000 rounds. What is the fairest reading?
+  options:
+  - Pretraining clearly beats the raw measurements
+  - Pretraining clearly loses to the raw measurements
+  - Essentially a tie, because 0.4 points is far smaller than the spread
+  - The comparison is invalid because the raw measurements have no code
+  answer: 2
+  explanation: A gap of 0.4 points is tiny beside a spread of about 10 points, and the same-domain code won 398 rounds against 341 lost. It did beat the code learned from the 10 labelled penguins alone, but not the raw measurements.
+- prompt: The unlabelled pretraining pool accidentally includes the penguins you later test on. What is the effect?
+  options:
+  - None, because their species labels are hidden
+  - The test score may be optimistic, because the encoder already saw those inputs
+  - The test score is pessimistic, because the pool is too large
+  - The head cannot be trained any more
+  answer: 1
+  explanation: Hiding labels is not enough. The encoder has already been shaped by the test inputs, which is leakage, the same as fitting a scaler on all rows. Split first and pretrain on the training side only.

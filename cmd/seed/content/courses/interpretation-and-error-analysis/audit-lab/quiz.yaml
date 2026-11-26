@@ -1,0 +1,80 @@
+- prompt: In the lab's default audit, accuracy is 78.8% in both Group A and Group B, but the positive rate is 64.2% in A and 37.5% in B. What does this show?
+  options:
+  - The model treats the two groups the same, because accuracy is equal
+  - Equal accuracy can hide different errors, so every row of the table needs a look
+  - The positive rate is wrong, because it must equal accuracy
+  - Group B has a bug in its rows, because its positive rate is lower
+  answer: 1
+  explanation: Accuracy is one average. Group A has a base rate of 60.8% and B only 31.3%, so the model flags A far more often, and the precision, recall and false-positive rate gaps are all large. Equal accuracy does not mean equal errors.
+- prompt: In Group B the model finds 38 of the 50 positive rows and flags 22 of the 110 negative rows by mistake. What are its recall and its false-positive rate?
+  options:
+  - Recall 76.0% and false-positive rate 20.0%
+  - Recall 63.3% and false-positive rate 20.0%
+  - Recall 76.0% and false-positive rate 36.7%
+  - Recall 38.0% and false-positive rate 22.0%
+  answer: 0
+  explanation: Recall is 38 / 50 = 76.0%. The false-positive rate is 22 / 110 = 20.0%, because only negative rows can be false positives. The 63.3% in the second option is precision, 38 / 60.
+- prompt: Group B has recall 0.76, base rate 0.313 and precision 0.633 at the default threshold. Using flag rate = recall x base rate / precision, how often does the model flag B?
+  options:
+  - About 24%
+  - About 48%
+  - About 76%
+  - About 37.5%
+  answer: 3
+  explanation: 0.76 x 0.313 / 0.633 = 0.376, about 37.5% (0.375 from the exact counts), which is the positive rate the lab shows for B. Check the Positive rate (predicted positive) row of Errors by group.
+- prompt: You press Match positive rates. Group B's threshold falls from 0.50 to 0.36 and 103 of its 160 rows are flagged, with 44 true positives. What is its precision now?
+  options:
+  - 63.3%, the same as before, because precision does not depend on the threshold
+  - 88.0%, its new recall
+  - 42.7%
+  - 64.4%, its new positive rate
+  answer: 2
+  explanation: Precision is true positives over flagged rows, 44 / 103 = 42.7%, down from 38 / 60 = 63.3%. The extra flagged rows are mostly false alarms. 88.0% is recall (44 / 50) and 64.4% is the positive rate.
+- prompt: After Match positive rates the positive rate gap falls from 26.7 to 0.1 points. What happens to the other measures in the trade-off table?
+  options:
+  - Every other gap falls too, and accuracy rises
+  - Nothing else changes, because only Group B's threshold moved
+  - The false-positive rate gap rises from 11.4 to 22.2 points and accuracy falls from 78.8% to 73.6%
+  - Accuracy stays at 78.8% and only the recall gap changes
+  answer: 2
+  explanation: Closing one gap opened another here and cost accuracy. The recall gap does fall, from 9.4 to 2.6 points, but the false-positive rate gap doubles. The lab's hint says closing one gap usually opens another or costs accuracy, so say usually and check each time.
+- prompt: After Match recall the recall gap is 0.6 points, yet the positive rate gap is still 11.7 points. Why can the two not both reach zero here?
+  options:
+  - The lab can only move one threshold at a time
+  - The positive rate depends on recall, base rate and precision, and the base rates differ
+  - Recall and positive rate are the same number
+  - Group B has too few rows for a threshold
+  answer: 1
+  explanation: Flag rate equals recall times base rate divided by precision. With base rates of 60.8% and 31.3%, equal recall and equal positive rate would force the precisions apart, so closing one gap leaves or opens another.
+- prompt: The correlation goes from 0.20 to 0.95. Signal falls from 25.9% to 14.5%, signal copy rises from 0.0% to 6.9%, and Both together stays at about 25.8%. What is the best reading?
+  options:
+  - The signal became less useful to the model, so you can drop it
+  - The copy became a cause of the outcome
+  - The model shares the credit between the two features, and the pair is still worth about the same
+  - Both bars should have grown, so the lab shows an error
+  answer: 2
+  explanation: Shuffling one feature leaves its twin to cover for it, so each single bar shrinks. Shuffling both together costs about 25.8 points, almost the same as the signal alone at 0.20. The pair keeps its worth, and no single bar says it.
+- prompt: In the generated data the outcome never depends on the signal copy, yet at correlation 0.95 its importance is 6.9%. What does that number tell you?
+  options:
+  - The model uses the copy, but it says nothing about what the outcome depends on in the world
+  - The outcome does depend on the copy after all
+  - The copy is a better feature than the signal
+  - The importance is random noise from shuffling
+  answer: 0
+  explanation: Permutation importance describes the fitted model. The model leans on the copy because it is a close twin of the signal, which is why the value is more than the 0.0% it had at 0.20. It is not evidence that the copy has an effect.
+- prompt: In case 2 the average prediction is 53.8%. The signal pushes by -7.7 points, the other signal by -11.7, and the copy and the noise by 0.0. What prediction does the model give this case, about?
+  options:
+  - 34%
+  - 73%
+  - 54%
+  - 65%
+  answer: 0
+  explanation: The values add up from the average, 53.8 - 7.7 - 11.7 = 34.4, so about 34% (the lab shows 34.5% before rounding). At a threshold of 0.50 the model predicts negative, and the case is truly positive, so it is wrong.
+- prompt: On the real penguins by sex, the positive rates are 37.8% for females and 41.0% for males, but recall is 100.0% and 62.7%. How do you read this, and how do you check it?
+  options:
+  - The model is fair, because the positive rates are close
+  - The recall gap must be a bug, because the positive rates agree
+  - The rates are about equal but recall differs a lot, so check on new splits whether the male recall stays low
+  - The recall gap proves males are harder to predict by nature
+  answer: 2
+  explanation: Equal positive rates do not give equal recall. On three new splits the male recall was 72.5%, 60.8% and 64.7% against 96.6% to 100.0% for females, so the gap held. The audit shows where this model fails, not why.

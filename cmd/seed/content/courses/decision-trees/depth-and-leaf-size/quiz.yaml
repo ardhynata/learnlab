@@ -1,0 +1,72 @@
+- prompt: A tree is allowed a maximum depth of 3. What is the largest number of leaves it can have?
+  options:
+  - 3
+  - 6
+  - 8
+  - 9
+  answer: 2
+  explanation: Each level can double the leaves, so depth 3 allows at most 2 x 2 x 2 = 8. A tree can have fewer, for example when its leaves are pure sooner.
+- prompt: What does a minimum leaf size of 5 mean?
+  options:
+  - The tree has exactly 5 leaves
+  - A split is allowed only if both of its groups keep at least 5 training rows
+  - The tree may ask at most 5 questions in a row
+  - A leaf must contain 5 different classes
+  answer: 1
+  explanation: Minimum leaf size is about how many training rows a leaf may hold. It says nothing about the number of leaves, the depth or the classes.
+- prompt: A tree scores 200 of 200 on the training penguins but only 54 of 67 on the validation penguins. What does the pair suggest?
+  options:
+  - The tree underfits, because it is too simple
+  - The validation set is broken and should be discarded
+  - The tree is as good as it can be, because training accuracy is perfect
+  - The tree overfits, because it has memorized training rows that do not carry over
+  answer: 3
+  explanation: 100% on training and 80.6% on validation is a wide gap. A perfect training score is what an overgrown tree shows, not a sign of success.
+- prompt: A depth-3 tree gets 188 of 200 training penguins right and 59 of 67 validation penguins right. What is the gap between its training and validation accuracy?
+  options:
+  - About 0.6 points
+  - About 5.9 points
+  - About 12 points
+  - About 29 points
+  answer: 1
+  explanation: 188 / 200 = 94.0% and 59 / 67 = 88.1%, and 94.0 - 88.1 = 5.9 points. The 12 is the 200 - 188 training penguins the tree gets wrong, a count and not a percentage gap.
+- prompt: On one cut, validation accuracy was 88.1% at depth 3 and 80.6% at depth 7, while training accuracy rose from 94.0% to 100%. Which depth should you choose?
+  options:
+  - Depth 3, because it has the best validation score and a smaller tree
+  - Depth 7, because it has the best training score
+  - Depth 7, because a bigger tree always knows more
+  - Neither, because validation scores cannot be used to choose
+  answer: 0
+  explanation: Validation accuracy is the estimate for new penguins. Depth 3 wins on it and needs only 8 leaves against 23.
+- prompt: Why is training accuracy a poor guide for choosing the maximum depth?
+  options:
+  - It is always exactly equal to validation accuracy
+  - It can only be computed once
+  - It never falls as the tree gets deeper, so it always points to the deepest tree
+  - It ignores the leaves of the tree
+  answer: 2
+  explanation: Each split leaves the training score the same or higher, so the deepest tree always looks best on the rows it learned from. Only held-out rows show when depth stops helping.
+- prompt: With minimum leaf size 2 the tree gets 57 of 67 validation penguins right, and with minimum leaf size 5 it gets 55 of 67. What is the fairest conclusion?
+  options:
+  - Size 2 is clearly better, because 57 is larger than 55
+  - Size 5 is clearly better, because it makes a smaller tree
+  - The difference is 2 penguins, about 3 points, too small on 67 penguins to call either one better
+  - Validation accuracy never changes with leaf size
+  answer: 2
+  explanation: One validation penguin is about 1.5 points, so a two-penguin difference could come from the particular cut. Check more cuts before deciding.
+- prompt: On the species question (the 206 training penguins of "Baselines and splits"), a tree reaches 206 of 206 training penguins right at depth 3 with 5 leaves. What happens if you raise the maximum depth to 10?
+  options:
+  - Nothing changes, because every leaf is already pure and there is nothing to split
+  - The tree grows 2^10 = 1024 leaves
+  - Training accuracy rises above 100%
+  - Validation accuracy always falls
+  answer: 0
+  explanation: Maximum depth is a ceiling. A tree stops by itself when its leaves are pure, so the cap only matters when the tree would otherwise keep going.
+- prompt: Across 30 cuts, moving from depth 3 to depth 8 raised average training accuracy from 91.6% to 99.8% and average validation accuracy from 86.0% to 86.5%. What does this mean?
+  options:
+  - The deeper tree is much better on new penguins
+  - Past depth 3 the extra leaves mostly memorize training penguins and add almost nothing on new ones
+  - The validation set was used for training
+  - The deeper tree is worse than the baseline
+  answer: 1
+  explanation: Training accuracy gained about 8 points while validation gained half a point, so the gap widened. The simpler tree does nearly as well on new data and is easier to read.

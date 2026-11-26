@@ -1,0 +1,80 @@
+- prompt: A model gives an example a probability of 0.62. What does the example get called at a threshold of 0.5 and at a threshold of 0.7?
+  options:
+  - Positive at both thresholds
+  - Positive at 0.5 and negative at 0.7
+  - Negative at both thresholds
+  - Negative at 0.5 and positive at 0.7
+  answer: 1
+  explanation: An example is called positive when its probability is at least the threshold. 0.62 is at least 0.5 but below 0.7. The model and its probability did not change, only the rule did.
+- prompt: On the lab's default data you lower the threshold from 0.5 to 0.2. False positives go from 6 to 22 and false negatives from 10 to 2. Why does this happen?
+  options:
+  - The model gets worse, so it makes more mistakes of both kinds
+  - The probabilities fall, so fewer examples are called positive
+  - The positive group moves toward the negative group
+  - More examples are called positive, so false alarms rise and misses fall
+  answer: 3
+  explanation: At 0.2, 60 examples are called positive instead of 36. Every example called positive before stays positive, so false positives cannot fall, and some missed positives are now found. The model and its probabilities did not change.
+- prompt: At threshold 0.5 the lab shows 30 true positives, 6 false positives and 10 false negatives. What is the precision?
+  options:
+  - 30 / 36, which is 83.3%
+  - 30 / 40, which is 75.0%
+  - 30 / 100, which is 30.0%
+  - 6 / 36, which is 16.7%
+  answer: 0
+  explanation: Precision is true positives divided by everything called positive, 30 + 6 = 36. 30 / 40 is the recall, which divides by all real positives (30 + 10).
+- prompt: On the penguins at threshold 0.5 the lab shows 108 true positives, 13 false positives, 15 false negatives and 206 true negatives. What is the recall?
+  options:
+  - 108 / 121, which is 89.3%
+  - 108 / 342, which is 31.6%
+  - 108 / 123, which is 87.8%
+  - 15 / 123, which is 12.2%
+  answer: 2
+  explanation: Recall is true positives divided by all real positives. There are 108 + 15 = 123 Gentoo penguins, so recall is 108 / 123, about 87.8%. 108 / 121 is the precision, because 121 penguins were called positive.
+- prompt: You drag the threshold from 0.05 to 0.95 and watch the Log loss row of the table. What do you see?
+  options:
+  - It rises, because the threshold gets stricter
+  - It falls, because fewer examples are called positive
+  - It falls and then rises, with its lowest value at 0.5
+  - It stays at 0.352, because the threshold does not change the probabilities
+  answer: 3
+  explanation: The model and its probabilities are fixed. The threshold only decides how they become calls. Counts, precision and recall change with it; log loss does not.
+- prompt: At threshold 0.9 the lab calls 13 examples positive, and all 13 are real positives, so precision is 100.0%. Recall is 32.5%. What does that tell you?
+  options:
+  - The model is nearly perfect, since every call it made was right
+  - The model made no mistakes, because it has no false positives
+  - Only 13 of the 40 real positives were found
+  - The threshold is too low, because recall should not be lower than precision
+  answer: 2
+  explanation: Perfect precision only says that the calls it made were right. Recall is 13 / 40 = 32.5%, so 27 positives became false negatives. A very high threshold can buy precision at the price of recall.
+- prompt: A threshold of 0.8 on the probability is a cut on the score. Which score is it, given that score = ln(p / (1 - p))?
+  options:
+  - 0.80
+  - 4.00
+  - About 1.39
+  - About -1.39
+  answer: 2
+  explanation: ln(0.8 / 0.2) = ln 4, which is about 1.39. The sigmoid only rises, so p is at least 0.8 exactly when the score is at least 1.39. The threshold 0.2 gives -1.39 and 0.5 gives 0.
+- prompt: A miss (false negative) costs 5 and a false alarm (false positive) costs 1. The lab shows 22 false positives and 2 false negatives at threshold 0.2, 6 and 10 at 0.5, and 1 and 19 at 0.8. Which threshold has the lowest total cost?
+  options:
+  - 0.2, with a cost of 22 + 5 × 2 = 32
+  - 0.5, with a cost of 6 + 5 × 10 = 56
+  - 0.8, with a cost of 1 + 5 × 19 = 96
+  - All three cost the same, because the model is the same
+  answer: 0
+  explanation: Misses are expensive, so the low threshold that makes few of them wins, 32 against 56 and 96. The model is the same, but the mistakes it makes depend on the threshold.
+- prompt: You raise the threshold from 0.5 to 0.8 on the same model and data. Which of these results is impossible?
+  options:
+  - False positives fall from 6 to 1
+  - False negatives rise from 10 to 19
+  - The number called positive falls from 36 to 22
+  - False negatives fall from 10 to 4
+  answer: 3
+  explanation: Raising the threshold can only shrink the set of examples called positive. A real positive that was missed at 0.5 is still below 0.8, so false negatives can only stay the same or rise.
+- prompt: On the first new generated sample the lab shows 5 false positives and 4 false negatives at 0.40, 0.45 and 0.50. Why do the counts not move?
+  options:
+  - The threshold control only works above 0.5
+  - No example has a probability between 0.40 and 0.50, so none changes sides
+  - The counts only update when you press New sample
+  - Log loss stays the same, so the counts stay the same
+  answer: 1
+  explanation: A count changes only when the threshold passes an example's probability. With nothing between 0.40 and 0.50, the same examples are called positive at all three thresholds.

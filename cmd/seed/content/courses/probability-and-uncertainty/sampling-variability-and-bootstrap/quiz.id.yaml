@@ -1,0 +1,80 @@
+- prompt: Dua rekan menguji model yang sama, masing-masing pada 20 kasus baru yang berbeda. Satu mendapat 80% dan yang lain 90%. Apa penjelasan yang paling mungkin?
+  options:
+  - Salah satu dari mereka keliru menghitung
+  - Model berubah di antara kedua pengujian
+  - "Variabilitas sampling: tiap test set adalah satu undian, dan set yang kecil naik-turunnya besar"
+  - Model pasti memiliki accuracy tepat 85%
+  answer: 2
+  explanation: Test set adalah sampel, sehingga skornya adalah satu undian. Dengan hanya 20 kasus, standard error-nya sekitar 8 poin, sehingga skor 80% dan 90% adalah hal biasa. Tidak ada yang harus salah.
+- prompt: Sebuah model mendapat skor 85% pada 100 kasus uji yang independen. Berapa standard error accuracy itu, sqrt(0,85 × 0,15 / 100)?
+  options:
+  - Sekitar 0,4 poin
+  - Sekitar 3,6 poin
+  - Sekitar 8,5 poin
+  - Sekitar 14 poin
+  answer: 1
+  explanation: 0,85 × 0,15 = 0,1275, dibagi 100 menjadi 0,001275, dan akar kuadratnya 0,0357, sekitar 3,6 poin.
+- prompt: Test set 100 kasus menghasilkan standard error 3,6 poin. Kira-kira berapa kasus yang diperlukan untuk menurunkannya menjadi sekitar 1,8 poin?
+  options:
+  - 150
+  - 200
+  - 300
+  - 400
+  answer: 3
+  explanation: Standard error turun sebanding akar kuadrat n, sehingga untuk membuatnya separuh dibutuhkan kasus empat kali lebih banyak, yaitu 400. Menggandakan kasus (200) hanya mengecilkannya dengan faktor sekitar 1,4.
+- prompt: Sebuah model menjawab benar 85 dari 100 kasus uji, dengan standard error 0,0357. Berapa confidence interval 95% untuk accuracy-nya (skor ± 1,96 SE)?
+  options:
+  - 78% sampai 92%
+  - 82% sampai 88%
+  - 75% sampai 95%
+  - 85% sampai 92%
+  answer: 0
+  explanation: 1,96 × 0,0357 = 0,070, sehingga intervalnya 85% ditambah dan dikurangi 7 poin, yaitu 78% sampai 92%. Interval berpusat pada skor, tidak menumpuk di satu sisinya.
+- prompt: 'Sebuah laporan menulis "accuracy 85%, confidence interval 95%: 78% sampai 92%". Pembacaan mana yang benar?'
+  options:
+  - 95% kasus uji berada di antara 78% dan 92%
+  - Model akan mendapat skor antara 78% dan 92% pada setiap test set di masa depan
+  - Pada banyak pengulangan, sekitar 95% interval yang dibuat dengan cara ini memuat accuracy sebenarnya
+  - Accuracy sebenarnya berada di dalam interval ini dengan probabilitas tepat 95%
+  answer: 2
+  explanation: Angka 95% menggambarkan metode yang membuat interval. Accuracy sebenarnya adalah satu angka tetap, yang interval ini entah memuatnya atau tidak. Test set di masa depan juga akan naik-turun di sekitarnya.
+- prompt: Mengapa kamu memakai bootstrap dan bukan rumus accuracy?
+  options:
+  - Bootstrap selalu menghasilkan interval yang lebih sempit
+  - Metriknya, seperti F1 atau AUC, tidak punya rumus sederhana
+  - Bootstrap tidak membutuhkan test set
+  - Bootstrap menghilangkan leakage dari test set
+  answer: 1
+  explanation: Bootstrap bekerja untuk metrik apa pun yang dapat kamu hitung dari daftar kasus. Ia tidak mempersempit interval, tetap membutuhkan test set, dan tidak dapat memperbaiki leakage.
+- prompt: Sebuah test set berisi sepuluh kasus, dan model salah pada kasus 4 dan 9. Sebuah resample bootstrap mengambil kasus 8, 4, 3, 6, 9, 7, 5, 4, 8, 2. Berapa accuracy resample ini?
+  options:
+  - 60%
+  - 80%
+  - 90%
+  - 70%
+  answer: 3
+  explanation: Kasus 4 terambil dua kali dan kasus 9 satu kali, sehingga resample itu berisi 3 kesalahan dan 7 jawaban benar dari 10, yaitu 70%. Accuracy aslinya 80%, tetapi sebuah resample dapat berbeda darinya.
+- prompt: Kamu menjalankan 20 resample bootstrap dan mengurutkan accuracy-nya. Hasilnya 55, 65, 65, 70, 70, 70, 75, 75, 75, 80, 80, 80, 80, 85, 85, 85, 90, 90, 90 dan 100 (dalam persen). Jika 5% dibuang dari tiap ujung, percentile interval 90% yang mana yang didapat?
+  options:
+  - 65% sampai 90%
+  - 55% sampai 100%
+  - 70% sampai 85%
+  - 65% sampai 100%
+  answer: 0
+  explanation: 5% dari 20 hasil adalah satu hasil. Buang yang terendah (55) dan yang tertinggi (100), maka nilai yang tersisa berkisar dari 65 sampai 90.
+- prompt: Sebuah model menjawab benar 5 dari 5 kasus uji. Seperti apa bootstrap interval untuk accuracy-nya, dan apa yang ditunjukkan hal itu?
+  options:
+  - 80% sampai 100%, rentang yang masuk akal
+  - 50% sampai 100%, karena separuh resample salah
+  - 100% sampai 100%, yang keliru menyatakan tidak ada ketidakpastian
+  - Tidak dapat dihitung karena tidak ada kesalahan
+  answer: 2
+  explanation: Setiap resample hanya dapat berisi jawaban benar, sehingga semuanya mendapat skor 100%. Bootstrap tidak dapat menciptakan kesalahan yang belum pernah dilihatnya, sehingga ia gagal pada sampel sekecil ini.
+- prompt: Sebuah test set berisi 100 baris dari 20 pasien, masing-masing 5 baris. Bootstrap me-resample 100 baris itu satu per satu. Mengapa intervalnya kemungkinan terlalu sempit?
+  options:
+  - Baris dari pasien yang sama mirip, sehingga kasus independennya jauh lebih sedikit dari 100
+  - Resampling dengan pengembalian selalu mengecilkan sebaran metriknya
+  - Dua puluh pasien terlalu banyak untuk dikerjakan bootstrap dengan baik
+  - Bootstrap secara desain tidak dapat menangani lebih dari satu baris per pasien
+  answer: 0
+  explanation: Bootstrap memperlakukan tiap baris sebagai undian yang independen. Baris dari pasien yang sama saling berkaitan, sehingga sampel sesungguhnya lebih mendekati 20 kasus daripada 100. Sebaiknya yang di-resample adalah pasiennya secara utuh, bukan barisnya.

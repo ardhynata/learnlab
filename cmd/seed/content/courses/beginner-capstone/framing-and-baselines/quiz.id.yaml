@@ -1,0 +1,72 @@
+- prompt: Daftar mana yang berisi lima hal yang diputuskan saat merumuskan sebuah masalah?
+  options:
+  - Learning rate, jumlah epoch, batch size, optimizer, dan seed
+  - Prediksi, pengguna, biaya kesalahan, metrik, dan data yang diizinkan saat prediksi dibuat
+  - Training set, validation set, test set, baseline, dan model
+  - Rata-rata, median, varians, korelasi, dan outlier
+  answer: 1
+  explanation: Framing berurusan dengan pertanyaannya, bukan algoritmanya. Daftar lain berisi pengaturan, pembagian data, dan statistik, yang baru datang kemudian.
+- prompt: Seorang ranger menghitung penguin Chinstrap di koloni campuran, dan satu Chinstrap yang terlewat membuat hitungannya terlalu rendah. Metrik mana yang paling perlu ia pantau?
+  options:
+  - Accuracy
+  - Porsi kelas mayoritas
+  - Jumlah feature
+  - Recall
+  answer: 3
+  explanation: Recall adalah porsi penguin Chinstrap sebenarnya yang berhasil ditemukan, jadi ia mengukur persis kesalahan yang merusak hitungannya. Accuracy mencampur kedua jenis kesalahan menjadi satu.
+- prompt: Pada pertanyaan A ada 151 penguin Adelie dan 68 Chinstrap. Berapa skor aturan yang selalu menjawab "Adelie" pada seluruh 219 baris?
+  options:
+  - Sekitar 31%
+  - Sekitar 50%
+  - Sekitar 69%
+  - 100%
+  answer: 2
+  explanation: 151 / 219 = 68,9%. Angka 31% adalah porsi Chinstrap, yaitu bagian yang dijawab salah oleh aturan ini.
+- prompt: Sebuah model mendapat accuracy 70% pada pertanyaan A, sedangkan baseline-nya 68,2% pada data validasi. Bagaimana pembacaan yang paling adil?
+  options:
+  - Model ini hanya sedikit lebih baik daripada selalu menjawab "Adelie"
+  - Model ini sangat bagus, karena 70% adalah skor yang tinggi
+  - Baseline pasti salah, karena sebuah model seharusnya mendapat skor lebih tinggi
+  - Model ini lebih buruk, karena 70% di bawah 100%
+  answer: 0
+  explanation: Sebuah skor baru bermakna jika dibandingkan dengan baseline-nya. Selisih sekitar 2 poin pada 44 baris validasi masih berada dalam noise satu kali pemotongan.
+- prompt: Mengapa model punya ruang perbaikan yang lebih besar pada pertanyaan B, yang baseline-nya 50,7%, daripada pada pertanyaan A, yang baseline-nya 68,2%?
+  options:
+  - Baseline hanya bermakna untuk pertanyaan A, yang kelasnya tidak seimbang
+  - Pertanyaan B punya lebih sedikit feature, sehingga baseline-nya kebetulan lebih rendah
+  - Pertanyaan B punya dua kelas yang hampir sama besar, sehingga ada lebih banyak ruang di atas baseline-nya
+  - Pertanyaan B tidak memerlukan baseline, karena jantan dan betina seimbang di tabel
+  answer: 2
+  explanation: Dengan 168 jantan dan 165 betina, menjawab kelas mayoritas hampir sama dengan melempar koin, sehingga 76% yang sederhana pun sudah kenaikan besar. Pada pertanyaan A, jawaban malas itu sudah benar sekitar dua pertiga.
+- prompt: Sebuah tabel punya kolom "warna tag" yang ditambahkan setelah jenis kelamin penguin diketahui (biru untuk jantan, merah untuk betina). Apa yang terjadi jika kolom itu dipakai untuk memprediksi jenis kelamin?
+  options:
+  - Skornya tampak luar biasa, tetapi model tidak berguna pada penguin baru
+  - Model menjadi lebih jujur, karena kolomnya sederhana
+  - Tidak terjadi apa-apa, karena kolom kategorikal diabaikan
+  - Model mengalami underfitting
+  answer: 0
+  explanation: Kolom itu adalah jawaban yang menyamar, dan ia tidak akan ada saat prediksi dibutuhkan. Inilah leakage, dan skor yang tinggi menyembunyikannya.
+- prompt: Aturan satu feature untuk pertanyaan A mendapat 12 true positive, 2 false negative, 1 false positive, dan 29 true negative pada baris validasi. Berapa precision-nya untuk Chinstrap?
+  options:
+  - 12 / 14 = 85,7%
+  - 41 / 44 = 93,2%
+  - 29 / 30 = 96,7%
+  - 12 / 13 = 92,3%
+  answer: 3
+  explanation: Precision adalah true positive dibagi semua yang dinyatakan positif oleh aturan, yaitu 12 / (12 + 1). Angka 85,7% adalah recall dan 93,2% adalah accuracy.
+- prompt: Di mana cut-off sebuah aturan satu feature sebaiknya dipilih?
+  options:
+  - Pada baris test, supaya skor akhirnya setinggi mungkin
+  - Pada semua baris sebelum dibagi, supaya setiap penguin ikut terpakai
+  - Hanya pada baris training, lalu dinilai pada baris validasi
+  - Pada baris validasi, karena di sanalah ia akan dinilai nanti
+  answer: 2
+  explanation: Apa pun yang dipelajari dari data termasuk fitting. Jika baris yang ditahan ikut menentukan cut-off, skornya tidak lagi menjadi estimasi yang jujur untuk penguin baru.
+- prompt: Sebuah model mengalahkan aturan sederhana sebanyak satu penguin dari 44 pada satu pemotongan validasi. Apa kesimpulanmu?
+  options:
+  - Model jelas lebih baik dan harus menggantikan aturan sederhana itu
+  - Aturan itu pasti salah
+  - Model lebih buruk, karena selisih di bawah 5% selalu merugikan
+  - Belum ada kesimpulan, karena satu penguin setara 2,3 poin, kurang dari rentang antarpemotongan
+  answer: 3
+  explanation: Pada seed 1 sampai 10, accuracy validasi aturan itu pada pertanyaan A bergeser antara 90,9% dan 95,5%. Keunggulan satu penguin masih jauh di dalam rentang itu.

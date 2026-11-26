@@ -1,0 +1,80 @@
+- prompt: Nine calibration residuals, sorted, are 72, 129, 209, 268, 355, 365, 369, 418 and 498 g. For an 80% interval (α = 0.2), which one is q?
+  options:
+  - 355, the 5th
+  - 365, the 6th
+  - 418, the 8th
+  - 498, the 9th
+  answer: 2
+  explanation: The rank is ceil((n + 1)(1 - α)) = ceil(10 × 0.8) = 8, so q is the 8th smallest residual, 418 g.
+- prompt: A new penguin is predicted at 4,161 g and q = 418 g. What is the 80% interval?
+  options:
+  - 3,743 g to 4,161 g
+  - 3,743 g to 4,579 g
+  - 3,663 g to 4,659 g
+  - 4,161 g to 4,579 g
+  answer: 1
+  explanation: The interval is ŷ - q to ŷ + q, which is 4,161 - 418 = 3,743 to 4,161 + 418 = 4,579. The interval 3,663 to 4,659 uses q = 498, which is the 90% case.
+- prompt: Why are the calibration cases kept out of the training set?
+  options:
+  - Training residuals come out too small, so the intervals would be too narrow
+  - Calibration cases must have larger values than the training cases
+  - The model could not run on the calibration cases if it had seen them
+  - Residuals can only be computed once for each case
+  answer: 0
+  explanation: The promise needs residuals that look like the residuals of new cases. Residuals on training cases are usually smaller, so intervals built from them would cover less than promised.
+- prompt: In the rank ceil((n + 1)(1 - α)), what does the "+ 1" account for?
+  options:
+  - The model's intercept, which shifts every prediction
+  - A spare calibration case in case one is lost
+  - The training set, which the model has already seen
+  - The new case itself, one of n + 1 equally likely ranks
+  answer: 3
+  explanation: The new residual lands in one of n + 1 equally likely slots, so choosing rank k covers k / (n + 1) of the cases. Leaving out the + 1 makes the interval too narrow.
+- prompt: You have n = 19 calibration residuals and want a 90% interval (α = 0.1). Which residual do you use as q?
+  options:
+  - The 17th smallest
+  - The 18th smallest
+  - The 19th smallest, the largest
+  - The 20th smallest
+  answer: 1
+  explanation: (n + 1)(1 - α) = 20 × 0.9 = 18, so k = 18. It covers 18/20 = 90% on average. There is no 20th residual.
+- prompt: With only nine calibration residuals you ask for a 95% interval (α = 0.05). What does split conformal prediction give you?
+  options:
+  - The 9th residual, 498 g, as q
+  - An interval with q equal to the average residual
+  - The whole number line, because the rank 10 does not exist
+  - An interval narrower than the 90% one
+  answer: 2
+  explanation: ceil(10 × 0.95) = ceil(9.5) = 10, which is larger than n = 9. No residual is large enough, so only the whole line is safe. You need n ≥ 1/α - 1 = 19 cases.
+- prompt: Which statement is the guarantee of a 90% conformal interval, if the calibration and new cases are exchangeable?
+  options:
+  - It holds only if the errors are Gaussian
+  - It holds only if the model is accurate
+  - It holds for every subgroup of cases separately
+  - On average, at least 90% of true values fall inside
+  answer: 3
+  explanation: The guarantee is marginal. It needs no Gaussian errors and no accurate model, since a poor model gets wide intervals. It does not promise 90% inside each subgroup.
+- prompt: An interval was calibrated for 90% coverage, but at deployment the errors are 1.5 times as large as on the calibration cases. What should you expect?
+  options:
+  - Coverage falls to roughly 73%, because the interval is too narrow for the new errors
+  - Coverage stays at 90%, because the guarantee covers any data
+  - Coverage rises, because larger errors are easier to cover
+  - The intervals widen by themselves to keep 90%
+  answer: 0
+  explanation: Larger errors break exchangeability, so the guarantee no longer applies. With Gaussian errors, 1.5 times larger errors leave about 73% coverage. The interval does not change unless you recalibrate.
+- prompt: For the nine residuals, moving from an 80% to a 90% interval changes q from 418 g to 498 g. How much wider does the interval get?
+  options:
+  - 80 g
+  - 996 g
+  - 160 g
+  - It stays the same width
+  answer: 2
+  explanation: The interval grows by 80 g on each side, which is 160 g in total. Its width goes from 836 g to 996 g, about 19% wider.
+- prompt: What does normalized (locally weighted) conformal prediction change compared with a fixed ±q?
+  options:
+  - It drops the calibration set and uses training residuals instead
+  - The width follows an estimated spread at each input; coverage stays an average
+  - It promises 90% coverage inside every subgroup of cases
+  - It makes the underlying model more accurate
+  answer: 1
+  explanation: Residuals are divided by an estimated spread σ̂(x), so the interval is ŷ ± q × σ̂(x), wider for hard inputs and narrower for easy ones. It still needs a calibration set, and the coverage is still an average.

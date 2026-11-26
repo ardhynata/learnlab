@@ -1,0 +1,80 @@
+- prompt: In the lab's default data 96 users have a held-out interaction and so are scored. You set "Share of scored users with history removed" to 30%. How many cold-start users does the lab create?
+  options:
+  - 29, because 0.3 × 96 = 28.8, which rounds to 29
+  - 45, because 30% of the 150 users is 45
+  - 67, the users who keep their history
+  - 96, because every scored user loses some history
+  answer: 0
+  explanation: The share applies to the scored users, not to all 150, so 0.3 × 96 = 28.8 and the lab uses 29. The other 96 - 29 = 67 are the warm users.
+- prompt: With 30% of the scored users cold and none of their history kept, User k-NN, Item k-NN and Matrix factorization all score the same NDCG@10 of 0.07 for the cold users. Why do three different models score alike?
+  options:
+  - Each of them finds the same neighbors in the popularity list
+  - With no history every item gets the same score, so all three show the same list, items 0, 1, 2 and so on
+  - They all switch to the content features of the items
+  - Cold-start users have no held-out interaction, so any model scores the same
+  answer: 1
+  explanation: These three score an item through the user's own history. With none, every score ties and the lab orders tied items by item number, so the three lists are identical and score a hit only by chance. The cold users do have a held-out interaction, and none of the three looks at content.
+- prompt: In the same run Popularity scores 0.25 for warm users and 0.24 for cold users, a drop of only 0.01. What does that small drop show?
+  options:
+  - Popularity handles cold start well, since it matches the personal models
+  - Popularity is trained on the cold users, so it knows them
+  - Popularity never used a user's history, so removing it changes almost nothing; it was already scoring low
+  - The cold users like popular items more than the warm users do
+  answer: 2
+  explanation: Popularity gives every user the shared ranking, so removing a user's history cannot hurt it. It stays at about 0.24 while the collaborative models score 0.39 to 0.42 for warm users, so a small drop does not mean good performance.
+- prompt: With nothing kept, Content-based scores exactly 0.24 for the cold users, the same as Popularity. What does that show?
+  options:
+  - The genres of the items the user liked gave a perfect profile
+  - With no history its genre profile is empty, so only the small popularity share orders the items
+  - Content-based and Popularity are the same model
+  - Content-based never uses popularity
+  answer: 1
+  explanation: A content-based score compares the user's genre profile with each item's genres. An empty history gives an empty profile, so the small popularity share decides the order. The model is not a different one, but with no profile it falls back to popularity.
+- prompt: A cold-start user keeps 3 interactions, and the hybrid routes by interaction count (none, 1 to 4, 5 or more). Which model does the hybrid use for this user?
+  options:
+  - Content-based
+  - Popularity
+  - Matrix factorization
+  - User k-NN
+  answer: 0
+  explanation: The hybrid uses popularity with no interactions, content-based with 1 to 4, and matrix factorization from 5. Three interactions fall in the middle band. In the lab the Hybrid row reads "uses Content-based".
+- prompt: For one cold-start user the held-out item is ranked 7th in a top-10 list. What is that user's NDCG@10?
+  options:
+  - 0.14, which is 1 / 7
+  - 0.33, which is 1 / log2(8)
+  - 0.50, which is 1 / log2(4)
+  - 0.70, which is 7 / 10
+  answer: 1
+  explanation: With one held-out item the ideal list has it at rank 1, worth 1. A hit at rank 7 is worth 1 / log2(7 + 1) = 1 / 3 = 0.33. Dividing by the rank itself, 1 / 7, would discount too harshly.
+- prompt: Every user has exactly one held-out interaction, and the Hybrid's Recall@10 is 0.78. What is its Precision@10, to three decimals?
+  options:
+  - 0.078, because a list of 10 holds at most one hit
+  - 0.780, the same as recall
+  - 0.156, because two lists are averaged
+  - 0.780 divided by 78 users
+  answer: 0
+  explanation: Each user's precision@10 is the hits divided by 10, and with one held-out item the hits are 1 or 0, so precision@10 is recall@10 divided by 10, which is 0.78 / 10 = 0.078. The lab shows 0.08.
+- prompt: In the default data, Popularity gives every user the same ranking, yet its coverage is 0.45 of the 80 items. How many different items appear in the lists?
+  options:
+  - 10, the length of one list
+  - 80, every item
+  - 45, because coverage is a percentage
+  - 36, because 0.45 × 80 = 36
+  answer: 3
+  explanation: Coverage is the share of items shown to anyone, and 36 of 80 = 0.45. It is more than 10 because every list skips the items that user has already seen, so the lists differ a little.
+- prompt: You set MF factors to 16 and MF lambda to 0.1. The training curve ends with training error 0.20 and validation error 0.55, and NDCG@10 falls from 0.43 to 0.28. What does the curve show?
+  options:
+  - The model underfits, because the training error is low
+  - The model is well tuned, because the training error is the lowest of any setting
+  - The model overfits, since it fits the training interactions well but the validation error is 0.35 higher
+  - The validation error is wrong, because it should match the training error
+  answer: 2
+  explanation: A training error of 0.20 against a validation error of 0.55 is a gap of 0.35, which is the sign of overfitting. The default (6 factors, lambda 2) has a gap of 0.07 and the better NDCG@10.
+- prompt: On sample 6 (seed 6), with 30% of the scored users cold and none of their history kept, the Quick Quiz names Content-based, not the collaborative models. What does that teach?
+  options:
+  - Content-based is the worst recommender
+  - The lab has a bug on sample 6
+  - The collaborative models stopped being affected by cold start
+  - A single sample can name a different loser, so repeat the test on fresh samples before you trust a result
+  answer: 3
+  explanation: On sample 6 Popularity itself scored only 0.09 for the 41 cold users, so everything that falls back to it fell as well. On samples 1 to 5 the collaborative group lost most. One run is one sample, so repeat it before you trust a result.

@@ -1,0 +1,80 @@
+- prompt: A neuron has weights 0.8 and 0.2 and a bias of -0.4. It reads the inputs 1 and 2 and uses the sigmoid as its activation. What does it output?
+  options:
+  - 0.80
+  - 0.69
+  - 0.50
+  - 1.20
+  answer: 1
+  explanation: The score is z = 0.8 × 1 + 0.2 × 2 - 0.4 = 0.8, and the output is sigmoid(0.8) = 0.69. The value 0.80 is the score before the activation is applied.
+- prompt: How many parameters (weights and biases) does a 3-4-1 network have?
+  options:
+  - 12
+  - 16
+  - 17
+  - 21
+  answer: 3
+  explanation: Each of the 4 hidden neurons has 3 weights and 1 bias, which is 4 × 4 = 16. The output neuron has 4 weights and 1 bias, which is 5. In total 16 + 5 = 21.
+- prompt: In a multilayer perceptron, what does the output of a hidden neuron stand for?
+  options:
+  - A feature the network builds for itself, which the next layer reads
+  - The final prediction of the network
+  - A copy of one of the inputs
+  - The loss caused by that neuron
+  answer: 0
+  explanation: A hidden output is a new feature computed from the inputs, and the next layer uses it the way logistic regression uses a column of the table. Training decides what the feature should be.
+- prompt: The sigmoid output of a hidden neuron is h = 0.9. What is the slope of the sigmoid at that point, using h × (1 - h)?
+  options:
+  - 0.90
+  - 0.10
+  - 0.09
+  - 0.81
+  answer: 2
+  explanation: The slope is 0.9 × (1 - 0.9) = 0.9 × 0.1 = 0.09. The slope is small where the sigmoid is nearly flat, and it is largest (0.25) at h = 0.5.
+- prompt: The loss changes with the output score z at the rate -0.4435, and z reads the hidden output h1 through the weight v1 = 1.2. At what rate does the loss change with h1?
+  options:
+  - -0.3696
+  - -0.5322
+  - 0.5322
+  - -1.6435
+  answer: 1
+  explanation: The chain rule multiplies the local slopes, so the rate is -0.4435 × 1.2 = -0.5322. Dividing or adding the two numbers does not follow from the chain rule.
+- prompt: The gradient of the weight w11 is -0.1317. What does the minus sign tell you?
+  options:
+  - w11 should be set to 0
+  - The network made a negative prediction
+  - Lowering w11 would lower the loss
+  - Raising w11 would lower the loss
+  answer: 3
+  explanation: A negative gradient means the loss falls as the weight rises, so gradient descent, which subtracts the gradient, raises w11. The sign says nothing about the sign of the prediction.
+- prompt: Why does backpropagation work backward from the loss?
+  options:
+  - Slopes found near the output are reused by every parameter before them, so one backward pass gives all the gradients
+  - The backward pass replaces the forward pass, which can then be skipped
+  - The weights can only be changed in the backward direction
+  - Going backward makes the loss smaller on its own
+  answer: 0
+  explanation: The slope at the output score starts the chain for every parameter, and the slope at z1 serves w11, w12 and b1 together. Each factor is computed once and reused. The backward pass still needs the values from the forward pass.
+- prompt: A weight w11 = 0.5 has the gradient -0.1317, and the learning rate is 0.5. What is the new value of w11?
+  options:
+  - 0.4341
+  - 0.6317
+  - 0.5659
+  - 0.3683
+  answer: 2
+  explanation: new w11 = 0.5 - 0.5 × (-0.1317) = 0.5 + 0.0659 = 0.5659. Adding the gradient instead gives 0.4341, and leaving out the learning rate gives 0.6317.
+- prompt: Why can a single neuron not solve XOR?
+  options:
+  - It has too few parameters to store four points
+  - Its boundary is a straight line, and no straight line separates the XOR labels
+  - The sigmoid can never output a 0 or a 1
+  - XOR has no consistent labels
+  answer: 1
+  explanation: One neuron cuts the inputs along the line where its score is 0. The points (0, 0) and (1, 1) have label 0 and (0, 1) and (1, 0) have label 1, and no single line puts each pair on its own side.
+- prompt: In the hand-built XOR network, h2 = sigmoid(10 x1 + 10 x2 - 15). For which inputs is h2 close to 1?
+  options:
+  - When at least one input is 1
+  - When exactly one input is 1
+  - Only when both inputs are 1
+  - Only when both inputs are 0
+  answer: 2
+  explanation: Only for x1 = x2 = 1 is the score 10 + 10 - 15 = 5, which gives 0.99. With one input on the score is -5 and h2 is 0.01. So h2 detects "both on", and the output neuron uses it to switch off the (1, 1) case.

@@ -1,0 +1,80 @@
+- prompt: What is the Euclidean distance between the points (1, 2) and (4, 6)?
+  options:
+  - '7'
+  - '25'
+  - '5'
+  - '4'
+  answer: 2
+  explanation: The gaps are 3 across and 4 up, so the distance is the square root of 3 squared plus 4 squared, which is the square root of 25, or 5. Adding the gaps gives 7 (Manhattan), and the larger gap is 4 (Chebyshev).
+- prompt: What are the Manhattan and Chebyshev distances between (0, 0) and (3, 9), in that order?
+  options:
+  - 12 and 9
+  - 9 and 12
+  - 9.49 and 9
+  - 12 and 3
+  answer: 0
+  explanation: The gaps are 3 across and 9 up. Manhattan distance adds them, giving 12, and Chebyshev distance takes the larger one, giving 9. The value 9.49 is the Euclidean distance.
+- prompt: In the lab, you highlight Manhattan distance and set Distance from A to 3. What is the edge of the shaded shape around A?
+  options:
+  - A circle
+  - A diamond
+  - A square with its sides parallel to the axes
+  - A straight line
+  answer: 1
+  explanation: Points whose gaps add up to 3 form a diamond, with its corners 3 units above, below, left and right of A. A circle is Euclidean and an axis-parallel square is Chebyshev.
+- prompt: A query sits at (0, 0). Point P1 is at (2, 0) and point P2 is at (1.5, 1.5). Which point is nearest under Euclidean distance, and which under Chebyshev distance?
+  options:
+  - P1 under both
+  - P2 under both
+  - P2 under Euclidean, P1 under Chebyshev
+  - P1 under Euclidean, P2 under Chebyshev
+  answer: 3
+  explanation: Euclidean gives P1 a distance of 2.00 and P2 about 2.12, so P1 is nearer. Chebyshev gives P1 a distance of 2 and P2 a distance of 1.5, so P2 is nearer. The choice of distance changed the nearest point.
+- prompt: As the number of features grows very large, what tends to happen to distances between points?
+  options:
+  - They bunch together, so the nearest point is not much nearer than the farthest
+  - They all shrink to zero
+  - Nearest and farthest points become easy to tell apart
+  - Cosine distance becomes the same as Euclidean distance
+  answer: 0
+  explanation: In many dimensions distances tend to bunch together, so "nearest" tells you less. They do not shrink to zero, and the different distances do not become identical.
+- prompt: You want to compare two articles on the same topic by their word counts. One is long and one is short, but both use words in similar proportions. Which distance fits best?
+  options:
+  - Euclidean, because it is the usual default
+  - Manhattan, because the word counts should add up
+  - Chebyshev, because one big gap matters most
+  - Cosine, because it compares direction and ignores length
+  answer: 3
+  explanation: Cosine distance looks only at the direction of the word-count lists, so a long and a short text with similar proportions are close. Euclidean, Manhattan and Chebyshev would all call them far apart, because the long text has much bigger counts.
+- prompt: Two points are 3 apart in Euclidean distance. Using the similarity 1 ÷ (1 + d), what is their similarity?
+  options:
+  - '0.33'
+  - '0.25'
+  - '0.75'
+  - '3'
+  answer: 1
+  explanation: With d = 3 the similarity is 1 ÷ (1 + 3) = 1 ÷ 4 = 0.25. The 0.33 option forgets to add 1 to the distance. A bigger distance always gives a lower similarity.
+- prompt: In the worked example A = (3, 3) and B = (7, 6). B moves to (14, 12), twice as far from the origin in the same direction, and A stays put. What happens to the Euclidean and cosine distances from A to B?
+  options:
+  - Euclidean grows from 5 to about 14.2, and cosine stays about 0.003
+  - Both stay the same
+  - Euclidean stays 5, and cosine grows
+  - Both grow
+  answer: 0
+  explanation: Euclidean distance depends on how far apart the points are, and the gaps are now 11 and 9, so it becomes the square root of 202, about 14.2. Cosine distance depends only on direction, and the direction has not changed, so it stays about 0.003.
+- prompt: A part passes inspection only if every one of its measurements is within 0.1 of the target. Which distance at most 0.1 says exactly this?
+  options:
+  - Euclidean
+  - Manhattan
+  - Chebyshev
+  - Cosine
+  answer: 2
+  explanation: Chebyshev distance is the largest single gap, so it is at most 0.1 only when every gap is at most 0.1. Euclidean and Manhattan at most 0.1 are stricter, so they would also reject a part with several gaps of 0.08, although every measurement is within 0.1.
+- prompt: A penguin's bill length runs from 32 to 60 mm and its flipper length from 172 to 231 mm. You measure the distance between penguins with Euclidean distance on the raw millimeters. Which feature has more say, and what fixes it?
+  options:
+  - Bill length, because it is measured first; rescale both features to a similar range
+  - Flipper length, because its values spread over a wider range; rescale both features to a similar range
+  - Both have equal say, because both are in millimeters
+  - Flipper length; switch to cosine distance, which makes the features equal
+  answer: 1
+  explanation: The flipper values spread over a wider range (about 59 mm against 28 mm), so its gaps dominate the sum of squares and the bill gaps count for less. Rescaling both features to a similar range, as the lab's 0 to 10 plot does, gives each feature a fair say. Cosine does not fix this, and sharing a unit does not make the ranges equal.

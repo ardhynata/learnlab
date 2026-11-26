@@ -1,0 +1,14 @@
+entity: Learner
+context: ""
+display_field: name
+fields:
+    - name: id
+      type: string
+      required: true
+      auto: true
+    - name: name
+      type: string
+      max_length: 80
+operations: [Create, GetByID, List, Update, Delete]
+transports: [rest]
+repository: postgresql

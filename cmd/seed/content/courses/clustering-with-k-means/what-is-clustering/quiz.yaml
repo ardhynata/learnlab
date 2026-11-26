@@ -1,0 +1,80 @@
+- prompt: Which task is clustering?
+  options:
+  - Predicting a penguin's species from labeled examples
+  - Predicting a penguin's mass with a fitted line
+  - Giving penguins groups using only their measurements
+  - Checking how often a classifier is right
+  answer: 2
+  explanation: Clustering is unsupervised. There is no label column to predict, only measurements to group by.
+- prompt: Penguins A and B differ by 0.4 mm in bill length and by 1.3 mm in bill depth. What is their Euclidean distance?
+  options:
+  - About 1.36 mm
+  - 1.70 mm
+  - 1.85 mm
+  - 0.52 mm
+  answer: 0
+  explanation: Square the gaps (0.16 and 1.69), add them to get 1.85, then take the square root, about 1.36. Adding the gaps (1.70) is a different distance, and 1.85 forgets the square root.
+- prompt: A method labels two groups "group 1" and "group 2". If the names were swapped, what would change?
+  options:
+  - The distances between the points
+  - Nothing about which points belong together
+  - Which group is the correct one
+  - The number of clusters
+  answer: 1
+  explanation: Group numbers are only names. The membership is what matters, and the method does not know what any group means.
+- prompt: Which fact from the six-penguin example best supports the groups {A, B, C} and {D, E, F}?
+  options:
+  - Penguin A has the smallest bill length of the six, which says nothing about groups
+  - Penguin F is the farthest point from A (11.45), which says nothing about other pairs
+  - There are exactly six penguins, and six splits evenly into two groups
+  - Distances inside groups (at most 4.38) are all below distances between groups (at least 7.53)
+  answer: 3
+  explanation: Every pair inside a group is closer than every pair that crosses between groups. That is what makes the split sensible.
+- prompt: A new penguin is 4.79 from the center of group 1 and 4.88 from the center of group 2. What is the best description?
+  options:
+  - It clearly belongs to group 2, because 4.88 is the larger distance
+  - It joins group 1, but only just, so a small change could flip it
+  - It cannot be placed, because the two distances are too close to tell apart
+  - It forms a new group of its own, because it sits between the two centers
+  answer: 1
+  explanation: It is nearer to group 1, by less than 0.1. A tiny change in a measurement or in the distance could put it in the other group.
+- prompt: The center of {D, E, F} has bill length (46.1 + 48.7 + 50.0) / 3. What is it?
+  options:
+  - 48.70
+  - 144.80
+  - 48.05
+  - 48.27
+  answer: 3
+  explanation: The center averages each feature over the group, here 144.8 divided by 3, about 48.27. The middle value 48.7 is the median, and 48.05 averages only the two extremes.
+- prompt: Two penguins are 16 mm apart in flipper length and 175 g apart in mass. When mass is written in kilograms instead of grams, what happens to their distance?
+  options:
+  - It falls to about 16.0, because flipper length now decides
+  - It stays about 175.7, because the penguins did not move
+  - It falls to about 0.175, because only the mass gap is left
+  - It rises, because kilograms are larger units than grams
+  answer: 0
+  explanation: A gap of 175 g is 0.175 kg, which almost vanishes next to 16 mm. The distance becomes about 16.0, so the unit chose which feature counted.
+- prompt: You cluster customers by income in dollars and age in years, without scaling. What is the likely problem?
+  options:
+  - Age decides most distances because it is smaller
+  - Nothing, because the method corrects for units
+  - Income dominates the distance and age is almost ignored
+  - The method cannot run on two features
+  answer: 2
+  explanation: Gaps in the large-scale column dwarf gaps in the small-scale one, so income decides who is close. Scale the features first.
+- prompt: A method returns three tidy clusters on a table of random numbers. What should you conclude?
+  options:
+  - The data must contain three real groups
+  - The method has proven that the groups are real
+  - Nothing yet, because methods return groups even for noise
+  - The distance must be wrong
+  answer: 2
+  explanation: Every method returns groups. Whether they mean anything is for you to check, by looking, rerunning and asking whether they are useful.
+- prompt: How is a cluster different from a class?
+  options:
+  - A cluster is proposed by a method; a class is a label someone wrote down
+  - A cluster always has exactly three members, and a class always has two
+  - A class is found by a method from features, and a cluster is written by hand
+  - They are the same thing under two names, so the choice of word does not matter
+  answer: 0
+  explanation: Clusters come from distances between unlabeled points and may or may not match any label. Classes are given labels.

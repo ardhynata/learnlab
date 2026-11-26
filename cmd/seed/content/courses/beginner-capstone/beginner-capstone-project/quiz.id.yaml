@@ -1,0 +1,80 @@
+- prompt: Pada Adelie atau Chinstrap di Split 1, 55 test rows berisi 38 Adelie dan 17 Chinstrap. Baseline menjawab "Adelie" setiap kali. Berapa accuracy dan recall yang didapatnya?
+  options:
+  - Accuracy 30,9% dan recall 100,0%
+  - Accuracy 50,0% dan recall 50,0%
+  - Accuracy 98,2% dan recall 94,1%
+  - Accuracy 69,1% dan recall 0,0%
+  answer: 3
+  explanation: Baseline benar pada 38 Adelie, sehingga accuracy-nya 38 / 55 = 69,1%. Ia tidak pernah menjawab Chinstrap, sehingga menemukan 0 dari 17 dan recall-nya 0,0%. Angka 30,9% adalah proporsi baris Chinstrap (17 dari 55), yang justru salah dijawab baseline.
+- prompt: Pada Jantan atau betina, kamu memilih Recall kelas positif sebagai metrik, dan baseline mendapat 100,0% pada test rows. Apa artinya?
+  options:
+  - Data tidak punya penguin betina
+  - Baseline menjawab "jantan" untuk setiap penguin, sehingga ia menemukan semua jantan sambil menyebut 41 betina sebagai jantan
+  - Baseline adalah classifier yang sangat baik
+  - Lab punya bug, karena baseline tidak boleh memakai pengukuran apa pun
+  answer: 1
+  explanation: Recall hanya menanyakan berapa dari 42 jantan sebenarnya yang ditemukan. Menjawab "jantan" setiap kali menemukan semuanya, tetapi accuracy-nya 42 / 83 = 50,6%. Baca recall bersama baseline dan precision.
+- prompt: Pada Jantan atau betina, Model B menemukan 39 dari 42 jantan di test rows. Berapa recall kelas positifnya?
+  options:
+  - 39 / 42 = 92,9%
+  - 39 / 83 = 47,0%
+  - 3 / 42 = 7,1%
+  - 39 / 45 = 86,7%
+  answer: 0
+  explanation: Recall adalah proporsi kelas positif sebenarnya yang ditemukan, di sini 39 dari 42. Ketiga jantan yang terlewat adalah false negative. Membagi dengan 83 berarti menghitung semua test rows, dan 45 menghitung baris yang disebut jantan oleh model, yang termasuk wilayah precision.
+- prompt: Pada Adelie atau Chinstrap, kamu mematikan Scale fitur untuk k-NN. Accuracy pada test rows turun dari 98,2% ke 78,2% dan recall dari 94,1% ke 41,2%. Mengapa?
+  options:
+  - Tanpa scaling, k-NN tidak lagi dapat menemukan tetangga
+  - Test rows berubah ketika scaling dimatikan
+  - Scaling menambah training rows, sehingga model belajar lebih banyak
+  - Massa tubuh mentah, dalam ribuan gram, mendominasi jarak, sehingga pengukuran dalam milimeter hampir tidak dihitung
+  answer: 3
+  explanation: k-NN bekerja dengan jarak, dan kolom yang diukur dalam ribuan gram mengalahkan kolom yang diukur dalam puluhan milimeter. Scaling menyamakan posisi keempat fitur. Split tidak berubah; yang berubah hanya jaraknya.
+- prompt: Model B adalah sebuah tree. Ia mendapat 100,0% pada training rows dan 85,5% pada 83 test rows, sedangkan baseline mendapat 50,6%. Bagaimana pembacaan yang terbaik?
+  options:
+  - Model B sangat bagus, karena 100,0% adalah skor tertinggi yang mungkin
+  - Model B tidak mengalahkan baseline, karena 85,5% di bawah 100,0%
+  - Model B mengalahkan baseline, tetapi selisih 14,5 poin menunjukkan ia menghafal training rows
+  - Model B sama dengan model A, sehingga langkah 4 tidak dapat selesai
+  answer: 2
+  explanation: 85,5% melawan 50,6% adalah peningkatan yang nyata, sehingga model B mengalahkan baseline. Selisih besar antara training dan test adalah tanda overfitting. Skor test-lah yang layak dipercaya, bukan skor training.
+- prompt: Pada Adelie atau Chinstrap di Split 1, model B mendapat 100,0% dan model A mendapat 98,2% pada 55 test rows. Bagaimana kamu menyikapi keunggulan itu?
+  options:
+  - Sebagai satu penguin dari 55, yaitu 1,8 poin, sehingga periksa pada split baru sebelum menyebut seorang pemenang
+  - Sebagai bukti bahwa B lebih baik, karena 100,0% mengalahkan 98,2%
+  - Sebagai seri, karena lab hanya menghitung selisih di atas 10 poin
+  - Sebagai bug, karena dua model yang berbeda tidak mungkin mendapat skor berbeda
+  answer: 0
+  explanation: Satu test row bernilai 1 / 55 = 1,8 poin. Split baru dapat membalik keunggulan sekecil itu, dan pada split berikutnya hal itu memang terjadi untuk kedua model ini. Batas seri di lab adalah satu poin, bukan sepuluh.
+- prompt: Pada Adelie atau Chinstrap, model B hanya memakai Massa tubuh (g) dan mendapat 69,1% pada test rows. Baseline mendapat 69,1%. Apa kata jawaban Kuis Cepat?
+  options:
+  - Tidak, skornya hampir sama, dalam selisih satu poin
+  - Ya, model B mengalahkan baseline
+  - Tidak, skornya lebih rendah daripada baseline
+  - Tidak ada, karena Kuis Cepat hanya bekerja untuk model A
+  answer: 0
+  explanation: Kedua skor sama, sehingga selisihnya di bawah satu poin. Tree yang hanya melihat massa tubuh tidak pernah menjawab Chinstrap pada baris-baris ini, persis seperti perilaku baseline. Recall-nya 0,0%.
+- prompt: Pada Adelie atau Chinstrap di Split 1, model B tidak membuat kesalahan pada test rows. Apa yang ditampilkan langkah 5?
+  options:
+  - Tabel kosong, sehingga kamu tidak dapat menyelesaikan langkah itu
+  - Lima baris nyaris salah, yaitu baris yang dijawab benar tetapi letaknya paling dekat dengan kelas lain
+  - Kesalahan model A sebagai gantinya
+  - Training rows yang salah dijawab model
+  answer: 1
+  explanation: Bila model yang lebih baik membuat kurang dari tiga kesalahan, lab menambahkan test rows benar yang paling dekat dengan kelas lain, diberi tanda "nyaris salah", sehingga kamu tetap dapat mempelajari tiga baris. Split baru mungkin memberi kesalahan yang sebenarnya.
+- prompt: Baris 344 adalah betina yang disebut jantan oleh k-NN dengan confidence 100%. Paruhnya 50,2 mm, di atas rata-rata jantan 45,9 mm, dan massanya 3.775 g, di bawah rata-rata betina 3.862 g. Catatan dan alasan mana yang terbaik?
+  options:
+  - Catatan bahwa model rusak, dengan alasan Model terlalu sederhana
+  - Catatan bahwa confidence 100% berarti label pasti salah, dengan alasan Label mungkin salah
+  - Tanpa catatan dan tanpa alasan, karena kesalahan itu hanya noise
+  - Catatan bahwa paruhnya mirip jantan tetapi massanya mirip betina, dengan alasan Kelas saling tumpang tindih
+  answer: 3
+  explanation: Catatan yang baik mengutip angkanya dan menyebut hipotesis yang didukung angka itu. Sinyal yang bertentangan sesuai dengan tumpang tindih. Confidence yang tinggi hanya menunjukkan bagaimana tetangga memberi suara; itu tidak membuktikan bahwa labelnya salah.
+- prompt: Kamu menilai Perbandingan yang adil sebagai Sudah. Deskripsi mana yang layak mendapatkannya?
+  options:
+  - Saya membandingkan model pada baris yang berbeda, atau hanya dari skor training
+  - Saya memakai test rows yang sama tetapi tidak melihat selisih train dan test
+  - Split sama, skor test, dan saya membaca selisih train dan test sebelum memilih; saya tahu split baru bisa mengubah urutannya
+  - Saya memilih model yang mendapat skor tertinggi pada training rows
+  answer: 2
+  explanation: Perbandingan yang adil menjaga baris dan metrik tetap sama, membaca skor test dan selisihnya, serta mengakui bahwa satu split hanyalah satu pendapat. Ketiga deskripsi lain adalah tingkat Belum dan Sebagian, atau kesalahan yang umum.

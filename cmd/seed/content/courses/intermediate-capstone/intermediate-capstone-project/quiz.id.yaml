@@ -1,0 +1,80 @@
+- prompt: Pada Dataset 1, 93 dari 1.200 transaksi adalah fraud, dan fraud yang terlewat berbiaya 50. Berapa total biaya model yang tidak pernah menandai apa pun?
+  options:
+  - '465'
+  - '1.107'
+  - '4.650'
+  - '5.535'
+  answer: 2
+  explanation: Model yang tidak pernah menandai melewatkan semua 93 fraud, sehingga biayanya 93 × 50 = 4.650, atau 3,88 per transaksi. Angka 5.535 adalah biaya aturan sebaliknya, menandai semuanya, yang menghasilkan 1.107 alarm palsu masing-masing berbiaya 5. Accuracy-nya 92,3%, dan itulah sebabnya accuracy menyembunyikan masalahnya.
+- prompt: Alarm palsu berbiaya 10 dan fraud yang terlewat berbiaya 40. Pada probabilitas fraud berapa menandai sebuah transaksi menjadi pilihan yang lebih murah?
+  options:
+  - 20%, karena 10 / (10 + 40) = 0,2
+  - 25%, karena 10 / 40 = 0,25
+  - 80%, karena 40 / (10 + 40) = 0,8
+  - 40%, karena itu biaya sebuah fraud yang terlewat
+  answer: 0
+  explanation: Tandai bila p × 40 paling sedikit sama dengan (1 - p) × 10, yaitu bila 50p ≥ 10, sehingga p ≥ 0,2. Fraud yang terlewat dengan biaya lebih besar menurunkan threshold; rasio 10 / 40 mengabaikan bagian biaya yang juga ditanggung oleh sebuah tanda.
+- prompt: Forest acuan mendapat AUC 0,84 pada split acak dan 0,72 pada split per pelanggan dari data yang sama. Apa penjelasan terbaiknya?
+  options:
+  - Split per pelanggan punya lebih sedikit baris, sehingga model apa pun mendapat skor lebih rendah
+  - Pada split acak, pelanggan yang sama ada di training rows dan test rows, sehingga forest dapat mengenali seorang pelanggan beserta riwayatnya
+  - Split acak adalah ujian yang lebih ketat, sehingga skornya lebih jujur
+  - Split per pelanggan punya lebih banyak fraud di test rows-nya
+  answer: 1
+  explanation: Split acak menaruh transaksi lain milik seorang pelanggan di training, dan model yang fleksibel dapat memanfaatkannya lewat sidik jari perangkat. Split per pelanggan menghilangkan trik itu, sehingga 0,72 lebih dekat dengan kemampuan model pada pelanggan baru. Split acak di sini adalah yang lebih optimistis dari keduanya, bukan yang lebih ketat.
+- prompt: Sebuah model akan menilai transaksi bulan depan dari pelanggan bank yang sudah ada. Split mana yang paling baik meniru pemakaian itu?
+  options:
+  - Acak, karena setiap transaksi sama mungkinnya untuk diuji
+  - Dikelompokkan per pelanggan, karena pelanggan tidak boleh pernah terlihat di training
+  - Mana pun dari ketiganya, karena semuanya memberi AUC yang hampir sama
+  - Temporal, dengan melatih pada hari-hari awal dan menguji pada hari-hari berikutnya
+  answer: 3
+  explanation: Yang akan baru di sini adalah masa depan, bukan pelanggannya, sehingga split temporal sesuai dengan pemakaiannya. Split itu tetap mempertahankan setiap pelanggan di training, dan itu tidak masalah bila pelanggan yang sama kembali. Untuk pelanggan yang belum pernah dilihat model, split per pelanggan yang tepat. Ketiga split tidak memberi AUC yang sama.
+- prompt: Pada split per pelanggan, kedalaman forest terbaik adalah 2 (AUC validasi 0,76) dan kedalaman 12 mendapat 0,63. Pada split acak, kedalaman 8 terbaik. Mengapa kedalaman terbaiknya berubah?
+  options:
+  - Pencarian pada split per pelanggan punya bug, karena tree yang lebih dalam seharusnya selalu mendapat skor lebih tinggi
+  - Tree yang dalam dapat mengingat setiap pelanggan, dan itu hanya berguna bila baris validasi berasal dari pelanggan yang sudah ada di training
+  - Split acak punya lebih banyak training rows, sehingga memerlukan tree yang lebih dalam
+  - Penalti L2 lebih kuat pada split per pelanggan
+  answer: 1
+  explanation: Tree yang dalam dapat menghafal pola khusus tiap pelanggan. Dengan fold acak, baris validasi berbagi pelanggan dengan training rows, sehingga menghafal berguna. Dengan fold per pelanggan hal itu tidak berguna, dan kedalaman tambahan hanya menambah noise. Pengaturan terbaik bergantung pada split yang akan kamu bela.
+- prompt: Pada 300 held-out rows dengan 18 fraud, regresi logistik mendapat AUC 0,74 dan forest 0,70. Selisih AUC, logistik dikurangi forest, adalah +0,05 dengan interval 95% -0,02 sampai 0,11. Apa yang dapat kamu laporkan?
+  options:
+  - Regresi logistik lebih baik, karena 0,74 di atas 0,70
+  - Forest lebih baik, karena ia unggul di validasi
+  - Baris-baris ini tidak dapat mengatakan model mana yang lebih baik, karena interval selisihnya mencakup nol
+  - Kedua model tidak lebih baik daripada baseline
+  answer: 2
+  explanation: Interval yang mencakup nol sesuai dengan tidak adanya selisih, dan juga dengan forest yang unggul. Kedua model di atas 0,5, sehingga keduanya mengalahkan baseline. Laporan yang jujur mengatakan bahwa 18 fraud tidak memisahkan kedua model, bukan bahwa salah satunya menang.
+- prompt: Kamu menaikkan jumlah resample bootstrap B dari 200 ke 1000, dan interval AUC tetap sekitar 0,58 sampai 0,81. Mengapa?
+  options:
+  - Lebarnya berasal dari sedikitnya fraud pada held-out rows; B yang lebih besar hanya membuat intervalnya lebih mulus
+  - B yang lebih besar seharusnya mengecilkan interval setengahnya, sehingga bootstrap-nya rusak
+  - B yang lebih besar menambah fraud pada held-out rows
+  - Interval tidak bergantung pada data, hanya pada B
+  answer: 0
+  explanation: Setiap resample diambil dari 300 baris yang sama, dengan 18 fraud yang sama. Lebih banyak resample memberi perkiraan yang lebih mantap untuk ujung-ujung interval, tetapi tidak menambah informasi baru. Hanya lebih banyak fraud, atau lebih banyak pelanggan, yang akan mempersempitnya.
+- prompt: Held-out rows pada split per pelanggan berasal dari 15 pelanggan, dan lab mengambil ulang 300 transaksi satu per satu. Apa akibatnya pada interval?
+  options:
+  - Tidak ada, karena resampling selalu memberi lebar yang benar
+  - Interval menjadi terlalu lebar, karena pelanggan yang sama dihitung dua kali
+  - Interval menjadi tepat, karena sebuah resample berukuran sama dengan datanya
+  - Interval menjadi terlalu sempit, karena transaksi seorang pelanggan tidak saling bebas
+  answer: 3
+  explanation: Transaksi seorang pelanggan bergerak bersama, sehingga 300 baris membawa lebih sedikit informasi daripada 300 kasus yang saling bebas. Mengambil ulang baris seolah-olah saling bebas meremehkan ketidakpastian. "Defending an evaluation" mengambil ulang seluruh pasien karena alasan ini.
+- prompt: Kurva biaya pada held-out rows turun pada 13,5%, dengan biaya 1,90 dibanding 2,65 pada threshold biaya 9,1%. Kamu memindahkan threshold ke sana. Apa yang salah?
+  options:
+  - Tidak ada, titik terendah kurva selalu threshold terbaik
+  - Threshold harus selalu sama dengan 50%
+  - Kamu memilih potongan itu dengan melihat test rows, sehingga biaya 1,90 yang dilaporkan terlalu optimistis
+  - Threshold yang lebih tinggi selalu menandai lebih banyak transaksi
+  answer: 2
+  explanation: Memilih threshold dari kurva held-out berarti melakukan tuning pada test rows, sehingga biaya yang dilaporkannya terlalu bagus. Ambil potongan dari biaya, di sini 5 / (5 + 50) = 9,1%, dan katakan bahwa angkanya hanya perkiraan. Threshold yang lebih tinggi menandai lebih sedikit transaksi, bukan lebih banyak.
+- prompt: Pada threshold 9,1%, regresi logistik melewatkan 4 fraud dan menghasilkan 119 alarm palsu pada 300 baris. Fraud yang terlewat berbiaya 50 dan alarm palsu 5. Berapa expected cost per transaksinya?
+  options:
+  - '3,97'
+  - '2,65'
+  - '3,00'
+  - '795'
+  answer: 1
+  explanation: 4 × 50 + 119 × 5 = 200 + 595 = 795 secara total, dan 795 / 300 = 2,65 per transaksi. Angka 795 adalah totalnya, 3,00 adalah biaya tidak menandai apa pun (18 × 50 / 300), dan 3,97 adalah kasus lain, yaitu biaya fraud yang terlewat sebesar 100.

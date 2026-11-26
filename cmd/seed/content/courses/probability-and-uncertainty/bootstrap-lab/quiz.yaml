@@ -1,0 +1,80 @@
+- prompt: In the lab's generated data the true accuracy is 85.0% and each sample has n = 100 cases. What is the textbook standard error of a sample accuracy?
+  options:
+  - About 0.4 points
+  - About 3.6 points
+  - About 7.0 points
+  - About 14.0 points
+  answer: 1
+  explanation: SE = sqrt(0.85 × 0.15 / 100) = sqrt(0.001275) = 0.0357, or 3.6 points. The 7.0 is 1.96 standard errors, the half-width of the middle 95%, and the 14.0 is its full width.
+- prompt: After 200 samples of 100 cases, the shaded stripe in the histogram reads 78.0% to 92.0%. What does it describe?
+  options:
+  - The bootstrap interval of the last sample, built from its 500 resamples
+  - The range in which the true accuracy lies with 95% probability
+  - The 95% of the 200 samples that all scored exactly 85.0%
+  - The range where the middle 95% of the 200 sample accuracies landed
+  answer: 3
+  explanation: The stripe is a statement about the pile of samples, cut at the lowest 2.5% and the highest 2.5%. It is centered on the true accuracy. The bootstrap interval is a different thing, built from one sample, and the true accuracy is one fixed number, not something with a probability.
+- prompt: The last sample is 83 of 100 right, and its bootstrap interval is 74.5% to 90.0%. Why is this interval centered near 83% and not near the true 85.0%?
+  options:
+  - Its resamples are made only of the cases in that sample, so it centers on that sample's accuracy
+  - The lab shifts the interval toward the sample so that it looks more believable
+  - B was too small, and a larger B would move the interval onto the true 85.0%
+  - The population itself is only 83% right, so the interval is centered on it
+  answer: 0
+  explanation: Every resample is made of the 100 cases in hand, so the resample accuracies pile up around 83%. A larger B only smooths the outline. The population is 85.0% right, and the interval happens to contain that.
+- prompt: For the same sample, you change B from 100 to 1,000 and the interval goes from 75.0% to 89.0% to 75.0% to 90.0%. What does this show?
+  options:
+  - More resamples make the interval about half as wide, since the estimate gets more precise
+  - The number of resamples decides whether or not the interval contains the true accuracy
+  - More resamples only smooth the estimate; they add no new cases, so the width barely changes
+  - The bootstrap needs B = 1,000 before it can work at all, and 100 resamples are too few
+  answer: 2
+  explanation: Every resample is drawn from the same 100 cases, so a larger B cannot add information. It makes the percentiles steadier, which is why the width moved by 1 point. Only more cases, a larger n, narrows an interval.
+- prompt: You press Run 200 experiments and the meter reads 97.5%. What is the sensible conclusion?
+  options:
+  - The method is broken, because a 95% method should give exactly 95% in every run
+  - It is close to the promise, because a run of 200 experiments wobbles by about 3 points
+  - Exactly 195 intervals contain the truth, so every later run will read 97.5% as well
+  - The 5 intervals that miss show that the lab has a bug in how it draws samples
+  answer: 1
+  explanation: The share is itself a measurement from 200 experiments, with a standard error of about 1.5 points and so about ±3 points at 95%. Pressing the button again gave 95.5% and 96.5%, and misses are expected, about 1 interval in 20.
+- prompt: At n = 100 the standard error is 3.6 points. You raise n to 400, four times the cases. What is the standard error now?
+  options:
+  - About 7.2 points
+  - About 3.6 points, because n does not change the standard error
+  - About 0.9 points
+  - About 1.8 points
+  answer: 3
+  explanation: SE = sqrt(0.85 × 0.15 / 400) = 0.0179, or 1.8 points. n sits under a square root, so four times the cases halves the standard error and the width of the interval, and to halve it again you would need 1,600 cases.
+- prompt: With n = 100 the standard error is 4.2 points for the penguins (true accuracy 76.9%) and 3.6 points for the generated data (85.0%). Why are they different when n is the same?
+  options:
+  - Real data is always noisier than generated data, so its standard error is larger
+  - The penguin samples are drawn without replacement, which spreads them out more
+  - The bootstrap adds extra noise whenever the data is real rather than generated
+  - p × (1 - p) is larger when the accuracy is nearer 50%, here 0.178 against 0.128
+  answer: 3
+  explanation: SE = sqrt(p(1 - p) / n), and p(1 - p) grows as p moves toward 50%. For 76.9% it is 0.769 × 0.231 = 0.178, so SE = sqrt(0.00178) = 0.042. Both populations are sampled with replacement.
+- prompt: In the card "Do the intervals keep their promise?" one line is thick and marked with a cross. What does that mean?
+  options:
+  - The bootstrap interval of that experiment missed the dashed true-accuracy line
+  - That experiment drew a larger sample than the others
+  - That experiment's sample scored exactly 85.0%
+  - That experiment did not finish
+  answer: 0
+  explanation: The lab draws an interval thin when it contains the true accuracy and thick with a cross when it misses it. Over 200 experiments about 5% are expected to miss; in the first run from the start screen 5 of the 200 did.
+- prompt: In a real project you have one test set and you do not know the true accuracy. Which step of the lab can you actually carry out?
+  options:
+  - Draw 200 samples and read the middle 95% of their accuracies
+  - Run 200 experiments and read the meter
+  - Bootstrap the one sample you have and read its 95% interval
+  - Read the true accuracy row of the table
+  answer: 2
+  explanation: Drawing many samples, running experiments and reading the true accuracy all need the whole population, which the lab has and a real project does not. The bootstrap needs only the one sample, and it gives an interval of about the same width as the pile.
+- prompt: The lab shows a pile of 200 samples. You draw one more sample from the same population. What changes?
+  options:
+  - The pile is replaced by that single sample, and the middle 95% is rebuilt from it
+  - The pile grows to 201 samples, and the bootstrap interval is rebuilt from the new sample
+  - The pile stays at 200 samples, because the lab always keeps exactly 200 of them
+  - The pile grows to 201 samples, but the bootstrap interval still comes from the old last sample
+  answer: 1
+  explanation: A new sample joins the pile (200 + 1 = 201) and becomes the last sample, the one the bootstrap works on, so the interval slides with it. Only drawing 200 samples, changing n or switching the data starts a new pile.
