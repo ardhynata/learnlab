@@ -43,8 +43,8 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"github.com/inxpired/hexago/runtime/errcat"
-	"github.com/inxpired/hexago/runtime/sqlerr"
+	"github.com/inxpired/hexago-runtime/errcat"
+	"github.com/inxpired/hexago-runtime/sqlerr"
 
 	domain "example.com/learnlab/internal/core/domain/learner"
 	outputport "example.com/learnlab/internal/core/ports/output/learner"

@@ -12,8 +12,8 @@ import (
 	inputport "example.com/learnlab/internal/core/ports/input/moduletext"
 	modulerepo "example.com/learnlab/internal/core/ports/output/module"
 	outputport "example.com/learnlab/internal/core/ports/output/moduletext"
-	"github.com/inxpired/hexago/runtime/listfilter"
-	"github.com/inxpired/hexago/runtime/txmanager"
+	"github.com/inxpired/hexago-runtime/listfilter"
+	"github.com/inxpired/hexago-runtime/txmanager"
 )
 
 // generateModuleTextID returns a random 128-bit hex identifier. Used by

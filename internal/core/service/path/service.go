@@ -10,8 +10,8 @@ import (
 	domain "example.com/learnlab/internal/core/domain/path"
 	inputport "example.com/learnlab/internal/core/ports/input/path"
 	outputport "example.com/learnlab/internal/core/ports/output/path"
-	"github.com/inxpired/hexago/runtime/listfilter"
-	"github.com/inxpired/hexago/runtime/txmanager"
+	"github.com/inxpired/hexago-runtime/listfilter"
+	"github.com/inxpired/hexago-runtime/txmanager"
 )
 
 // generatePathID returns a random 128-bit hex identifier. Used by

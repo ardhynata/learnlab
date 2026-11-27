@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/inxpired/hexago/runtime/errcat"
+	"github.com/inxpired/hexago-runtime/errcat"
 )
 
 // TestErrInvalid_IdentityAndCategory pins the contract every domain

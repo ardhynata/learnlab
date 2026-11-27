@@ -12,7 +12,7 @@
 package runtime
 
 import (
-	"github.com/inxpired/hexago/runtime/eventbus"
+	"github.com/inxpired/hexago-runtime/eventbus"
 )
 
 // NewEventRegistry returns an [eventbus.Registry] populated with one

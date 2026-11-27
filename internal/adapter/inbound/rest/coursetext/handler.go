@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"unicode/utf8" // #3236/#3899: rune-safe truncation of the logged ref/id
 
-	"github.com/inxpired/hexago/runtime/httperr"
+	"github.com/inxpired/hexago-runtime/httperr"
 
 	inputport "example.com/learnlab/internal/core/ports/input/coursetext"
 )

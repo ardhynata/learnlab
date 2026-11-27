@@ -5,7 +5,7 @@ package runtime
 import (
 	"testing"
 
-	"github.com/inxpired/hexago/runtime/eventbus"
+	"github.com/inxpired/hexago-runtime/eventbus"
 )
 
 // TestNewEventRegistry_ReturnsUsableRegistry pins the registry-construction
