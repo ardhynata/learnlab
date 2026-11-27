@@ -16,8 +16,8 @@ import (
 	modulerepo "example.com/learnlab/internal/core/ports/output/module"
 	progressrepo "example.com/learnlab/internal/core/ports/output/progress"
 	questionrepo "example.com/learnlab/internal/core/ports/output/question"
-	"github.com/inxpired/hexago/runtime/listfilter"
-	"github.com/inxpired/hexago/runtime/txmanager"
+	"github.com/inxpired/hexago-runtime/listfilter"
+	"github.com/inxpired/hexago-runtime/txmanager"
 )
 
 // generateLessonID returns a random 128-bit hex identifier. Used by

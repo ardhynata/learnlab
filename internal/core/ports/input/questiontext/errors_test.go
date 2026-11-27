@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/inxpired/hexago/runtime/errcat"
+	"github.com/inxpired/hexago-runtime/errcat"
 )
 
 // TestServiceSentinels pins the identity and category of every

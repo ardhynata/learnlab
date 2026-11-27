@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/inxpired/hexago/runtime/txmanager"
+	"github.com/inxpired/hexago-runtime/txmanager"
 
 	learnerdomain "example.com/learnlab/internal/core/domain/learner"
 	lessondomain "example.com/learnlab/internal/core/domain/lesson"

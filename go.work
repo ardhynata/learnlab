@@ -11,10 +11,10 @@
 //
 // The `go` directive must be ≥ the highest `go` directive of any
 // included module, and Go compares the FULL semver (major.minor.patch).
-// Floor is 1.26.0: the hexago module itself declares go 1.26.0, and a
-// local `replace` of hexago (the recommended dev setup) advances go.mod
-// to that version on `go mod tidy` — same mechanism as goose/v3 v3.27.1
-// pushing the old 1.25.7 floor (issue #545). If go.work lags the floor,
+// Floor is 1.26.0: the Hexago runtime module (github.com/inxpired/hexago-runtime)
+// declares go 1.26.0, so `go mod tidy` advances go.mod to that version, the
+// same mechanism as goose/v3 v3.27.1 pushing the old 1.25.7 floor (issue #545).
+// If go.work lags the floor,
 // `go build ./...` fails with "module . listed in go.work file requires
 // go >= 1.26.0, but go.work lists go <older>".
 go 1.26.0

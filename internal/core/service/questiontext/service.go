@@ -12,8 +12,8 @@ import (
 	inputport "example.com/learnlab/internal/core/ports/input/questiontext"
 	lessonrepo "example.com/learnlab/internal/core/ports/output/lesson"
 	outputport "example.com/learnlab/internal/core/ports/output/questiontext"
-	"github.com/inxpired/hexago/runtime/listfilter"
-	"github.com/inxpired/hexago/runtime/txmanager"
+	"github.com/inxpired/hexago-runtime/listfilter"
+	"github.com/inxpired/hexago-runtime/txmanager"
 )
 
 // generateQuestionTextID returns a random 128-bit hex identifier. Used by

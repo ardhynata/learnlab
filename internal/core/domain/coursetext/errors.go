@@ -1,6 +1,6 @@
 package coursetext
 
-import "github.com/inxpired/hexago/runtime/errcat"
+import "github.com/inxpired/hexago-runtime/errcat"
 
 // The scope hint below tells the `hexago scaffold i18n` catalog harvester which
 // kebab-cased entity these errcat.New validation sentinels belong to, so it can

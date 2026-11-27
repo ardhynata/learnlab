@@ -30,10 +30,16 @@ on:
     branches: [main]
   pull_request:
 
+# This repository is public, so the job runs on a GitHub-hosted runner: a pull
+# request from a fork must never execute on a self-hosted machine. The token
+# only needs to read the code.
+permissions:
+  contents: read
+
 jobs:
   test:
     name: test + arch-check
-    runs-on: [self-hosted, linux, inxpirativ]
+    runs-on: ubuntu-latest
     services:
       postgres:
         image: postgres:17-alpine
@@ -42,8 +48,7 @@ jobs:
           POSTGRES_PASSWORD: ci
           POSTGRES_DB: app_test
         # Container port only: Docker picks a free host port, read back as
-        # job.services.postgres.ports['5432']. A fixed 5432 collides on a shared
-        # self-hosted runner (host netns, one Docker daemon, a dev stack).
+        # job.services.postgres.ports['5432'].
         ports: ["5432"]
         options: >-
           --health-cmd "pg_isready -U ci -d app_test"

@@ -4,7 +4,7 @@
 //
 // Lives under internal/shared/ so that every bounded context can import it
 // without cross-context coupling. A default implementation ships in the
-// runtime module at github.com/inxpirativ/hexago/runtime/encryptor.
+// runtime module at github.com/inxpired/hexago-runtime/encryptor.
 package encryptor
 
 // Every method takes a leading domain string — a stable per-field label

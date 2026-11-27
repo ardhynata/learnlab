@@ -12,8 +12,8 @@ import (
 	inputport "example.com/learnlab/internal/core/ports/input/pathtext"
 	pathrepo "example.com/learnlab/internal/core/ports/output/path"
 	outputport "example.com/learnlab/internal/core/ports/output/pathtext"
-	"github.com/inxpired/hexago/runtime/listfilter"
-	"github.com/inxpired/hexago/runtime/txmanager"
+	"github.com/inxpired/hexago-runtime/listfilter"
+	"github.com/inxpired/hexago-runtime/txmanager"
 )
 
 // generatePathTextID returns a random 128-bit hex identifier. Used by

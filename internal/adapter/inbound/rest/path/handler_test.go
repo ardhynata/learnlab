@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/inxpired/hexago/runtime/httperr"
+	"github.com/inxpired/hexago-runtime/httperr"
 
 	inputport "example.com/learnlab/internal/core/ports/input/path"
 )

@@ -31,12 +31,12 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"github.com/inxpired/hexago/runtime/httperr"
-	"github.com/inxpired/hexago/runtime/sqlerr"
+	"github.com/inxpired/hexago-runtime/httperr"
+	"github.com/inxpired/hexago-runtime/sqlerr"
 
 	domain "example.com/learnlab/internal/core/domain/path"
 	outputport "example.com/learnlab/internal/core/ports/output/path"
-	txmanager "github.com/inxpired/hexago/runtime/txmanager"
+	txmanager "github.com/inxpired/hexago-runtime/txmanager"
 )
 
 // pgConn is the read/write surface shared by *pgxpool.Pool and pgx.Tx.
