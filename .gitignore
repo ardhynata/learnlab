@@ -14,3 +14,6 @@ bin/
 **/.claude/*
 !/.claude/agents/
 !/.claude/agents/**
+
+# Local build output of cmd/seed
+/seed
