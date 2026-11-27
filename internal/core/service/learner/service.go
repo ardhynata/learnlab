@@ -11,8 +11,8 @@ import (
 	inputport "example.com/learnlab/internal/core/ports/input/learner"
 	outputport "example.com/learnlab/internal/core/ports/output/learner"
 	progressrepo "example.com/learnlab/internal/core/ports/output/progress"
-	"github.com/inxpired/hexago/runtime/listfilter"
-	"github.com/inxpired/hexago/runtime/txmanager"
+	"github.com/inxpired/hexago-runtime/listfilter"
+	"github.com/inxpired/hexago-runtime/txmanager"
 )
 
 // generateLearnerID returns a random 128-bit hex identifier. Used by

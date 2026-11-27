@@ -68,7 +68,7 @@ arch-check:
 	if [ $$rc -ne 0 ]; then \
 		echo "arch-check: go list failed:"; echo "$$out"; exit 1; \
 	fi; \
-	leaks=$$(echo "$$out" | grep -E 'hexago/runtime/view' || true); \
+	leaks=$$(echo "$$out" | grep -E 'hexago[-/]runtime/view' || true); \
 	if [ -n "$$leaks" ]; then \
 		echo "arch-check: core depends on view packages:"; echo "$$leaks"; exit 1; \
 	fi; echo "arch-check: ok"

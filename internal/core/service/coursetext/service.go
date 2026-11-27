@@ -12,8 +12,8 @@ import (
 	inputport "example.com/learnlab/internal/core/ports/input/coursetext"
 	courserepo "example.com/learnlab/internal/core/ports/output/course"
 	outputport "example.com/learnlab/internal/core/ports/output/coursetext"
-	"github.com/inxpired/hexago/runtime/listfilter"
-	"github.com/inxpired/hexago/runtime/txmanager"
+	"github.com/inxpired/hexago-runtime/listfilter"
+	"github.com/inxpired/hexago-runtime/txmanager"
 )
 
 // generateCourseTextID returns a random 128-bit hex identifier. Used by

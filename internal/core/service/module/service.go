@@ -13,8 +13,8 @@ import (
 	courserepo "example.com/learnlab/internal/core/ports/output/course"
 	lessonrepo "example.com/learnlab/internal/core/ports/output/lesson"
 	outputport "example.com/learnlab/internal/core/ports/output/module"
-	"github.com/inxpired/hexago/runtime/listfilter"
-	"github.com/inxpired/hexago/runtime/txmanager"
+	"github.com/inxpired/hexago-runtime/listfilter"
+	"github.com/inxpired/hexago-runtime/txmanager"
 )
 
 // generateModuleID returns a random 128-bit hex identifier. Used by

@@ -2,8 +2,7 @@ module example.com/learnlab
 
 // go 1.26.0 matches the go.work floor (issue #792). Both files must carry
 // the same version so the scaffold is self-consistent before `go mod tidy`.
-// Floor is driven by the hexago module declaring go 1.26.0 (replaced-in
-// during dev; previously goose/v3 v3.27.1's go >= 1.25.7, issue #545).
+// Floor is driven by the runtime module declaring go 1.26.0 (previously goose/v3 v3.27.1's go >= 1.25.7, issue #545).
 go 1.26.0
 
 // jackc/pgx/v5 is the modern pure-Go PostgreSQL driver. pgxpool wraps
@@ -13,7 +12,7 @@ go 1.26.0
 require github.com/jackc/pgx/v5 v5.12.0
 
 require (
-	github.com/inxpired/hexago v0.0.0-20261125002327-3830aa009eb7
+	github.com/inxpired/hexago-runtime v0.1.1
 	github.com/pressly/goose/v3 v3.30.1
 	gopkg.in/yaml.v3 v3.0.1
 )
@@ -60,5 +59,3 @@ require (
 	google.golang.org/grpc v1.85.0 // indirect
 	google.golang.org/protobuf v1.36.12 // indirect
 )
-
-replace github.com/inxpired/hexago => /home/inxpirativ/go/src/hexago
