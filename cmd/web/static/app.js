@@ -266,17 +266,21 @@ function footer() {
         h('ul', {},
           h('li', {}, link('#/', tr('All courses', 'Semua kursus'))),
           h('li', {}, link('#/path/beginner', tr('Level 1: Beginner', 'Level 1: Pemula'))),
+          h('li', {}, link('#/path/intermediate', tr('Level 2: Intermediate', 'Level 2: Menengah'))),
+          h('li', {}, link('#/path/advanced', tr('Level 3: Advanced', 'Level 3: Lanjutan'))),
           h('li', {}, h('a', { href: '#app', onclick: e => { e.preventDefault(); window.scrollTo({ top: 0, behavior: scrollBehavior() }); document.getElementById('app')?.focus({ preventScroll: true }); } }, tr('Back to top ↑', 'Kembali ke atas ↑'))))),
       h('div', { class: 'foot-col' },
         h('h2', {}, tr('About', 'Tentang')),
         h('ul', {},
           h('li', {}, saved),
-          h('li', {}, tr('Available in English and Bahasa Indonesia.', 'Tersedia dalam bahasa Inggris dan Bahasa Indonesia.')))),
+          h('li', {}, tr('Available in English and Bahasa Indonesia.', 'Tersedia dalam bahasa Inggris dan Bahasa Indonesia.')),
+          h('li', {}, link('https://github.com/ardhynata/learnlab', tr('Source code on GitHub', 'Kode sumber di GitHub'), true)),
+          h('li', {}, link('https://github.com/ardhynata/learnlab/issues', tr('Report a mistake or suggest a topic', 'Laporkan kesalahan atau usulkan topik'), true)))),
       h('div', { class: 'foot-col' },
         h('h2', {}, tr('Data', 'Data')),
         h('p', {}, tr('Real-data labs use the Palmer Penguins dataset (CC0) by Gorman, Williams and Fraser, 2014. ', 'Lab data nyata memakai dataset Palmer Penguins (CC0) oleh Gorman, Williams, dan Fraser, 2014. '),
           link('https://github.com/allisonhorst/palmerpenguins', tr('Source', 'Sumber'), true), '.'))),
-    h('p', { class: 'foot-base' }, 'Learnlab · ', tr('Built for learning by doing.', 'Dibuat untuk belajar sambil mencoba.')));
+    h('p', { class: 'foot-base' }, `© ${new Date().getFullYear()} Learnlab by `, link('https://inxpired.com', 'Inxpired', true), ' · ', tr('Built for learning by doing.', 'Dibuat untuk belajar sambil mencoba.')));
 }
 
 // The last part is the page itself: text, marked as the current page; the others are links.

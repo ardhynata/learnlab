@@ -35,6 +35,25 @@ func env(k, d string) string {
 	return d
 }
 
+// publicAPICall reports whether a request may reach the API through this
+// public server. The generated REST API has no authentication, so the web
+// server is the gate: reading is open, and the only writes are the two the
+// frontend makes (create a learner; create or update that learner's progress).
+// Creating, changing or deleting courses and lessons goes through the seeder,
+// which talks to the API directly on the private network.
+func publicAPICall(method, p string) bool {
+	switch method {
+	case http.MethodGet, http.MethodHead:
+		return true
+	case http.MethodPost:
+		return p == "/learners" || p == "/progresses"
+	case http.MethodPut:
+		id, ok := strings.CutPrefix(p, "/progresses/")
+		return ok && id != "" && !strings.Contains(id, "/")
+	}
+	return false
+}
+
 // newHandler serves the static files and proxies /api/* to the API. Text
 // responses (JSON, JS, CSS, HTML, CSV, SVG) are gzip-compressed for clients
 // that accept it, from both sides, and carry validators so a warm reload
@@ -58,6 +77,13 @@ func newHandler(api *url.URL, static fs.FS) http.Handler {
 	tags := &embeddedTags{fsys: static}
 	mux := http.NewServeMux()
 	mux.Handle("/api/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if !publicAPICall(r.Method, strings.TrimPrefix(r.URL.Path, "/api")) {
+			w.Header().Set("Content-Type", "application/json")
+			w.Header().Set("Allow", "GET, HEAD")
+			w.WriteHeader(http.StatusMethodNotAllowed)
+			_, _ = io.WriteString(w, `{"error":"this endpoint is read-only on the public site"}`)
+			return
+		}
 		ew := newETagWriter(w, r)
 		proxy.ServeHTTP(ew, r)
 		ew.finish()

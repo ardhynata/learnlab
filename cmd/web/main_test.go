@@ -263,7 +263,7 @@ func TestProxyLeavesOtherResponsesAlone(t *testing.T) {
 		t.Errorf("small: %v", rec.Header())
 	}
 	// Writes are never buffered or tagged.
-	if rec := do(h, "POST", "/api/small", gz); rec.Header().Get("ETag") != "" || rec.Body.String() != `{"ok":true}` {
+	if rec := do(h, "POST", "/api/learners", gz); rec.Header().Get("ETag") != "" || rec.Body.String() != `{"ok":true}` {
 		t.Errorf("post: %v", rec.Header())
 	}
 }
@@ -289,5 +289,40 @@ func TestProxyStreamsOversizedAndEventStreams(t *testing.T) {
 	rec = do(h, "GET", "/api/sse", map[string]string{"Accept-Encoding": "gzip"})
 	if rec.Header().Get("Content-Encoding") != "" || rec.Body.String() != "data: 1\n\n" {
 		t.Fatalf("event stream: %v", rec.Header())
+	}
+}
+
+func TestPublicAPIIsReadOnlyExceptLearnerAndProgress(t *testing.T) {
+	api := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_, _ = io.WriteString(w, "ok")
+	}))
+	defer api.Close()
+	u, _ := url.Parse(api.URL)
+	h := newHandler(u, fstest.MapFS{"index.html": {Data: []byte("home")}})
+	cases := []struct {
+		method, path string
+		want         int
+	}{
+		{"GET", "/api/courses", 200},
+		{"HEAD", "/api/courses", 200},
+		{"POST", "/api/learners", 200},
+		{"POST", "/api/progresses", 200},
+		{"PUT", "/api/progresses/abc", 200},
+		{"DELETE", "/api/paths/abc", 405},
+		{"DELETE", "/api/progresses/abc", 405},
+		{"POST", "/api/paths", 405},
+		{"POST", "/api/courses", 405},
+		{"PUT", "/api/lessons/abc", 405},
+		{"PUT", "/api/progresses/", 405},
+		{"PUT", "/api/progresses/a/b", 405},
+		{"PUT", "/api/learners/abc", 405},
+		{"PATCH", "/api/progresses/abc", 405},
+	}
+	for _, c := range cases {
+		rec := httptest.NewRecorder()
+		h.ServeHTTP(rec, httptest.NewRequest(c.method, c.path, strings.NewReader("{}")))
+		if rec.Code != c.want {
+			t.Errorf("%s %s = %d, want %d", c.method, c.path, rec.Code, c.want)
+		}
 	}
 }
