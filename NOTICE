@@ -1,0 +1,17 @@
+Learnlab
+Copyright 2026 Inxpired
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+The license covers the source code, the lessons, quizzes and labs, and the
+documentation in this repository, except for the third-party material below.
+
+Palmer Penguins dataset - cmd/web/static/data/penguins.csv
+Gorman KB, Williams TD, Fraser WR (2014). Palmer Archipelago penguin data.
+Distributed through the palmerpenguins package by Allison Horst, Alison Hill
+and Kristen Gorman (https://github.com/allisonhorst/palmerpenguins), released
+under CC0 1.0 (public domain dedication). See cmd/web/static/data/penguins.md.
+
+Go modules: the build uses github.com/inxpired/hexago-runtime (Apache-2.0)
+and the modules listed in go.mod. They are fetched by the Go toolchain with
+their own licenses, which govern them; a binary you build includes the ones
+its imports reach, and distributing it carries their terms.
