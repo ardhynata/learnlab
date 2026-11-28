@@ -67,12 +67,32 @@ Build and load a new tag, set `LEARNLAB_IMAGE`, run `docker compose ... up -d`, 
 
 ## Backup and restore
 
+A systemd timer runs `deploy/backup.sh` every night at 03:15 UTC (a missed run happens after the next boot). It writes `/opt/learnlab/backups/learnlab-<UTC time>.sql.gz`, checks that the dump is complete, keeps 14 days (never fewer than the newest 3) and fails loudly otherwise.
+
+Install once (as root, from the repo's `deploy/` directory, with `docker-compose.prod.yml` and `.env.production` already in `/opt/learnlab`):
+
 ```bash
-docker compose -f docker-compose.prod.yml exec -T postgres pg_dump -U postgres postgres | gzip > learnlab-$(date +%F).sql.gz
-gunzip -c learnlab-<date>.sql.gz | docker compose -f docker-compose.prod.yml exec -T postgres psql -U postgres postgres
+install -m 755 backup.sh /opt/learnlab/backup.sh
+install -m 644 learnlab-backup.service learnlab-backup.timer /etc/systemd/system/
+systemctl daemon-reload && systemctl enable --now learnlab-backup.timer
+systemctl start learnlab-backup.service        # take one now to prove it works
 ```
 
-Course content can always be rebuilt with the seed; the learner progress rows are the only data worth backing up.
+Check it: `systemctl list-timers learnlab-backup`, `systemctl status learnlab-backup`, `journalctl -u learnlab-backup -n 20`, `ls -lh /opt/learnlab/backups`.
+
+Restore (into the running database; stop the web service first if you want no writes during it):
+
+```bash
+cd /opt/learnlab && export LEARNLAB_IMAGE=$(cut -d= -f2 .image)
+C="docker compose -f docker-compose.prod.yml --env-file .env.production"
+$C exec -T postgres psql -U postgres -c 'DROP SCHEMA public CASCADE; CREATE SCHEMA public;' postgres
+zcat backups/learnlab-<time>.sql.gz | $C exec -T postgres psql -U postgres -v ON_ERROR_STOP=1 postgres
+```
+
+Limits you should know about:
+- **The dumps live on the same server and disk.** They protect against a bad deploy or a deleted row, not against losing the machine. Copy `backups/` and `.env.production` off the server regularly (for example `rsync` over SSH from another machine, or a Hostinger snapshot).
+- Course content can always be rebuilt with the seed; the learner progress rows are the only data worth keeping.
+- The encryption keys in `.env.production` are not in the dumps and cannot be regenerated.
 
 ## Roll back
 

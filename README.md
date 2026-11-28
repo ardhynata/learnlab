@@ -201,3 +201,7 @@ Node and Playwright live outside the repo: Linux Node at `/home/inxpirativ/tools
 ## Curriculum (from `docs/syllabus.txt`)
 
 The catalog follows `ML_Syllabus.docx`: **Level = path, syllabus module = course**, each course two to four short lessons in two parts (Core ideas, Lab). Level 1 (Beginner) is built first; the course page shows "Module N" from the syllabus. Lessons without a syllabus home (gradient descent, learning rate) are parked in `cmd/seed/parked/` for Level 2. Labs that show "the course dataset" start from `SHARED_SEED` in `sims/datasets.js`; labs can offer a Generated / Real data switch (`sims/kit/data.js`) and a "Predict first" box (`sims/kit/predict.js`).
+
+## Deploying and license
+
+Production setup, nightly backups and restore are in [docs/deploy.md](docs/deploy.md). Learnlab is licensed under the [Apache License 2.0](LICENSE); bundled third-party material (the Palmer Penguins dataset) is listed in [NOTICE](NOTICE).

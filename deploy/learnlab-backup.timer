@@ -1,0 +1,11 @@
+[Unit]
+Description=Nightly Learnlab PostgreSQL backup
+
+[Timer]
+# 03:15 UTC; Persistent runs a missed backup after a reboot or downtime.
+OnCalendar=*-*-* 03:15:00 UTC
+Persistent=true
+RandomizedDelaySec=300
+
+[Install]
+WantedBy=timers.target
